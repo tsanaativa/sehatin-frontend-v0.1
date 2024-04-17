@@ -1,0 +1,17 @@
+export { default as Sehatin } from './Sehatin';
+export { default as SehatinWhite } from './SehatinWhite';
+export { default as FacebookIcon } from './FacebookIcon';
+export { default as InstagramIcon } from './InstagramIcon';
+export { default as TwitterIcon } from './TwitterIcon';
+export { default as TiktokIcon } from './TiktokIcon';
+export { default as BadgeCheckIcon } from './BadgeCheckIcon';
+export { default as DoctorBadge } from './DoctorBadge';
+export { default as MedicineBadge } from './MedicineBadge';
+export { default as VitaminBadge } from './VitaminBadge';
+export { default as HeadacheBadge } from './HeadacheBadge';
+export { default as SupplementBadge } from './SupplementBadge';
+export { default as FeverBadge } from './FeverBadge';
+export { default as CoughBadge } from './CoughBadge';
+export { default as SoreThroatBadge } from './SoreThroatBadge';
+export { default as ChildrensVitaminsBadge } from './ChildrensVitaminsBadge';
+export { default as MothersVitaminsBadge } from './MothersVitaminsBadge';
