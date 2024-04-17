@@ -12,12 +12,12 @@ import React from 'react';
 const CategoriesSection = () => {
   return (
     <section>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between items-center">
         <span className="font-poppins font-semibold text-dark">
           Product Categories
         </span>
         <Link className="text-primary-dark text-sm" href="/categories">
-          See all
+          See All
         </Link>
       </div>
       <div className="grid grid-cols-3 gap-x-52 gap-y-4 overflow-x-auto mt-2">

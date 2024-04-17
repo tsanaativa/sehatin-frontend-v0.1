@@ -10,10 +10,10 @@ type ProductsSectionProps = {
 const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
   return (
     <section>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between items-center">
         <span className="font-poppins font-semibold text-dark">{title}</span>
         <Link className="text-primary-dark text-sm" href={seeAllUrl}>
-          See all
+          See All
         </Link>
       </div>
       <div className="overflow-x-auto">

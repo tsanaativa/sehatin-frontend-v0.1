@@ -4,7 +4,7 @@ import SearchBar from '@/components/common/SearchBar';
 const MedsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="bg-primary-dark bg-gradient-to-r from-slate-900/0 to-primary/40">
-      <div className="py-5 px-4 relative sm:px-6 flex flex-col gap-4">
+      <div className="p-4 relative sm:px-6 flex flex-col gap-4 text-sm">
         <AddressCard />
         <SearchBar />
       </div>

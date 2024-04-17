@@ -81,7 +81,7 @@ const Home = () => {
               Most Bought Products
             </span>
             <Link className="text-primary-dark text-xs" href="/meds">
-              See all
+              See All
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-4 my-4">
