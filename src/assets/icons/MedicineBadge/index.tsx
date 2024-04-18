@@ -1,8 +1,8 @@
-const MedicineBadge = () => {
+const MedicineBadge = ({ size }: { size?: number }) => {
   return (
     <svg
-      width="77"
-      height="77"
+      width={size || '77'}
+      height={size || '77'}
       viewBox="0 0 77 77"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

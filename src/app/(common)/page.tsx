@@ -11,14 +11,14 @@ const Home = () => {
     <main>
       <Carousel autoSlide autoSlideInterval={5000}>
         <div className="min-w-full relative">
-          <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6">
-            <span className="font-poppins text-secondary text-xs">
+          <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6 md:w-[663px] md:top-28 md:left-20">
+            <span className="font-poppins font-medium text-secondary text-xs md:text-3xl">
               No More Hassle! Take Online
             </span>
-            <h1 className="font-poppins font-bold text-xl text-secondary mt-1">
+            <h1 className="font-poppins font-bold text-xl text-secondary mt-1 md:text-6xl md:mt-4">
               Doctor <span className="text-primary-dark">Consultation</span>
             </h1>
-            <p className="text-[0.625rem] mt-1">
+            <p className="text-[0.625rem] mt-1 md:text-xl md:mt-4">
               Connect instantly with a specialist who provides accurate
               diagnosis and medical advice. Get your medical certificates and
               digital prescription.
@@ -32,14 +32,14 @@ const Home = () => {
           />
         </div>
         <div className="min-w-full relative">
-          <div className="absolute top-4 left-4 w-48 sm:top-6 sm:left-6">
-            <span className="font-poppins text-secondary text-xs">
+          <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6 md:w-[663px] md:top-28 md:left-20">
+            <span className="font-poppins font-medium text-secondary text-xs md:text-3xl">
               Right at Your Door! Get Fast
             </span>
-            <h1 className="font-poppins font-bold text-xl text-secondary mt-1">
+            <h1 className="font-poppins font-bold text-xl text-secondary mt-1 md:text-6xl md:mt-4">
               Medicine <span className="text-primary-dark">Delivery</span>
             </h1>
-            <p className="text-[0.625rem] mt-1">
+            <p className="text-[0.625rem] mt-1 md:text-xl md:mt-4">
               Add medicines of your choice to cart or click on your digital
               prescription and place order. Get your medicines delivered.
             </p>
@@ -52,40 +52,42 @@ const Home = () => {
           />
         </div>
       </Carousel>
-      <section className="bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg md:top-0 md:rounded-tl-none md:rounded-tr-none sm:px-6 md:mt-0">
+      <section className="bg-light w-full -mt-2 z-20 py-4 md:py-16 px-4 rounded-tl-lg rounded-tr-lg md:top-0 md:rounded-tl-none md:rounded-tr-none sm:px-6 md:mt-0 md:px-44">
         <div className="flex flex-col items-center">
-          <span className="font-poppins font-semibold text-dark">
+          <span className="font-poppins font-semibold text-dark sm:text-xl">
             Our Services
           </span>
-          <div className="flex justify-between w-full mt-6">
+          <div className="flex justify-between w-full mt-2 md:mt-6 sm:justify-center sm:gap-x-12">
             <div className="bg-primary-light px-8 pt-2 pb-4 flex flex-col items-center">
-              <MedicineBadge />
-              <span className="text-[0.625rem] text-secondary">
+              <MedicineBadge size={84} />
+              <span className="text-[0.625rem] text-secondary md:text-xl">
                 Medicine Delivery
               </span>
             </div>
             <div className="bg-primary-light px-8 pt-2 pb-4 flex flex-col items-center">
-              <DoctorBadge />
-              <span className="text-[0.625rem] text-secondary">
+              <DoctorBadge size={84} />
+              <span className="text-[0.625rem] text-secondary md:text-xl">
                 Doctor Consultation
               </span>
             </div>
           </div>
         </div>
         <div className="mt-6">
-          <CategoriesSection />
+          <div className="mt-2 md:mt-16">
+            <CategoriesSection />
+          </div>
         </div>
-        <div className="mt-6">
+        <div className="mt-6 md:mt-16">
           <div className="flex items-center justify-between">
-            <span className="font-poppins font-semibold text-dark">
+            <span className="font-poppins font-semibold text-dark sm:text-xl">
               Most Bought Products
             </span>
-            <Link className="text-primary-dark text-xs" href="/meds">
+            <Link className="text-primary-dark text-sm sm:text-lg" href="/meds">
               See All
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 my-4">
-            {Array.from({ length: 6 }).map((val, idx) => (
+          <div className="grid gap-3 sm:gap-4 mt-2 mb-4 md:gap-6 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))]">
+            {Array.from({ length: 10 }).map((val, idx) => (
               <ProductCard key={idx} />
             ))}
           </div>

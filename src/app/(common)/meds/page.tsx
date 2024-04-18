@@ -5,11 +5,11 @@ import React from 'react';
 
 const Meds = () => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col">
       <CategoriesSection />
       <ProductsSection title="Vitamin C" seeAllUrl="/meds/category/1" />
       <ProductsSection title="Obat Sakit Kepala" seeAllUrl="/meds/category/2" />
-      <Button className="w-full mb-6" variant="outlined-primary">
+      <Button className="w-full my-6" variant="outlined-primary">
         Load More
       </Button>
     </div>

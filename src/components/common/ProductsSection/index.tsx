@@ -9,15 +9,17 @@ type ProductsSectionProps = {
 
 const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
   return (
-    <section>
+    <section className="mt-6 md:mt-16">
       <div className="flex items-center justify-between items-center">
-        <span className="font-poppins font-semibold text-dark">{title}</span>
-        <Link className="text-primary-dark text-sm" href={seeAllUrl}>
+        <span className="font-poppins font-semibold text-dark sm:text-xl">
+          {title}
+        </span>
+        <Link className="text-primary-dark text-sm sm:text-lg" href={seeAllUrl}>
           See All
         </Link>
       </div>
       <div className="overflow-x-auto">
-        <div className="grid grid-cols-6 min-w-max gap-4 mt-2">
+        <div className="grid grid-cols-6 min-w-max gap-4 mt-2 md:mt-4">
           {Array.from({ length: 6 }).map((val, idx) => (
             <ProductCard key={idx} />
           ))}
