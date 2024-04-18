@@ -11,7 +11,7 @@ const Meds = () => {
       <ProductsSection title="Obat Sakit Kepala" seeAllUrl="/meds/category/2" />
       <div className="w-full flex justify-center mt-2 md:mt-10">
         <Button
-          className="w-full md:max-w-[300px] my-6"
+          className="w-full md:max-w-[300px] my-6 md:text-lg"
           variant="outlined-primary"
         >
           Load More
