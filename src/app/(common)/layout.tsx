@@ -17,7 +17,7 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
         .
       </div>
       <Navbar />
-      {children}
+      <div className="max-w-[1440px] w-full m-auto">{children}</div>
       <SehatinBanner />
       <Footer />
       <BottomNavigation />
