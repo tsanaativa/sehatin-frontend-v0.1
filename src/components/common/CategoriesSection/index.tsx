@@ -13,11 +13,11 @@ const CategoriesSection = () => {
   return (
     <section>
       <div className="flex items-center justify-between">
-        <span className="font-poppins font-semibold text-dark sm:text-xl">
+        <span className="font-poppins font-semibold text-dark sm:text-2xl">
           Categories
         </span>
         <Link
-          className="text-primary-dark text-sm sm:text-lg"
+          className="text-primary-dark text-sm sm:text-xl"
           href="/meds/category"
         >
           See All

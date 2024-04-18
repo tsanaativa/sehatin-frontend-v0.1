@@ -52,12 +52,12 @@ const Home = () => {
           />
         </div>
       </Carousel>
-      <section className="bg-light w-full -mt-2 z-20 py-4 md:py-16 px-4 rounded-tl-lg rounded-tr-lg md:top-0 md:rounded-tl-none md:rounded-tr-none sm:px-6 md:mt-0 md:px-44">
+      <section className="bg-light w-full -mt-2 z-20 py-4 md:py-10 px-4 rounded-tl-lg rounded-tr-lg md:top-0 md:rounded-tl-none md:rounded-tr-none sm:px-6 md:mt-0 md:px-44">
         <div className="flex flex-col items-center">
-          <span className="font-poppins font-semibold text-dark sm:text-xl">
+          <span className="font-poppins font-semibold text-dark sm:text-2xl">
             Our Services
           </span>
-          <div className="flex justify-between w-full mt-2 md:mt-6 sm:justify-center sm:gap-x-12">
+          <div className="flex justify-between w-full mt-2 md:mt-4 sm:justify-center sm:gap-x-12">
             <div className="bg-primary-light px-8 pt-2 pb-4 flex flex-col items-center">
               <MedicineBadge size={84} />
               <span className="text-[0.625rem] text-secondary md:text-xl">
@@ -79,14 +79,14 @@ const Home = () => {
         </div>
         <div className="mt-6 md:mt-16">
           <div className="flex items-center justify-between">
-            <span className="font-poppins font-semibold text-dark sm:text-xl">
+            <span className="font-poppins font-semibold text-dark sm:text-2xl">
               Most Bought Products
             </span>
-            <Link className="text-primary-dark text-sm sm:text-lg" href="/meds">
+            <Link className="text-primary-dark text-sm sm:text-xl" href="/meds">
               See All
             </Link>
           </div>
-          <div className="grid gap-3 sm:gap-4 mt-2 mb-4 md:gap-6 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))]">
+          <div className="grid gap-3 sm:gap-4 mt-2 md:mt-4 mb-4 md:gap-6 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))]">
             {Array.from({ length: 10 }).map((val, idx) => (
               <ProductCard key={idx} />
             ))}

@@ -9,9 +9,14 @@ const Meds = () => {
       <CategoriesSection />
       <ProductsSection title="Vitamin C" seeAllUrl="/meds/category/1" />
       <ProductsSection title="Obat Sakit Kepala" seeAllUrl="/meds/category/2" />
-      <Button className="w-full my-6" variant="outlined-primary">
-        Load More
-      </Button>
+      <div className="w-full flex justify-center mt-2 md:mt-10">
+        <Button
+          className="w-full md:max-w-[300px] my-6"
+          variant="outlined-primary"
+        >
+          Load More
+        </Button>
+      </div>
     </div>
   );
 };
