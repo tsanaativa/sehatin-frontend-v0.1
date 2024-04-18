@@ -14,7 +14,7 @@ const PaginationButton = ({
   return (
     <button
       {...paginationButtonProps}
-      className={`bg-light text-dark-gray ${active && 'bg-primary text-light'} ${disabled && 'bg-gray-lighter'} w-10 h-10 flex items-center justify-center rounded`}
+      className={`text-dark-gray ${active && 'bg-primary text-light'} ${disabled ? 'bg-gray-lighter' : 'bg-light'} w-10 h-10 flex items-center justify-center rounded`}
     >
       {children}
     </button>
