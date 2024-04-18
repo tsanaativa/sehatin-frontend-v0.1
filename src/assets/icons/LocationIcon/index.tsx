@@ -1,10 +1,16 @@
 import React from 'react';
 
-const LocationIcon = () => {
+type LocationIconProps = {
+  width?: number;
+  height?: number;
+};
+
+const LocationIcon = ({ width = 20, height = 25 }: LocationIconProps) => {
   return (
     <svg
-      width="20"
-      height="25"
+      width={width}
+      height={height}
+      preserveAspectRatio="xMidYMid meet"
       viewBox="0 0 20 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
