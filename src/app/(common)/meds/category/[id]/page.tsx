@@ -6,21 +6,6 @@ import Link from 'next/link';
 import React from 'react';
 
 const ProductsByCategory = () => {
-  const dummyProducts = [
-    {
-      id: 1,
-      name: 'Vitamin C',
-    },
-    {
-      id: 1,
-      name: 'Vitamin C',
-    },
-    {
-      id: 1,
-      name: 'Vitamin C',
-    },
-  ];
-
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -31,9 +16,9 @@ const ProductsByCategory = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4 bg-light rounded-lg mt-4">
-        {dummyProducts.map((product, idx) => {
+        {Array.from({ length: 6 }).map((product, idx) => {
           return (
-            <Link key={idx} href={`meds/product/${product.id}`}>
+            <Link key={idx} href={`meds/product/1`}>
               <ProductCard />
             </Link>
           );

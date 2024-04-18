@@ -1,5 +1,6 @@
 import AddressCard from '@/features/meds/components/AddressCard';
 import SearchBar from '@/features/meds/components/SearchBar';
+import React from 'react';
 
 const MedsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
