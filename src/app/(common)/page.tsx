@@ -154,7 +154,9 @@ const Home = () => {
           </div>
           <div className="grid gap-3 sm:gap-4 my-4 md:gap-6 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))]">
             {Array.from({ length: 10 }).map((val, idx) => (
-              <ProductCard key={idx} />
+              <Link key={idx} href="/meds/panadol-obat-pusing-1">
+                <ProductCard />
+              </Link>
             ))}
           </div>
         </div>
