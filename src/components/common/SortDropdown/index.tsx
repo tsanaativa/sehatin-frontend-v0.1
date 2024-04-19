@@ -27,25 +27,35 @@ const SortDropdown = () => {
     <div className="relative">
       <Button
         variant="primary-light"
-        className="flex justify-between items-center gap-2 p-2 text-xs"
+        className="flex justify-between items-center gap-2 p-2 md:px-3 text-xs md:text-sm"
         onClick={show}
       >
         Sort by
-        <ChevronDown size={15} />
+        <div className="md:hidden">
+          <ChevronDown size={15} />
+        </div>
+        <div className="hidden md:block">
+          <ChevronDown size={20} />
+        </div>
       </Button>
       <div
-        className={`px-3 py-1 mt-1 min-w-20 absolute right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
+        className={`mt-1 min-w-20 absolute right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
         ref={ref}
       >
         <div className="flex flex-col text-dark-gray">
           <label
             htmlFor="distance"
-            className="text-xs flex gap-2 flex items-center"
+            className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs md:text-sm flex gap-2 flex items-center cursor-pointer"
           >
             <span
               className={`${sortBy === 'distance' ? 'visible' : 'invisible'}`}
             >
-              <CheckIcon width={12} />
+              <div className="md:hidden">
+                <CheckIcon size={12} />
+              </div>
+              <div className="hidden md:block">
+                <CheckIcon size={15} />
+              </div>
             </span>
             <input
               id="distance"
@@ -59,10 +69,15 @@ const SortDropdown = () => {
           </label>
           <label
             htmlFor="price"
-            className="text-xs flex gap-2 flex items-center"
+            className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs md:text-sm flex gap-2 flex items-center cursor-pointer"
           >
             <span className={`${sortBy === 'price' ? 'visible' : 'invisible'}`}>
-              <CheckIcon width={12} />
+              <div className="md:hidden">
+                <CheckIcon size={12} />
+              </div>
+              <div className="hidden md:block">
+                <CheckIcon size={15} />
+              </div>
             </span>
             <input
               id="price"
