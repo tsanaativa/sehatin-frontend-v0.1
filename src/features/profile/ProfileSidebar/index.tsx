@@ -33,19 +33,21 @@ const ProfileSidebar = () => {
   };
   return (
     <div>
-      <ul className="min-w-[240px] border border-gray-light rounded-lg">
+      <ul className="min-w-[250px] border border-gray-light rounded-lg">
         <li>
-          <div className="flex gap-4 p-4">
+          <div className="flex gap-3 p-4">
             <Image
-              width={40}
+              width={43}
               src={DefaultAvatarImg}
-              className=""
+              className="rounded-full"
               priority
               alt="Profile"
             />
             <div>
-              <p className="font-semibold">{user.name}</p>
-              <p className="text-sm text-dark-gray">{user.email}</p>
+              <p className="font-semibold line-clamp-1">{user.name}</p>
+              <p className="text-sm text-dark-gray line-clamp-1">
+                {user.email}
+              </p>
             </div>
           </div>
         </li>
