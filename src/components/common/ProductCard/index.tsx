@@ -1,6 +1,6 @@
 import { Plus } from 'lucide-react';
-import { Button } from '..';
 import Image from 'next/image';
+import { Button } from '..';
 
 const ProductCard = () => {
   return (
@@ -22,10 +22,7 @@ const ProductCard = () => {
           </span>
           <span className="font-bold text-secondary md:text-sm">Rp 15.990</span>
         </div>
-        <Button
-          className="flex items-center justify-center gap-x-1 w-full text-[0.625rem] mt-4"
-          variant="primary"
-        >
+        <Button className="flex items-center justify-center gap-x-1 w-full text-[0.625rem] mt-4">
           <Plus size={14} /> Add to Cart
         </Button>
       </div>
