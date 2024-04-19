@@ -6,7 +6,7 @@ import { Product } from '@/types/Product';
 const ProductCard = () => {
   const dummyProduct: Product = {
     id: 1,
-    name: 'Panadol Extra 10 Kaplet',
+    name: 'Panadol Extra 10 Kaplet 2 box bla',
     selling_unit: 'Box',
     price: 15990,
     generic_name: 'Paracetamol',
@@ -23,8 +23,8 @@ const ProductCard = () => {
         alt=""
       />
       <div className="pt-2 pb-3 px-2 md:px-3">
-        <div className="min-h-[48px]">
-          <span className="font-poppins font-medium text-dark md:text-sm lg:text-base line-clamp-2">
+        <div className="min-h-[40px]">
+          <span className="font-poppins font-medium text-dark md:text-sm line-clamp-2">
             {dummyProduct.name}
           </span>
         </div>

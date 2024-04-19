@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Navbar = () => {
   return (
-    <header className="sticky top-0 z-20 bg-light border-b-2 border-b-gray-lighter">
+    <header className="sticky top-0 z-40 bg-light border-b-2 border-b-gray-lighter">
       <nav className="max-w-[1440px] w-full m-auto px-4 py-4 flex items-center justify-between sm:px-6 md:px-20">
         <div className="md:hidden">
           <AlignLeft size={28} className="cursor-pointer" />
