@@ -10,7 +10,7 @@ const Navbar = () => {
           <AlignLeft size={28} className="cursor-pointer" />
         </div>
         <Sehatin />
-        <div className="flex">
+        <div className="flex items-center">
           <ul className="hidden items-center gap-x-10 md:flex">
             <li>
               <Link
@@ -38,7 +38,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                className="bg-primary-dark border-2 border-primary-dark font-poppins rounded-md font-medium text-light block text-center w-32 py-2"
+                className="bg-primary-dark border-2 border-primary-dark hover:bg-primary-dark/80 font-poppins rounded-md font-medium text-light block text-center w-32 py-2"
                 href="/login"
               >
                 Login
