@@ -5,7 +5,7 @@ import React from 'react';
 
 const MedsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="bg-primary-dark bg-gradient-to-r from-slate-900/0 to-primary">
+    <div className="bg-primary-dark bg-gradient-to-r from-slate-900/0 to-primary w-full">
       <div className="flex justify-center px-6">
         <div className="py-4 md:py-7 relative flex flex-col gap-4 text-sm w-full px-4 sm:px-6 max-w-[1150px]">
           <PageHeader>

@@ -3,7 +3,11 @@ import { Button } from '..';
 import Image from 'next/image';
 import { Product } from '@/types/Product';
 
-const ProductCard = () => {
+type ProductCardProps = {
+  width?: string;
+};
+
+const ProductCard = ({ width }: ProductCardProps) => {
   const dummyProduct: Product = {
     id: 1,
     name: 'Panadol Extra 10 Kaplet 2 box bla',
@@ -14,7 +18,9 @@ const ProductCard = () => {
       'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   };
   return (
-    <div className="border-2 border-primary-border rounded-lg md:w-full">
+    <div
+      className={`border-2 border-primary-border rounded-lg md:w-full ${width}`}
+    >
       <Image
         src={dummyProduct.image}
         className="w-full h-24 object-cover rounded-tl-lg rounded-tr-lg"

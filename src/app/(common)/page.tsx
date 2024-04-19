@@ -11,7 +11,7 @@ import CategoriesSection from '@/components/common/CategoriesSection';
 const Home = () => {
   return (
     <main className="w-full">
-      <div className="bg-primary flex justify-center">
+      <div className="bg-primary flex justify-center lg:px-24">
         <div className="max-w-[1440px]">
           <Carousel autoSlide autoSlideInterval={5000}>
             <div className="min-w-full relative">
