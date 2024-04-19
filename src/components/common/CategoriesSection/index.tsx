@@ -6,6 +6,8 @@ import {
   SupplementBadge,
   VitaminBadge,
 } from '@/assets/icons';
+import ChildBadge from '@/assets/icons/ChildBadge';
+import PregnantBadge from '@/assets/icons/PregnantBadge';
 import Link from 'next/link';
 import React from 'react';
 
@@ -59,6 +61,18 @@ const CategoriesSection = () => {
             <SoreThroatBadge />
           </div>
           <span>Obat Sakit Tenggorokan</span>
+        </div>
+        <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
+          <div className="min-w-fit">
+            <ChildBadge />
+          </div>
+          <span>Vitamin Anak</span>
+        </div>
+        <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
+          <div className="min-w-fit">
+            <PregnantBadge />
+          </div>
+          <span>Vitamin Ibu Hamil</span>
         </div>
       </div>
     </section>

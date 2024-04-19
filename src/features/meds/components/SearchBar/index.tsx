@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/common';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
@@ -16,16 +17,19 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="w-full bg-light rounded-lg flex items-center">
-      <div className="text-gray px-3">
-        <Search size={20} />
+    <div className="flex gap-4">
+      <div className="w-full bg-light rounded-lg flex items-center md:text-base">
+        <div className="text-gray px-3">
+          <Search size={20} />
+        </div>
+        <input
+          ref={searchBarRef}
+          className="w-full py-3 outline-none border-0 rounded-lg"
+          placeholder="Search..."
+          onKeyUp={handleKeyUp}
+        />
       </div>
-      <input
-        ref={searchBarRef}
-        className="w-full py-3 outline-none border-0 rounded-lg"
-        placeholder="Search..."
-        onKeyUp={handleKeyUp}
-      />
+      <Button className="w-32 text-base h-full hidden md:block">Search</Button>
     </div>
   );
 };

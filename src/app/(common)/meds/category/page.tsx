@@ -25,7 +25,7 @@ const Category = () => {
       <div className="bg-light rounded-lg border border-gray-light mt-3">
         {dummyCategories.map((category, idx) => {
           return (
-            <Link key={idx} href={`/meds/category/${category.id}`}>
+            <Link key={idx} href={`/meds/search?categoryId=${category.id}`}>
               <div
                 key={idx}
                 className={`${idx + 1 !== dummyCategories.length && 'border-b'} border-gray-light px-3 py-2`}

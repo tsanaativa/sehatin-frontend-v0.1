@@ -99,7 +99,7 @@ const AddressCard = () => {
         className="text-primary-dark bg-primary-light border border-primary-border rounded-lg py-2 ps-3 pe-2 flex items-center justify-between cursor-pointer gap-2"
         onClick={show}
       >
-        <div className="flex gap-3 items-center max-w-full truncate">
+        <div className="flex gap-5 items-center max-w-full truncate">
           <div className="max-w-1">
             <LocationIcon width={12} />
           </div>

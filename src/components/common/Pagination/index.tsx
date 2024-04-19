@@ -4,7 +4,7 @@ import PaginationButton from './PaginationButton';
 
 const Pagination = () => {
   return (
-    <div className="flex justify-center gap-2 w-full">
+    <div className="flex justify-center gap-2 md:gap-3 w-full">
       <PaginationButton disabled>
         <ChevronLeft />
       </PaginationButton>
