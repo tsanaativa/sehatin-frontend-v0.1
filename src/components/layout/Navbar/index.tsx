@@ -10,7 +10,9 @@ const Navbar = () => {
         <div className="md:hidden">
           <AlignLeft size={28} className="cursor-pointer" />
         </div>
-        <Sehatin />
+        <Link href="/">
+          <Sehatin />
+        </Link>
         <div className="flex items-center">
           <ul className="hidden items-center gap-x-10 md:flex">
             <li>
