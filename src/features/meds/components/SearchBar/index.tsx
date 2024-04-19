@@ -10,10 +10,14 @@ const SearchBar = () => {
   const searchBarRef = useRef<HTMLInputElement>(null);
 
   function handleKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
-    let value = searchBarRef.current?.value;
     if (e.key === 'Enter') {
-      router.push(`/meds/search?keyword=${value}`);
+      search();
     }
+  }
+
+  function search() {
+    let value = searchBarRef.current?.value;
+    router.push(`/meds/search?keyword=${value}`);
   }
 
   return (
@@ -29,7 +33,12 @@ const SearchBar = () => {
           onKeyUp={handleKeyUp}
         />
       </div>
-      <Button className="w-32 text-base h-full hidden md:block">Search</Button>
+      <Button
+        className="w-32 text-base h-full hidden md:block"
+        onClick={search}
+      >
+        Search
+      </Button>
     </div>
   );
 };
