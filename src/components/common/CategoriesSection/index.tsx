@@ -15,7 +15,7 @@ const CategoriesSection = () => {
   return (
     <section>
       <div className="flex items-center justify-between">
-        <span className="font-poppins font-semibold text-dark sm:text-2xl">
+        <span className="font-poppins font-semibold text-dark md:text-2xl">
           Categories
         </span>
         <Link

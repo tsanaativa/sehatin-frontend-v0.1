@@ -54,7 +54,7 @@ const Home = () => {
       </Carousel>
       <section className="bg-light w-full -mt-2 z-20 py-4 md:py-10 px-4 rounded-tl-lg rounded-tr-lg md:top-0 md:rounded-tl-none md:rounded-tr-none sm:px-6 md:mt-0 md:px-44">
         <div className="flex flex-col items-center">
-          <span className="font-poppins font-semibold text-dark sm:text-2xl">
+          <span className="font-poppins font-semibold text-dark md:text-2xl">
             Our Services
           </span>
           <div className="flex justify-between w-full mt-2 md:mt-4 sm:justify-center sm:gap-x-12">
@@ -79,7 +79,7 @@ const Home = () => {
         </div>
         <div className="mt-6 md:mt-16">
           <div className="flex items-center justify-between">
-            <span className="font-poppins font-semibold text-dark sm:text-2xl">
+            <span className="font-poppins font-semibold text-dark md:text-2xl">
               Most Bought Products
             </span>
             <Link className="text-primary-dark text-sm sm:text-xl" href="/meds">

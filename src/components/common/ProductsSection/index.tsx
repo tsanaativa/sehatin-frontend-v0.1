@@ -11,7 +11,7 @@ const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
   return (
     <section className="mt-6 md:mt-16">
       <div className="flex items-center justify-between items-center">
-        <span className="font-poppins font-semibold text-dark sm:text-2xl">
+        <span className="font-poppins font-semibold text-dark md:text-2xl">
           {title}
         </span>
         <Link className="text-primary-dark text-sm sm:text-xl" href={seeAllUrl}>
