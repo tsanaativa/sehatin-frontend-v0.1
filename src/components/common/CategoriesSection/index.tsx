@@ -25,54 +25,54 @@ const CategoriesSection = () => {
           See All
         </Link>
       </div>
-      <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto mt-2 md:mt-4 md:gap-x-8">
+      <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto mt-2 md:mt-4 md:gap-x-8 md:text-lg">
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <VitaminBadge />
           </div>
-          <span>Vitamin C</span>
+          <span className="line-clamp-2">Vitamin C</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <HeadacheBadge />
           </div>
-          <span>Obat Sakit Kepala</span>
+          <span className="line-clamp-2">Obat Sakit Kepala</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <SupplementBadge />
           </div>
-          <span>Suplemen Daya Tahan</span>
+          <span className="line-clamp-2">Suplemen Daya Tahan</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <FeverBadge />
           </div>
-          <span>Obat Demam</span>
+          <span className="line-clamp-2">Obat Demam</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <CoughBadge />
           </div>
-          <span>Obat Batuk</span>
+          <span className="line-clamp-2">Obat Batuk</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <SoreThroatBadge />
           </div>
-          <span>Obat Sakit Tenggorokan</span>
+          <span className="line-clamp-2">Obat Sakit Tenggorokan</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <ChildBadge />
           </div>
-          <span>Vitamin Anak</span>
+          <span className="line-clamp-2">Vitamin Anak</span>
         </div>
         <div className="bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
           <div className="min-w-fit">
             <PregnantBadge />
           </div>
-          <span>Vitamin Ibu Hamil</span>
+          <span className="line-clamp-2">Vitamin Ibu Hamil</span>
         </div>
       </div>
     </section>

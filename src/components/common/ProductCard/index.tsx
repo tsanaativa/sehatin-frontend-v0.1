@@ -6,7 +6,7 @@ import { Product } from '@/types/Product';
 const ProductCard = () => {
   const dummyProduct: Product = {
     id: 1,
-    name: 'Panadol Obat Pusing Agggg dad sadsad sas',
+    name: 'Panadol Extra 10 Kaplet',
     selling_unit: 'Box',
     price: 15990,
     generic_name: 'Paracetamol',
