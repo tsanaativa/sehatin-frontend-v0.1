@@ -29,7 +29,7 @@ const PageHeader = ({ title, children }: PageHeaderProps) => {
       />
       {currentPath === 'meds' && (
         <div className="flex justify-between items-center md:my-2">
-          <h1 className="text-light text-3xl font-bold mt-2 hidden md:block">
+          <h1 className="text-light text-3xl font-semibold font-poppins mt-2 hidden md:block">
             {title ? title : `${getPageName(currentPath)}`}
           </h1>
           {children}

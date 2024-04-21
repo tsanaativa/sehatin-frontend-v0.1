@@ -1,5 +1,4 @@
 import { BadgeCheckIcon, Sehatin } from '@/assets/icons';
-import SehatinBannerImg from '@/assets/images/sehatin-banner.png';
 import SehatinBannerDesktopImg from '@/assets/images/sehatin-banner-desktop.svg';
 import Image from 'next/image';
 
@@ -17,16 +16,16 @@ const SehatinBanner = () => {
                 Doctor Consultation
               </span>
               <ul className="flex flex-col gap-y-1 mt-1">
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> Accurate diagnosis
                 </li>
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> Appropriate medical advice
                 </li>
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> Medical certificate
                 </li>
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> Prescription
                 </li>
               </ul>
@@ -36,13 +35,13 @@ const SehatinBanner = () => {
                 Medicine Delivery
               </span>
               <ul className="flex flex-col gap-y-1 mt-1">
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> Fast delivery
                 </li>
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> Convenient
                 </li>
-                <li className="flex items-center gap-x-2 text-xs md:text-sm lg:text-base text-secondary">
+                <li className="flex items-center gap-x-2 text-xs text-secondary md:text-sm lg:text-base">
                   <BadgeCheckIcon /> From the nearest pharmacy
                 </li>
               </ul>
@@ -52,7 +51,7 @@ const SehatinBanner = () => {
         <div className="absolute inset-0 sm:right-6 md:right-20">
           <Image
             src={SehatinBannerDesktopImg}
-            className="w-[60vw] md:w-fit object-contain absolute right-0 bottom-0 sm:w-fit md:max-h-[300px] md:-me-12 lg:me-0 sm:h-full"
+            className="w-[60vw] object-contain absolute right-0 bottom-0 sm:w-fit md:max-h-[300px] md:-me-12 lg:me-0 sm:h-full md:w-fit"
             priority
             alt="Sehatin Banner"
           />

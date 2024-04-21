@@ -11,7 +11,7 @@ import CategoriesSection from '@/components/common/CategoriesSection';
 const Home = () => {
   return (
     <main className="w-full">
-      <div className="bg-primary flex justify-center lg:px-24">
+      <div className="bg-primary-dark flex justify-center lg:px-24">
         <div className="max-w-[1440px]">
           <Carousel autoSlide autoSlideInterval={5000}>
             <div className="min-w-full relative">
@@ -27,7 +27,7 @@ const Home = () => {
                   diagnosis and medical advice. Get your medical certificates
                   and digital prescription.
                 </p>
-                <div className="mt-6">
+                <div className="mt-6 hidden md:block">
                   <Link href="/doctors">
                     <Button className="px-4 min-w-[9rem] text-lg">
                       Consult Now
@@ -64,7 +64,7 @@ const Home = () => {
                   Add medicines of your choice to cart or click on your digital
                   prescription and place order. Get your medicines delivered.
                 </p>
-                <div className="mt-6">
+                <div className="mt-6 hidden md:block">
                   <Link href="/meds">
                     <Button className="px-4 min-w-[9rem] text-lg">
                       Order Now
@@ -93,21 +93,21 @@ const Home = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="bg-light w-full -mt-2 z-20 py-4 md:py-10 px-4 rounded-tl-lg rounded-tr-lg md:top-0 md:rounded-tl-none md:rounded-tr-none sm:px-6 md:mt-0 max-w-[1150px]">
+        <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
           <section className="flex flex-col items-center">
             <span className="font-poppins font-semibold text-dark md:text-2xl">
               Our Services
             </span>
-            <div className="flex justify-between w-full mt-2 md:mt-4 sm:justify-center sm:gap-x-8">
+            <div className="flex justify-between w-full mt-2 sm:justify-center sm:gap-x-8 md:mt-4">
               <div className="bg-primary-light px-8 p-4 flex flex-col items-center">
                 <MedicineBadge size={70} />
-                <span className="text-[0.625rem] text-secondary md:text-lg mt-2 font-medium">
+                <span className="text-[0.625rem] text-secondary mt-2 font-medium md:text-lg">
                   Medicine Delivery
                 </span>
               </div>
               <div className="bg-primary-light px-8 p-4 flex flex-col items-center">
                 <DoctorBadge size={70} />
-                <span className="text-[0.625rem] text-secondary md:text-lg mt-2 font-medium">
+                <span className="text-[0.625rem] text-secondary mt-2 font-medium md:text-lg">
                   Doctor Consultation
                 </span>
               </div>
@@ -130,7 +130,7 @@ const Home = () => {
                 See All
               </Link>
             </div>
-            <div className="grid gap-3 sm:gap-4 mt-2 md:mt-4 mb-4 md:gap-6 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))]">
+            <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
               {Array.from({ length: 10 }).map((val, idx) => (
                 <ProductCard key={idx} />
               ))}

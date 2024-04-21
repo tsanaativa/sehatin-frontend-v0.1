@@ -1,7 +1,4 @@
-// 'use client';
-
 import React, { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getPageName } from '@/utils/pageHeader';
 
@@ -25,7 +22,7 @@ const Breadcrumb = ({
   activeClasses,
 }: BreadcrumbProps) => {
   return (
-    <div className="hidden md:block -mt-2">
+    <div className="hidden -mt-2 md:block">
       <ul className={containerClasses}>
         <li className={listClasses}>
           <Link href={'/'}>{homeElement}</Link>
