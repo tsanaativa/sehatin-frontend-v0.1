@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
-import { Button } from '..';
 import Image from 'next/image';
 import { Product } from '@/types/Product';
+import { Button } from '..';
 
 type ProductCardProps = {
   width?: string;

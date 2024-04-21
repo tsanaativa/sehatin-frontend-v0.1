@@ -6,3 +6,5 @@ export { default as ProductsSection } from './ProductsSection';
 export { default as SortDropdown } from './SortDropdown';
 export { default as FilterDropdown } from './FilterDropdown';
 export { default as Pagination } from './Pagination';
+export { default as Counter } from './Counter';
+export { default as Icon } from './Icon';
