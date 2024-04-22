@@ -2,25 +2,23 @@
 
 import React from 'react';
 import Breadcrumb from './Breadcrumb';
-import { getPageName } from '@/utils/pageHeader';
+import { getPageName, getPathNames } from '@/utils/pageHeader';
 import { usePathname } from 'next/navigation';
 
-type PageHeaderProps = {
+type PageNavProps = {
   title?: string;
 } & React.ComponentPropsWithoutRef<'div'>;
 
-const PageHeader = ({ title, children }: PageHeaderProps) => {
+const PageNav = ({ title, children }: PageNavProps) => {
   const paths = usePathname();
-  const pathNames = paths.split('/').filter((path) => {
-    return !!path;
-  });
-  const currentPath = pathNames[pathNames.length - 1];
+  const pathnames = getPathNames(paths);
+  const currentPath = pathnames[pathnames.length - 1];
 
   return (
     <div className={`${currentPath !== 'meds' && 'hidden md:block'}`}>
       <Breadcrumb
         paths={paths}
-        pathNames={pathNames}
+        pathnames={pathnames}
         homeElement={'Home'}
         separator={<span className="font-normal"> &gt; </span>}
         activeClasses="font-normal hover:no-underline"
@@ -39,4 +37,4 @@ const PageHeader = ({ title, children }: PageHeaderProps) => {
   );
 };
 
-export default PageHeader;
+export default PageNav;
