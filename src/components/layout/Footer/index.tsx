@@ -9,45 +9,41 @@ import {
 const Footer = () => {
   return (
     <div className="bg-primary-darker text-light">
-      <div className="max-w-[1440px] w-full m-auto px-4 pt-5 pb-24 sm:px-6 md:px-20 md:pt-16">
-        <div className="w-full flex flex-wrap md:flex-nowrap md:gap-x-72">
-          <div>
+      <div className="lg:max-w-[1440px] w-full m-auto px-4 pt-5 pb-28 md:pb-10 sm:px-6 md:px-20 md:pt-9">
+        <div className="w-full flex justify-between flex-wrap md:flex-nowrap gap-5">
+          <div className="md:max-w-[400px] lg:max-w-[500px]">
             <SehatinWhite />
-            <p className="text-xs mt-3 sm:text-base md:text-lg">
-              Layanan kesehatan digital yang memfasilitasi konsultasi dan
-              pengobatan medis jarak jauh sekaligus memfasilitasi pasien untuk
-              memesan dan membeli obat secara online dengan mudah dan cepat.
+            <p className="text-sm mt-3 sm:text-base lg:text-lg">
+              A digital healthcare solution that facilitates remote medical
+              consultations, while also offering a convenient service for
+              patients to order and purchase prescription medications online.
             </p>
           </div>
-          <div className="w-full flex justify-between mt-10 md:mt-0">
+          <div className="w-full lg:max-w-[500px] flex justify-between gap-4 md:mt-0">
             <div>
-              <span className="font-poppins font-semibold sm:text-lg md:text-xl">
-                Pesan Antar Obat
+              <span className="font-poppins font-semibold sm:text-lg lg:text-xl">
+                Medicine Delivery
               </span>
               <ul className="grid grid-cols-1 gap-y-1 mt-2">
-                <li className="text-xs sm:text-base md:text-lg">
-                  Kategori Obat
+                <li className="text-sm sm:text-base md:text-lg">Medicines</li>
+                <li className="text-sm sm:text-base md:text-lg">
+                  Medicine Category
                 </li>
-                <li className="text-xs sm:text-base md:text-lg">Cari Obat</li>
-                <li className="text-xs sm:text-base md:text-lg">
-                  Keranjang Saya
-                </li>
-                <li className="text-xs sm:text-base md:text-lg">
-                  Pesanan Saya
-                </li>
+                <li className="text-sm sm:text-base md:text-lg">My Cart</li>
+                <li className="text-sm sm:text-base md:text-lg">My Orders</li>
               </ul>
             </div>
             <div>
-              <span className="font-poppins font-semibold sm:text-lg md:text-xl">
-                Konsultasi Doktor
+              <span className="font-poppins font-semibold sm:text-lg lg:text-xl">
+                Doctor Consultation
               </span>
               <ul className="grid grid-cols-1 gap-y-1 mt-2">
-                <li className="text-xs sm:text-base md:text-lg">
-                  Spesialis Doktor
+                <li className="text-sm sm:text-base md:text-lg">Doctors</li>
+                <li className="text-sm sm:text-base md:text-lg">
+                  Doctor Spesialist
                 </li>
-                <li className="text-xs sm:text-base md:text-lg">Cari Doktor</li>
-                <li className="text-xs sm:text-base md:text-lg">
-                  Riwayat Konsultasi Saya
+                <li className="text-sm sm:text-base md:text-lg">
+                  My Consultation History
                 </li>
               </ul>
             </div>
@@ -55,7 +51,7 @@ const Footer = () => {
         </div>
         <div className="mt-6 md:mt-7">
           <span className="font-poppins font-semibold sm:text-lg md:hidden">
-            Media Sosial
+            Follow Us
           </span>
           <div className="flex gap-x-6 mt-2">
             <FacebookIcon />

@@ -32,3 +32,9 @@ export const MENUS: MENU_TYPE[] = [
     icon: 'UserRound',
   },
 ];
+
+export const MEDS_PATHS_MAP = {
+  meds: 'Medicines',
+  category: 'Category',
+  search: 'Search',
+};

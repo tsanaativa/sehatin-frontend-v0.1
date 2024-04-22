@@ -15,3 +15,4 @@ export { default as CoughBadge } from './CoughBadge';
 export { default as SoreThroatBadge } from './SoreThroatBadge';
 export { default as ChildrensVitaminsBadge } from './ChildrensVitaminsBadge';
 export { default as MothersVitaminsBadge } from './MothersVitaminsBadge';
+export { default as LocationIcon } from './LocationIcon';
