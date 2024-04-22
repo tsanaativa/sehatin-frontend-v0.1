@@ -1,3 +1,4 @@
+import { Button } from '@/components/common';
 import AddressCard from '@/components/common/AddressCard';
 import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import React from 'react';
@@ -10,6 +11,11 @@ const MyAddresses = () => {
         {DUMMY_ADDRESSES.map((addr, idx) => {
           return <AddressCard address={addr} key={idx} />;
         })}
+      </div>
+      <div className="flex justify-end mt-5">
+        <Button variant="outlined-primary" className="w-fit px-5">
+          + Add Address
+        </Button>
       </div>
     </div>
   );

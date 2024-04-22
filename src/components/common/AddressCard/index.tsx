@@ -18,13 +18,19 @@ const AddressCard = ({ address }: AddressCardProps) => {
             <LocationIcon width={12} />
           </div>
           <div className="flex flex-col gap-2">
-            <p className="max-h-10 mt-[0.09rem]">
+            <p className="max-h-10 mt-[0.06rem]">
               {address && formatAddress(address)}
             </p>
             {(address.is_active || address.is_main) && (
               <div className="flex gap-2">
-                {address.is_active && <Badge variant="gray">Selected</Badge>}
-                {address.is_main && <Badge>Main</Badge>}
+                {address.is_active && (
+                  <Badge className="min-w-[5rem]" variant="success">
+                    Selected
+                  </Badge>
+                )}
+                {address.is_main && (
+                  <Badge className=" min-w-[5rem]">Main</Badge>
+                )}
               </div>
             )}
           </div>
