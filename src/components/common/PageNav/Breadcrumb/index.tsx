@@ -4,7 +4,7 @@ import { getPageName } from '@/utils/pageHeader';
 
 type BreadcrumbProps = {
   paths: string;
-  pathNames: string[];
+  pathnames: string[];
   homeElement: ReactNode;
   separator: ReactNode;
   containerClasses?: string;
@@ -14,7 +14,7 @@ type BreadcrumbProps = {
 
 const Breadcrumb = ({
   paths,
-  pathNames,
+  pathnames,
   homeElement,
   separator,
   containerClasses,
@@ -27,15 +27,15 @@ const Breadcrumb = ({
         <li className={listClasses}>
           <Link href={'/'}>{homeElement}</Link>
         </li>
-        {pathNames.length > 0 && separator}
-        {pathNames.map((link, index) => {
-          let href = `/${pathNames.slice(0, index + 1).join('/')}`;
+        {pathnames.length > 0 && separator}
+        {pathnames.map((link, index) => {
+          let href = `/${pathnames.slice(0, index + 1).join('/')}`;
           let itemClasses =
             paths === href ? `${listClasses} ${activeClasses}` : listClasses;
           return (
             <React.Fragment key={index}>
               <li className={itemClasses}>
-                {pathNames.length !== index + 1 ? (
+                {pathnames.length !== index + 1 ? (
                   <Link href={href} className="hover:underline">
                     {getPageName(link)}
                   </Link>
@@ -43,7 +43,7 @@ const Breadcrumb = ({
                   `${getPageName(link)}`
                 )}
               </li>
-              {pathNames.length !== index + 1 && separator}
+              {pathnames.length !== index + 1 && separator}
             </React.Fragment>
           );
         })}

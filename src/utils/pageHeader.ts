@@ -1,10 +1,12 @@
+import { MEDS_PATHS_MAP } from '@/constants/menus';
+
+export function getPathNames(paths: string) {
+  return paths.split('/').filter((path) => {
+    return !!path;
+  });
+}
+
 export function getPageName(pathName: string) {
-  switch (pathName) {
-    case 'meds':
-      return 'Meds';
-    case 'category':
-      return 'Category';
-    default:
-      return 'Search';
-  }
+  const menu = MEDS_PATHS_MAP[pathName as keyof typeof MEDS_PATHS_MAP];
+  return menu;
 }

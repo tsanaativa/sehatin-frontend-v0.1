@@ -6,62 +6,17 @@ import { LocationIcon } from '@/assets/icons';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
 import Link from 'next/link';
+import { DUMMY_ADDRESSES } from '@/constants/dummy';
+import { DEFAULT_ADDRESS } from '@/constants/address';
 
 const AddressDropdown = () => {
-  const defaultAddress: Address = {
-    id: 0,
-    is_main: false,
-    is_active: true,
-    address: 'Jl. Mega Kuningan Barat III Lot 10.1-6',
-    province: 'DKI Jakarta',
-    city: 'Jakarta Selatan',
-    district: 'Kuningan Timur',
-    subdistrict: 'Setiabudi',
-    postal_code: 12950,
-  };
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [address, setAddress] = useState<Address>(defaultAddress);
+  const [address, setAddress] = useState<Address>(DEFAULT_ADDRESS);
   const [addressOpts, setAddressOpts] = useState<Address[]>([]);
 
   useEffect(() => {
     function getAddrOpts() {
-      const dummyAddresses: Address[] = [
-        {
-          id: 1,
-          is_main: false,
-          is_active: true,
-          address: 'Jl. Blablab No. 3',
-          province: 'DKI Jakarta',
-          city: 'Jakarta Pusat',
-          district: 'Menteng',
-          subdistrict: 'Gondangdia',
-          postal_code: 12345,
-        },
-        {
-          id: 2,
-          is_main: true,
-          is_active: false,
-          address: 'Jl. Blablab No. 3',
-          province: 'DKI Jakarta',
-          city: 'Jakarta Pusat',
-          district: 'Menteng',
-          subdistrict: 'Gondangdia',
-          postal_code: 12345,
-        },
-        {
-          id: 3,
-          is_main: true,
-          is_active: false,
-          address: 'Jl. ssss No. 3',
-          province: 'DKI Jakarta',
-          city: 'Jakarta Pusat',
-          district: 'Menteng',
-          subdistrict: 'Gondangdia',
-          postal_code: 12345,
-        },
-      ];
-
-      const addrOpts = dummyAddresses.filter((addr) => {
+      const addrOpts = DUMMY_ADDRESSES.filter((addr) => {
         if (addr.is_active) {
           setAddress(addr);
         }

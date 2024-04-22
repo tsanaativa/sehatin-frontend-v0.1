@@ -2,7 +2,7 @@ import { icons } from 'lucide-react';
 type MENU_TYPE = {
   label: string;
   link: string;
-  icon: keyof typeof icons;
+  icon?: keyof typeof icons;
 };
 
 export const MENUS: MENU_TYPE[] = [
@@ -33,21 +33,27 @@ export const MENUS: MENU_TYPE[] = [
   },
 ];
 
-export const PROFILE_MENUS = [
+export const MEDS_PATHS_MAP = {
+  meds: 'Medicines',
+  category: 'Category',
+  search: 'Search',
+};
+
+export const PROFILE_MENUS: MENU_TYPE[] = [
   {
-    path: '/profile/my-profile',
-    name: 'My Profile',
+    link: '/profile/my-profile',
+    label: 'My Profile',
   },
   {
-    path: '/profile/my-addresses',
-    name: 'My Addresses',
+    link: '/profile/my-addresses',
+    label: 'My Addresses',
   },
   {
-    path: '/profile/my-consultation-history',
-    name: 'My Consultation History',
+    link: '/profile/my-consultation-history',
+    label: 'My Consultation History',
   },
   {
-    path: '/profile/my-orders',
-    name: 'My Orders',
+    link: '/profile/my-orders',
+    label: 'My Orders',
   },
 ];

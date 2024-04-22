@@ -18,7 +18,7 @@ const ProductsByCategory = () => {
       <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
         {Array.from({ length: 6 }).map((product, idx) => {
           return (
-            <Link key={idx} href={`meds/product/1`}>
+            <Link key={idx} href={`/meds/slug-1`}>
               <ProductCard />
             </Link>
           );

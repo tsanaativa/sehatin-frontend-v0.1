@@ -6,14 +6,10 @@ import React from 'react';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import Image from 'next/image';
 import { PROFILE_MENUS } from '@/constants/menus';
+import { DUMMY_USER } from '@/constants/dummy';
 
 const ProfileSidebar = () => {
   const pathname = usePathname();
-
-  const user = {
-    name: 'Vivin',
-    email: 'vivin@gmail.com',
-  };
 
   return (
     <div>
@@ -28,9 +24,9 @@ const ProfileSidebar = () => {
               alt="Profile"
             />
             <div>
-              <p className="font-semibold line-clamp-1">{user.name}</p>
+              <p className="font-semibold line-clamp-1">{DUMMY_USER.name}</p>
               <p className="text-sm text-dark-gray line-clamp-1">
-                {user.email}
+                {DUMMY_USER.email}
               </p>
             </div>
           </div>
@@ -40,12 +36,12 @@ const ProfileSidebar = () => {
             <li
               key={idx}
               className={`px-4 py-3 border-t border-gray-light ${
-                pathname === menu.path
+                pathname === menu.link
                   ? 'text-primary-dark font-semibold'
                   : 'text-dark-gray'
               }`}
             >
-              <Link href={menu.path}>{menu.name}</Link>
+              <Link href={menu.link}>{menu.label}</Link>
             </li>
           );
         })}
