@@ -60,7 +60,7 @@ export const DUMMY_ADDRESSES: Address[] = [
   },
   {
     id: 3,
-    is_main: true,
+    is_main: false,
     is_active: false,
     address: 'Jl. ssss No. 3',
     province: 'DKI Jakarta',
