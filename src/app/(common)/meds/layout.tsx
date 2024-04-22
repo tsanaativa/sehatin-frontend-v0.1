@@ -1,5 +1,5 @@
 import PageHeader from '@/components/common/PageHeader';
-import AddressCard from '@/features/meds/components/AddressCard';
+import AddressDropdown from '@/features/meds/components/AddressDropdown';
 import SearchBar from '@/features/meds/components/SearchBar';
 import React from 'react';
 
@@ -10,7 +10,7 @@ const MedsLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="max-w-[1150px] py-4 relative flex flex-col gap-4 text-sm w-full px-4 sm:px-6 md:py-7">
           <PageHeader>
             <div className="w-full md:max-w-[280px]">
-              <AddressCard />
+              <AddressDropdown />
             </div>
           </PageHeader>
           <SearchBar />

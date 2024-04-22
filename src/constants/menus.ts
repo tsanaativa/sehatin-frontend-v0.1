@@ -32,3 +32,22 @@ export const MENUS: MENU_TYPE[] = [
     icon: 'UserRound',
   },
 ];
+
+export const PROFILE_MENUS = [
+  {
+    path: '/profile/my-profile',
+    name: 'My Profile',
+  },
+  {
+    path: '/profile/my-addresses',
+    name: 'My Addresses',
+  },
+  {
+    path: '/profile/my-consultation-history',
+    name: 'My Consultation History',
+  },
+  {
+    path: '/profile/my-orders',
+    name: 'My Orders',
+  },
+];

@@ -5,32 +5,16 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import Image from 'next/image';
+import { PROFILE_MENUS } from '@/constants/menus';
 
 const ProfileSidebar = () => {
   const pathname = usePathname();
-  const menus = [
-    {
-      path: '/profile/my-profile',
-      name: 'My Profile',
-    },
-    {
-      path: '/profile/my-addresses',
-      name: 'My Addresses',
-    },
-    {
-      path: '/profile/my-consultation-history',
-      name: 'My Consultation History',
-    },
-    {
-      path: '/profile/my-orders',
-      name: 'My Orders',
-    },
-  ];
 
   const user = {
     name: 'Vivin',
     email: 'vivin@gmail.com',
   };
+
   return (
     <div>
       <ul className="min-w-[250px] border border-gray-light rounded-lg">
@@ -51,7 +35,7 @@ const ProfileSidebar = () => {
             </div>
           </div>
         </li>
-        {menus.map((menu, idx) => {
+        {PROFILE_MENUS.map((menu, idx) => {
           return (
             <li
               key={idx}
@@ -61,7 +45,7 @@ const ProfileSidebar = () => {
                   : 'text-dark-gray'
               }`}
             >
-              <Link href="/profile/my-profile">{menu.name}</Link>
+              <Link href={menu.path}>{menu.name}</Link>
             </li>
           );
         })}

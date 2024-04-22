@@ -7,7 +7,7 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
 import Link from 'next/link';
 
-const AddressCard = () => {
+const AddressDropdown = () => {
   const defaultAddress: Address = {
     id: 0,
     is_main: false,
@@ -156,4 +156,4 @@ const AddressCard = () => {
   );
 };
 
-export default AddressCard;
+export default AddressDropdown;
