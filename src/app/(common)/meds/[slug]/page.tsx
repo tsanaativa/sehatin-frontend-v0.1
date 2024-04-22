@@ -1,6 +1,7 @@
 import { Button, Counter } from '@/components/common';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
+import { PharmacyModal } from '@/features/meds/components';
 
 const MedsDetail = () => {
   return (
@@ -27,7 +28,8 @@ const MedsDetail = () => {
           </div>
           <Counter className="md:hidden" />
         </div>
-        <div></div>
+        <span className="text-xs text-dark">Stock: 8</span>
+        <PharmacyModal />
         <div className="hidden items-center gap-x-10 mt-6 md:flex">
           <Counter />
           <Button className="w-40 flex items-center justify-center gap-x-1 font-poppins font-semibold text-sm">
