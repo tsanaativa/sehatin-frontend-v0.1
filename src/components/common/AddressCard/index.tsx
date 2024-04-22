@@ -18,9 +18,7 @@ const AddressCard = ({ address }: AddressCardProps) => {
             <LocationIcon width={12} />
           </div>
           <div className="flex flex-col gap-2">
-            <p className="max-h-10 mt-[0.06rem]">
-              {address && formatAddress(address)}
-            </p>
+            <p className="mt-[0.06rem]">{address && formatAddress(address)}</p>
             {(address.is_active || address.is_main) && (
               <div className="flex gap-2">
                 {address.is_active && (

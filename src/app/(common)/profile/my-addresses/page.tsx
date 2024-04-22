@@ -13,7 +13,7 @@ const MyAddresses = () => {
         })}
       </div>
       <div className="flex justify-end mt-5">
-        <Button variant="outlined-primary" className="w-fit px-5">
+        <Button variant="outlined-primary" className="w-fit px-6">
           + Add Address
         </Button>
       </div>
