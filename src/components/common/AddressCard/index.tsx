@@ -1,7 +1,7 @@
 import { LocationIcon } from '@/assets/icons';
 import { Address } from '@/types/Address';
 import { formatAddress } from '@/utils/address';
-import { ChevronDown, Edit2, Trash2 } from 'lucide-react';
+import { Check, ChevronRight, Edit2, Trash2 } from 'lucide-react';
 import React from 'react';
 import Badge from '../Badge';
 
@@ -22,22 +22,25 @@ const AddressCard = ({ address }: AddressCardProps) => {
             {(address.is_active || address.is_main) && (
               <div className="flex gap-2">
                 {address.is_active && (
-                  <Badge className="min-w-[5rem]" variant="success">
+                  <Badge className="min-w-[5.75rem]" variant="success">
+                    <div className="-mx-1">
+                      <Check size={15} />
+                    </div>
                     Selected
                   </Badge>
                 )}
                 {address.is_main && (
-                  <Badge className=" min-w-[5rem]">Main</Badge>
+                  <Badge className="min-w-[5.75rem]">Main</Badge>
                 )}
               </div>
             )}
           </div>
         </div>
       </div>
-      <span className="md:hidden">
-        <ChevronDown size={20} />
+      <span className="md:hidden text-dark-gray">
+        <ChevronRight size={20} />
       </span>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 hidden md:flex">
         <button className="flex items-center text-blue">
           <Edit2 size={20} />
         </button>

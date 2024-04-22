@@ -13,7 +13,7 @@ const ProfileSidebar = () => {
 
   return (
     <div>
-      <ul className="min-w-[250px] border border-gray-light rounded-lg">
+      <ul className="min-w-[220px] border border-gray-light rounded-lg lg:min-w-[250px]">
         <li>
           <div className="flex gap-3 p-4">
             <Image

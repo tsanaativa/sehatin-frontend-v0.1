@@ -17,7 +17,7 @@ const Badge = ({ variant = 'primary', className, children }: BadgeProps) => {
 
   return (
     <div
-      className={`${TYPE_STYLE[variant]} ${className} text-center font-semibold py-1 px-2 rounded-lg text-xs md:text-sm`}
+      className={`${TYPE_STYLE[variant]} ${className} flex justify-center items-center gap-2 font-semibold py-1 px-2 rounded-lg text-xs md:text-sm`}
     >
       {children}
     </div>
