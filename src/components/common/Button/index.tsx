@@ -26,7 +26,7 @@ const Button = ({
 
   return (
     <button
-      className={`${TYPE_STYLE[variant]} ${className} font-poppins font-medium py-2 rounded-md`}
+      className={`${TYPE_STYLE[variant]} ${className} font-poppins font-medium py-2 rounded-md transition`}
       disabled={disabled || loading}
       {...buttonProps}
     >

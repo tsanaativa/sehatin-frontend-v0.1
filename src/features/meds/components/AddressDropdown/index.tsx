@@ -8,8 +8,9 @@ import { Address } from '@/types/Address';
 import Link from 'next/link';
 import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import { DEFAULT_ADDRESS } from '@/constants/address';
+import { formatAddress } from '@/utils/address';
 
-const AddressCard = () => {
+const AddressDropdown = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [address, setAddress] = useState<Address>(DEFAULT_ADDRESS);
   const [addressOpts, setAddressOpts] = useState<Address[]>([]);
@@ -42,10 +43,6 @@ const AddressCard = () => {
       setAddress(addressOpts[idx]);
     }
     setShowDropdown(false);
-  }
-
-  function formatAddress(addr: Address) {
-    return `${addr.address}, ${addr.subdistrict}, ${addr.district}, ${addr.city}, ${addr.province}, ${addr.postal_code}`;
   }
 
   return (
@@ -109,4 +106,4 @@ const AddressCard = () => {
   );
 };
 
-export default AddressCard;
+export default AddressDropdown;
