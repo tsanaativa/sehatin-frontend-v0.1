@@ -3,7 +3,8 @@ import React from 'react';
 type BadgeProps = {
   variant?: 'primary' | 'gray' | 'blue' | 'success' | 'warning' | 'danger';
   className?: string;
-} & React.ComponentPropsWithoutRef<'div'>;
+  children?: React.ReactNode;
+};
 
 const Badge = ({ variant = 'primary', className, children }: BadgeProps) => {
   const TYPE_STYLE = {
