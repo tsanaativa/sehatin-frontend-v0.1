@@ -1,10 +1,11 @@
 import Badge from '@/components/common/Badge';
+import { DUMMY_CHOOSE_PHARMACIES } from '@/constants/dummy';
 import { MapPin } from 'lucide-react';
 
 const ChoosePharmaciesList = () => {
   return (
     <>
-      {Array.from({ length: 4 }).map((item, idx) => (
+      {DUMMY_CHOOSE_PHARMACIES.map((item, idx) => (
         <div key={idx} className="border border-primary-border rounded-lg">
           <input
             type="radio"
@@ -15,21 +16,20 @@ const ChoosePharmaciesList = () => {
           />
           <label htmlFor={`pharmacy-${idx}`}>
             <div className="flex items-center justify-between border-b border-primary-border px-4 py-2">
-              <span>Century Plaza Senayan</span>
-              <Badge>Selected</Badge>
+              <span>{item.name}</span>
+              {item.status ? <Badge>Selected</Badge> : null}
             </div>
             <div className="flex justify-between gap-x-4 px-4 py-2">
               <MapPin className="text-dark-gray" />
               <div className=" flex flex-col">
                 <span className="font-medium text-xs text-dark-gray">
-                  Jl. bla bla ini alamat lah ya pokoknya, gggg, sssss, 52616
+                  {item.address}
                 </span>
                 <span className="font-medium text-xs text-secondary mt-4">
-                  10 km from your location
+                  {item.distance} from your location
                 </span>
                 <span className="font-medium text-xs text-dark-gray">
-                  Available shipping methods: Official Instant, Official Same
-                  Day
+                  Available shipping methods: {item.shipping}
                 </span>
               </div>
             </div>
