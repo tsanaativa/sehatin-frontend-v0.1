@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProductCard } from '..';
-import CategorizationSection from '../CategorizationSection';
+import CategorizeSection from '../CategorizeSection';
 
 type ProductsSectionProps = {
   title: string;
@@ -9,7 +9,7 @@ type ProductsSectionProps = {
 
 const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
   return (
-    <CategorizationSection title={title} seeAllUrl={seeAllUrl}>
+    <CategorizeSection title={title} seeAllUrl={seeAllUrl}>
       <div className="overflow-x-auto">
         <div className="grid grid-cols-6 min-w-max gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
           {Array.from({ length: 6 }).map((val, idx) => (
@@ -17,7 +17,7 @@ const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
           ))}
         </div>
       </div>
-    </CategorizationSection>
+    </CategorizeSection>
   );
 };
 

@@ -1,19 +1,19 @@
 import Link from 'next/link';
 import React from 'react';
 
-type CategorizationSectionProps = {
+type CategorizeSectionProps = {
   title: string;
   seeAllUrl: string;
   children: React.ReactNode;
   className?: string;
 };
 
-const CategorizationSection = ({
+const CategorizeSection = ({
   title,
   seeAllUrl,
   children,
   className,
-}: CategorizationSectionProps) => {
+}: CategorizeSectionProps) => {
   return (
     <section className={className}>
       <div className="flex items-center justify-between items-center">
@@ -29,4 +29,4 @@ const CategorizationSection = ({
   );
 };
 
-export default CategorizationSection;
+export default CategorizeSection;

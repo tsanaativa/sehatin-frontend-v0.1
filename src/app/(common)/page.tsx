@@ -6,7 +6,8 @@ import BannerHero2Desktop from '@/assets/images/banner-hero-2-desktop.svg';
 import { Button, Carousel, ProductCard } from '@/components/common';
 import Link from 'next/link';
 import { DoctorBadge, MedicineBadge } from '@/assets/icons';
-import CategoriesSection from '@/components/common/CategoriesSection';
+import CategoriesSection from '@/features/meds/components/CategoriesSection';
+import CategorizeSection from '@/components/common/CategorizeSection';
 
 const Home = () => {
   return (
@@ -118,24 +119,17 @@ const Home = () => {
               <CategoriesSection />
             </div>
           </div>
-          <section className="mt-6 md:mt-16">
-            <div className="flex items-center justify-between">
-              <span className="font-poppins font-semibold text-dark md:text-2xl">
-                Most Bought Products
-              </span>
-              <Link
-                className="text-primary-dark text-sm sm:text-xl"
-                href="/meds"
-              >
-                See All
-              </Link>
-            </div>
+          <CategorizeSection
+            title="Most Bought Products"
+            seeAllUrl="/meds?sortBy=sales"
+            className="mt-6 md:mt-16"
+          >
             <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
               {Array.from({ length: 10 }).map((val, idx) => (
                 <ProductCard key={idx} />
               ))}
             </div>
-          </section>
+          </CategorizeSection>
         </div>
       </div>
     </main>

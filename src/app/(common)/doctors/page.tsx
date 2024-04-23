@@ -1,5 +1,5 @@
 import { Button } from '@/components/common';
-import CategorizationSection from '@/components/common/CategorizationSection';
+import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
@@ -12,7 +12,7 @@ const Doctors = () => {
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">
       <div className="max-w-[1150px] py-4 w-full px-4 sm:px-6 md:py-10">
         <div className="flex flex-col">
-          <CategorizationSection
+          <CategorizeSection
             title={'Specialists'}
             seeAllUrl={`/doctors?specialists`}
           >
@@ -26,9 +26,9 @@ const Doctors = () => {
                 </Link>
               ))}
             </div>
-          </CategorizationSection>
+          </CategorizeSection>
           {shownSpecialists.map((specialist, idx) => (
-            <CategorizationSection
+            <CategorizeSection
               title={specialist.name}
               seeAllUrl={`/doctors?specialistId=${specialist.id}`}
               className="mt-6 md:mt-16"
@@ -45,7 +45,7 @@ const Doctors = () => {
                   ))}
                 </div>
               </div>
-            </CategorizationSection>
+            </CategorizeSection>
           ))}
           <div className="w-full flex justify-center mt-2 md:mt-10">
             <Button
