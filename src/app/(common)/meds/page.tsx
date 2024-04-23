@@ -14,7 +14,7 @@ const Meds = () => {
           {shownCategories.map((category, idx) => (
             <CategorizeSection
               title={category.name}
-              seeAllUrl={`/doctors?categoryId=${category.id}`}
+              seeAllUrl={`/meds/search?categoryId=${category.id}`}
               className="mt-6 md:mt-16"
               key={idx}
             >

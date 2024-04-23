@@ -20,7 +20,7 @@ const DoctorCard = ({ width, doctor }: DoctorCardProps) => {
       >
         <Image
           src={doctor.photo_url}
-          className="object-cover rounded w-20 h-20 md:w-24 md:h-24"
+          className="object-cover rounded w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
           width={300}
           height={300}
           alt=""

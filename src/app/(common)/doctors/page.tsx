@@ -18,7 +18,10 @@ const Doctors = () => {
           >
             <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto mt-2 md:mt-4 md:gap-x-8 md:text-lg">
               {DISPLAYED_SPECIALISTS.map((specialist, idx) => (
-                <Link href={`/doctors?specialistId=${specialist.id}`} key={idx}>
+                <Link
+                  href={`/doctors/search?specialistId=${specialist.id}`}
+                  key={idx}
+                >
                   <div className="h-full bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
                     <div className="min-w-fit">{specialist.icon}</div>
                     <span className="line-clamp-2">{specialist.name}</span>
@@ -30,7 +33,7 @@ const Doctors = () => {
           {shownSpecialists.map((specialist, idx) => (
             <CategorizeSection
               title={specialist.name}
-              seeAllUrl={`/doctors?specialistId=${specialist.id}`}
+              seeAllUrl={`/doctors/search?specialistId=${specialist.id}`}
               className="mt-6 md:mt-16"
               key={idx}
             >

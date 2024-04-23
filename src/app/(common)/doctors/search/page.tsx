@@ -1,7 +1,8 @@
-import { ProductCard } from '@/components/common';
 import FilterDropdown from '@/components/common/FilterDropdown';
 import Pagination from '@/components/common/Pagination';
-import SortDropdown from '@/components/common/SortDropdown';
+import { DUMMY_DOCTOR } from '@/constants/dummy';
+import DoctorCard from '@/features/doctors/components/DoctorCard';
+import DoctorsSortDropdown from '@/features/doctors/components/DoctorsSortDropdown';
 import React from 'react';
 
 const DoctorsBySpecialist = () => {
@@ -13,14 +14,18 @@ const DoctorsBySpecialist = () => {
             10 to 20 of 100 results
           </span>
           <div className="grid grid-cols-2 gap-2">
-            <SortDropdown />
+            <DoctorsSortDropdown />
             <FilterDropdown />
           </div>
         </div>
-        <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
-          {Array.from({ length: 6 }).map((product, idx) => {
-            return <ProductCard key={idx} />;
-          })}
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-w-max gap-3 mb-4 mt-4 sm:gap-4 md:gap-6">
+          {Array.from({ length: 4 }).map((val, idx) => (
+            <DoctorCard
+              key={idx}
+              width="md:min-w-[350px]"
+              doctor={DUMMY_DOCTOR}
+            />
+          ))}
         </div>
         <div className="flex w-full py-4">
           <Pagination />
