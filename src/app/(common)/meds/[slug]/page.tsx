@@ -123,9 +123,8 @@ const MedsDetail = () => {
             </div>
           </div>
         </div>
-        <div className="hidden items-center gap-x-10 mt-6 md:flex">
-          <Counter />
-          <Button className="w-40 flex items-center justify-center gap-x-1 font-poppins font-semibold text-sm">
+        <div className="fixed bottom-0 z-10 w-full bg-light px-4 py-4 sm:px-6 md:hidden">
+          <Button className="w-full flex items-center justify-center gap-x-1 font-poppins font-semibold text-sm">
             <Plus size={14} /> Add to Cart
           </Button>
         </div>
