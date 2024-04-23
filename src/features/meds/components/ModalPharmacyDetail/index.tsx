@@ -1,4 +1,4 @@
-import { Modal } from '..';
+import { Modal } from '@/components/common';
 
 type ModalPharmacyDetailProps = {
   onShowModal: (showModal: number) => void;
