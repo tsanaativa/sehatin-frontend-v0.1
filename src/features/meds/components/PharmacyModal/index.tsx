@@ -1,7 +1,6 @@
 'use client';
-
-import ModalChoosePharmacies from '@/components/common/ModalChoosePharmacies';
-import ModalPharmacyDetail from '@/components/common/ModalPharmacyDetail';
+import ModalPharmacyDetail from '../ModalPharmacyDetail';
+import ModalChoosePharmacies from '../ModalChoosePharmacies';
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
