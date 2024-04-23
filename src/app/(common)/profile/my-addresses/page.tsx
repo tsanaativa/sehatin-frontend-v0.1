@@ -13,7 +13,7 @@ const MyAddresses = () => {
       </h2>
       <div className="flex flex-col gap-4 mt-5">
         {DUMMY_ADDRESSES.map((addr, idx) => (
-          <>
+          <div key={idx}>
             <Link
               href={`/profile/my-addresses/${addr.id}`}
               className="md:hidden"
@@ -23,7 +23,7 @@ const MyAddresses = () => {
             <div className="hidden md:block">
               <AddressCard address={addr} key={idx} />
             </div>
-          </>
+          </div>
         ))}
       </div>
       <div className="flex justify-center mt-6 md:justify-end">
