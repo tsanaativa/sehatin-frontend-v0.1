@@ -2,12 +2,15 @@ import React from 'react';
 import Image from 'next/image';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { Edit3 } from 'lucide-react';
+import { DUMMY_USER } from '@/constants/dummy';
 
 const MyProfile = () => {
   return (
     <div>
-      <h2 className="text-2xl font-semibold font-poppins">My Profile</h2>
-      <div className="flex gap-10 mt-5">
+      <h2 className="text-xl text-center font-semibold font-poppins md:text-start md:text-2xl">
+        My Profile
+      </h2>
+      <div className="flex flex-col items-center gap-10 mt-5 md:flex-row md:items-start">
         <div className="relative w-fit h-fit">
           <Image
             width={150}
@@ -27,25 +30,25 @@ const MyProfile = () => {
             <li className="">
               <div className="flex justify-between py-2">
                 <p className="text-dark-gray">Name</p>
-                <p>Vivin</p>
+                <p>{DUMMY_USER.name}</p>
               </div>
             </li>
             <li className="">
               <div className="flex justify-between py-2">
                 <p className="text-dark-gray">Email</p>
-                <p>vivin@gmail.com</p>
+                <p>{DUMMY_USER.email}</p>
               </div>
             </li>
             <li className="">
               <div className="flex justify-between py-2">
                 <p className="text-dark-gray">Gender</p>
-                <p>Male</p>
+                <p>{DUMMY_USER.gender}</p>
               </div>
             </li>
             <li>
               <div className="flex justify-between py-2">
                 <p className="text-dark-gray">Birth Date</p>
-                <p>2020/10/11</p>
+                <p>{DUMMY_USER.birth_date}</p>
               </div>
             </li>
           </ul>

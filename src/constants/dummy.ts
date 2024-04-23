@@ -74,4 +74,6 @@ export const DUMMY_ADDRESSES: Address[] = [
 export const DUMMY_USER = {
   name: 'Vivin',
   email: 'vivin@gmail.com',
+  gender: 'Male',
+  birth_date: '2001/01/01',
 };
