@@ -14,7 +14,7 @@ const Doctors = () => {
         <div className="flex flex-col">
           <CategorizeSection
             title={'Specialists'}
-            seeAllUrl={`/doctors?specialists`}
+            seeAllUrl={`/doctors/specialist`}
           >
             <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto mt-2 md:mt-4 md:gap-x-8 md:text-lg">
               {DISPLAYED_SPECIALISTS.map((specialist, idx) => (

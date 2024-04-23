@@ -1,30 +1,11 @@
 import { Address } from '@/types/Address';
 import { Category } from '@/types/Category';
-import { Doctor } from '@/types/Doctor';
+import { Doctor, Specialist } from '@/types/Doctor';
 import { Product } from '@/types/Product';
+import { DISPLAYED_SPECIALISTS } from './specialists';
+import { DISPLAYED_CATEGORIES } from './categories';
 
-export const DUMMY_CATEGORIES: Category[] = [
-  {
-    id: 1,
-    name: 'Vitamin C',
-  },
-  {
-    id: 1,
-    name: 'Vitamin C',
-  },
-  {
-    id: 1,
-    name: 'Vitamin C',
-  },
-  {
-    id: 1,
-    name: 'Vitamin C',
-  },
-  {
-    id: 1,
-    name: 'Vitamin C',
-  },
-];
+export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
 export const DUMMY_PRODUCT: Product = {
   id: 1,
@@ -35,6 +16,8 @@ export const DUMMY_PRODUCT: Product = {
   image:
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 };
+
+export const DUMMY_SPECIALISTS: Specialist[] = DISPLAYED_SPECIALISTS;
 
 export const DUMMY_DOCTOR: Doctor = {
   id: 1,

@@ -38,6 +38,7 @@ export const MEDS_PATHS_MAP = {
   category: 'Category',
   search: 'Search',
   doctors: 'Doctors',
+  specialist: 'Specialist',
 };
 
 export const PROFILE_MENUS: MENU_TYPE[] = [
