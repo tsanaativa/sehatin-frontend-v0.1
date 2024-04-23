@@ -3,6 +3,7 @@ import Image from 'next/image';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { Edit3 } from 'lucide-react';
 import { DUMMY_USER } from '@/constants/dummy';
+import ChangePasswordModal from '@/features/profile/ChangePasswordModal';
 
 const MyProfile = () => {
   return (
@@ -53,9 +54,7 @@ const MyProfile = () => {
             </li>
           </ul>
           <div className="flex justify-end py-2 mt-3">
-            <div role="button" className="text-primary-dark font-semibold">
-              <p>Change Password?</p>
-            </div>
+            <ChangePasswordModal />
           </div>
         </div>
       </div>
