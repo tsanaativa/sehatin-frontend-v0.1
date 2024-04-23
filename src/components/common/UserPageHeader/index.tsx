@@ -16,9 +16,11 @@ const UserPageHeader = () => {
       {!!getPageName(currentPath) && (
         <div className="max-w-[1150px] py-4 relative flex flex-col gap-4 text-sm w-full px-4 sm:px-6 md:py-7">
           <PageNav>
-            <div className="w-full md:max-w-[280px]">
-              <AddressCard />
-            </div>
+            {currentPath !== 'doctors' && (
+              <div className="w-full md:max-w-[280px]">
+                <AddressCard />
+              </div>
+            )}
           </PageNav>
           <SearchBar />
         </div>

@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import React from 'react';
 import { ProductCard } from '..';
+import CategorizationSection from '../CategorizationSection';
 
 type ProductsSectionProps = {
   title: string;
@@ -9,15 +9,7 @@ type ProductsSectionProps = {
 
 const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
   return (
-    <section className="mt-6 md:mt-16">
-      <div className="flex items-center justify-between items-center">
-        <span className="font-poppins font-semibold text-dark md:text-2xl">
-          {title}
-        </span>
-        <Link className="text-primary-dark text-sm sm:text-xl" href={seeAllUrl}>
-          See All
-        </Link>
-      </div>
+    <CategorizationSection title={title} seeAllUrl={seeAllUrl}>
       <div className="overflow-x-auto">
         <div className="grid grid-cols-6 min-w-max gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
           {Array.from({ length: 6 }).map((val, idx) => (
@@ -25,7 +17,7 @@ const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
           ))}
         </div>
       </div>
-    </section>
+    </CategorizationSection>
   );
 };
 

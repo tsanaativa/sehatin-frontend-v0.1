@@ -37,6 +37,7 @@ export const MEDS_PATHS_MAP = {
   meds: 'Medicines',
   category: 'Category',
   search: 'Search',
+  doctors: 'Doctors',
 };
 
 export const PROFILE_MENUS: MENU_TYPE[] = [
