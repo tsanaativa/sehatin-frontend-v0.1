@@ -73,3 +73,34 @@ export const DUMMY_USER = {
   name: 'Vivin',
   email: 'vivin@gmail.com',
 };
+
+export const DUMMY_CHOOSE_PHARMACIES = [
+  {
+    name: 'Century Plaza Senayan 1',
+    address: 'Jl. bla bla ini alamat lah ya pokoknya, gggg, sssss, 52616',
+    distance: '10 km',
+    shipping: 'Official Instant, Official Same Day',
+    status: true,
+  },
+  {
+    name: 'Century Plaza Senayan 2',
+    address: 'Jl. bla bla ini alamat lah ya pokoknya, gggg, sssss, 52616',
+    distance: '12 km',
+    shipping: 'Official Instant, Official Same Day',
+    status: false,
+  },
+  {
+    name: 'Century Plaza Senayan 3',
+    address: 'Jl. bla bla ini alamat lah ya pokoknya, gggg, sssss, 52616',
+    distance: '18 km',
+    shipping: 'Official Instant, Official Same Day',
+    status: false,
+  },
+  {
+    name: 'Century Plaza Senayan 4',
+    address: 'Jl. bla bla ini alamat lah ya pokoknya, gggg, sssss, 52616',
+    distance: '22 km',
+    shipping: 'Official Instant, Official Same Day',
+    status: false,
+  },
+];

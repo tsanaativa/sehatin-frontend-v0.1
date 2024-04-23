@@ -1,17 +1,21 @@
 type ModalProps = {
   children: React.ReactNode;
-  modalValue: 0 | 100;
+  showModal: boolean;
   onClick: () => void;
 };
 
-const Modal = ({ children, modalValue = 0, onClick }: ModalProps) => {
-  const SHOW_MODAL = {
-    0: 'translate-y-0',
-    100: 'translate-y-100',
-  };
+const Modal = ({ children, showModal = false, onClick }: ModalProps) => {
   return (
-    <div onClick={onClick}>
-      <div className={`translate-y-${SHOW_MODAL[modalValue]}`}>{children}</div>
+    <div
+      className={`fixed inset-0 z-50 w-full h-full overflow-auto ${showModal ? 'scale-100 bg-dark/60 [transition:transform_0s_ease-in-out,background_0.3s_ease-in-out_0.1s]' : 'scale-0 bg-dark/0 [transition:transform_0s_ease-in-out_0.3s,background_0.3s_ease-in-out]'} flex items-end md:grid md:place-items-center`}
+      onClick={onClick}
+    >
+      <div
+        className={`bg-light w-full h-fit transition-transform duration-300 ${showModal ? 'translate-y-0 delay-[0.1s] md:translate-y-0 md:scale-100' : 'translate-y-full md:translate-y-0 md:scale-0'} rounded-tl-lg rounded-tr-lg md:w-fit md:rounded-t-none`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
     </div>
   );
 };
