@@ -6,7 +6,7 @@ import { PharmacyModal } from '@/features/meds/components';
 const MedsDetail = () => {
   return (
     <div className="bg-light w-full flex justify-center">
-      <div className="flex flex-wrap h-fit md:px-4 md:flex-nowrap md:gap-x-4 md:pt-10 md:pb-20 md:max-w-[1150px]">
+      <div className="flex flex-wrap h-fit pb-10 md:px-4 md:flex-nowrap md:gap-x-4 md:pt-10 md:pb-20 md:max-w-[1150px]">
         <Image
           src="https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           className="w-full h-1/2 object-cover md:w-1/2"
