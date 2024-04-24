@@ -29,7 +29,7 @@ const MedsDetail = () => {
             </div>
             <Counter className="md:hidden" />
           </div>
-          <span className="text-xs text-dark">Stock: 8</span>
+          <div className="text-xs text-dark mt-2 md:text-base">Stock: 8</div>
           <PharmacyModal />
           <div className="hidden items-center gap-x-10 mt-6 md:flex">
             <Counter />
@@ -37,7 +37,7 @@ const MedsDetail = () => {
               <Plus size={14} /> Add to Cart
             </Button>
           </div>
-          <div className="flex flex-col gap-y-4 mt-6">
+          <div className="flex flex-col gap-y-4 mt-4 md:mt-6">
             <div className="flex flex-col gap-y-1">
               <span className="font-poppins font-semibold text-sm text-dark md:text-base">
                 Generic Name
@@ -123,7 +123,7 @@ const MedsDetail = () => {
             </div>
           </div>
         </div>
-        <div className="fixed bottom-0 z-10 w-full bg-light px-4 py-4 sm:px-6 md:hidden">
+        <div className="fixed bottom-0 z-10 w-full bg-light border-t-2 border-t-gray-lighter px-4 py-4 sm:px-6 md:hidden">
           <Button className="w-full flex items-center justify-center gap-x-1 font-poppins font-semibold text-sm">
             <Plus size={14} /> Add to Cart
           </Button>

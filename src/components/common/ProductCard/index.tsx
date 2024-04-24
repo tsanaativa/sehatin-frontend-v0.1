@@ -13,15 +13,15 @@ const ProductCard = ({ width }: ProductCardProps) => {
     <div
       className={`border-2 border-primary-border rounded-lg md:w-full ${width}`}
     >
-      <Link href="/meds/panadol-extra-10-kaplet-2-box-bla">
-        <Image
-          src={DUMMY_PRODUCT.image}
-          className="w-full h-24 object-cover rounded-tl-lg rounded-tr-lg"
-          width={600}
-          height={300}
-          alt=""
-        />
-        <div className="pt-2 pb-3 px-2 md:px-3">
+      <Image
+        src={DUMMY_PRODUCT.image}
+        className="w-full h-24 object-cover rounded-tl-lg rounded-tr-lg"
+        width={600}
+        height={300}
+        alt=""
+      />
+      <div className="pt-2 pb-3 px-2 md:px-3">
+        <Link href="/meds/panadol-extra-10-kaplet-2-box-bla">
           <div className="min-h-[40px]">
             <span className="font-poppins font-medium text-dark md:text-sm line-clamp-2">
               {DUMMY_PRODUCT.name}
@@ -35,14 +35,14 @@ const ProductCard = ({ width }: ProductCardProps) => {
               Rp {DUMMY_PRODUCT.price.toLocaleString('id')}
             </span>
           </div>
-          <Button
-            className="flex items-center justify-center gap-x-1 w-full text-xs mt-4 md:text-sm"
-            variant="primary"
-          >
-            <Plus size={14} /> Add to Cart
-          </Button>
-        </div>
-      </Link>
+        </Link>
+        <Button
+          className="flex items-center justify-center gap-x-1 w-full text-xs mt-4 md:text-sm"
+          variant="primary"
+        >
+          <Plus size={14} /> Add to Cart
+        </Button>
+      </div>
     </div>
   );
 };
