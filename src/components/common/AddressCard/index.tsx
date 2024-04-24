@@ -1,8 +1,9 @@
 import { LocationIcon } from '@/assets/icons';
 import { Address } from '@/types/Address';
 import { formatAddress } from '@/utils/address';
-import { Check, ChevronRight, Edit2, Trash2 } from 'lucide-react';
+import { Check, ChevronRight, Trash2 } from 'lucide-react';
 import Badge from '../Badge';
+import UpdateAddressModal from '@/features/profile/components/UpdateAddressModal';
 
 type AddressCardProps = {
   address: Address;
@@ -40,9 +41,7 @@ const AddressCard = ({ address }: AddressCardProps) => {
         <ChevronRight size={20} />
       </span>
       <div className="flex items-center gap-2 hidden md:flex">
-        <button className="flex items-center text-blue">
-          <Edit2 size={20} />
-        </button>
+        <UpdateAddressModal address={address} />
         <button className="flex items-center text-danger">
           <Trash2 size={20} />
         </button>

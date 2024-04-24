@@ -1,21 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
-import ModalChangePassword from '../ModalChangePassword';
+import { Edit2 } from 'lucide-react';
+import { useState } from 'react';
+import ModalUpdateAddress from '../ModalUpdateAddress';
+import { Address } from '@/types/Address';
 
-const UpdateAddressModal = () => {
+type UpdateAddressModalProps = {
+  address: Address;
+};
+
+const UpdateAddressModal = ({ address }: UpdateAddressModalProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
     <div>
-      <div
+      <button
         role="button"
-        className="text-primary-dark font-semibold"
+        className="flex items-center text-blue"
         onClick={() => setShowModal(true)}
       >
-        <p>Change Password?</p>
-      </div>
-      <ModalChangePassword onShowModal={setShowModal} showModal={showModal} />
+        <Edit2 size={20} />
+      </button>
+      <ModalUpdateAddress
+        address={address}
+        onShowModal={setShowModal}
+        showModal={showModal}
+      />
     </div>
   );
 };

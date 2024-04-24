@@ -8,7 +8,7 @@ import { Address } from '@/types/Address';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { formatAddress } from '@/utils/address';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const AddressCard = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
