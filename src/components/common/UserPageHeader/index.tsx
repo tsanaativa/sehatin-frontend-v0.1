@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
-import PageNav from '../PageNav';
 import { AddressCard, SearchBar } from '@/features/meds/components';
 import { getPageName, getPathNames } from '@/utils/pageHeader';
 import { usePathname } from 'next/navigation';
+import PageNav from '../PageNav';
 
 const UserPageHeader = () => {
   const paths = usePathname();

@@ -2,7 +2,7 @@
 
 import { SortDropdown } from '@/components/common';
 import { MEDS_SORT_OPTIONS } from '@/constants/sort';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const MedsSortDropdown = () => {
   const [sortBy, setSortBy] = useState<string>(MEDS_SORT_OPTIONS[0]);

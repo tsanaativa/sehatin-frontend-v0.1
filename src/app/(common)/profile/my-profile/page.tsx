@@ -1,7 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { Edit3 } from 'lucide-react';
+import Image from 'next/image';
 
 const MyProfile = () => {
   return (

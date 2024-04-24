@@ -1,9 +1,9 @@
+import { Button } from '@/components/common';
+import Badge from '@/components/common/Badge';
+import { Doctor } from '@/types/Doctor';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/common';
-import { Doctor } from '@/types/Doctor';
-import Badge from '@/components/common/Badge';
 
 type DoctorCardProps = {
   width?: string;

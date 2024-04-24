@@ -2,7 +2,6 @@ import { ProductCard } from '@/components/common';
 import FilterDropdown from '@/components/common/FilterDropdown';
 import Pagination from '@/components/common/Pagination';
 import MedsSortDropdown from '@/features/meds/components/MedsSortDropdown';
-import React from 'react';
 
 const ProductsByCategory = () => {
   return (

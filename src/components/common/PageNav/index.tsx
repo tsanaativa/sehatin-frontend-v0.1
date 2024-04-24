@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
-import Breadcrumb from './Breadcrumb';
 import { getPageName, getPathNames } from '@/utils/pageHeader';
 import { usePathname } from 'next/navigation';
+import React from 'react';
+import Breadcrumb from './Breadcrumb';
 
 type PageNavProps = {
   title?: string;

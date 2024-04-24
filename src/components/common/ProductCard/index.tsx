@@ -1,8 +1,8 @@
+import { DUMMY_PRODUCT } from '@/constants/dummy';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
-import { Button } from '..';
-import { DUMMY_PRODUCT } from '@/constants/dummy';
 import Link from 'next/link';
+import { Button } from '..';
 
 type ProductCardProps = {
   width?: string;

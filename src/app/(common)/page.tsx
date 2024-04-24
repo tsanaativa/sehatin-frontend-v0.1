@@ -1,13 +1,13 @@
-import Image from 'next/image';
-import BannerHero1 from '@/assets/images/banner-hero-1.png';
-import BannerHero1Desktop from '@/assets/images/banner-hero-1-desktop.svg';
-import BannerHero2 from '@/assets/images/banner-hero-2.png';
-import BannerHero2Desktop from '@/assets/images/banner-hero-2-desktop.svg';
-import { Button, Carousel, ProductCard } from '@/components/common';
-import Link from 'next/link';
 import { DoctorBadge, MedicineBadge } from '@/assets/icons';
-import CategoriesSection from '@/features/meds/components/CategoriesSection';
+import BannerHero1Desktop from '@/assets/images/banner-hero-1-desktop.svg';
+import BannerHero1 from '@/assets/images/banner-hero-1.png';
+import BannerHero2Desktop from '@/assets/images/banner-hero-2-desktop.svg';
+import BannerHero2 from '@/assets/images/banner-hero-2.png';
+import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
+import CategoriesSection from '@/features/meds/components/CategoriesSection';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Home = () => {
   return (

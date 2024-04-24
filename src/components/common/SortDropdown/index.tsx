@@ -1,9 +1,9 @@
 'use client';
 
+import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { CheckIcon, ChevronDown } from 'lucide-react';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Button } from '..';
-import { CheckIcon, ChevronDown } from 'lucide-react';
-import { useOutsideClick } from '@/hooks/useOutsideClick';
 
 type SortDropdownProps = {
   sortBy: string;

@@ -1,6 +1,5 @@
 import { DUMMY_CATEGORIES } from '@/constants/dummy';
 import Link from 'next/link';
-import React from 'react';
 
 const Category = () => {
   return (

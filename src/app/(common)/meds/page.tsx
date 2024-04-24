@@ -2,7 +2,6 @@ import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DISPLAYED_CATEGORIES } from '@/constants/categories';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
-import React from 'react';
 
 const Meds = () => {
   const shownCategories = DISPLAYED_CATEGORIES.slice(0, 2);

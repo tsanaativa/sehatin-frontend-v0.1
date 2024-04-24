@@ -1,8 +1,6 @@
-import Link from 'next/link';
-import React from 'react';
-import CategorizeSection from '../../../../components/common/CategorizeSection';
-import { DISPLAYED_CATEGORIES } from '@/constants/categories';
 import CategorizeCard from '@/components/common/CategorizeCard';
+import { DISPLAYED_CATEGORIES } from '@/constants/categories';
+import CategorizeSection from '../../../../components/common/CategorizeSection';
 
 const CategoriesSection = () => {
   return (
