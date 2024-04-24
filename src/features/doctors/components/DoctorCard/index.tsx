@@ -33,7 +33,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
             ></div>
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-poppins font-medium text-dark max-w-[200px] line-clamp-1 md:max-w-[250px] lg:max-w-full md:text-lg">
+            <span className="font-poppins font-medium text-dark max-w-[200px] line-clamp-1 md:max-w-[250px] lg:max-w-full">
               {doctor.name}
             </span>
             <div className="font-semibold text-sm text-dark-gray md:text-base">

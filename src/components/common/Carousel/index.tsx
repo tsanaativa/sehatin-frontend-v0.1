@@ -20,6 +20,9 @@ const Carousel = ({
   const next = () =>
     setCurr((curr) => (curr === Children.count(slides) - 1 ? 0 : curr + 1));
 
+  const prev = () =>
+    setCurr((curr) => (curr === 0 ? Children.count(slides) - 1 : curr - 1));
+
   useEffect(() => {
     if (!autoSlide) return;
     const slideInterval = setInterval(next, autoSlideInterval);
@@ -52,7 +55,10 @@ const Carousel = ({
       </div>
       {containsCards && (
         <div className="absolute z-10 -ms-[1.6rem] w-[calc(100%+3.2rem)] top-[calc(50%-0.5rem)] -mt-4 flex justify-between">
-          <button className="bg-light text-dark-gray border border-gray-light rounded-full flex items-center justify-center h-9 w-9">
+          <button
+            className="bg-light text-dark-gray border border-gray-light rounded-full flex items-center justify-center h-9 w-9"
+            onClick={prev}
+          >
             <ChevronLeft />
           </button>
           <button
