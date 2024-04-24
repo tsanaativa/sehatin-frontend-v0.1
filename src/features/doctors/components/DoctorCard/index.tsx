@@ -41,7 +41,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
             </div>
           </div>
           <Button
-            className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit mt-1 md:text-sm"
+            className="flex items-center justify-center gap-x-1 px-5 text-xs w-full mt-1 md:text-sm"
             variant="primary"
           >
             <MessageCircleMore size={14} /> Chat

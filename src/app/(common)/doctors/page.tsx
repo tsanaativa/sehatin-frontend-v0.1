@@ -17,7 +17,7 @@ const Doctors = () => {
             seeAllUrl={`/doctors/recent`}
           >
             <div className="overflow-x-auto">
-              <div className="flex flex-wrap min-w-max gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
+              <div className="flex flex-wrap min-w-max gap-3 sm:gap-4 md:gap-6 ">
                 {Array.from({ length: 4 }).map((val, idx) => (
                   <DoctorCard
                     key={idx}
@@ -56,7 +56,7 @@ const Doctors = () => {
               key={idx}
             >
               <div className="overflow-x-auto">
-                <div className="grid grid-cols-2 min-w-max gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
+                <div className="grid grid-cols-2 min-w-max gap-3 sm:gap-4 md:gap-6 ">
                   {Array.from({ length: 4 }).map((val, idx) => (
                     <DoctorCard
                       key={idx}
