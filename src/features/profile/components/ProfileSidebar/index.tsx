@@ -31,16 +31,17 @@ const ProfileSidebar = () => {
           </div>
         </li>
         {PROFILE_MENUS.map((menu, idx) => (
-          <li
-            key={idx}
-            className={`px-4 py-3 border-t border-gray-light ${
-              pathname === menu.link
-                ? 'text-primary-dark font-semibold'
-                : 'text-dark-gray'
-            }`}
-          >
-            <Link href={menu.link}>{menu.label}</Link>
-          </li>
+          <Link href={menu.link} key={idx}>
+            <li
+              className={`px-4 py-3 border-t border-gray-light ${
+                pathname === menu.link
+                  ? 'text-primary-dark font-semibold'
+                  : 'text-dark-gray'
+              }`}
+            >
+              {menu.label}
+            </li>
+          </Link>
         ))}
       </ul>
     </div>
