@@ -13,10 +13,28 @@ const Doctors = () => {
       <div className="max-w-[1150px] py-4 w-full px-4 sm:px-6 md:py-10">
         <div className="flex flex-col">
           <CategorizeSection
+            title={'My Recent Doctors'}
+            seeAllUrl={`/doctors/recent`}
+          >
+            <div className="overflow-x-auto">
+              <div className="flex flex-wrap min-w-max gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
+                {Array.from({ length: 4 }).map((val, idx) => (
+                  <DoctorCard
+                    key={idx}
+                    width="min-w-[100px]"
+                    doctor={DUMMY_DOCTOR}
+                    isMini
+                  />
+                ))}
+              </div>
+            </div>
+          </CategorizeSection>
+          <CategorizeSection
             title={'Specialists'}
             seeAllUrl={`/doctors/specialist`}
+            className="mt-6 md:mt-16"
           >
-            <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto mt-2 md:mt-4 md:gap-x-8 md:text-lg">
+            <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto md:gap-x-8 md:text-lg">
               {DISPLAYED_SPECIALISTS.map((specialist, idx) => (
                 <Link
                   href={`/doctors/search?specialistId=${specialist.id}`}

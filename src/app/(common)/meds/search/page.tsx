@@ -1,4 +1,4 @@
-import { ProductCard, SortDropdown } from '@/components/common';
+import { ProductCard } from '@/components/common';
 import FilterDropdown from '@/components/common/FilterDropdown';
 import Pagination from '@/components/common/Pagination';
 import MedsSortDropdown from '@/features/meds/components/MedsSortDropdown';

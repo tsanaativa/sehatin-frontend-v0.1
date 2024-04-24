@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import React from 'react';
 
-type CategorizationCardProps = {
+type CategorizeCardProps = {
   link: string;
   icon: React.ReactElement;
   name: string;
 };
 
-const CategorizationCard = ({ link, icon, name }: CategorizationCardProps) => {
+const CategorizeCard = ({ link, icon, name }: CategorizeCardProps) => {
   return (
     <Link href={link}>
       <div className="h-full bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
@@ -18,4 +18,4 @@ const CategorizationCard = ({ link, icon, name }: CategorizationCardProps) => {
   );
 };
 
-export default CategorizationCard;
+export default CategorizeCard;
