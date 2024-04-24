@@ -1,9 +1,9 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PaginationButton from './PaginationButton';
 
-const Pagination = () => {
+const Pagination = ({ className }: { className?: string }) => {
   return (
-    <div className="flex justify-center gap-2 md:gap-3 w-full">
+    <div className={`flex justify-center gap-2 md:gap-3 w-full ${className}`}>
       <PaginationButton disabled>
         <ChevronLeft />
       </PaginationButton>

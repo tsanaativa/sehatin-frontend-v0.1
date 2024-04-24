@@ -11,5 +11,6 @@ export { default as UserPageHeader } from './UserPageHeader';
 export { default as Counter } from './Counter';
 export { default as Icon } from './Icon';
 export { default as Modal } from './Modal';
+export { default as OrderCard } from './OrderCard';
 export { default as CategorizeCard } from './CategorizeCard';
 export { default as CategorizeSection } from './CategorizeSection';

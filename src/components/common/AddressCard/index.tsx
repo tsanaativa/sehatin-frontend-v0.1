@@ -39,7 +39,7 @@ const AddressCard = ({ address }: AddressCardProps) => {
       <span className="md:hidden text-dark-gray">
         <ChevronRight size={20} />
       </span>
-      <div className="flex items-center gap-2 hidden md:flex">
+      <div className="items-center gap-2 hidden md:flex">
         <button className="flex items-center text-blue">
           <Edit2 size={20} />
         </button>
