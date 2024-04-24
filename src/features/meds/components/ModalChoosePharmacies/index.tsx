@@ -1,6 +1,5 @@
 import { Modal } from '@/components/common';
-import Badge from '@/components/common/Badge';
-import { MapPin, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { ChoosePharmaciesList } from '..';
 
 type ModalChoosePharmaciesProps = {
@@ -14,7 +13,7 @@ const ModalChoosePharmacies = ({
 }: ModalChoosePharmaciesProps) => {
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
-      <div className="flex items-center justify-between border-b border-gray-light font-poppins font-semibold text-sm px-4 py-4">
+      <div className="flex items-center justify-between border-b border-gray-light font-poppins font-semibold text-sm px-4 py-4 md:text-lg">
         Choose Pharmacy{' '}
         <X
           className="text-gray cursor-pointer"

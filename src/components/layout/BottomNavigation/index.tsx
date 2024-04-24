@@ -12,7 +12,7 @@ const BottomNavigation = () => {
   return (
     <>
       {isPage ? (
-        <div className="fixed bottom-0 w-full bg-light rounded-tl-lg rounded-tr-lg border-t-2 border-t-gray-lighter md:hidden">
+        <div className="fixed bottom-0 z-50 w-full bg-light rounded-tl-lg rounded-tr-lg border-t-2 border-t-gray-lighter md:hidden">
           <ul className="flex items-center justify-between px-6 py-3">
             {MENUS.map((menu, idx) => {
               if (menu.label === 'Consult') {
