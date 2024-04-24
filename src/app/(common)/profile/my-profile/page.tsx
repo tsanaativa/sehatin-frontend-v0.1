@@ -3,7 +3,7 @@ import Image from 'next/image';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { Edit3 } from 'lucide-react';
 import { DUMMY_USER } from '@/constants/dummy';
-import ChangePasswordModal from '@/features/profile/ChangePasswordModal';
+import ChangePasswordModal from '@/features/profile/components/ChangePasswordModal';
 
 const MyProfile = () => {
   return (

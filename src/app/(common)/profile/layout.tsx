@@ -1,4 +1,4 @@
-import ProfileSidebar from '@/features/profile/ProfileSidebar';
+import ProfileSidebar from '@/features/profile/components/ProfileSidebar';
 import React from 'react';
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
