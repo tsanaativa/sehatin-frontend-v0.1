@@ -1,5 +1,3 @@
-import React from 'react';
-
 type PaginationButtonProps = {
   disabled?: boolean;
   active?: boolean;

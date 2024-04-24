@@ -9,7 +9,6 @@ import {
 import ChildBadge from '@/assets/icons/ChildBadge';
 import PregnantBadge from '@/assets/icons/PregnantBadge';
 import Link from 'next/link';
-import React from 'react';
 
 const CategoriesSection = () => {
   return (

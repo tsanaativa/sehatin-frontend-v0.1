@@ -1,7 +1,6 @@
 import { Button } from '@/components/common';
 import CategoriesSection from '@/components/common/CategoriesSection';
 import ProductsSection from '@/components/common/ProductsSection';
-import React from 'react';
 
 const Meds = () => {
   return (

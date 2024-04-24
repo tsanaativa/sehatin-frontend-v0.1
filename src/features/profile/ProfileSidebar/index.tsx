@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import Image from 'next/image';
 import { PROFILE_MENUS } from '@/constants/menus';
@@ -23,6 +22,7 @@ const ProfileSidebar = () => {
               priority
               alt="Profile"
             />
+
             <div>
               <p className="font-semibold line-clamp-1">{DUMMY_USER.name}</p>
               <p className="text-sm text-dark-gray line-clamp-1">

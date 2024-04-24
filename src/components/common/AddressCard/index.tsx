@@ -2,7 +2,6 @@ import { LocationIcon } from '@/assets/icons';
 import { Address } from '@/types/Address';
 import { formatAddress } from '@/utils/address';
 import { Check, ChevronRight, Edit2, Trash2 } from 'lucide-react';
-import React from 'react';
 import Badge from '../Badge';
 
 type AddressCardProps = {

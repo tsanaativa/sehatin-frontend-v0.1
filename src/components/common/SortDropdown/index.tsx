@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '..';
 import { CheckIcon, ChevronDown } from 'lucide-react';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
@@ -45,7 +45,7 @@ const SortDropdown = () => {
         <div className="flex flex-col text-dark-gray">
           <label
             htmlFor="distance"
-            className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs md:text-sm flex gap-2 flex items-center cursor-pointer"
+            className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs md:text-sm gap-2 flex items-center cursor-pointer"
           >
             <span
               className={`${sortBy === 'distance' ? 'visible' : 'invisible'}`}
@@ -69,7 +69,7 @@ const SortDropdown = () => {
           </label>
           <label
             htmlFor="price"
-            className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs md:text-sm flex gap-2 flex items-center cursor-pointer"
+            className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs md:text-sm gap-2 flex items-center cursor-pointer"
           >
             <span className={`${sortBy === 'price' ? 'visible' : 'invisible'}`}>
               <div className="md:hidden">

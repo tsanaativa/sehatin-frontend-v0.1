@@ -3,7 +3,6 @@ import FilterDropdown from '@/components/common/FilterDropdown';
 import Pagination from '@/components/common/Pagination';
 import SortDropdown from '@/components/common/SortDropdown';
 import Link from 'next/link';
-import React from 'react';
 
 const ProductsByCategory = () => {
   return (

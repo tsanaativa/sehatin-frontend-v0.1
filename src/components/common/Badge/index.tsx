@@ -1,5 +1,3 @@
-import React from 'react';
-
 type BadgeProps = {
   variant?: 'primary' | 'gray' | 'blue' | 'success' | 'warning' | 'danger';
   className?: string;

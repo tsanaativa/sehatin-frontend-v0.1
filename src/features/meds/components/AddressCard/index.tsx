@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { LocationIcon } from '@/assets/icons';
 import { useOutsideClick } from '@/hooks/useOutsideClick';

@@ -1,5 +1,4 @@
 import UserPageHeader from '@/components/common/UserPageHeader';
-import React from 'react';
 
 const MedsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
