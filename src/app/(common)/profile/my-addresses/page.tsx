@@ -1,6 +1,7 @@
 import { Button } from '@/components/common';
 import AddressCard from '@/components/common/AddressCard';
 import { DUMMY_ADDRESSES } from '@/constants/dummy';
+import AddAddressModalButton from '@/features/profile/components/AddAddressModalButton';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
@@ -27,12 +28,7 @@ const MyAddresses = () => {
         ))}
       </div>
       <div className="flex justify-center mt-6 md:justify-end">
-        <Button
-          variant="outlined-primary"
-          className="flex items-center justify-center gap-1 px-6 w-full md:w-fit"
-        >
-          <Plus size={15} /> Add Address
-        </Button>
+        <AddAddressModalButton />
       </div>
     </div>
   );
