@@ -1,8 +1,6 @@
-import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
-import { Edit3 } from 'lucide-react';
+import AvatarUploader from '@/components/common/AvatarUploader';
 import { DUMMY_USER } from '@/constants/dummy';
 import ChangePasswordModal from '@/features/profile/components/ChangePasswordModal';
-import Image from 'next/image';
 
 const MyProfile = () => {
   return (
@@ -11,20 +9,7 @@ const MyProfile = () => {
         My Profile
       </h2>
       <div className="flex flex-col items-center gap-10 mt-5 md:flex-row md:items-start">
-        <div className="relative w-fit h-fit">
-          <Image
-            width={150}
-            src={DefaultAvatarImg}
-            className="rounded-full"
-            priority
-            alt="Profile"
-          />
-          <div className="absolute right-[0.125rem] bottom-[0.25rem]">
-            <button className="bg-primary text-light p-1 rounded-full">
-              <Edit3 fill="white" size={15} />
-            </button>
-          </div>
-        </div>
+        <AvatarUploader />
         <div className="w-full">
           <ul>
             <li className="">
