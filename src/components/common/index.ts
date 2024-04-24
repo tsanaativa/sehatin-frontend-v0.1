@@ -8,3 +8,5 @@ export { default as FilterDropdown } from './FilterDropdown';
 export { default as Pagination } from './Pagination';
 export { default as Counter } from './Counter';
 export { default as Icon } from './Icon';
+export { default as RadioBox } from './RadioBox';
+export { default as Input } from './Input';

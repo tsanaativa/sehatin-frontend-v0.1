@@ -6,6 +6,7 @@ export { default as TwitterIcon } from './TwitterIcon';
 export { default as TiktokIcon } from './TiktokIcon';
 export { default as BadgeCheckIcon } from './BadgeCheckIcon';
 export { default as DoctorBadge } from './DoctorBadge';
+export { default as PatientBadge } from './PatientBadge';
 export { default as MedicineBadge } from './MedicineBadge';
 export { default as VitaminBadge } from './VitaminBadge';
 export { default as HeadacheBadge } from './HeadacheBadge';
