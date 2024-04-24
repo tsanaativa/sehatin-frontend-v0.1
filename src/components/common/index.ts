@@ -9,3 +9,4 @@ export { default as Pagination } from './Pagination';
 export { default as Counter } from './Counter';
 export { default as Icon } from './Icon';
 export { default as Modal } from './Modal';
+export { default as OrderCard } from './OrderCard';
