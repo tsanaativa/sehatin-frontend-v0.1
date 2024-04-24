@@ -19,7 +19,7 @@ const ModalChangePassword = ({
           onClick={() => onShowModal(false)}
         />
       </div>
-      <div className="flex flex-col gap-y-2 px-4 py-4 min-w-[500px]">
+      <div className="flex flex-col gap-y-2 px-4 py-4 md:min-w-[500px]">
         <div className="flex flex-col gap-4 text-xs text-dark-gray md:text-base">
           <div>
             <label>Password</label>
