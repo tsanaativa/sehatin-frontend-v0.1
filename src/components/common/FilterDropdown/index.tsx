@@ -1,5 +1,4 @@
 import { SlidersHorizontal } from 'lucide-react';
-import React from 'react';
 import { Button } from '..';
 
 const FilterDropdown = () => {
