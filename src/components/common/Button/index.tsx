@@ -3,7 +3,9 @@ type ButtonProps = {
     | 'primary'
     | 'primary-light'
     | 'outlined-primary'
-    | 'outlined-danger';
+    | 'outlined-danger'
+    | 'danger'
+    | 'outlined-gray';
   loading?: boolean;
 } & React.ComponentPropsWithoutRef<'button'>;
 
@@ -22,6 +24,9 @@ const Button = ({
       'text-primary-dark bg-light border border-primary-dark hover:text-light hover:bg-primary-dark',
     'outlined-danger': '',
     'primary-light': 'text-primary-dark bg-primary-border',
+    danger: 'text-white bg-danger hover:bg-danger/80',
+    'outlined-gray':
+      'text-dark-gray border border-gray-light hover:bg-gray-light',
   };
 
   return (
