@@ -1,11 +1,12 @@
 import { Button, Counter } from '@/components/common';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
+import { PharmacyModal } from '@/features/meds/components';
 
 const MedsDetail = () => {
   return (
     <div className="bg-light w-full flex justify-center">
-      <div className="flex flex-wrap h-fit md:px-4 md:flex-nowrap md:gap-x-4 md:pt-10 md:pb-20 md:max-w-[1150px]">
+      <div className="flex flex-wrap h-fit pb-10 md:px-4 md:flex-nowrap md:gap-x-4 md:pt-10 md:pb-20 md:max-w-[1150px]">
         <Image
           src="https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           className="w-full h-1/2 object-cover md:w-1/2"
@@ -28,14 +29,15 @@ const MedsDetail = () => {
             </div>
             <Counter className="md:hidden" />
           </div>
-          <div></div>
+          <div className="text-xs text-dark mt-2 md:text-base">Stock: 8</div>
+          <PharmacyModal />
           <div className="hidden items-center gap-x-10 mt-6 md:flex">
             <Counter />
             <Button className="w-40 flex items-center justify-center gap-x-1 font-poppins font-semibold text-sm">
               <Plus size={14} /> Add to Cart
             </Button>
           </div>
-          <div className="flex flex-col gap-y-4 mt-6">
+          <div className="flex flex-col gap-y-4 mt-4 md:mt-6">
             <div className="flex flex-col gap-y-1">
               <span className="font-poppins font-semibold text-sm text-dark md:text-base">
                 Generic Name
@@ -121,7 +123,7 @@ const MedsDetail = () => {
             </div>
           </div>
         </div>
-        <div className="fixed bottom-0 z-10 w-full bg-light px-4 py-4 sm:px-6 md:hidden">
+        <div className="fixed bottom-0 z-10 w-full bg-light border-t-2 border-t-gray-lighter px-4 py-4 sm:px-6 md:hidden">
           <Button className="w-full flex items-center justify-center gap-x-1 font-poppins font-semibold text-sm">
             <Plus size={14} /> Add to Cart
           </Button>
