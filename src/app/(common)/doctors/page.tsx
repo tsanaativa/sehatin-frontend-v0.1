@@ -1,4 +1,5 @@
 import { Button } from '@/components/common';
+import CategorizeCard from '@/components/common/CategorizeCard';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
@@ -34,17 +35,14 @@ const Doctors = () => {
             seeAllUrl={`/doctors/specialist`}
             className="mt-6 md:mt-16"
           >
-            <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto md:gap-x-8 md:text-lg">
+            <div className="grid grid-cols-4 gap-x-52 gap-y-4 overflow-x-auto md:gap-x-6 md:text-lg">
               {DISPLAYED_SPECIALISTS.map((specialist, idx) => (
-                <Link
-                  href={`/doctors/search?specialistId=${specialist.id}`}
+                <CategorizeCard
                   key={idx}
-                >
-                  <div className="h-full bg-primary-light flex items-center gap-x-4 w-48 rounded-lg px-4 py-4 md:w-full">
-                    <div className="min-w-fit">{specialist.icon}</div>
-                    <span className="line-clamp-2">{specialist.name}</span>
-                  </div>
-                </Link>
+                  link={`/doctors/search?specialistId=${specialist.id}`}
+                  icon={specialist.icon}
+                  name={specialist.name}
+                />
               ))}
             </div>
           </CategorizeSection>
@@ -60,7 +58,7 @@ const Doctors = () => {
                   {Array.from({ length: 4 }).map((val, idx) => (
                     <DoctorCard
                       key={idx}
-                      width="min-w-[350px]"
+                      width="min-w-[350px] md:min-w-[400px]"
                       doctor={DUMMY_DOCTOR}
                     />
                   ))}

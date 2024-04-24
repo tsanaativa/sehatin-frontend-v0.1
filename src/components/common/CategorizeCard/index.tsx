@@ -3,7 +3,7 @@ import React from 'react';
 
 type CategorizeCardProps = {
   link: string;
-  icon: React.ReactElement;
+  icon: React.ReactNode;
   name: string;
 };
 
