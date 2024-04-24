@@ -1,8 +1,8 @@
 'use client';
-import ModalPharmacyDetail from '../ModalPharmacyDetail';
-import ModalChoosePharmacies from '../ModalChoosePharmacies';
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import ModalChoosePharmacies from '../ModalChoosePharmacies';
+import ModalPharmacyDetail from '../ModalPharmacyDetail';
 
 const PharmacyModal = () => {
   const [showPharmacyDetail, setShowPharmacyDetail] = useState<boolean>(false);
