@@ -1,11 +1,11 @@
 'use client';
 
+import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
+import { DUMMY_USER } from '@/constants/dummy';
+import { PROFILE_MENUS } from '@/constants/menus';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
-import Image from 'next/image';
-import { PROFILE_MENUS } from '@/constants/menus';
-import { DUMMY_USER } from '@/constants/dummy';
 
 const ProfileSidebar = () => {
   const pathname = usePathname();

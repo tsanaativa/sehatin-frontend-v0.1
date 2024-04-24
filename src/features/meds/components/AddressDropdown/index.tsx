@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { LocationIcon } from '@/assets/icons';
+import { DEFAULT_ADDRESS } from '@/constants/address';
+import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
-import Link from 'next/link';
-import { DUMMY_ADDRESSES } from '@/constants/dummy';
-import { DEFAULT_ADDRESS } from '@/constants/address';
 import { formatAddress } from '@/utils/address';
+import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
 const AddressDropdown = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
