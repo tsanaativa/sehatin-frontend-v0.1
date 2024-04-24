@@ -35,7 +35,7 @@ const ProfileSidebar = () => {
           <li
             key={idx}
             className={`px-4 py-3 border-t border-gray-light ${
-              pathname === menu.link
+              pathname.includes(menu.link)
                 ? 'text-primary-dark font-semibold'
                 : 'text-dark-gray'
             }`}
