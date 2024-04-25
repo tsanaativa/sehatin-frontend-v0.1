@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react';
 import { ProductCard } from '..';
 
 type ProductsSectionProps = {
@@ -10,7 +9,7 @@ type ProductsSectionProps = {
 const ProductsSection = ({ title, seeAllUrl }: ProductsSectionProps) => {
   return (
     <section className="mt-6 md:mt-16">
-      <div className="flex items-center justify-between items-center">
+      <div className="flex items-center justify-between">
         <span className="font-poppins font-semibold text-dark md:text-2xl">
           {title}
         </span>

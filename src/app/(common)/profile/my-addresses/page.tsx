@@ -2,7 +2,6 @@ import { Button } from '@/components/common';
 import AddressCard from '@/components/common/AddressCard';
 import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import { Plus } from 'lucide-react';
-import React from 'react';
 
 const MyAddresses = () => {
   return (

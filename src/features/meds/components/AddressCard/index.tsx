@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { LocationIcon } from '@/assets/icons';
+import { DEFAULT_ADDRESS } from '@/constants/address';
+import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
+import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { DUMMY_ADDRESSES } from '@/constants/dummy';
-import { DEFAULT_ADDRESS } from '@/constants/address';
+import React, { useEffect, useState } from 'react';
 
 const AddressCard = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -72,7 +72,7 @@ const AddressCard = () => {
       >
         <div className="flex flex-col text-dark-gray">
           {addressOpts.length === 0 ? (
-            <div className="flex gap-2 flex items-center justify-center p-2 border-b border-gray-light">
+            <div className="flex gap-2 items-center justify-center p-2 border-b border-gray-light">
               <span className="mt-1">
                 You have no addresses.{' '}
                 <Link href="/profile/address">
@@ -88,7 +88,7 @@ const AddressCard = () => {
                 <label
                   key={idx}
                   htmlFor={`addr-${idx}`}
-                  className="flex gap-2 flex items-center px-3 py-2 hover:bg-gray-lighter"
+                  className="flex gap-2 items-center px-3 py-2 hover:bg-gray-lighter"
                 >
                   <input
                     id={`addr-${idx}`}

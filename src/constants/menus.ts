@@ -1,4 +1,5 @@
 import { icons } from 'lucide-react';
+
 type MENU_TYPE = {
   label: string;
   link: string;
@@ -23,7 +24,7 @@ export const MENUS: MENU_TYPE[] = [
   },
   {
     label: 'Orders',
-    link: '/orders',
+    link: '/profile/my-orders',
     icon: 'ClipboardList',
   },
   {
@@ -37,6 +38,8 @@ export const MEDS_PATHS_MAP = {
   meds: 'Medicines',
   category: 'Category',
   search: 'Search',
+  doctors: 'Doctors',
+  specialist: 'Specialist',
 };
 
 export const PROFILE_MENUS: MENU_TYPE[] = [

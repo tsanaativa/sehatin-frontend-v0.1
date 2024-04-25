@@ -1,12 +1,11 @@
 'use client';
 
+import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
+import { DUMMY_USER } from '@/constants/dummy';
+import { PROFILE_MENUS } from '@/constants/menus';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
-import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
-import Image from 'next/image';
-import { PROFILE_MENUS } from '@/constants/menus';
-import { DUMMY_USER } from '@/constants/dummy';
 
 const ProfileSidebar = () => {
   const pathname = usePathname();
@@ -23,6 +22,7 @@ const ProfileSidebar = () => {
               priority
               alt="Profile"
             />
+
             <div>
               <p className="font-semibold line-clamp-1">{DUMMY_USER.name}</p>
               <p className="text-sm text-dark-gray line-clamp-1">
@@ -35,7 +35,7 @@ const ProfileSidebar = () => {
           <li
             key={idx}
             className={`px-4 py-3 border-t border-gray-light ${
-              pathname === menu.link
+              pathname.includes(menu.link)
                 ? 'text-primary-dark font-semibold'
                 : 'text-dark-gray'
             }`}

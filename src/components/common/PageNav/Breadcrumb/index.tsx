@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import Link from 'next/link';
 import { getPageName } from '@/utils/pageHeader';
+import Link from 'next/link';
+import React, { ReactNode } from 'react';
 
 type BreadcrumbProps = {
   paths: string;
