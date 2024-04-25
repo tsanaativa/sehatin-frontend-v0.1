@@ -22,7 +22,7 @@ const Doctors = () => {
                 {Array.from({ length: 4 }).map((val, idx) => (
                   <DoctorCard
                     key={idx}
-                    width="min-w-[100px]"
+                    width="w-[160px]"
                     doctor={DUMMY_DOCTOR}
                     isMini
                   />
