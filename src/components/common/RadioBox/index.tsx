@@ -1,8 +1,6 @@
-import React from 'react';
-
-type RadioBoxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type RadioBoxProps = React.ComponentPropsWithoutRef<'input'> & {
   children: React.ReactNode;
-  boxClass?: string;
+  boxClass?: React.ComponentPropsWithoutRef<'label'>['className'];
   isActive?: boolean;
   onSelect?: () => void;
 };

@@ -3,7 +3,7 @@ import RegistrationForm from '@/features/auth/components/RegistrationForm';
 
 const Register = () => {
   return (
-    <Auth>
+    <Auth reverse>
       <RegistrationForm />
     </Auth>
   );

@@ -6,7 +6,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/features/**/*/*.{js,ts,jsx,tsx,mdx}',
-    './src/assets/icons/*.{js,ts,jsx,tsx,mdx}',
+    './src/assets/icons/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -21,6 +21,7 @@ const config: Config = {
         'primary-disabled': '99CFD2',
         'primary-light': '#EDFCFD',
         'primary-border': '#E4F2F3',
+        'primary-text': '#101623',
         secondary: '#0D2D53',
         'dark-gray': '#7A7979',
         gray: '#A1A8B0',

@@ -1,10 +1,6 @@
 export const validate = (value: string, id: string) => {
-  if (id == 'name') {
-    if (value == '') return 'name cannot be empty';
-  }
   if (id == 'email') {
-    if (value == '') return 'email cannot be empty';
-    else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value))
+    if (!/^[\w.]+@([\w-]+\.)+[\w]{2,4}$/.test(value))
       return 'invalid email format';
   }
   if (id.endsWith('password')) {
@@ -19,6 +15,9 @@ export const validate = (value: string, id: string) => {
     else if (!/.{8,}/.test(value))
       return 'password must contain at least 8 characters';
     else if (!/^\S+$/.test(value)) return 'password cannot contain space';
+  }
+  if (id.includes('number')) {
+    if (!/^\d+$/.test(value)) return 'this fieald just receive number';
   }
   return '';
 };

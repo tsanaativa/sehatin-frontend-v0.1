@@ -8,7 +8,7 @@ type InputProps = ComponentPropsWithoutRef<'input'> & {
   prepend?: string;
   append?: string;
   message?: string;
-  inputClass?: string;
+  inputClass?: ComponentPropsWithoutRef<'div'>['className'];
   valueMode?: string;
   onAppend?: () => void;
 };
@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className="flex flex-col gap-1">
         <div
           className={`border-[1px] relative h-14 rounded-[10px] overflow-hidden w-full flex transition-colors duration-300
-          ${invalid ? 'border-danger' : 'border-gray-light hover:border-gray [&:has(:focus)]:border-primary'}
+          ${invalid ? 'border-danger' : 'border-gray-light hover:border-gray [&:has(:focus)]:border-primary-dark'}
           ${disabled ? 'bg-gray-light hover:border-gray-light' : ''} ${inputClass}`}
         >
           {prepend && !disabled && (
@@ -71,18 +71,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               type="button"
               onClick={onAppend}
               aria-label="append-button"
-              className="border-none pr-4 h-full flex items-center"
+              className="border-none pr-4 h-full flex items-center group/append"
             >
               <Icon
                 name={append as keyof typeof icons}
                 size={24}
-                className="stroke-gray"
+                className={`stroke-gray transition-colors duration-300 ${invalid ? 'group-hover/append:stroke-danger' : 'group-hover/append:stroke-primary-dark'}`}
               />
             </button>
           )}
         </div>
         {message && message.length > 0 && (
-          <span className="text-danger text-xs">{message}</span>
+          <span
+            className={`${invalid ? 'text-danger' : 'text-primary-text'} text-xs`}
+          >
+            {message}
+          </span>
         )}
       </div>
     );

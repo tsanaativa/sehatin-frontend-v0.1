@@ -1,20 +1,31 @@
-import Image from 'next/image';
-import React from 'react';
+import Image, { StaticImageData } from 'next/image';
+import AuthHero from '@/assets/images/register-hero.png';
+import { ComponentPropsWithoutRef } from 'react';
 
 type AuthWithRoleProps = {
   children: React.ReactNode;
+  heroImage?: StaticImageData;
+  reverse?: boolean;
   pageTitle?: string;
+  wrapperClass?: ComponentPropsWithoutRef<'div'>['className'];
 };
 
 const AuthWithRole = ({
   children,
+  heroImage = AuthHero,
+  reverse,
+  wrapperClass,
   pageTitle = 'Register',
 }: AuthWithRoleProps) => {
   return (
-    <div className="flex min-h-screen">
-      <div className="grid place-items-center py-[35px] px-[23px] sm:p-[35px] lg:p-[calc(.5rem+4vw)] min-w-[280px] w-full sm:min-w-[480px] sm:w-5/12">
-        <div className="w-full">
-          <h2 className="font-semibold text-2xl leading-[135%] text-center text-primary-text mb-10">
+    <div
+      className={`flex ${reverse ? 'flex-row-reverse' : ''} h-screen overflow-hidden`}
+    >
+      <div
+        className={`${reverse ? '' : 'no-scrollbar'} relative z-[1] grid place-items-center h-screen overflow-y-auto py-[35px] px-[23px] sm:p-[35px] lg:py-[calc(.5rem+2vw)] min-w-[280px] w-full sm:min-w-[480px] md:min-w-[576px] md:w-1/2 bg-light/50 backdrop-blur-xl ${wrapperClass}`}
+      >
+        <div className="w-full max-w-[520px]">
+          <h2 className="font-semibold font-poppins text-2xl leading-[135%] text-center text-primary-text mb-10">
             {pageTitle}
           </h2>
           <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
@@ -23,14 +34,12 @@ const AuthWithRole = ({
           {children}
         </div>
       </div>
-      <div className="w-7/12 hidden sm:block rounded-l-2xl overflow-hidden shadow-[-2px_0_10px_0] shadow-slate-300/50">
+      <div className="w-1/2 hidden md:flex items-center justify-center relative z-0">
         <Image
-          src="/auth-hero.png"
-          width={1920}
-          height={1920}
-          className="w-full h-full object-cover lg:object-right"
+          src={heroImage}
+          className={`min-h-[75vh] min-w-fit`}
           priority
-          alt="banner-hero-1"
+          alt="auth-hero"
         />
       </div>
     </div>
