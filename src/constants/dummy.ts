@@ -17,8 +17,6 @@ export const DUMMY_PRODUCT: Product = {
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 };
 
-export const DUMMY_SPECIALISTS: Specialist[] = DISPLAYED_SPECIALISTS;
-
 export const DUMMY_DOCTOR: Doctor = {
   id: 1,
   name: 'Dr. Doctro Pintar',
