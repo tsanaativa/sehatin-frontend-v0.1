@@ -1,9 +1,13 @@
+'use client';
+
 import { Button } from '@/components/common';
 import Badge from '@/components/common/Badge';
 import { Doctor } from '@/types/Doctor';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import ModalDoctorDetail from '../ModalDoctorDetail';
+import { useState } from 'react';
+import { getYearsOfExp } from '@/utils/doctor';
 
 type DoctorCardProps = {
   width?: string;
@@ -12,10 +16,11 @@ type DoctorCardProps = {
 };
 
 const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
-  const yearsOfExp = new Date().getFullYear() - doctor?.work_start_year;
+  const yearsOfExp = getYearsOfExp(doctor.work_start_year);
+  const [showDetail, setShowDetail] = useState(false);
 
   return (
-    <Link href="/doctors/dr-siapa-hayo">
+    <div role="button" onClick={() => setShowDetail(true)}>
       {isMini ? (
         <div
           className={`p-3 border-2 border-primary-border rounded-lg flex flex-col w-fit items-center gap-1 ${width}`}
@@ -77,8 +82,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
               variant="gray"
               className="w-fit flex gap-1 items-center font-bold"
             >
-              <BriefcaseBusiness size={15} /> {yearsOfExp} year
-              {yearsOfExp > 1 && 's'}
+              <BriefcaseBusiness size={15} /> {yearsOfExp}
             </Badge>
             <div className="flex justify-between items-center mt-3">
               <div className="flex items-center font-poppins font-medium text-secondary  md:text-sm lg:text-base">
@@ -94,7 +98,12 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
           </div>
         </div>
       )}
-    </Link>
+      <ModalDoctorDetail
+        doctor={doctor}
+        onShowModal={setShowDetail}
+        showModal={showDetail}
+      />
+    </div>
   );
 };
 
