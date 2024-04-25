@@ -5,7 +5,8 @@ type ButtonProps = {
     | 'outlined-primary'
     | 'outlined-danger'
     | 'danger'
-    | 'outlined-gray';
+    | 'outlined-gray'
+    | 'google';
   loading?: boolean;
 } & React.ComponentPropsWithoutRef<'button'>;
 
@@ -19,7 +20,7 @@ const Button = ({
 }: ButtonProps) => {
   const TYPE_STYLE = {
     primary:
-      'text-light bg-primary-dark hover:bg-primary-dark/80 disabled:bg-primary-disabled',
+      'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary-disabled',
     'outlined-primary':
       'text-primary-dark bg-light border border-primary-dark hover:text-light hover:bg-primary-dark',
     'outlined-danger': '',
@@ -27,11 +28,13 @@ const Button = ({
     danger: 'text-white bg-danger hover:bg-danger/80',
     'outlined-gray':
       'text-dark-gray border border-gray-light hover:bg-gray-light',
+    google:
+      'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark',
   };
 
   return (
     <button
-      className={`${TYPE_STYLE[variant]} ${className} font-poppins font-medium py-2 rounded-md transition`}
+      className={`${TYPE_STYLE[variant]} ${className} font-poppins font-medium py-2 rounded-md transition duration-300`}
       disabled={disabled || loading}
       {...buttonProps}
     >
