@@ -21,9 +21,6 @@ const ModalAddAddress = ({ onShowModal, showModal }: ModalAddAddressProps) => {
         <div className="flex flex-col gap-4 text-xs text-dark-gray md:text-base">
           <AddressForm />
         </div>
-        <Button className="flex items-center justify-center gap-x-2 mt-6">
-          Save
-        </Button>
       </div>
     </Modal>
   );
