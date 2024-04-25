@@ -19,10 +19,10 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
   return (
     <div>
       <ul
-        className={`min-w-[220px] ${!isMobile && 'border-gray-light'} rounded-lg lg:min-w-[250px]`}
+        className={`min-w-[220px] ${!isMobile && 'border border-gray-light'} rounded-lg lg:min-w-[250px]`}
       >
         {!isMobile && (
-          <li>
+          <li className="border-b border-gray-light">
             <div className="flex gap-3 p-4">
               <Image
                 width={43}
