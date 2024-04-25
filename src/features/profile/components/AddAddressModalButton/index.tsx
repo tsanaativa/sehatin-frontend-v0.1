@@ -9,7 +9,7 @@ const AddAddressModalButton = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
-    <div>
+    <>
       <Button
         variant="outlined-primary"
         className="flex items-center justify-center gap-1 px-6 w-full md:w-fit"
@@ -18,7 +18,7 @@ const AddAddressModalButton = () => {
         <Plus size={15} /> Add Address
       </Button>
       <ModalAddAddress onShowModal={setShowModal} showModal={showModal} />
-    </div>
+    </>
   );
 };
 
