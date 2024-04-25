@@ -23,7 +23,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
     <div role="button" onClick={() => setShowDetail(true)}>
       {isMini ? (
         <div
-          className={`p-3 border-2 border-primary-border rounded-lg flex flex-col w-fit items-center gap-1 ${width}`}
+          className={`p-3 border-2 border-primary-border rounded-lg flex flex-col items-center gap-1 ${width}`}
         >
           <div className="relative w-fit h-fit">
             <Image
@@ -38,7 +38,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
             ></div>
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-poppins font-medium text-dark max-w-[200px] line-clamp-1 md:max-w-[250px] lg:max-w-full">
+            <span className="font-poppins font-medium text-dark line-clamp-1 md:max-w-[250px] lg:max-w-full">
               {doctor.name}
             </span>
             <div className="font-semibold text-sm text-dark-gray md:text-base">
@@ -46,7 +46,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
             </div>
           </div>
           <Button
-            className="flex items-center justify-center gap-x-1 px-5 text-xs w-full mt-1 md:text-sm"
+            className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
             variant="primary"
           >
             <MessageCircleMore size={14} /> Chat

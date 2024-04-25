@@ -1,8 +1,7 @@
-import { WhatsAppIcon } from '@/assets/icons';
-import { Badge, Button, Modal } from '@/components/common';
+import { Button, Modal } from '@/components/common';
 import { Doctor } from '@/types/Doctor';
 import { getYearsOfExp } from '@/utils/doctor';
-import { BriefcaseBusiness, MessageCircleMore, X } from 'lucide-react';
+import { MessageCircleMore, X } from 'lucide-react';
 import Image from 'next/image';
 
 type ModalDoctorDetailProps = {
