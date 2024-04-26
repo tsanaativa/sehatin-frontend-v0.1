@@ -7,7 +7,7 @@ const DoctorBadge = ({
 }) => {
   return (
     <svg
-      style={isWhite ? { filter: 'grayscale(1)', opacity: '0.5' } : {}}
+      className={isWhite ? 'grayscale opacity-50' : ''}
       width={(55 / 56) * size}
       height={size}
       viewBox="0 0 55 55"
