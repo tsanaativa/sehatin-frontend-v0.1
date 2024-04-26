@@ -32,7 +32,7 @@ const interceptor = async (url: string) => {
       window.location.replace('/auth/login');
     }
     if (minuteDifference(isValidUser.exp) <= 0) {
-      const response = await fetch(base + '/refresh', {
+      const response = await fetch(base + '/refresh-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
