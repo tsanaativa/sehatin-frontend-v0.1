@@ -10,7 +10,7 @@ const ChangePasswordModal = () => {
     <div>
       <div
         role="button"
-        className="text-primary-dark font-semibold"
+        className="text-dark-gray font-semibold hover:underline"
         onClick={() => setShowModal(true)}
       >
         <p>Change Password?</p>

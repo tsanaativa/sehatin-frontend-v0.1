@@ -4,6 +4,7 @@ import { Doctor, Specialist } from '@/types/Doctor';
 import { Product } from '@/types/Product';
 import { DISPLAYED_SPECIALISTS } from './specialists';
 import { DISPLAYED_CATEGORIES } from './categories';
+import { User } from '@/types/User';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
@@ -20,6 +21,7 @@ export const DUMMY_PRODUCT: Product = {
 export const DUMMY_DOCTOR: Doctor = {
   id: 1,
   name: 'Dr. Doctro Pintar',
+  email: 'doctor.pintar@gmail.com',
   is_online: true,
   specialist: {
     id: 1,
@@ -67,11 +69,11 @@ export const DUMMY_ADDRESSES: Address[] = [
   },
 ];
 
-export const DUMMY_USER = {
+export const DUMMY_USER: User = {
   name: 'Vivin',
   email: 'vivin@gmail.com',
-  gender: 'Male',
-  birth_date: '2001/01/01',
+  gender: 'male',
+  birth_date: '2001-01-01',
 };
 
 export const DUMMY_CHOOSE_PHARMACIES = [

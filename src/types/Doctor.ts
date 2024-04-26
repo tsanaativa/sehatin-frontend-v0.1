@@ -6,6 +6,7 @@ export type Specialist = {
 export type Doctor = {
   id: number;
   name: string;
+  email: string;
   specialist: Specialist;
   is_online: boolean;
   work_start_year: number;
