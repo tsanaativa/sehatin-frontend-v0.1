@@ -7,7 +7,8 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { formatAddress } from '@/utils/address';
+import { useEffect, useState } from 'react';
 
 const AddressCard = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -42,10 +43,6 @@ const AddressCard = () => {
       setAddress(addressOpts[idx]);
     }
     setShowDropdown(false);
-  }
-
-  function formatAddress(addr: Address) {
-    return `${addr.address}, ${addr.subdistrict}, ${addr.district}, ${addr.city}, ${addr.province}, ${addr.postal_code}`;
   }
 
   return (
