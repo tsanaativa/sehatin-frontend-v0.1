@@ -22,6 +22,7 @@ const ProfileSidebar = () => {
               priority
               alt="Profile"
             />
+
             <div>
               <p className="font-semibold line-clamp-1">{DUMMY_USER.name}</p>
               <p className="text-sm text-dark-gray line-clamp-1">
@@ -34,7 +35,7 @@ const ProfileSidebar = () => {
           <li
             key={idx}
             className={`px-4 py-3 border-t border-gray-light ${
-              pathname === menu.link
+              pathname.includes(menu.link)
                 ? 'text-primary-dark font-semibold'
                 : 'text-dark-gray'
             }`}

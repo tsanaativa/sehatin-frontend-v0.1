@@ -72,7 +72,7 @@ const AddressCard = () => {
       >
         <div className="flex flex-col text-dark-gray">
           {addressOpts.length === 0 ? (
-            <div className="flex gap-2 flex items-center justify-center p-2 border-b border-gray-light">
+            <div className="flex gap-2 items-center justify-center p-2 border-b border-gray-light">
               <span className="mt-1">
                 You have no addresses.{' '}
                 <Link href="/profile/address">
@@ -88,7 +88,7 @@ const AddressCard = () => {
                 <label
                   key={idx}
                   htmlFor={`addr-${idx}`}
-                  className="flex gap-2 flex items-center px-3 py-2 hover:bg-gray-lighter"
+                  className="flex gap-2 items-center px-3 py-2 hover:bg-gray-lighter"
                 >
                   <input
                     id={`addr-${idx}`}

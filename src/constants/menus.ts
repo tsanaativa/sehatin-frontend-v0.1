@@ -1,4 +1,5 @@
 import { icons } from 'lucide-react';
+
 type MENU_TYPE = {
   label: string;
   link: string;
@@ -23,7 +24,7 @@ export const MENUS: MENU_TYPE[] = [
   },
   {
     label: 'Orders',
-    link: '/orders',
+    link: '/profile/my-orders',
     icon: 'ClipboardList',
   },
   {

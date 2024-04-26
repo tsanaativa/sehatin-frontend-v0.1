@@ -3,7 +3,7 @@
 import { Button } from '@/components/common';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 const SearchBar = () => {
   const router = useRouter();
