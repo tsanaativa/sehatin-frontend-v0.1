@@ -8,6 +8,8 @@ import Image from 'next/image';
 import ModalDoctorDetail from '../ModalDoctorDetail';
 import { useState } from 'react';
 import { getYearsOfExp } from '@/utils/doctor';
+import Link from 'next/link';
+import { DUMMY_USER } from '@/constants/dummy';
 
 type DoctorCardProps = {
   width?: string;

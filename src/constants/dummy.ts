@@ -70,6 +70,7 @@ export const DUMMY_ADDRESSES: Address[] = [
 ];
 
 export const DUMMY_USER: User = {
+  id: 1,
   name: 'Vivin',
   email: 'vivin@gmail.com',
   gender: 'male',
@@ -217,3 +218,36 @@ export const DUMMY_SPECIALISTS = {
   '106': 'Spesialis Penyakit Dalam (Pulmonologi)',
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
+
+export const DUMMY_CHAT = [
+  {
+    date: '2020-05-01',
+    chats: [
+      {
+        sentBy: 1,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hi. Please help',
+      },
+      {
+        sentBy: 2,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hello, how can I help you?',
+      },
+    ],
+  },
+  {
+    date: '2020-05-01',
+    chats: [
+      {
+        sentBy: 1,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hi. Please help',
+      },
+      {
+        sentBy: 2,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hello, how can I help you?',
+      },
+    ],
+  },
+];
