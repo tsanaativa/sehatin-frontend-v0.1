@@ -392,13 +392,13 @@ const ProfileForm = ({
         <div className="flex justify-end items-center">
           <Button
             variant="outlined-primary"
-            className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-full md:w-fit"
+            className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-fit"
           >
             Save
           </Button>
         </div>
       </form>
-      <div className="-mt-9 pb-6">
+      <div className="pb-6 -mt-8 md:-mt-9">
         <ChangePasswordModal />
       </div>
     </div>

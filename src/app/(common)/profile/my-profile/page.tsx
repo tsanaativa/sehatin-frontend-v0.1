@@ -1,8 +1,6 @@
 import AvatarUploader from '@/components/common/AvatarUploader';
 import ProfileForm from '@/components/common/ProfileForm';
 import { DUMMY_USER } from '@/constants/dummy';
-import ChangePasswordModal from '@/components/common/ChangePasswordModal';
-import ChangePasswordForm from '@/components/common/ChangePasswordForm';
 
 const MyProfile = () => {
   return (
