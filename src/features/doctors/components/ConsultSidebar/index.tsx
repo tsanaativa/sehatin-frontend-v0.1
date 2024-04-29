@@ -5,10 +5,14 @@ import DoctorDetailCard from '../DoctorDetailCard';
 import { Button } from '@/components/common';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import EndChatButton from '../EndChatButton';
 
 const ConsultSidebar = () => {
   const doctor = DUMMY_DOCTOR;
   const { id } = useParams();
+
+  const handleEndChat = () => {};
+
   return (
     <div className="flex flex-col gap-5 text-center items-center">
       <div className="border border-gray-light rounded min-w-[300px]">
@@ -20,9 +24,7 @@ const ConsultSidebar = () => {
             Edit Patient Data
           </Button>
         </Link>
-        <Button variant="outlined-danger" className="w-full">
-          End Chat
-        </Button>
+        <EndChatButton onConfirm={handleEndChat} />
       </div>
     </div>
   );
