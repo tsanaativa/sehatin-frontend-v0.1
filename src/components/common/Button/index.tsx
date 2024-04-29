@@ -27,8 +27,7 @@ const Button = ({
       'text-danger bg-danger-light border border-danger hover:text-light hover:bg-danger',
     'primary-light': 'text-primary-dark bg-primary-border',
     danger: 'text-white bg-danger hover:bg-danger/80',
-    'outlined-gray':
-      'text-dark-gray border border-gray-light hover:bg-gray-light',
+    'outlined-gray': 'text-dark-gray border border-gray hover:bg-gray-light',
     google:
       'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark',
   };

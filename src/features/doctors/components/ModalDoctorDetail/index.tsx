@@ -4,6 +4,7 @@ import { getYearsOfExp } from '@/utils/doctor';
 import { MessageCircleMore, X } from 'lucide-react';
 import Image from 'next/image';
 import DoctorDetailCard from '../DoctorDetailCard';
+import Link from 'next/link';
 
 type ModalDoctorDetailProps = {
   doctor: Doctor;
@@ -36,12 +37,14 @@ const ModalDoctorDetail = ({
               Rp {doctor.fee.toLocaleString('id')}
             </p>
           </div>
-          <Button
-            className="flex items-center text-nowrap justify-center gap-x-2 ps-4 pe-5"
-            variant="primary"
-          >
-            <MessageCircleMore size={14} /> Chat Now
-          </Button>
+          <Link href={`/consult/start/${doctor.id}`}>
+            <Button
+              className="flex items-center text-nowrap justify-center gap-x-2 ps-4 pe-5"
+              variant="primary"
+            >
+              <MessageCircleMore size={14} /> Chat Now
+            </Button>
+          </Link>
         </div>
       </div>
     </Modal>

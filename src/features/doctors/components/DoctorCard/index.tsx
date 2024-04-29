@@ -6,10 +6,9 @@ import { Doctor } from '@/types/Doctor';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
 import ModalDoctorDetail from '../ModalDoctorDetail';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { getYearsOfExp } from '@/utils/doctor';
 import Link from 'next/link';
-import { DUMMY_USER } from '@/constants/dummy';
 
 type DoctorCardProps = {
   width?: string;
@@ -20,6 +19,10 @@ type DoctorCardProps = {
 const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
   const yearsOfExp = getYearsOfExp(doctor.work_start_year);
   const [showDetail, setShowDetail] = useState(false);
+
+  const disableDefaultClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
     <div role="button" onClick={() => setShowDetail(true)}>
@@ -47,12 +50,17 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
               {doctor.specialist.name}
             </div>
           </div>
-          <Button
-            className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
-            variant="primary"
+          <Link
+            href={`/consult/start/${doctor.id}`}
+            onClick={disableDefaultClick}
           >
-            <MessageCircleMore size={14} /> Chat
-          </Button>
+            <Button
+              className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
+              variant="primary"
+            >
+              <MessageCircleMore size={14} /> Chat
+            </Button>
+          </Link>
         </div>
       ) : (
         <div
@@ -90,12 +98,18 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
               <div className="flex items-center font-poppins font-medium text-secondary  md:text-sm lg:text-base">
                 Rp {doctor.fee.toLocaleString('id')}
               </div>
-              <Button
-                className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit md:text-sm"
-                variant="primary"
+
+              <Link
+                href={`/consult/start/${doctor.id}`}
+                onClick={disableDefaultClick}
               >
-                <MessageCircleMore size={14} /> Chat
-              </Button>
+                <Button
+                  className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit md:text-sm"
+                  variant="primary"
+                >
+                  <MessageCircleMore size={14} /> Chat
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
