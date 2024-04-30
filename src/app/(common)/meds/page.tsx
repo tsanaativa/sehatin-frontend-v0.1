@@ -1,5 +1,5 @@
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
-import LoadMoreMeds from '@/features/meds/components/LoadMoreMeds';
+import MedsByCategories from '@/features/meds/components/MedsByCategories';
 
 const Meds = () => {
   return (
@@ -7,7 +7,7 @@ const Meds = () => {
       <div className="max-w-[1150px] py-4 w-full px-4 sm:px-6 md:py-10">
         <div className="flex flex-col">
           <CategoriesSection />
-          <LoadMoreMeds />
+          <MedsByCategories />
         </div>
       </div>
     </div>

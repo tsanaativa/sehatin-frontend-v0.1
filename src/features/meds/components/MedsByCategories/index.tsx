@@ -6,7 +6,7 @@ import { DISPLAYED_CATEGORIES } from '@/constants/categories';
 import { Category } from '@/types/Category';
 import React, { useState } from 'react';
 
-const LoadMoreMeds = () => {
+const MedsByCategories = () => {
   const NUMBER_OF_CATEGORIES_TO_FETCH = 2;
   const [offset, setOffset] = useState(NUMBER_OF_CATEGORIES_TO_FETCH);
   const [categories, setCategories] = useState<Category[]>(
@@ -39,4 +39,4 @@ const LoadMoreMeds = () => {
   );
 };
 
-export default LoadMoreMeds;
+export default MedsByCategories;
