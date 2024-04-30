@@ -1,5 +1,6 @@
 'use client';
 
+import NoDataFound from '@/components/common/NoDataFound';
 import Skeleton from '@/components/common/Skeleton';
 import { Category } from '@/types/Category';
 import api from '@/utils/api';
@@ -46,7 +47,7 @@ const AllCategories = () => {
         </div>
       ) : (
         <>
-          {categories && (
+          {categories.length > 0 ? (
             <div className="bg-light rounded-lg border border-gray-light mt-3 flex flex-col md:grid md:grid-cols-3 md:grid-flow-row md:mt-5 md:text-lg">
               {categories.map((category, idx) => (
                 <Link key={idx} href={`/meds/search?categoryId=${category.id}`}>
@@ -58,7 +59,17 @@ const AllCategories = () => {
                   </div>
                 </Link>
               ))}
+              {Array.from({ length: 3 - (categories.length % 3) }).map(
+                (val, idx) => (
+                  <div
+                    key={idx}
+                    className={`hidden border-gray-light py-3 px-4 ${idx !== 2 - (categories.length % 3) && 'border-e'} md:block`}
+                  ></div>
+                )
+              )}
             </div>
+          ) : (
+            <NoDataFound className="py-16" />
           )}
         </>
       )}
