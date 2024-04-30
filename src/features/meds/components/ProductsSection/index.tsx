@@ -2,6 +2,8 @@
 
 import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
+import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
+import Skeleton from '@/components/common/Skeleton';
 import { Category } from '@/types/Category';
 import { Product } from '@/types/Product';
 import api from '@/utils/api';
@@ -15,16 +17,14 @@ type ProductsSectionProps = {
 };
 
 const ProductsSection = ({ category }: ProductsSectionProps) => {
-  const [products, setProducts] = useState<Product[] | undefined>();
+  // const [products, setProducts] = useState<Product[] | undefined>();
   const [productsSlices, setProductsSlices] = useState<Array<Product[]>>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [user, setUser] = useState(getUser());
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setIsLoading(true);
-
         const params = {
           longitude: -6.226135037364805,
           latitude: 106.80978466685714,
@@ -35,7 +35,6 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           `/products/nearest`,
           params
         );
-        setProducts(res.data.products);
 
         const slicedProducts = splitToNProducts(res.data.products, 5);
         setProductsSlices(slicedProducts);
@@ -55,21 +54,25 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
       seeAllUrl={`/meds/search?categoryId=${category.id}`}
       className="mt-6 md:mt-16"
     >
-      {!isLoading && products ? (
+      {!isLoading ? (
         <>
           <div className="overflow-x-auto xl:hidden">
-            {products.length > 0 ? (
+            {productsSlices.length > 0 ? (
               <div className="grid grid-cols-6 min-w-max gap-3 sm:gap-4 md:gap-6 ">
-                {products.map((product, idx) => (
-                  <ProductCard
-                    key={idx}
-                    width="max-w-[197.2px]"
-                    product={product}
-                  />
+                {productsSlices.map((products, iter) => (
+                  <>
+                    {products.map((product, idx) => (
+                      <ProductCard
+                        key={idx}
+                        width="max-w-[197.2px]"
+                        product={product}
+                      />
+                    ))}
+                  </>
                 ))}
               </div>
             ) : (
-              <NoDataFound />
+              <NoDataFound className="min-h-[272px]" />
             )}
           </div>
           <div className="hidden xl:block">
@@ -80,7 +83,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
                     className="min-w-full relative overflow-x-auto"
                     key={iter}
                   >
-                    <div className="grid gap-3 grid-cols-5 sm:gap-4 md:gap-6 ">
+                    <div className="grid gap-3 grid-cols-5 sm:gap-4 md:gap-6">
                       {products.map((product, idx) => (
                         <ProductCard
                           key={idx}
@@ -93,12 +96,16 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
                 ))}
               </Carousel>
             ) : (
-              <NoDataFound />
+              <NoDataFound className="min-h-[272px]" />
             )}
           </div>
         </>
       ) : (
-        <div>Loading</div>
+        <div className="grid gap-3 grid-cols-5 overflow-hidden max-h-[272px] sm:gap-4 md:gap-6">
+          {Array.from({ length: 6 }).map((val, idx) => (
+            <ProductCardSkeleton key={idx} />
+          ))}
+        </div>
       )}
     </CategorizeSection>
   );

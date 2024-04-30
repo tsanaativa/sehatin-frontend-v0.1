@@ -1,8 +1,7 @@
 import { Address } from '@/types/Address';
 import { Category } from '@/types/Category';
-import { Doctor, Specialist } from '@/types/Doctor';
+import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
-import { DISPLAYED_SPECIALISTS } from './specialists';
 import { DISPLAYED_CATEGORIES } from './categories';
 import { User } from '@/types/User';
 
