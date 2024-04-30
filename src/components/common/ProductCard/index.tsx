@@ -1,8 +1,12 @@
+'use client';
+
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '..';
 import { Product } from '@/types/Product';
+import { getUser } from '@/utils/auth';
+import { useState } from 'react';
 
 type ProductCardProps = {
   width?: string;
@@ -10,6 +14,8 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ width, product }: ProductCardProps) => {
+  const [user, setUser] = useState(getUser());
+
   return (
     <div
       className={`border-2 border-primary-border rounded-lg md:w-full ${width}`}
@@ -40,6 +46,7 @@ const ProductCard = ({ width, product }: ProductCardProps) => {
         <Button
           className="flex items-center justify-center gap-x-1 w-full text-xs mt-4 md:text-sm"
           variant="primary"
+          disabled={!!!user}
         >
           <Plus size={14} /> Add to Cart
         </Button>

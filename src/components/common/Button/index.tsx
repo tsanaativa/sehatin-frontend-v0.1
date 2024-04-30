@@ -20,7 +20,7 @@ const Button = ({
 }: ButtonProps) => {
   const TYPE_STYLE = {
     primary:
-      'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary-disabled',
+      'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary/70',
     'outlined-primary':
       'text-primary-dark bg-light border border-primary-dark hover:text-light hover:bg-primary-dark',
     'outlined-danger': '',
