@@ -38,6 +38,15 @@ const SearchDoctors = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const newKeyword = searchParams.get('keyword') || '';
+    setParams((prev) => ({
+      ...prev,
+      page: prev.keyword !== newKeyword ? 1 : prev.page,
+      keyword: newKeyword,
+    }));
+  }, [searchParams]);
+
+  useEffect(() => {
     const fetchDoctors = async () => {
       try {
         setIsLoading(true);
