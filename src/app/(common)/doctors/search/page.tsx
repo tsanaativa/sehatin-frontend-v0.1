@@ -63,8 +63,16 @@ const SearchDoctors = () => {
       page: page,
     });
 
+    handleParamChange('page', page.toString());
+  };
+
+  const handleParamChange = (key: string, val: string) => {
     const newParams = new URLSearchParams(searchParams);
-    newParams.set('page', page.toString());
+    if (val !== '') {
+      newParams.set(key, val);
+    } else {
+      newParams.delete(key);
+    }
     replace(`${pathname}?${newParams.toString()}`);
   };
 
