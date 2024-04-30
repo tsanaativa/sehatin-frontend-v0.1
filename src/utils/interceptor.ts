@@ -1,18 +1,17 @@
 import { LoginResponse } from '@/types/Auth';
-import { minuteDifference } from './formHelper';
+import { minuteDifference } from './helper';
 import local from './localStorage';
 
-const userkey = process.env.USER_LOCAL_KEY as string;
-const base = process.env.BASE_URL as string;
+const userkey = process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string;
+const base = process.env.NEXT_PUBLIC_BASE_URL as string;
 
 const publicApiRoute = [
-  'register',
-  'login',
-  'refresh',
-  'forgotpassword',
-  'resetpassword',
-  'verifyemail',
-  'logout',
+  '/auth/register',
+  '/auth/login',
+  '/auth/refresh-token',
+  '/auth/oauth/google',
+  '/auth/verify',
+  '/auth/logout',
 ];
 
 const logout = async (): Promise<void> => {
@@ -25,7 +24,7 @@ const logout = async (): Promise<void> => {
 };
 
 const interceptor = async (url: string) => {
-  if (!publicApiRoute.includes(url.split('/')[1])) {
+  if (!publicApiRoute.some((p) => url.includes(p))) {
     const isValidUser = local.get(userkey) as LoginResponse;
     if (!isValidUser) {
       await logout();
