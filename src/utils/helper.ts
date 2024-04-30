@@ -1,3 +1,13 @@
+export const overflowHandler = (type: 'hidden' | 'auto') => {
+  setTimeout(() => {
+    document.getElementsByTagName('body')[0].style.overflow = type;
+    const notif = document.getElementById('unregister-notif');
+    if (notif) {
+      notif.style.display = type == 'hidden' ? 'none' : 'block';
+    }
+  }, 0);
+};
+
 export const longdate = (date: string): string => {
   const day = new Date(date).getDate();
   const month = new Date(date).toLocaleDateString('id-ID', { month: 'long' });
