@@ -13,7 +13,7 @@ const LoadMoreMeds = () => {
     DISPLAYED_CATEGORIES.slice(0, 2)
   );
 
-  const loadMoreUsers = async () => {
+  const loadMore = async () => {
     const offsetToFetch = offset + NUMBER_OF_CATEGORIES_TO_FETCH;
     setOffset(offsetToFetch);
     setCategories(DISPLAYED_CATEGORIES.slice(0, offsetToFetch));
@@ -29,7 +29,7 @@ const LoadMoreMeds = () => {
           <Button
             className="w-full my-6 md:text-lg md:max-w-[300px]"
             variant="outlined-primary"
-            onClick={loadMoreUsers}
+            onClick={loadMore}
           >
             Load More
           </Button>

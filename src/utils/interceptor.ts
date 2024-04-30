@@ -13,6 +13,7 @@ const publicApiRoute = [
   '/auth/verify',
   '/auth/logout',
   '/products/nearest',
+  '/categories',
 ];
 
 const logout = async (): Promise<void> => {

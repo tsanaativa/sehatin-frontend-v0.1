@@ -4,7 +4,6 @@ import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
-import Link from 'next/link';
 import React from 'react';
 
 const Doctors = () => {

@@ -3,7 +3,6 @@
 import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
 import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
-import Skeleton from '@/components/common/Skeleton';
 import { Category } from '@/types/Category';
 import { Product } from '@/types/Product';
 import api from '@/utils/api';
@@ -17,7 +16,6 @@ type ProductsSectionProps = {
 };
 
 const ProductsSection = ({ category }: ProductsSectionProps) => {
-  // const [products, setProducts] = useState<Product[] | undefined>();
   const [productsSlices, setProductsSlices] = useState<Array<Product[]>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [user, setUser] = useState(getUser());
