@@ -9,16 +9,18 @@ import DoctorsSortDropdown from '@/features/doctors/components/DoctorsSortDropdo
 import { Doctor, DoctorsParams } from '@/types/Doctor';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import api from '@/utils/api';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const SearchDoctors = () => {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
   const [params, setParams] = useState<DoctorsParams>({
     keyword: searchParams.get('keyword') || '',
-    page: 1,
+    page: parseInt(searchParams.get('page') || '1'),
     limit: 20,
     specialistId: searchParams.get('specialistId') || '',
     sortBy: '',
@@ -38,6 +40,7 @@ const SearchDoctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
+        setIsLoading(true);
         const res = await api.get<
           DoctorsParams,
           { pagination_info: PaginationInfo; doctors: Doctor[] }
@@ -53,6 +56,17 @@ const SearchDoctors = () => {
 
     fetchDoctors();
   }, [params]);
+
+  const handleMovePage = (page: number) => {
+    setParams({
+      ...params,
+      page: page,
+    });
+
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', page.toString());
+    replace(`${pathname}?${newParams.toString()}`);
+  };
 
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">
@@ -101,7 +115,7 @@ const SearchDoctors = () => {
           )}
         </div>
         <div className="flex w-full py-4">
-          <Pagination />
+          <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
         </div>
       </div>
     </div>
