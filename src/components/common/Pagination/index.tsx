@@ -1,10 +1,9 @@
 'use client';
 
+import { usePagination } from '@/hooks/usePagination';
+import { PaginationInfo } from '@/types/PaginationInfo';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PaginationButton from './PaginationButton';
-import { useState } from 'react';
-import { PaginationInfo } from '@/types/PaginationInfo';
-import { usePagination } from '@/hooks/usePagination';
 
 type PaginationProps = {
   className?: string;
@@ -42,7 +41,14 @@ const Pagination = ({
 
       {paginationRange.map((pageNumber, idx) => {
         if (pageNumber === '...') {
-          return <span key={idx}>...</span>;
+          return (
+            <div
+              key={idx}
+              className="bg-light text-dark-gray w-10 h-10 flex items-center justify-center rounded"
+            >
+              ...
+            </div>
+          );
         }
         return (
           <PaginationButton
