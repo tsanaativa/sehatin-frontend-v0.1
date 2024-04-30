@@ -8,6 +8,7 @@ import api from '@/utils/api';
 import { LoginResponse } from '@/types/Auth';
 import local from '@/utils/localStorage';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -57,6 +58,7 @@ const LoginForm = () => {
       const res = await api.post('/auth/login', req);
       const user = res.data as LoginResponse;
       local.set(process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string, user);
+      toast.success('Successfully logged in');
       push('/');
       console.log(user);
     } catch (error) {
