@@ -12,6 +12,7 @@ const publicApiRoute = [
   '/auth/oauth/google',
   '/auth/verify',
   '/auth/logout',
+  '/products/nearest',
 ];
 
 const logout = async (): Promise<void> => {

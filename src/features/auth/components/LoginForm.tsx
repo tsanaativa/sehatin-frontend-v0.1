@@ -61,8 +61,9 @@ const LoginForm = () => {
       toast.success('Successfully logged in');
       push('/');
       console.log(user);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error(error?.message);
     } finally {
       setIsLoading(false);
     }

@@ -3,7 +3,7 @@ export type Product = {
   name: string;
   generic_name: string;
   selling_unit: string;
-  price: number;
+  price: string;
   image: string;
 };
 
