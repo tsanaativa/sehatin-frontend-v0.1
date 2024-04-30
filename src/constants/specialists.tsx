@@ -14,42 +14,42 @@ type SpecialistData = Specialist & {
 
 export const DISPLAYED_SPECIALISTS: SpecialistData[] = [
   {
-    id: 1,
+    id: 3,
     name: 'Sp. THT',
     icon: <ENTBadge />,
   },
   {
-    id: 2,
+    id: 1,
     name: 'Sp. Kandungan & Kebidanan',
     icon: <PregnantBadge />,
   },
   {
-    id: 3,
+    id: 6,
     name: 'Sp. Anak',
     icon: <ChildBadge />,
   },
   {
-    id: 3,
+    id: 2,
     name: 'Sp. Kulit & Kelamin',
     icon: <SkinBadge />,
   },
   {
-    id: 3,
+    id: 8,
     name: 'Dokter Gigi',
     icon: <TeethBadge />,
   },
   {
-    id: 3,
+    id: 15,
     name: 'Sp. Jantung & Pembuluh Darah',
     icon: <HeartBadge />,
   },
   {
-    id: 3,
+    id: 12,
     name: 'Sp. Paru',
     icon: <LungsBadge />,
   },
   {
-    id: 3,
+    id: 7,
     name: 'Sp. Mata',
     icon: <EyeBadge />,
   },
