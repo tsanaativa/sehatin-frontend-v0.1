@@ -39,7 +39,7 @@ const AllCategories = () => {
             >
               <Skeleton>
                 <div className="bg-gray-light">
-                  <span className="invisible">Obat</span>
+                  <span className="invisible">Category</span>
                 </div>
               </Skeleton>
             </div>
@@ -53,7 +53,7 @@ const AllCategories = () => {
                 <Link key={idx} href={`/meds/search?categoryId=${category.id}`}>
                   <div
                     key={idx}
-                    className={`border-gray-light px-3 py-2 ${idx + 1 !== categories.length && 'border-b md:border-b-0'} md:py-3 md:px-4 ${idx % 3 !== 2 && 'md:border-e'}`}
+                    className={`border-gray-light px-3 py-2 h-full ${idx + 1 !== categories.length && 'border-b md:border-b-0'} md:py-3 md:px-4 ${idx % 3 !== 2 && 'md:border-e'}`}
                   >
                     {category.name}
                   </div>
@@ -63,7 +63,7 @@ const AllCategories = () => {
                 (val, idx) => (
                   <div
                     key={idx}
-                    className={`hidden border-gray-light py-3 px-4 ${idx !== 2 - (categories.length % 3) && 'border-e'} md:block`}
+                    className={`hidden border-gray-light py-3 px-4 h-full ${idx !== 2 - (categories.length % 3) && 'border-e'} md:block`}
                   ></div>
                 )
               )}
