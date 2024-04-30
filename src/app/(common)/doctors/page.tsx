@@ -4,6 +4,7 @@ import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
+import DoctorsBySpecialists from '@/features/doctors/components/DoctorsBySpecialists';
 import React from 'react';
 
 const Doctors = () => {
@@ -45,34 +46,7 @@ const Doctors = () => {
               ))}
             </div>
           </CategorizeSection>
-          {shownSpecialists.map((specialist, idx) => (
-            <CategorizeSection
-              title={specialist.name}
-              seeAllUrl={`/doctors/search?specialistId=${specialist.id}`}
-              className="mt-6 md:mt-16"
-              key={idx}
-            >
-              <div className="overflow-x-auto">
-                <div className="grid grid-cols-2 min-w-max gap-3 sm:gap-4 md:gap-6 ">
-                  {Array.from({ length: 4 }).map((val, idx) => (
-                    <DoctorCard
-                      key={idx}
-                      width="min-w-[350px] md:min-w-[400px]"
-                      doctor={DUMMY_DOCTOR}
-                    />
-                  ))}
-                </div>
-              </div>
-            </CategorizeSection>
-          ))}
-          <div className="w-full flex justify-center mt-2 md:mt-10">
-            <Button
-              className="w-full my-6 md:text-lg md:max-w-[300px]"
-              variant="outlined-primary"
-            >
-              Load More
-            </Button>
-          </div>
+          <DoctorsBySpecialists />
         </div>
       </div>
     </div>

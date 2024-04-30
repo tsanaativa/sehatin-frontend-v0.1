@@ -38,7 +38,7 @@ export const minuteDifference = (date: string): number => {
   return Math.round((diff + Number.EPSILON) * 100) / 100;
 };
 
-export const splitToNProducts = (array: Product[], n: number) => {
+export const splitToNArrays = <T>(array: T[], n: number) => {
   let result = [];
   for (let i = Math.ceil(array.length / n); i > 0; i--) {
     result.push(array.splice(0, n));

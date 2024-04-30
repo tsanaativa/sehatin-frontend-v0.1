@@ -7,7 +7,7 @@ import { Category } from '@/types/Category';
 import { Product } from '@/types/Product';
 import api from '@/utils/api';
 import { getUser } from '@/utils/auth';
-import { splitToNProducts } from '@/utils/helper';
+import { splitToNArrays } from '@/utils/helper';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -34,7 +34,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           params
         );
 
-        const slicedProducts = splitToNProducts(res.data.products, 5);
+        const slicedProducts = splitToNArrays<Product>(res.data.products, 5);
         setProductsSlices(slicedProducts);
       } catch (error: any) {
         toast.error(error.message);

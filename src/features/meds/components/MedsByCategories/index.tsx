@@ -5,6 +5,7 @@ import ProductsSection from '@/features/meds/components/ProductsSection';
 import { DISPLAYED_CATEGORIES } from '@/constants/categories';
 import { Category } from '@/types/Category';
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 const MedsByCategories = () => {
   const NUMBER_OF_CATEGORIES_TO_FETCH = 2;
@@ -24,8 +25,8 @@ const MedsByCategories = () => {
       {categories.map((category, idx) => (
         <ProductsSection category={category} key={idx} />
       ))}
-      {offset !== 8 && (
-        <div className="w-full flex justify-center mt-2 md:mt-10">
+      <div className="w-full flex justify-center mt-2 md:mt-10">
+        {offset !== 8 ? (
           <Button
             className="w-full my-6 md:text-lg md:max-w-[300px]"
             variant="outlined-primary"
@@ -33,8 +34,17 @@ const MedsByCategories = () => {
           >
             Load More
           </Button>
-        </div>
-      )}
+        ) : (
+          <Link href="/category" className="w-full md:max-w-[300px]">
+            <Button
+              className="w-full my-6 px-3 md:px-5 md:text-lg"
+              variant="outlined-primary"
+            >
+              See All Categories
+            </Button>
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

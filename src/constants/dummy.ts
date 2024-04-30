@@ -11,7 +11,7 @@ export const DUMMY_PRODUCT: Product = {
   id: 1,
   name: 'Panadol Extra 10 Kaplet 2 box bla',
   selling_unit: 'Box',
-  price: 15990,
+  price: '15990',
   generic_name: 'Paracetamol',
   image:
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
