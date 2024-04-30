@@ -3,7 +3,7 @@
 import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
 import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
-import { Category } from '@/types/Category';
+import { Category } from '@/types/Product';
 import { Product } from '@/types/Product';
 import api from '@/utils/api';
 import { getUser } from '@/utils/auth';

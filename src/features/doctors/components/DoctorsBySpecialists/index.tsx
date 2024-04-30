@@ -35,7 +35,7 @@ const DoctorsBySpecialists = () => {
             Load More
           </Button>
         ) : (
-          <Link href="/specialist" className="w-full md:max-w-[300px]">
+          <Link href="/doctors/specialist" className="w-full md:max-w-[300px]">
             <Button
               className="w-full my-6 px-3 md:px-5 md:text-lg"
               variant="outlined-primary"

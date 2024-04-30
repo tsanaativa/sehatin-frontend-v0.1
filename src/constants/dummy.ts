@@ -1,5 +1,5 @@
 import { Address } from '@/types/Address';
-import { Category } from '@/types/Category';
+import { Category } from '@/types/Product';
 import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';

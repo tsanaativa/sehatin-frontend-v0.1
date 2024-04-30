@@ -2,7 +2,7 @@
 
 import NoDataFound from '@/components/common/NoDataFound';
 import Skeleton from '@/components/common/Skeleton';
-import { Category } from '@/types/Product';
+import { Category } from '@/types/Category';
 import api from '@/utils/api';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

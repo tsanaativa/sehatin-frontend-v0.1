@@ -3,7 +3,7 @@
 import { Button } from '@/components/common';
 import ProductsSection from '@/features/meds/components/ProductsSection';
 import { DISPLAYED_CATEGORIES } from '@/constants/categories';
-import { Category } from '@/types/Category';
+import { Category } from '@/types/Product';
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -35,7 +35,7 @@ const MedsByCategories = () => {
             Load More
           </Button>
         ) : (
-          <Link href="/category" className="w-full md:max-w-[300px]">
+          <Link href="/meds/category" className="w-full md:max-w-[300px]">
             <Button
               className="w-full my-6 px-3 md:px-5 md:text-lg"
               variant="outlined-primary"
