@@ -10,7 +10,6 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ width, product }: ProductCardProps) => {
-  console.log(product);
   return (
     <div
       className={`border-2 border-primary-border rounded-lg md:w-full ${width}`}
