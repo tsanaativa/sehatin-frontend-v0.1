@@ -20,11 +20,10 @@ const Button = ({
     primary:
       'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary-disabled',
     'outlined-primary':
-      'text-primary-dark bg-light border border-primary-dark hover:text-light hover:bg-primary-dark',
+      'text-primary-dark bg-light border border-primary-dark hover:bg-primary/10',
     'outlined-danger': '',
     'primary-light': 'text-primary-dark bg-primary-border',
-    google:
-      'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark',
+    google: 'border-gray-light border bg-light/40 !rounded-full text-dark',
   };
 
   return (

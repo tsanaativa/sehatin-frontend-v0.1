@@ -72,7 +72,7 @@ const RegistrationForm = () => {
     const year = value.getFullYear();
     const month = value.getMonth();
     const day = value.getDate();
-    const result = `${year}/${month >= 9 ? month + 1 : `0${month + 1}`}/${day}`;
+    const result = `${year}/${month >= 9 ? month + 1 : `0${month + 1}`}/${day >= 10 ? day : `0${day}`}`;
     setBirthDate(result);
     handleInput('user', 'birth-date', result);
   };
@@ -336,7 +336,7 @@ const RegistrationForm = () => {
               <h5>Gender</h5>
               <div
                 className="flex gap-16 items-center [&>label]:flex [&>label]:cursor-pointer [&>label]:items-center [&>label]:gap-1.5 [&_input]:hidden
-              [&_mark]:grid [&_mark]:place-items-center [&_mark]:w-4 [&_mark]:h-4 [&_mark]:rounded-full [&_mark]:border-[1px] [&_mark]:border-gray
+              [&_mark]:grid [&_mark]:place-items-center [&_mark]:w-4 [&_mark]:h-4 [&_mark]:rounded-full [&_mark]:border [&_mark]:border-gray
               [&_mark]:bg-transparent after:[&_mark]:content-[''] after:[&_mark]:h-2.5 after:[&_mark]:w-2.5 after:[&_mark]:rounded-full
               after:[&_mark]:bg-primary-dark after:[&_mark]:hidden [&_span]:leading-[150%] [&_span]:tracking-[0.5px]"
               >
@@ -437,7 +437,7 @@ const RegistrationForm = () => {
                 <button
                   type="button"
                   onClick={() => certificate.current?.click()}
-                  className="font-poppins text-primary border-[1px] text-sm min-w-32 border-primary rounded-md h-10 px-3 leading-[150%] hover:border-primary-dark hover:text-primary-dark transition-colors duration-300"
+                  className="font-poppins text-primary border text-sm min-w-32 border-primary rounded-md h-10 px-3 leading-[150%] hover:border-primary-dark hover:text-primary-dark transition-colors duration-300"
                 >
                   {filename.length > 0 ? 'Change' : 'Choose'} File...
                 </button>
