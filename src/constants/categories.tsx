@@ -21,17 +21,17 @@ export const DISPLAYED_CATEGORIES: CategoryData[] = [
     icon: <VitaminBadge />,
   },
   {
-    id: 3,
+    id: 7,
     name: 'Obat Sakit Kepala',
     icon: <HeadacheBadge />,
   },
   {
-    id: 3,
+    id: 2,
     name: 'Suplemen Daya Tahan',
     icon: <SupplementBadge />,
   },
   {
-    id: 3,
+    id: 4,
     name: 'Obat Demam',
     icon: <FeverBadge />,
   },
@@ -41,17 +41,17 @@ export const DISPLAYED_CATEGORIES: CategoryData[] = [
     icon: <CoughBadge />,
   },
   {
-    id: 3,
+    id: 8,
     name: 'Obat Sakit Tenggorokan',
     icon: <SoreThroatBadge />,
   },
   {
-    id: 3,
+    id: 10,
     name: 'Vitamin Anak',
     icon: <ChildBadge />,
   },
   {
-    id: 2,
+    id: 11,
     name: 'Vitamin Ibu Hamil',
     icon: <PregnantBadge />,
   },

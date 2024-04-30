@@ -1,8 +1,7 @@
 import { Address } from '@/types/Address';
 import { Category } from '@/types/Category';
-import { Doctor, Specialist } from '@/types/Doctor';
+import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
-import { DISPLAYED_SPECIALISTS } from './specialists';
 import { DISPLAYED_CATEGORIES } from './categories';
 import { User } from '@/types/User';
 
@@ -44,6 +43,8 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: 'Menteng',
     subdistrict: 'Gondangdia',
     postal_code: 12345,
+    latitude: 0,
+    longitude: 0,
   },
   {
     id: 2,
@@ -55,6 +56,8 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: 'Menteng',
     subdistrict: 'Gondangdia',
     postal_code: 12345,
+    latitude: 0,
+    longitude: 0,
   },
   {
     id: 3,
@@ -66,6 +69,8 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: 'Menteng',
     subdistrict: 'Gondangdia',
     postal_code: 12345,
+    latitude: 0,
+    longitude: 0,
   },
 ];
 
