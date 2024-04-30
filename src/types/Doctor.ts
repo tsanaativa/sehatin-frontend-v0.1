@@ -13,3 +13,12 @@ export type Doctor = {
   fee: number;
   photo_url: string;
 };
+
+export type DoctorsParams = {
+  keyword: string;
+  page: number;
+  limit: number;
+  specialistId: string;
+  sortBy: '' | 'fee' | 'experience';
+  sort: 'asc' | 'desc';
+};
