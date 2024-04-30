@@ -1,15 +1,13 @@
 'use client';
 
 import { CategorizeSection } from '@/components/common';
-import NoDataFound from '@/components/common/NoDataFound';
-import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
 import { Doctor, Specialist } from '@/types/Doctor';
 import api from '@/utils/api';
 import { getUser } from '@/utils/auth';
-import { splitToNArrays } from '@/utils/helper';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import DoctorCard from '../DoctorCard';
+import DoctorCardSkeleton from '../DoctorCardSkeleton';
 
 type DoctorsSectionProps = {
   specialist: Specialist;
@@ -51,13 +49,23 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
     >
       <div className="overflow-x-auto">
         <div className="grid grid-cols-2 min-w-max gap-3 sm:gap-4 md:gap-6 ">
-          {doctors.map((doctor, idx) => (
-            <DoctorCard
-              key={idx}
-              width="min-w-[350px] md:min-w-[400px]"
-              doctor={doctor}
-            />
-          ))}
+          {!isLoading ? (
+            <>
+              {doctors.map((doctor, idx) => (
+                <DoctorCard
+                  key={idx}
+                  width="min-w-[350px] md:min-w-[400px]"
+                  doctor={doctor}
+                />
+              ))}
+            </>
+          ) : (
+            <>
+              {Array.from({ length: 2 }).map((val, idx) => (
+                <DoctorCardSkeleton key={idx} />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </CategorizeSection>

@@ -1,5 +1,5 @@
+import Skeleton from '@/components/common/Skeleton';
 import React from 'react';
-import Skeleton from '../Skeleton';
 
 const ProductCardSkeleton = () => {
   return (

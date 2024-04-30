@@ -2,7 +2,6 @@
 
 import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
-import ProductCardSkeleton from '@/components/common/ProductCardSkeleton';
 import { Category } from '@/types/Product';
 import { Product } from '@/types/Product';
 import api from '@/utils/api';
@@ -10,6 +9,7 @@ import { getUser } from '@/utils/auth';
 import { splitToNArrays } from '@/utils/helper';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import ProductCardSkeleton from '../ProductCardSkeleton';
 
 type ProductsSectionProps = {
   category: Category;
