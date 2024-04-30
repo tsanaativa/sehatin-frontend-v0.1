@@ -62,7 +62,10 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
           ) : (
             <>
               {Array.from({ length: 2 }).map((val, idx) => (
-                <DoctorCardSkeleton key={idx} />
+                <DoctorCardSkeleton
+                  key={idx}
+                  width="min-w-[350px] md:min-w-[400px]"
+                />
               ))}
             </>
           )}

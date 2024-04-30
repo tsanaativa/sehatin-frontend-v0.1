@@ -6,9 +6,11 @@ import { Doctor } from '@/types/Doctor';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
 import ModalDoctorDetail from '../ModalDoctorDetail';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getYearsOfExp } from '@/utils/doctor';
 import Link from 'next/link';
+import { getUser } from '@/utils/auth';
+import { User } from '@/types/User';
 
 type DoctorCardProps = {
   width?: string;
@@ -17,6 +19,12 @@ type DoctorCardProps = {
 };
 
 const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
   const yearsOfExp = getYearsOfExp(doctor.work_start_year);
   const [showDetail, setShowDetail] = useState(false);
 
@@ -57,6 +65,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
             <Button
               className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
               variant="primary"
+              disabled={!!!user}
             >
               <MessageCircleMore size={14} /> Chat
             </Button>
@@ -106,6 +115,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
                 <Button
                   className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit md:text-sm"
                   variant="primary"
+                  disabled={!!!user}
                 >
                   <MessageCircleMore size={14} /> Chat
                 </Button>
