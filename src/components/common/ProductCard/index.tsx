@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { Button } from '..';
 import { Product } from '@/types/Product';
 import { getUser } from '@/utils/auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { User } from '@/types/User';
 
 type ProductCardProps = {
   width?: string;
@@ -14,7 +15,11 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ width, product }: ProductCardProps) => {
-  const [user, setUser] = useState(getUser());
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
 
   return (
     <div

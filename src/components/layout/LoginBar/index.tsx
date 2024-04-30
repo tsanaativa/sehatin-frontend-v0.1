@@ -1,9 +1,16 @@
+'use client';
+
+import { User } from '@/types/User';
 import { getUser } from '@/utils/auth';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const LoginBar = () => {
-  const user = getUser();
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
 
   return (
     <>
