@@ -44,6 +44,8 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: 'Menteng',
     subdistrict: 'Gondangdia',
     postal_code: 12345,
+    latitude: 0,
+    longitude: 0,
   },
   {
     id: 2,
@@ -55,6 +57,8 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: 'Menteng',
     subdistrict: 'Gondangdia',
     postal_code: 12345,
+    latitude: 0,
+    longitude: 0,
   },
   {
     id: 3,
@@ -66,6 +70,8 @@ export const DUMMY_ADDRESSES: Address[] = [
     district: 'Menteng',
     subdistrict: 'Gondangdia',
     postal_code: 12345,
+    latitude: 0,
+    longitude: 0,
   },
 ];
 

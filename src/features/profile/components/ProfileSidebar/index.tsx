@@ -1,8 +1,8 @@
 'use client';
 
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
-import { DUMMY_USER } from '@/constants/dummy';
 import { PROFILE_MENUS } from '@/constants/menus';
+import { getUser } from '@/utils/auth';
 import { ChevronRight, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,6 +15,7 @@ type ProfileSidebarProps = {
 
 const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
   const pathname = usePathname();
+  const user = getUser();
 
   return (
     <div>
@@ -26,15 +27,20 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
             <div className="flex gap-3 p-4">
               <Image
                 width={43}
-                src={DefaultAvatarImg}
+                height={43}
+                src={
+                  user?.profile_picture
+                    ? user?.profile_picture
+                    : DefaultAvatarImg
+                }
                 className="rounded-full"
                 priority
                 alt="Profile"
               />
               <div>
-                <p className="font-semibold line-clamp-1">{DUMMY_USER.name}</p>
+                <p className="font-semibold line-clamp-1">{user?.name}</p>
                 <p className="text-sm text-dark-gray line-clamp-1">
-                  {DUMMY_USER.email}
+                  {user?.email}
                 </p>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { Button, Modal } from '@/components/common';
 import AddressForm from '@/components/common/AddressForm';
+import GoogleMapView from '@/components/common/GoogleMapView';
 import { X } from 'lucide-react';
 
 type ModalAddAddressProps = {
@@ -20,6 +21,7 @@ const ModalAddAddress = ({ onShowModal, showModal }: ModalAddAddressProps) => {
       <div className="flex flex-col gap-y-2 px-4 py-4 md:min-w-[700px]">
         <div className="flex flex-col gap-4 text-xs text-dark-gray md:text-base">
           <AddressForm />
+          <GoogleMapView />
         </div>
       </div>
     </Modal>
