@@ -17,15 +17,16 @@ const SearchDoctors = () => {
   const searchParams = useSearchParams();
 
   const [params, setParams] = useState<DoctorsParams>({
-    keyword: '',
-    page: 2,
+    keyword: searchParams.get('keyword') || '',
+    page: 1,
     limit: 20,
     specialistId: searchParams.get('specialistId') || '',
     sortBy: '',
     sort: 'asc',
   });
+
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
-    page: 2,
+    page: 1,
     limit: 20,
     total_data: 0,
     total_page: 0,
