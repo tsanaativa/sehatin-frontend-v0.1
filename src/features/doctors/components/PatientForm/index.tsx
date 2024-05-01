@@ -1,9 +1,12 @@
 'use client';
 import { Button, Input } from '@/components/common';
 import { DUMMY_USER } from '@/constants/dummy';
+import api from '@/utils/api';
+import { getUser } from '@/utils/auth';
 import { validate } from '@/utils/validation';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 type PatientFormProps = {
   isEdit?: boolean;
@@ -84,7 +87,31 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
       birthDate: birthDate,
     });
 
-    redirect(`/consult/${id}`);
+    // redirect(`/consult/${id}`);
+    createRoom();
+  };
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const createRoom = async () => {
+    const user = getUser();
+    if (user) {
+      console.log(user, id);
+      const req = {
+        id: `${user.email}-${id}`,
+        name: `room-${user.email}-${id}`,
+      };
+      try {
+        setIsLoading(true);
+        await api.post(`/ws/createRoom`, req);
+        router.push(`/consult/${id}`);
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error?.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
@@ -174,6 +201,7 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
           <Button
             className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-full md:w-fit"
             onClick={handleSubmit}
+            loading={isLoading}
           >
             {isEdit ? 'Save' : 'Start Consultation'}
           </Button>

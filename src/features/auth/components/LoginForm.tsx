@@ -58,7 +58,7 @@ const LoginForm = () => {
       const res = await api.post('/auth/login', req);
       const user = res.data as LoginResponse;
       local.set(process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string, user);
-      toast.success('Successfully logged in');
+      toast.success('successfully logged in');
       push('/');
       console.log(user);
     } catch (error: any) {

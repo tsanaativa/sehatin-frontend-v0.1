@@ -4,6 +4,7 @@ import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';
 import { User } from '@/types/User';
+import { Chat } from '@/types/Chat';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
@@ -224,35 +225,33 @@ export const DUMMY_SPECIALISTS = {
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
 
-export const DUMMY_CHAT = [
+export const DUMMY_CHAT: Chat[] = [
   {
-    date: '2020-05-01',
-    chats: [
-      {
-        sentBy: 1,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hi. Please help',
-      },
-      {
-        sentBy: 2,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hello, how can I help you?',
-      },
-    ],
+    sender_id: 1,
+    recipient_id: 2,
+    timestamp: '2020-05-01T01:12:00Z',
+    content: 'Hi. Please help',
+    id: 1,
   },
   {
-    date: '2020-05-01',
-    chats: [
-      {
-        sentBy: 1,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hi. Please help',
-      },
-      {
-        sentBy: 2,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hello, how can I help you?',
-      },
-    ],
+    sender_id: 2,
+    recipient_id: 1,
+    timestamp: '2020-05-01T01:12:00Z',
+    content: 'Hello, how can I help you?',
+    id: 1,
+  },
+  {
+    sender_id: 1,
+    recipient_id: 2,
+    timestamp: '2020-06-01T01:12:00Z',
+    content: 'Hi. Please help',
+    id: 1,
+  },
+  {
+    sender_id: 2,
+    recipient_id: 1,
+    timestamp: '2020-06-01T01:12:00Z',
+    content: 'Hello, how can I help you?',
+    id: 1,
   },
 ];
