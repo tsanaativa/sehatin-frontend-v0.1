@@ -5,10 +5,11 @@ import FilterDropdown from '@/components/common/FilterDropdown';
 import NoDataFound from '@/components/common/NoDataFound';
 import Pagination from '@/components/common/Pagination';
 import Skeleton from '@/components/common/Skeleton';
+import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { DOCTORS_SORT_OPTIONS } from '@/constants/sort';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
 import DoctorCardSkeleton from '@/features/doctors/components/DoctorCardSkeleton';
-import { Doctor, DoctorsParams } from '@/types/Doctor';
+import { Doctor, DoctorsParams, Specialist } from '@/types/Doctor';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import api from '@/utils/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -87,6 +88,19 @@ const SearchDoctors = () => {
     handleChangeParams(newParams);
   };
 
+  const handleFilter = (specialistId: string) => {
+    const newParams = {
+      ...params,
+      specialistId: specialistId,
+    };
+    setParams(newParams);
+    handleChangeParams(newParams);
+  };
+
+  const handleResetFilter = () => {
+    handleFilter('');
+  };
+
   const handleChangeParams = useCallback(
     (params: DoctorsParams) => {
       const newParams = new URLSearchParams(searchParams);
@@ -134,7 +148,12 @@ const SearchDoctors = () => {
               sort={params.sort}
               options={DOCTORS_SORT_OPTIONS}
             />
-            <FilterDropdown />
+            <FilterDropdown
+              options={DUMMY_SPECIALISTS}
+              selected={params.specialistId}
+              onFilter={handleFilter}
+              onReset={handleResetFilter}
+            />
           </div>
         </div>
         <div>
