@@ -27,11 +27,18 @@ const FilterDropdown = ({
     setShowDropdown(false);
   });
 
+  function reset() {
+    setShowDropdown(false);
+    if (onReset) {
+      onReset();
+    }
+  }
+
   return (
-    <div className="relative w-fit">
+    <div className="relative">
       <Button
         variant="primary-light"
-        className="flex items-center gap-2 p-2 md:px-3 text-sm"
+        className="w-full flex items-center gap-2 p-2 md:px-3 text-sm"
         onClick={show}
       >
         <div className="md:hidden">
@@ -43,7 +50,7 @@ const FilterDropdown = ({
         Filter
       </Button>
       <div
-        className={`mt-1 min-w-[275px] absolute z-10 right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
+        className={`mt-1 min-w-[280px] absolute z-10 right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
         ref={ref}
       >
         <div className="w-full flex items-center">
@@ -53,15 +60,13 @@ const FilterDropdown = ({
             selected={selected}
             name="filter"
             searchable
-            required
             onSelect={onFilter}
             placeholder="Choose filter..."
           />
-
           <span
             className="text-sm text-dark-gray hover:underline mx-2"
             role="button"
-            onClick={onReset}
+            onClick={reset}
           >
             Reset
           </span>
