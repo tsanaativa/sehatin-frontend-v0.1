@@ -16,8 +16,10 @@ const AllCategories = () => {
     const fetchCategories = async () => {
       try {
         const params = {};
-        const res = await api.get<typeof params, Category[]>(`/categories`);
-        setCategories(res.data);
+        const res = await api.get<typeof params, { categories: Category[] }>(
+          `/categories`
+        );
+        setCategories(res.data.categories);
       } catch (error: any) {
         toast.error(error.message);
       } finally {
