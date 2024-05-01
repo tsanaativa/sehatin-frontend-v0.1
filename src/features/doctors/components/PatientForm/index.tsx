@@ -87,7 +87,6 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
       birthDate: birthDate,
     });
 
-    // redirect(`/consult/${id}`);
     createRoom();
   };
 
@@ -96,11 +95,11 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
   const createRoom = async () => {
     const user = getUser();
     if (user) {
-      console.log(user, id);
       const req = {
         id: `${user.email}-${id}`,
         name: `room-${user.email}-${id}`,
       };
+
       try {
         setIsLoading(true);
         await api.post(`/ws/createRoom`, req);
@@ -190,16 +189,16 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
             </label>
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between gap-5 items-center mt-6">
           <Button
             variant="outlined-gray"
-            className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-full md:w-fit"
+            className="hidden items-center py-3 justify-center gap-1 px-6 min-w-[190px] mt-3 w-full md:w-fit md:flex"
             onClick={router.back}
           >
             Back
           </Button>
           <Button
-            className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-full md:w-fit"
+            className="flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full md:min-w-[190px] md:w-fit"
             onClick={handleSubmit}
             loading={isLoading}
           >

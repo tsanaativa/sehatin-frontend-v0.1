@@ -1,22 +1,20 @@
 'use client';
 
 import { Badge, Button, Input } from '@/components/common';
-import { Paperclip } from 'lucide-react';
-import ChatBubble from '../ChatBubble';
-import { DUMMY_USER, DUMMY_CHAT } from '@/constants/dummy';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { formatDate } from '@/utils/formatter';
-import { Chat } from '@/types/Chat';
+import { DUMMY_USER } from '@/constants/dummy';
 import { WebsocketContext } from '@/context/WebsocketProvider';
-import api from '@/utils/api';
-import { useRouter, useParams } from 'next/navigation';
+import { Chat } from '@/types/Chat';
+import { formatDate } from '@/utils/formatter';
+import { Paperclip } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import ChatBubble from '../ChatBubble';
 
 export type Message = {
   content: string;
   client_id: string;
   username: string;
   room_id: string;
-  type: 'recv' | 'self';
 };
 
 const ConsultRoom = () => {
@@ -25,8 +23,7 @@ const ConsultRoom = () => {
   const router = useRouter();
   const { conn, setConn } = useContext(WebsocketContext);
 
-  const [chats, setChats] = useState<Chat[]>(DUMMY_CHAT);
-  const [messages, setMessage] = useState<Array<Message>>([]);
+  const [chats, setChats] = useState<Chat[]>([]);
 
   useEffect(() => {
     const joinRoom = (roomId: string) => {
@@ -34,8 +31,31 @@ const ConsultRoom = () => {
         `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/joinRoom/${roomId}?userId=${user.id}&username=${user.email}`
       );
       if (ws.OPEN) {
+        ws.onmessage = (message) => {
+          const m: Message = JSON.parse(message.data);
+
+          const rcvMsg: Chat = {
+            content: m.content,
+            timestamp: new Date().toISOString(),
+            id: 1,
+            isSent: user?.email == m.username,
+          };
+          setChats((prev) => [...prev, rcvMsg]);
+
+          scrollToBottom();
+        };
+
+        ws.onclose = () => {
+          console.log('Closed...');
+        };
+        ws.onerror = () => {
+          console.log('Error!');
+        };
+        ws.onopen = () => {
+          console.log('Opened..');
+        };
+
         setConn(ws);
-        console.log('helppppp');
       }
     };
 
@@ -43,74 +63,11 @@ const ConsultRoom = () => {
     joinRoom(roomId);
   }, [id, setConn, user.email, user.id]);
 
-  useEffect(() => {
-    // if (conn === null) {
-    //   router.push('/')
-    //   return
-    // }
-    async function getUsers() {
-      try {
-        const roomId = `${user.email}-${id}`;
-        const data = await api.get(`/ws/getClients/${roomId}`);
-
-        console.log(data);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    if (conn) {
-      getUsers();
-    }
-  }, [conn, id, router, user.email]);
-
-  useEffect(() => {
-    console.log(conn);
-    if (conn !== null) {
-      console.log(conn);
-      conn.onmessage = (message) => {
-        // console.log('Received Message: ' + evt.data);
-        const m: Message = JSON.parse(message.data);
-        console.log(m, 'ssss');
-
-        user?.email == m.username ? (m.type = 'self') : (m.type = 'recv');
-        setMessage([...messages, m]);
-        console.log([...messages, m]);
-      };
-
-      conn.onclose = () => {
-        console.log('Closed...');
-      };
-      conn.onerror = () => {
-        console.log('Error!');
-      };
-      conn.onopen = () => {
-        console.log('Opened..');
-      };
-    }
-    console.log('first');
-  }, [conn, messages, user?.email]);
-
   const sendMessage = () => {
     const message = messageRef.current?.value;
     if (message && message !== '') {
-      console.log(conn);
       if (conn !== null) {
         conn.send(message);
-        console.log('sending');
-        const sentMsg: Chat = {
-          sender_id: 1,
-          recipient_id: 1,
-          content: message,
-          timestamp: new Date().toISOString(),
-          id: 1,
-        };
-        // ws.send(
-        //   JSON.stringify({
-        //     ...sentMsg,
-        //     type: 'message',
-        //   })
-        // );
-        setChats((prev) => [...prev, sentMsg]);
       }
     }
 
@@ -118,17 +75,6 @@ const ConsultRoom = () => {
 
     scrollToBottom();
   };
-
-  // const receiveMessage = (data) => {
-  //   console.log(typeof data);
-  //   // const newChat = {
-  //   //   data
-  //   // }
-  //   // setChats(prev => [
-  //   //   ...prev,
-  //   //   newChat
-  //   // ])
-  // };
 
   const messageRef = useRef<HTMLInputElement>(null);
 
@@ -147,7 +93,7 @@ const ConsultRoom = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-[calc(100vh-4rem)] md:h-[75vh] md:border md:border-gray-light md:rounded">
+    <div className="flex flex-col w-full h-[calc(100vh-7rem)] md:h-[75vh] md:border md:border-gray-light md:rounded">
       <div
         className="w-full h-full overflow-x-hidden overflow-y-auto max-h-full md:pt-6 md:px-7"
         ref={chatBoxRef}
@@ -172,7 +118,7 @@ const ConsultRoom = () => {
               )}
               <div className="flex flex-col gap-5 w-full">
                 <ChatBubble
-                  isSent={chat.sender_id === user.id}
+                  isSent={chat.isSent}
                   timestamp={chat.timestamp}
                   key={idx}
                 >
@@ -183,7 +129,7 @@ const ConsultRoom = () => {
           ))}
         </div>
       </div>
-      <div className=" w-full bg-light p-5 bottom-0 flex items-center gap-4">
+      <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
         <div className="relative w-full">
           <Input
             ref={messageRef}
