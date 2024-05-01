@@ -2,10 +2,11 @@
 
 import { Button } from '@/components/common';
 import { Search } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
 
 const SearchBar = () => {
+  const searchParams = useSearchParams();
   const pathname = usePathname();
 
   const router = useRouter();
@@ -34,6 +35,7 @@ const SearchBar = () => {
           className="w-full py-3 outline-none border-0 rounded-lg"
           placeholder="Search..."
           onKeyUp={handleKeyUp}
+          defaultValue={searchParams.get('keyword') || ''}
         />
       </div>
       <Button

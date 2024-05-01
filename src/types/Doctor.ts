@@ -19,6 +19,6 @@ export type DoctorsParams = {
   page: number;
   limit: number;
   specialistId: string;
-  sortBy: '' | 'fee' | 'experience';
-  sort: 'asc' | 'desc';
+  sortBy: string;
+  sort: string;
 };
