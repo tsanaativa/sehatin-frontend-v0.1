@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import ModalChangePassword from '../ModalChangePassword';
 
-const ChangePasswordModal = () => {
+const ChangePasswordButton = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -20,4 +20,4 @@ const ChangePasswordModal = () => {
   );
 };
 
-export default ChangePasswordModal;
+export default ChangePasswordButton;
