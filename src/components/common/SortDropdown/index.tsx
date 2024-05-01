@@ -28,9 +28,12 @@ const SortDropdown = ({
     setShowDropdown(false);
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.checked) {
-      onSort(e.target.id, sort);
+  function handleChange(e: React.MouseEvent<HTMLInputElement>) {
+    const target = e.target as HTMLInputElement;
+    if (target.checked) {
+      onSort(target.id, sort);
+    } else {
+      onSort(target.id, '');
     }
   }
 
@@ -72,7 +75,7 @@ const SortDropdown = ({
                   name="sortby"
                   defaultChecked={sortBy === option}
                   className="hidden"
-                  onChange={handleChange}
+                  onClick={handleChange}
                 />
                 {option}
               </label>

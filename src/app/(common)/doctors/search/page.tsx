@@ -12,7 +12,7 @@ import { Doctor, DoctorsParams } from '@/types/Doctor';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import api from '@/utils/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const SearchDoctors = () => {
@@ -69,34 +69,56 @@ const SearchDoctors = () => {
   }, [params]);
 
   const handleMovePage = (page: number) => {
-    setParams({
+    const newParams = {
       ...params,
       page: page,
-    });
+    };
+    setParams(newParams);
+    handleChangeParams(newParams);
   };
 
   const handleSort = (sortBy: string, sort: string) => {
-    setParams({
+    const newParams = {
       ...params,
       sort: sort,
       sortBy: sortBy,
-    });
+    };
+    setParams(newParams);
+    handleChangeParams(newParams);
   };
 
-  useEffect(() => {
-    const newParams = new URLSearchParams(searchParams);
-    Object.keys(params).map((key) => {
-      if (key !== 'limit') {
-        let val = params[key as keyof typeof params].toString();
-        if (val !== '') {
-          newParams.set(key, val);
-        } else {
-          newParams.delete(key);
+  const handleChangeParams = useCallback(
+    (params: DoctorsParams) => {
+      const newParams = new URLSearchParams(searchParams);
+      Object.keys(params).map((key) => {
+        if (key !== 'limit') {
+          let val = params[key as keyof typeof params].toString();
+          if (val !== '') {
+            newParams.set(key, val);
+          } else {
+            newParams.delete(key);
+          }
+          replace(`${pathname}?${newParams.toString()}`);
         }
-        replace(`${pathname}?${newParams.toString()}`);
-      }
-    });
-  }, [params, pathname, replace, searchParams]);
+      });
+    },
+    [pathname, replace, searchParams]
+  );
+
+  // useEffect(() => {
+  //   const newParams = new URLSearchParams(searchParams);
+  //   Object.keys(params).map((key) => {
+  //     if (key !== 'limit') {
+  //       let val = params[key as keyof typeof params].toString();
+  //       if (val !== '') {
+  //         newParams.set(key, val);
+  //       } else {
+  //         newParams.delete(key);
+  //       }
+  //       replace(`${pathname}?${newParams.toString()}`);
+  //     }
+  //   });
+  // }, [params, pathname, replace, searchParams]);
 
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">
