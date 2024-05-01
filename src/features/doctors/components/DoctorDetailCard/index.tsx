@@ -13,7 +13,7 @@ const DoctorDetailCard = ({ doctor }: DoctorDetailCardProps) => {
     <div className="px-4 py-8 flex flex-col items-center gap-y-2 ">
       <div className="relative w-fit h-fit">
         <Image
-          src={doctor.photo_url}
+          src={doctor.profile_picture}
           className="object-cover rounded-full w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
           width={300}
           height={300}

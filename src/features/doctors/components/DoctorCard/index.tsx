@@ -40,7 +40,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
         >
           <div className="relative w-fit h-fit">
             <Image
-              src={doctor.photo_url}
+              src={doctor.profile_picture}
               className="object-cover rounded-full w-16 h-16 sm:w-20 sm:h-20 md:w-20 md:h-20"
               width={300}
               height={300}
@@ -76,7 +76,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
           className={`p-3 flex gap-3 border-2 border-primary-border rounded-lg w-full ${width}`}
         >
           <Image
-            src={doctor.photo_url}
+            src={doctor.profile_picture}
             className="object-cover rounded w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
             width={300}
             height={300}

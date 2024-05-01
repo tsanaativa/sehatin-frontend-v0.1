@@ -1,14 +1,11 @@
-import { Button } from '@/components/common';
 import CategorizeCard from '@/components/common/CategorizeCard';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
 import DoctorsBySpecialists from '@/features/doctors/components/DoctorsBySpecialists';
-import React from 'react';
 
 const Doctors = () => {
-  const shownSpecialists = DISPLAYED_SPECIALISTS.slice(0, 2);
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">
       <div className="max-w-[1150px] py-4 w-full px-4 sm:px-6 md:py-10">

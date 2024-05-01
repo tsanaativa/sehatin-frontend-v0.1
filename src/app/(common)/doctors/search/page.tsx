@@ -25,8 +25,8 @@ const SearchDoctors = () => {
     page: parseInt(searchParams.get('page') || '1'),
     limit: 20,
     specialistId: searchParams.get('specialistId') || '',
-    sortBy: '',
-    sort: 'asc',
+    sortBy: searchParams.get('sortBy') || '',
+    sort: searchParams.get('sort') || 'desc',
   });
 
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
@@ -73,8 +73,6 @@ const SearchDoctors = () => {
       ...params,
       page: page,
     });
-
-    handleParamChange('page', page.toString());
   };
 
   const handleSort = (sortBy: string, sort: string) => {
@@ -83,20 +81,22 @@ const SearchDoctors = () => {
       sort: sort,
       sortBy: sortBy,
     });
-
-    handleParamChange('sort', sort);
-    handleParamChange('sortBy', sortBy);
   };
 
-  const handleParamChange = (key: string, val: string) => {
+  useEffect(() => {
     const newParams = new URLSearchParams(searchParams);
-    if (val !== '') {
-      newParams.set(key, val);
-    } else {
-      newParams.delete(key);
-    }
-    replace(`${pathname}?${newParams.toString()}`);
-  };
+    Object.keys(params).map((key) => {
+      if (key !== 'limit') {
+        let val = params[key as keyof typeof params].toString();
+        if (val !== '') {
+          newParams.set(key, val);
+        } else {
+          newParams.delete(key);
+        }
+        replace(`${pathname}?${newParams.toString()}`);
+      }
+    });
+  }, [params, pathname, replace, searchParams]);
 
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">
@@ -121,7 +121,6 @@ const SearchDoctors = () => {
             </Skeleton>
           )}
           <div className="grid grid-cols-2 gap-2">
-            {/* <DoctorsSortDropdown onSort={handleSort} /> */}
             <SortDropdown
               onSort={handleSort}
               sortBy={params.sortBy}

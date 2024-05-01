@@ -28,7 +28,7 @@ export const DUMMY_DOCTOR: Doctor = {
   },
   work_start_year: 2012,
   fee: 50000,
-  photo_url:
+  profile_picture:
     'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 };
 
