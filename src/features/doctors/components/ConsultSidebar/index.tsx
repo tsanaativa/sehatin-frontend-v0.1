@@ -7,7 +7,11 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import EndChatButton from '../EndChatButton';
 
-const ConsultSidebar = () => {
+type ConsultSidebarProps = {
+  isTyping: boolean;
+};
+
+const ConsultSidebar = ({ isTyping }: ConsultSidebarProps) => {
   const doctor = DUMMY_DOCTOR;
   const { id } = useParams();
 
@@ -16,7 +20,7 @@ const ConsultSidebar = () => {
   return (
     <div className="flex flex-col gap-5 text-center items-center">
       <div className="border border-gray-light rounded min-w-[300px]">
-        <DoctorDetailCard doctor={doctor} />
+        <DoctorDetailCard doctor={doctor} isTyping={isTyping} />
       </div>
       <div className="flex flex-col gap-3 w-full">
         <Link href={`/consult/${id}/edit`}>

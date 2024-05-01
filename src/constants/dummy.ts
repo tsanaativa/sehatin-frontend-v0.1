@@ -224,34 +224,3 @@ export const DUMMY_SPECIALISTS = {
   '106': 'Spesialis Penyakit Dalam (Pulmonologi)',
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
-
-export const DUMMY_CHAT: Chat[] = [
-  {
-    sender_id: 1,
-    recipient_id: 2,
-    timestamp: '2020-05-01T01:12:00Z',
-    content: 'Hi. Please help',
-    id: 1,
-  },
-  {
-    sender_id: 2,
-    recipient_id: 1,
-    timestamp: '2020-05-01T01:12:00Z',
-    content: 'Hello, how can I help you?',
-    id: 1,
-  },
-  {
-    sender_id: 1,
-    recipient_id: 2,
-    timestamp: '2020-06-01T01:12:00Z',
-    content: 'Hi. Please help',
-    id: 1,
-  },
-  {
-    sender_id: 2,
-    recipient_id: 1,
-    timestamp: '2020-06-01T01:12:00Z',
-    content: 'Hello, how can I help you?',
-    id: 1,
-  },
-];
