@@ -1,3 +1,5 @@
+'use client';
+
 import { SlidersHorizontal } from 'lucide-react';
 import { Button } from '..';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
