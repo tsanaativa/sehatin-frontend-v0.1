@@ -3,7 +3,6 @@
 import { LoginResponse } from '@/types/Auth';
 import api from '@/utils/api';
 import cookiesStore from '@/utils/cookies';
-// import local from '@/utils/localStorage';
 
 export default async function login(formData: FormData) {
   const rawFormData = {
