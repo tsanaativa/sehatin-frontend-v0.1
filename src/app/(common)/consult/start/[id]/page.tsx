@@ -1,4 +1,4 @@
-import PatientForm from '@/features/doctors/components/PatientForm';
+import PatientForm from '@/features/consult/components/PatientForm';
 
 const ConsultStart = () => {
   return (

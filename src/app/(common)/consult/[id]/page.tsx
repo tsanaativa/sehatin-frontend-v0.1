@@ -1,4 +1,4 @@
-import ConsultRoom from '@/features/doctors/components/ConsultRoom';
+import ConsultRoom from '@/features/consult/components/ConsultRoom';
 
 const Consult = () => {
   return <ConsultRoom />;
