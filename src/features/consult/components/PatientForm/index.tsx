@@ -26,7 +26,9 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
   });
 
   const birthDatePicker = useRef<HTMLInputElement>(null);
-  const [birthDate, setBirthDate] = useState<string>(user?.birth_date || '');
+  const [birthDate, setBirthDate] = useState<string>(
+    user?.birth_date ? user?.birth_date.split('T')[0] : ''
+  );
   const [gender, setGender] = useState<number>(
     user?.gender?.id ? user?.gender?.id : 0
   );
@@ -101,6 +103,8 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
     setIsLoading(false);
   };
 
+  console.log(user);
+
   return (
     <div>
       <form
@@ -140,7 +144,9 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
               birthDatePicker.current?.focus();
               birthDatePicker.current?.showPicker();
             }}
-            defaultValue={user?.birth_date}
+            defaultValue={
+              user?.birth_date ? user?.birth_date.split('T')[0] : ''
+            }
           />
         </label>
         <div>

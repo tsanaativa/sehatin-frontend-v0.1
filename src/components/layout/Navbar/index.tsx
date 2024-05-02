@@ -1,14 +1,12 @@
 import { Sehatin } from '@/assets/icons';
 import { Button } from '@/components/common';
 import ProfileDropdown from '@/components/common/ProfileDropdown';
-import { LoginData } from '@/types/LoginData';
-import { User } from '@/types/User';
-import cookiesStore from '@/utils/cookies';
+import { getUser } from '@/utils/user';
 import { AlignLeft, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 
 const Navbar = () => {
-  const user: User = cookiesStore.get<LoginData>('healthcare-app-user')?.user;
+  const user = getUser();
 
   return (
     <header className="sticky top-0 z-40 bg-light border-b-2 border-b-gray-lighter">

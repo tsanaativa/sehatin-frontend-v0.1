@@ -1,5 +1,3 @@
-// 'use server';
-
 import { LoginData } from '@/types/LoginData';
 import cookiesStore from './cookies';
 

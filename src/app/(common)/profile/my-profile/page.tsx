@@ -1,13 +1,10 @@
 import { ProfileForm } from '@/components/common';
 import { getProfile } from '@/services/profile';
-import { LoginData } from '@/types/LoginData';
 import { User } from '@/types/User';
-import cookiesStore from '@/utils/cookies';
+import { getUser } from '@/utils/user';
 
 const MyProfile = async () => {
-  const user = cookiesStore.get<LoginData>(
-    process.env.NEXT_PUBLIC_USER_LOCAL_KEY || ''
-  )?.user;
+  const user = getUser();
 
   let profileData: User | undefined;
   profileData = await getProfile(user.id);
