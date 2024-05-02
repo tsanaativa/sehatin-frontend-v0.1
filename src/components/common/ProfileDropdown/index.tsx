@@ -36,25 +36,18 @@ const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
         onClick={() => setShowDropdown(true)}
       />
       <div
-        className={`mt-2 min-w-32 absolute right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
+        className={`mt-2 min-w-36 absolute right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
         ref={ref}
       >
         <Link
           href="/profile/my-profile"
-          className="hidden px-2 py-1 hover:bg-gray-lighter text-xs flex gap-2 flex items-center cursor-pointer capitalize md:py-2 md:px-3 md:text-sm md:block"
-          onClick={() => setShowDropdown(false)}
-        >
-          My Profile
-        </Link>
-        <Link
-          href="/profile"
-          className="px-2 py-1 hover:bg-gray-lighter text-xs flex gap-2 flex items-center cursor-pointer capitalize md:py-2 md:px-3 md:text-sm md:hidden"
+          className="px-3 py-2 hover:bg-gray-lighter flex gap-2 flex items-center cursor-pointer capitalize"
           onClick={() => setShowDropdown(false)}
         >
           My Profile
         </Link>
         <div
-          className="text-danger px-2 py-1 hover:bg-gray-lighter text-xs flex gap-2 flex items-center cursor-pointer capitalize justify-between md:py-2 md:px-3 md:text-sm"
+          className="text-danger px-3 py-2 hover:bg-gray-lighter flex gap-2 flex items-center cursor-pointer capitalize justify-between"
           role="button"
           onClick={handleLogout}
         >
