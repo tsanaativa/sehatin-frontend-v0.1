@@ -1,10 +1,7 @@
-import { Button } from '@/components/common';
 import AddressCard from '@/components/common/AddressCard';
 import { DUMMY_ADDRESSES } from '@/constants/dummy';
-import AddAddressModalButton from '@/features/profile/components/AddAddressModalButton';
-import { Plus } from 'lucide-react';
+import AddAddressButton from '@/features/profile/components/AddAddressButton';
 import Link from 'next/link';
-import React from 'react';
 
 const MyAddresses = () => {
   return (
@@ -28,7 +25,7 @@ const MyAddresses = () => {
         ))}
       </div>
       <div className="flex justify-center mt-6 md:justify-end">
-        <AddAddressModalButton />
+        <AddAddressButton />
       </div>
     </div>
   );

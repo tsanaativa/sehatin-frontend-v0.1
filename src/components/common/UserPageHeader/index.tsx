@@ -1,9 +1,10 @@
 'use client';
 
-import { AddressCard, SearchBar } from '@/features/meds/components';
+import { AddressCard } from '@/features/meds/components';
 import { getPageName, getPathNames } from '@/utils/pageHeader';
 import { usePathname } from 'next/navigation';
 import PageNav from '../PageNav';
+import SearchBar from '../SearchBar';
 
 const UserPageHeader = () => {
   const paths = usePathname();

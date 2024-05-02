@@ -1,7 +1,7 @@
 'use client';
 
 import { LocationIcon } from '@/assets/icons';
-import UpdateAddressModal from '@/features/profile/components/UpdateAddressModal';
+import UpdateAddressButton from '@/features/profile/components/UpdateAddressButton';
 import { Address } from '@/types/Address';
 import { formatAddress } from '@/utils/address';
 import { Check, ChevronRight } from 'lucide-react';
@@ -46,7 +46,7 @@ const AddressCard = ({ address }: AddressCardProps) => {
         <ChevronRight size={20} />
       </span>
       <div className="flex items-center gap-2 hidden md:flex">
-        <UpdateAddressModal address={address} />
+        <UpdateAddressButton address={address} />
         <DeleteModalButton isIcon objName="address" onConfirm={onDelete} />
       </div>
     </div>

@@ -2,10 +2,13 @@
 
 import { Button } from '@/components/common';
 import { Search } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
 
 const SearchBar = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   const router = useRouter();
   const searchBarRef = useRef<HTMLInputElement>(null);
 
@@ -16,8 +19,9 @@ const SearchBar = () => {
   }
 
   function search() {
-    let value = searchBarRef.current?.value;
-    router.push(`/meds/search?keyword=${value}`);
+    const value = searchBarRef.current?.value;
+    const path = pathname.includes('meds') ? 'meds' : 'doctors';
+    router.push(`/${path}/search?keyword=${value}`);
   }
 
   return (
@@ -31,6 +35,7 @@ const SearchBar = () => {
           className="w-full py-3 outline-none border-0 rounded-lg"
           placeholder="Search..."
           onKeyUp={handleKeyUp}
+          defaultValue={searchParams.get('keyword') || ''}
         />
       </div>
       <Button

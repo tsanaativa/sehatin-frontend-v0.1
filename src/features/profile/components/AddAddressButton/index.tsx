@@ -2,10 +2,10 @@
 
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import ModalAddAddress from './ModalAddAddress';
+import ModalAddAddress from '../ModalAddAddress';
 import { Button } from '@/components/common';
 
-const AddAddressModalButton = () => {
+const AddAddressButton = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -22,4 +22,4 @@ const AddAddressModalButton = () => {
   );
 };
 
-export default AddAddressModalButton;
+export default AddAddressButton;

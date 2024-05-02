@@ -1,6 +1,4 @@
-import { DUMMY_SPECIALISTS } from '@/constants/dummy';
-import Link from 'next/link';
-import React from 'react';
+import AllSpecialists from '@/features/doctors/components/AllSpecialists';
 
 const Specialist = () => {
   return (
@@ -10,21 +8,7 @@ const Specialist = () => {
           <span className="font-poppins font-semibold text-dark md:text-2xl">
             Choose Specialist
           </span>
-          <div className="bg-light rounded-lg border border-gray-light mt-3 flex flex-col md:grid md:grid-cols-3 md:grid-flow-row md:mt-5 md:text-lg">
-            {DUMMY_SPECIALISTS.map((specialist, idx) => (
-              <Link
-                key={idx}
-                href={`/doctors/search?specialistId=${specialist.id}`}
-              >
-                <div
-                  key={idx}
-                  className={`border-gray-light px-3 py-2 ${idx + 1 !== DUMMY_SPECIALISTS.length && 'border-b md:border-b-0'} md:py-3 md:px-4 ${idx % 3 !== 2 && 'md:border-e'}`}
-                >
-                  {specialist.name}
-                </div>
-              </Link>
-            ))}
-          </div>
+          <AllSpecialists />
         </div>
       </div>
     </div>

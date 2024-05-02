@@ -1,8 +1,7 @@
 import { Address } from '@/types/Address';
-import { Category } from '@/types/Category';
-import { Doctor, Specialist } from '@/types/Doctor';
+import { Category } from '@/types/Product';
+import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
-import { DISPLAYED_SPECIALISTS } from './specialists';
 import { DISPLAYED_CATEGORIES } from './categories';
 import { User } from '@/types/User';
 
@@ -12,7 +11,7 @@ export const DUMMY_PRODUCT: Product = {
   id: 1,
   name: 'Panadol Extra 10 Kaplet 2 box bla',
   selling_unit: 'Box',
-  price: 15990,
+  price: '15990',
   generic_name: 'Paracetamol',
   image:
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -29,7 +28,7 @@ export const DUMMY_DOCTOR: Doctor = {
   },
   work_start_year: 2012,
   fee: 50000,
-  photo_url:
+  profile_picture:
     'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 };
 
@@ -76,6 +75,7 @@ export const DUMMY_ADDRESSES: Address[] = [
 ];
 
 export const DUMMY_USER: User = {
+  id: 1,
   name: 'Vivin',
   email: 'vivin@gmail.com',
   gender: 'male',
@@ -223,3 +223,36 @@ export const DUMMY_SPECIALISTS = {
   '106': 'Spesialis Penyakit Dalam (Pulmonologi)',
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
+
+export const DUMMY_CHAT = [
+  {
+    date: '2020-05-01',
+    chats: [
+      {
+        sentBy: 1,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hi. Please help',
+      },
+      {
+        sentBy: 2,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hello, how can I help you?',
+      },
+    ],
+  },
+  {
+    date: '2020-05-01',
+    chats: [
+      {
+        sentBy: 1,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hi. Please help',
+      },
+      {
+        sentBy: 2,
+        time: '2020-05-01T01:12:00Z',
+        content: 'Hello, how can I help you?',
+      },
+    ],
+  },
+];

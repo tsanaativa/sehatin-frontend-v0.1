@@ -6,7 +6,7 @@ import { validate } from '@/utils/validation';
 import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { Doctor } from '@/types/Doctor';
 import { User } from '@/types/User';
-import ChangePasswordModal from '../ChangePasswordModal';
+import ChangePasswordButton from '../ChangePasswordButton';
 
 type ProfileFormProps = {
   role?: 'user' | 'doctor';
@@ -399,7 +399,7 @@ const ProfileForm = ({
         </div>
       </form>
       <div className="pb-6 -mt-8 md:-mt-9">
-        <ChangePasswordModal />
+        <ChangePasswordButton />
       </div>
     </div>
   );

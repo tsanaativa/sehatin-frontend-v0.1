@@ -5,11 +5,11 @@ import { useState } from 'react';
 import ModalUpdateAddress from '../ModalUpdateAddress';
 import { Address } from '@/types/Address';
 
-type UpdateAddressModalProps = {
+type UpdateAddressButtonProps = {
   address: Address;
 };
 
-const UpdateAddressModal = ({ address }: UpdateAddressModalProps) => {
+const UpdateAddressButton = ({ address }: UpdateAddressButtonProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -30,4 +30,4 @@ const UpdateAddressModal = ({ address }: UpdateAddressModalProps) => {
   );
 };
 
-export default UpdateAddressModal;
+export default UpdateAddressButton;

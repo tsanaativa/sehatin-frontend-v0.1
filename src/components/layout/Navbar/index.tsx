@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 import { User } from '@/types/User';
 
 const Navbar = () => {
-  // const user = getUser();
   const [user, setUser] = useState<User | undefined>();
 
   useEffect(() => {

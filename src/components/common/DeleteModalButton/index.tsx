@@ -2,7 +2,7 @@
 
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import ModalDelete from './ModalDelete';
+import ModalDelete from '../ModalDelete';
 
 type DeleteModalButtonProps = {
   isIcon?: boolean;

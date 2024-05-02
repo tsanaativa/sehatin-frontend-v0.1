@@ -6,8 +6,11 @@ import { Doctor } from '@/types/Doctor';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
 import ModalDoctorDetail from '../ModalDoctorDetail';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getYearsOfExp } from '@/utils/doctor';
+import Link from 'next/link';
+import { getUser } from '@/utils/auth';
+import { User } from '@/types/User';
 
 type DoctorCardProps = {
   width?: string;
@@ -16,8 +19,18 @@ type DoctorCardProps = {
 };
 
 const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
   const yearsOfExp = getYearsOfExp(doctor.work_start_year);
   const [showDetail, setShowDetail] = useState(false);
+
+  const disableDefaultClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
     <div role="button" onClick={() => setShowDetail(true)}>
@@ -27,7 +40,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
         >
           <div className="relative w-fit h-fit">
             <Image
-              src={doctor.photo_url}
+              src={doctor.profile_picture}
               className="object-cover rounded-full w-16 h-16 sm:w-20 sm:h-20 md:w-20 md:h-20"
               width={300}
               height={300}
@@ -45,19 +58,25 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
               {doctor.specialist.name}
             </div>
           </div>
-          <Button
-            className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
-            variant="primary"
+          <Link
+            href={`/consult/start/${doctor.id}`}
+            onClick={disableDefaultClick}
           >
-            <MessageCircleMore size={14} /> Chat
-          </Button>
+            <Button
+              className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
+              variant="primary"
+              disabled={!!!user}
+            >
+              <MessageCircleMore size={14} /> Chat
+            </Button>
+          </Link>
         </div>
       ) : (
         <div
           className={`p-3 flex gap-3 border-2 border-primary-border rounded-lg w-full ${width}`}
         >
           <Image
-            src={doctor.photo_url}
+            src={doctor.profile_picture}
             className="object-cover rounded w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
             width={300}
             height={300}
@@ -88,12 +107,19 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
               <div className="flex items-center font-poppins font-medium text-secondary  md:text-sm lg:text-base">
                 Rp {doctor.fee.toLocaleString('id')}
               </div>
-              <Button
-                className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit md:text-sm"
-                variant="primary"
+
+              <Link
+                href={`/consult/start/${doctor.id}`}
+                onClick={disableDefaultClick}
               >
-                <MessageCircleMore size={14} /> Chat
-              </Button>
+                <Button
+                  className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit md:text-sm"
+                  variant="primary"
+                  disabled={!!!user}
+                >
+                  <MessageCircleMore size={14} /> Chat
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

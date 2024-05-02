@@ -5,6 +5,7 @@ import BannerHero2Desktop from '@/assets/images/banner-hero-2-desktop.svg';
 import BannerHero2 from '@/assets/images/banner-hero-2.png';
 import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
+import { DUMMY_PRODUCT } from '@/constants/dummy';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -126,7 +127,7 @@ const Home = () => {
           >
             <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
               {Array.from({ length: 10 }).map((val, idx) => (
-                <ProductCard key={idx} />
+                <ProductCard product={DUMMY_PRODUCT} key={idx} />
               ))}
             </div>
           </CategorizeSection>
