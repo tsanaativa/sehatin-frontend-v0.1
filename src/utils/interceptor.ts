@@ -1,9 +1,8 @@
 'use server';
 
 import { LoginResponse } from '@/types/Auth';
-import { minuteDifference } from './helper';
-import local from './localStorage';
 import cookiesStore from './cookies';
+import { minuteDifference } from './helper';
 
 const userkey = process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string;
 const base = process.env.NEXT_PUBLIC_BASE_URL as string;
@@ -27,7 +26,7 @@ const logout = async (): Promise<void> => {
     credentials: 'include',
   });
   await response.json();
-  if (local.get(userkey)) local.remove(userkey);
+  if (cookiesStore.get(userkey)) cookiesStore.remove(userkey);
 };
 
 const interceptor = async (url: string) => {
@@ -53,4 +52,4 @@ const interceptor = async (url: string) => {
   }
 };
 
-export { logout, interceptor };
+export { interceptor, logout };

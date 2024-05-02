@@ -1,5 +1,7 @@
+import { LoginData } from '@/types/LoginData';
 import { User } from '@/types/User';
 import api from '@/utils/api';
+import cookiesStore from '@/utils/cookies';
 
 export const getProfile = async (id: number) => {
   try {
