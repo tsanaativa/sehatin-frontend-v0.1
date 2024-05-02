@@ -1,6 +1,4 @@
-import { DUMMY_CATEGORIES } from '@/constants/dummy';
 import AllCategories from '@/features/meds/components/AllCategories';
-import Link from 'next/link';
 
 const Category = () => {
   return (
