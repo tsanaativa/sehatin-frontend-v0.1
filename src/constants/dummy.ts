@@ -75,14 +75,6 @@ export const DUMMY_ADDRESSES: Address[] = [
   },
 ];
 
-export const DUMMY_USER: User = {
-  id: 1,
-  name: 'Vivin',
-  email: 'vivin@gmail.com',
-  gender: 'male',
-  birth_date: '2001-01-01',
-};
-
 export const DUMMY_CHOOSE_PHARMACIES = [
   {
     name: 'Century Plaza Senayan 1',

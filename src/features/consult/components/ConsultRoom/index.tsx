@@ -1,16 +1,15 @@
 'use client';
 
 import { Badge, Button, Input } from '@/components/common';
-import { DUMMY_USER } from '@/constants/dummy';
 import { WebsocketContext } from '@/context/WebsocketProvider';
 import { Chat } from '@/types/Chat';
+import { User } from '@/types/User';
 import { formatDate } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
-import { User } from '@/types/User';
 
 export type Message = {
   content: string;
