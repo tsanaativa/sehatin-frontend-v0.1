@@ -1,7 +1,6 @@
-import cookie from './publicCookie';
+import { DUMMY_USER } from '@/constants/dummy';
+import cookiesStore from './cookies';
 
 export function getUser() {
-  const userCookies = cookie.get(process.env.NEXT_PUBLIC_USER_LOCAL_KEY || '');
-  console.log(userCookies);
-  return JSON.parse(userCookies);
+  return DUMMY_USER;
 }
