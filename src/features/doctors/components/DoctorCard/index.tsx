@@ -9,7 +9,7 @@ import ModalDoctorDetail from '../ModalDoctorDetail';
 import React, { useEffect, useState } from 'react';
 import { getYearsOfExp } from '@/utils/doctor';
 import Link from 'next/link';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { User } from '@/types/User';
 
 type DoctorCardProps = {
@@ -19,11 +19,7 @@ type DoctorCardProps = {
 };
 
 const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
+  const user = getUser();
 
   const yearsOfExp = getYearsOfExp(doctor.work_start_year);
   const [showDetail, setShowDetail] = useState(false);

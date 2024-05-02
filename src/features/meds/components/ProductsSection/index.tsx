@@ -5,7 +5,7 @@ import NoDataFound from '@/components/common/NoDataFound';
 import { Category } from '@/types/Product';
 import { Product } from '@/types/Product';
 import api from '@/utils/api';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { splitToNArrays } from '@/utils/helper';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';

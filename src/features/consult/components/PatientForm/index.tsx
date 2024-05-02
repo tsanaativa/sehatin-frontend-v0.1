@@ -2,7 +2,7 @@
 import { Button, Input } from '@/components/common';
 import { DUMMY_USER } from '@/constants/dummy';
 import api from '@/utils/api';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { validate } from '@/utils/validation';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';

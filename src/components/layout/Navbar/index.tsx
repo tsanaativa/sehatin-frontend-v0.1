@@ -2,7 +2,7 @@
 
 import { Sehatin } from '@/assets/icons';
 import { Button } from '@/components/common';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { AlignLeft, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import ProfileDropdown from '@/components/common/ProfileDropdown';
@@ -10,11 +10,7 @@ import { useEffect, useState } from 'react';
 import { User } from '@/types/User';
 
 const Navbar = () => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
+  const user = getUser();
 
   return (
     <header className="sticky top-0 z-40 bg-light border-b-2 border-b-gray-lighter">

@@ -1,13 +1,11 @@
 'use client';
 
+import { Product } from '@/types/Product';
+import { getUser } from '@/utils/user';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '..';
-import { Product } from '@/types/Product';
-import { getUser } from '@/utils/auth';
-import { useEffect, useState } from 'react';
-import { User } from '@/types/User';
 
 type ProductCardProps = {
   width?: string;
@@ -15,11 +13,7 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ width, product }: ProductCardProps) => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
+  const user = getUser();
 
   return (
     <div

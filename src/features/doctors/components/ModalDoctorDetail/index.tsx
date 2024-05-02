@@ -3,7 +3,7 @@
 import { Button, Modal } from '@/components/common';
 import { Doctor } from '@/types/Doctor';
 import { User } from '@/types/User';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { MessageCircleMore, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -20,11 +20,7 @@ const ModalDoctorDetail = ({
   onShowModal,
   showModal,
 }: ModalDoctorDetailProps) => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
+  const user = getUser();
 
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>

@@ -2,7 +2,7 @@
 
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { PROFILE_MENUS } from '@/constants/menus';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { ChevronRight, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

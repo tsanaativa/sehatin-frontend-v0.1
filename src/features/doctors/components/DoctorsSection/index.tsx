@@ -3,7 +3,7 @@
 import { CategorizeSection } from '@/components/common';
 import { Doctor, Specialist } from '@/types/Doctor';
 import api from '@/utils/api';
-import { getUser } from '@/utils/auth';
+import { getUser } from '@/utils/user';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import DoctorCard from '../DoctorCard';

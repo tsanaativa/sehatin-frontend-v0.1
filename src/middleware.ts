@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getUser } from './utils/auth';
+import { getUser } from './utils/user';
 
 export function middleware(request: NextRequest) {
   if (!!getUser()) {
@@ -9,5 +9,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/profile/:path*', '/my-cart/:path*', '/admin/:path*'],
+  matcher: ['/profile/:path*', '/my-cart/:path*', '/consult/:path*'],
 };
