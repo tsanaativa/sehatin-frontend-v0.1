@@ -26,7 +26,7 @@ export default async function login(formData: FormData) {
     } else if (typeof error === 'string') {
       message = error;
     } else {
-      message = 'Something when wrong';
+      message = 'Something went wrong';
     }
 
     throw new Error(message);

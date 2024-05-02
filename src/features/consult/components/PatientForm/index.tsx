@@ -1,24 +1,24 @@
 'use client';
 
 import { Button, Input } from '@/components/common';
-import { DUMMY_USER } from '@/constants/dummy';
 import { User } from '@/types/User';
-import api from '@/utils/api';
 import { validate } from '@/utils/validation';
 import { useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import createRoom from '../../actions/room';
 import { toast } from 'react-toastify';
 
 type PatientFormProps = {
   isEdit?: boolean;
-  user?: User;
+  user: User;
 };
 
 const PatientForm = ({ isEdit, user }: PatientFormProps) => {
   const router = useRouter();
   const { id } = useParams();
 
-  const defaultUser = DUMMY_USER;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
@@ -26,11 +26,9 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
   });
 
   const birthDatePicker = useRef<HTMLInputElement>(null);
-  const [birthDate, setBirthDate] = useState<string>(
-    defaultUser?.birth_date || ''
-  );
+  const [birthDate, setBirthDate] = useState<string>(user?.birth_date || '');
   const [gender, setGender] = useState<number>(
-    defaultUser?.gender?.id ? defaultUser?.gender?.id : 0
+    user?.gender?.id ? user?.gender?.id : 0
   );
 
   const name = useRef<HTMLInputElement>(null);
@@ -62,7 +60,7 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
     return name.current?.value == '' || birthDate == '';
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (invalidSubmission() || anyEmptyField()) {
       const allErrors = Object.fromEntries(
         Object.keys(errors).map((i) => {
@@ -89,29 +87,18 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
       birthDate: birthDate,
     });
 
-    createRoom();
-  };
+    const req = {
+      id: `${user?.id}-${id}`,
+      name: `room-${user?.id}-${id}`,
+    };
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const createRoom = async () => {
-    if (user) {
-      const req = {
-        id: `${user?.email}-${id}`,
-        name: `room-${user?.email}-${id}`,
-      };
-
-      try {
-        setIsLoading(true);
-        await api.post(`/ws/createRoom`, req);
-        router.push(`/consult/${id}`);
-      } catch (error: any) {
-        console.log(error);
-        toast.error(error?.message);
-      } finally {
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+    try {
+      await createRoom(req);
+    } catch (error) {
+      toast.error((error as Error).message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -133,7 +120,7 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
             onInput={({ target }) =>
               handleInput('name', (target as HTMLInputElement).value)
             }
-            defaultValue={defaultUser?.name}
+            defaultValue={user?.name}
           />
         </label>
         <label htmlFor="birth-date">
@@ -153,7 +140,7 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
               birthDatePicker.current?.focus();
               birthDatePicker.current?.showPicker();
             }}
-            defaultValue={defaultUser?.birth_date}
+            defaultValue={user?.birth_date}
           />
         </label>
         <div>
