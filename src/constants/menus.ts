@@ -34,6 +34,49 @@ export const MENUS: MENU_TYPE[] = [
   },
 ];
 
+export const ADMIN_MENUS: MENU_TYPE[] = [
+  {
+    label: 'Dashboard',
+    link: '/admin/dashboard',
+    icon: 'LayoutDashboard',
+  },
+  {
+    label: 'Admin',
+    link: '/admin/admin',
+    icon: 'UserRoundCog',
+  },
+  {
+    label: 'Partner',
+    link: '/admin/partner',
+    icon: 'Store',
+  },
+  {
+    label: 'User',
+    link: '/admin/user',
+    icon: 'User',
+  },
+  {
+    label: 'Doctor',
+    link: '/admin/doctor',
+    icon: 'UserRoundCog',
+  },
+  {
+    label: 'Medicine',
+    link: '/admin/medicine',
+    icon: 'Pill',
+  },
+  {
+    label: 'Order',
+    link: '/admin/order',
+    icon: 'ClipboardList',
+  },
+  {
+    label: 'Sales Report',
+    link: '/admin/sales-report',
+    icon: 'LineChart',
+  },
+];
+
 export const MEDS_PATHS_MAP = {
   meds: 'Medicines',
   category: 'Category',
