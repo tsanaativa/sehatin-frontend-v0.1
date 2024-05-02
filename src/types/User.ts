@@ -5,4 +5,5 @@ export type User = {
   gender?: 'male' | 'female';
   birth_date?: string;
   profile_picture?: string;
+  role: string;
 };
