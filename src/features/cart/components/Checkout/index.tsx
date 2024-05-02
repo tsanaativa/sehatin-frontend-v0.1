@@ -1,154 +1,244 @@
 'use client';
-import { Button, Icon, OrderCard } from '@/components/common';
-import { ProductsProps } from '@/components/common/OrderCard';
-import { overflowHandler } from '@/utils/helper';
-import React, { useEffect, useState } from 'react';
+import { Icon, OrderCard, RadioBox } from '@/components/common';
+import { useEffect, useState } from 'react';
+import CartLayout from '../layout';
+import { PharmaciesProps } from '../Cart';
+import { currency } from '@/utils/helper';
+import { TikiIcon, JNEIcon } from '@/assets/icons';
+import Image from 'next/image';
+import seabank from '@/assets/images/seabank.png';
 
-type PharmaciesProps = {
-  products: ProductsProps[];
-  name: string;
-  slug: string;
+type CheckoutProps = {
+  toOrder: PharmaciesProps[];
+  onClose: () => void;
+  onBack: () => void;
+  onOrder: (totalPayment: string) => void;
 };
 
-const Checkout = () => {
-  const pharmacies: PharmaciesProps[] = [];
+const Checkout = ({
+  onBack,
+  onClose,
+  onOrder,
+  toOrder = [],
+}: CheckoutProps) => {
+  const [isLoading, setIsLoading] = useState({
+    order: false,
+  });
 
-  const [productChecks, setProductChecks] = useState(
-    pharmacies.map((p) => [...Array(p.products.length)].map(() => false))
-  );
+  const address = '2640 Cabin Creek Rd #102 Alexandria, Virginia (VA), 22314';
 
-  const [pharmaChecks, setPharmaChecks] = useState<
-    (boolean | 'indeterminate')[]
-  >(pharmacies.map(() => false));
-
-  const [productCount, setProductCount] = useState(
-    pharmacies.map((p) => [...Array(p.products.length)].map(() => 0))
-  );
-
-  const handlePharmaCheck = (idx: number) => {
-    const checks = pharmaChecks;
-    if (checks[idx] == false || checks[idx] == 'indeterminate') {
-      checks[idx] = true;
-    } else {
-      checks[idx] = false;
-    }
-    setPharmaChecks(checks);
-
-    const prodChecks = productChecks;
-    prodChecks[idx].forEach(
-      (_, i) => (prodChecks[idx][i] = checks[idx] as boolean)
-    );
-    setProductChecks(prodChecks);
+  const productSubTotal = () => {
+    const order = toOrder.map((t) => t.products.map((p) => p.price * p.inCart));
+    return order.flat().reduce((a, b) => a + b, 0);
   };
 
-  const handleProductCheck = (pharmaIdx: number, productIdx: number) => {
-    const checks = productChecks;
-    checks[pharmaIdx][productIdx] = !checks[pharmaIdx][productIdx];
-    setProductChecks(checks);
+  const [shipment, setShipment] = useState<
+    '' | 'instant' | 'sameday' | 'jne' | 'tiki'
+  >(address ? 'instant' : '');
 
-    const pharChecks = pharmaChecks;
-    if (checks[pharmaIdx].every((c) => c)) pharChecks[pharmaIdx] = true;
-    else if (checks[pharmaIdx].some((c) => c))
-      pharChecks[pharmaIdx] = 'indeterminate';
-    else pharChecks[pharmaIdx] = false;
+  const shipmentPrice: Record<
+    '' | 'instant' | 'sameday' | 'jne' | 'tiki',
+    number
+  > = {
+    instant: 40000,
+    sameday: 28000,
+    jne: 20000,
+    tiki: 16000,
+    '': 0,
   };
 
-  const handleUpdateCount = (
-    pharmaIdx: number,
-    productIdx: number,
-    value: number
-  ) => {
-    const counts = productCount;
-    counts[pharmaIdx][productIdx] = value;
-    setProductCount(counts);
+  const summarySubTotal: Record<string, string> = {
+    'Product Subtotal': currency(productSubTotal()),
+    'Shipping Subtotal': currency(shipmentPrice[shipment]),
   };
 
-  const handleRemove = (pharmaIdx: number, productIdx: number) => {};
+  const countTotalPayment = () =>
+    currency(productSubTotal() + shipmentPrice[shipment]);
 
-  const totalItemInCart = () => {
-    let total: ProductsProps[] = [];
-    pharmacies.forEach((p) => (total = [...total, ...p.products]));
-    return total.length;
+  const showTotalPayment = () => {
+    const totalPrice = document.getElementById('total-price-1');
+    const circle = document.querySelector('.lucide-map-pin > circle');
+    circle?.setAttribute('r', '4.5');
+    totalPrice!.textContent = countTotalPayment();
+  };
+
+  const createOrder = () => {
+    setIsLoading({ ...isLoading, order: true });
+    setTimeout(() => {
+      setIsLoading({ ...isLoading, order: false });
+      onOrder(countTotalPayment());
+    }, 2000);
   };
 
   useEffect(() => {
-    overflowHandler('hidden');
+    showTotalPayment();
   });
   return (
-    <div className="min-w-full overflow-y-auto h-[calc(100%-54px)] lg:h-full bottom-[54px] lg:bottom-0 bg-light z-[41] pb-14">
-      <div className="max-w-[1440px] m-auto px-[calc(8px+3vw)] pt-5">
-        <h2 className="text-dark text-lg lg:text-2xl font-semibold font-poppins">
-          My Cart
-        </h2>
-        <span className="hidden lg:block font-medium text-[14px] text-dark-gray mt-1">
-          {totalItemInCart()} item
-        </span>
-        <div className="flex gap-[27px] mt-5">
-          <div className="flex flex-col gap-5 w-full lg:w-[calc(100%-377px)] lg:overflow-hidden">
-            {pharmacies.map((p, idx) => (
+    <div className="min-w-full overflow-y-auto h-[calc(100%-54px)] lg:h-full bottom-0 bg-light z-[41] pb-14">
+      <CartLayout
+        pageTitle="Checkout"
+        summaryTitle="Payment Detail"
+        summarySubTitle="Total Payment"
+        summarySubTotal={summarySubTotal}
+        pageIndex={1}
+        mainButton={{
+          text: 'Create Order',
+          disabled: !address,
+          loading: isLoading['order'],
+          action: () => createOrder(),
+        }}
+        navLabel={`${toOrder.map((t) => t.products).flat().length}`}
+        breadcrumb={[
+          { text: 'Home', action: () => onClose() },
+          { text: 'My Cart', action: () => onBack() },
+        ]}
+      >
+        <div className="[&>*>h5]:text-dark [&>*>h5]:font-semibold [&>*>h5]:text-xs md:[&>*>h5]:text-xl [&>*>h5]:mb-1.5 md:[&>*>h5]:mb-3 w-full lg:w-[calc(100%-377px)] flex flex-col gap-5">
+          <div className="bg-primary-light border border-primary-border rounded-xl px-3.5 flex flex-col text-primary-dark">
+            <div className="flex items-center justify-between border-b border-b-primary-border">
+              <span className="py-3 text-xs sm:text-base">
+                Shipping Address
+              </span>
+              <button className="bg-primary/20 h-7 px-3 rounded-md text-primary-darker hover:bg-primary/25 active:bg-primary/15 transition-colors duration-300 text-sm sm:text-base">
+                Change
+              </button>
+            </div>
+            <div className="py-3 flex items-center gap-2 sm:gap-4">
+              <Icon
+                name="MapPin"
+                className="min-w-6 h-6 fill-primary-dark [&>circle]:fill-primary-light"
+              />
+              <span className="text-xs sm:text-lg">
+                2640 Cabin Creek Rd #102 Alexandria, Virginia {'(VA)'}, 22314
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5 lg:overflow-hidden">
+            {toOrder.map((p, idx) => (
               <OrderCard
                 key={idx}
-                isChecked={pharmaChecks[idx]}
-                productChecks={productChecks[idx]}
                 products={p.products}
                 pharmacyName={p.name}
-                name="cart"
+                name={p.slug}
                 id={p.slug}
-                productCount={productCount[idx]}
-                onCheck={() => handlePharmaCheck(idx)}
-                productAction={{
-                  onCheck: (productIdx) => handleProductCheck(idx, productIdx),
-                  updateCount: (productIdx, value) =>
-                    handleUpdateCount(idx, productIdx, value),
-                  onRemove: (productIdx) => handleRemove(idx, productIdx),
-                }}
-              >
-                <Icon
-                  name="Trash"
-                  className="w-[18px] h-[18px] lg:w-5 lg:h-5 stroke-gray"
-                />
-              </OrderCard>
+                childrenKey={{ prefix: 'x', key: 'inCart' }}
+              />
             ))}
           </div>
-          <div className="hidden lg:block min-w-[357px] h-[268px] sticky top-12 p-7 border border-primary-border rounded-lg">
-            <strong className="text-[20px] font-semibold font-poppins text-darker">
-              Ringkasan
-            </strong>
-            <div className="flex justify-between items-center mt-[18px] mb-6">
-              <span className="text-dark-gray font-medium">Total</span>
-              <span className="text-secondary font-semibold">Rp 1.000.000</span>
+          <div>
+            <h5>Shipping Method</h5>
+            <div className="mt-2 md:mt-0 grid [grid-template-columns:repeat(auto-fit,_minmax(132px,_1fr))] md:[grid-template-columns:repeat(auto-fit,_minmax(180px,_1fr))] gap-3 [&>label]:h-32 md:[&>label]:h-40 [&_section]:flex [&_section]:flex-col [&_section]:justify-center [&_section]:items-center [&_section]:gap-2">
+              <RadioBox
+                id="instant"
+                name="shipment"
+                isActive={shipment === 'instant'}
+                onChange={() => setShipment('instant')}
+                disabled={!address}
+              >
+                <section>
+                  <Icon name="Zap" className="w-9 h-9 md:w-14 md:h-14" />
+                  <span className="text-xs md:text-base">
+                    Instant -{' '}
+                    <span className="font-bold font-poppins">2 Jam</span>
+                  </span>
+                  <strong className="text-xs md:text-base font-semibold">
+                    Rp <span className="text-lg md:text-2xl">40</span>.000
+                  </strong>
+                </section>
+              </RadioBox>
+              <RadioBox
+                id="sameday"
+                name="shipment"
+                isActive={shipment === 'sameday'}
+                onChange={() => setShipment('sameday')}
+                disabled={!address}
+              >
+                <section>
+                  <Icon name="Bike" className="w-9 h-9 md:w-14 md:h-14" />
+                  <span className="text-xs md:text-base">
+                    SameDay -{' '}
+                    <span className="font-bold font-poppins">1 Hari</span>
+                  </span>
+                  <strong className="text-xs md:text-base font-semibold">
+                    Rp <span className="text-lg md:text-2xl">28</span>.000
+                  </strong>
+                </section>
+              </RadioBox>
+              <RadioBox
+                id="jne"
+                name="shipment"
+                isActive={shipment === 'jne'}
+                onChange={() => setShipment('jne')}
+                disabled={!address}
+              >
+                <section>
+                  <div className="h-16 md:h-[88px] grid place-items-center">
+                    <JNEIcon />
+                  </div>
+                  <strong className="text-xs md:text-base font-semibold">
+                    Rp <span className="text-lg md:text-2xl">20</span>.000
+                  </strong>
+                </section>
+              </RadioBox>
+              <RadioBox
+                id="tiki"
+                name="shipment"
+                isActive={shipment === 'tiki'}
+                onChange={() => setShipment('tiki')}
+                disabled={!address}
+              >
+                <section>
+                  <div className="h-16 md:h-[88px] grid place-items-center">
+                    <TikiIcon />
+                  </div>
+                  <strong className="text-xs md:text-base font-semibold">
+                    Rp <span className="text-lg md:text-2xl">16</span>.000
+                  </strong>
+                </section>
+              </RadioBox>
             </div>
-            <div className="flex flex-col gap-[14px]">
-              <Button
-                variant="primary"
-                className="h-12 w-full font-poppins font-semibold rounded-xl"
-              >
-                Checkout
-              </Button>
-              <Button
-                variant="outlined-primary"
-                className="h-12 w-full font-poppins font-semibold rounded-xl"
-              >
-                + Tambah Obat Lain
-              </Button>
+          </div>
+          <div>
+            <h5>Payment Method</h5>
+            <div className="p-5 border border-primary-border bg-light rounded-xl w-full flex items-center gap-5">
+              <div className="min-w-fit">
+                <Image src={seabank} alt="seabank" width={29} height={38} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <b className="text-dark font-semibold md:font-medium text-xs md:text-lg">
+                  Transfer to Seabank
+                </b>
+                <span className="text-dark-gray font-semibold text-xs md:text-lg">
+                  13246515736182 a/n Moana
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="block lg:hidden">
+            <h5>Payment Details</h5>
+            <div className="flex flex-col gap-1.5 mt-1 mb-3">
+              {Object.keys(summarySubTotal).map((s) => (
+                <div
+                  key={s}
+                  className="flex justify-between items-center text-dark-gray text-xs md:text-sm"
+                >
+                  <span>{s}</span>
+                  <span>{summarySubTotal[s]}</span>
+                </div>
+              ))}
+            </div>
+            <hr className="border-none bg-gray-lighter h-0.5 w-full" />
+            <div className="flex justify-between items-center mt-2.5">
+              <span className="text-dark font-semibold text-xs md:text-sm">
+                Total Payment
+              </span>
+              <span className="text-secondary font-bold md:text-lg">
+                {countTotalPayment()}
+              </span>
             </div>
           </div>
         </div>
-        {/* <div className="bg-light w-full fixed bottom-0 left-0 h-[78px] z-[42] shadow-[0_-1px_8px_0] shadow-gray/50 flex lg:hidden justify-between items-center px-5 gap-4 rounded-3xl">
-          <div className="flex flex-col">
-            <span className="text-gray-cart font-medium text-sm">Total</span>
-            <strong className="text-secondary font-bold text-lg whitespace-nowrap">
-              Rp 1.000.000
-            </strong>
-          </div>
-          <Button
-            variant="primary"
-            className="h-11 px-6 sm:w-40 font-poppins font-semibold text-sm rounded-xl"
-          >
-            Checkout
-          </Button>
-        </div> */}
-      </div>
+      </CartLayout>
     </div>
   );
 };

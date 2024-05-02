@@ -1,27 +1,23 @@
 'use client';
-import { Button, Icon, OrderCard } from '@/components/common';
+import { Button, Icon, Loading, Modal, OrderCard } from '@/components/common';
 import { ProductsProps } from '@/components/common/OrderCard';
-import { currency, overflowHandler } from '@/utils/helper';
-import React, { useEffect, useRef, useState } from 'react';
+import { currency } from '@/utils/helper';
+import { useState } from 'react';
+import CartLayout from '../layout';
 
-type PharmaciesProps = {
+export type PharmaciesProps = {
   products: ProductsProps[];
   name: string;
   slug: string;
 };
 
-type CheckoutedPharmaciesProps = Omit<PharmaciesProps, 'products'> & {
-  products: (ProductsProps & { count: number })[];
-  name: string;
-  slug: string;
-};
-
 type CartProps = {
-  onCheckout: (products: CheckoutedPharmaciesProps[]) => void;
+  onCheckout: (products: PharmaciesProps[]) => void;
+  onClose: () => void;
 };
 
-const Cart = ({ onCheckout }: CartProps) => {
-  const pharmacies: PharmaciesProps[] = [
+const Cart = ({ onCheckout, onClose }: CartProps) => {
+  const [pharmacies, setPharmacies] = useState<PharmaciesProps[]>([
     {
       products: [
         {
@@ -106,7 +102,7 @@ const Cart = ({ onCheckout }: CartProps) => {
       name: 'Century Mampang Prapatan',
       slug: 'century-mampang-prapatan-1',
     },
-  ];
+  ]);
 
   const [productChecks, setProductChecks] = useState(
     pharmacies.map((p) => [...Array(p.products.length)].map(() => false))
@@ -119,6 +115,13 @@ const Cart = ({ onCheckout }: CartProps) => {
   const [productCounts, setProductCounts] = useState(
     pharmacies.map((ph) => ph.products.map((p) => p.inCart))
   );
+
+  const [showModal, setShowModal] = useState(false);
+  const [productToRemove, setProductToRemove] = useState<ProductsProps[]>([]);
+  const [isLoading, setIsLoading] = useState({
+    removeItem: false,
+    checkout: false,
+  });
 
   const handlePharmaCheck = (idx: number) => {
     const checks = pharmaChecks;
@@ -134,7 +137,7 @@ const Cart = ({ onCheckout }: CartProps) => {
       (_, i) => (prodChecks[idx][i] = checks[idx] as boolean)
     );
     setProductChecks(prodChecks);
-    countTotalPrice(prodChecks);
+    countTotalPrice(prodChecks, productCounts);
   };
 
   const handleProductCheck = (pharmaIdx: number, productIdx: number) => {
@@ -148,16 +151,21 @@ const Cart = ({ onCheckout }: CartProps) => {
       pharChecks[pharmaIdx] = 'indeterminate';
     else pharChecks[pharmaIdx] = false;
 
-    countTotalPrice(checks);
+    countTotalPrice(checks, productCounts);
   };
 
-  const countTotalPrice = (checkedProducts: boolean[][]) => {
-    const checkeds = productCounts.map((pc, idx) => {
+  const countTotalPrice = (
+    checkedProducts: boolean[][],
+    itemCounts: number[][]
+  ) => {
+    const checkeds = itemCounts.map((pc, idx) => {
       const count = pharmacies[idx].products.map((p, i) => p.price * pc[i]);
       return count.filter((_, i) => checkedProducts[idx][i]);
     });
-    const totalPrice = document.getElementById('total-price');
-    totalPrice!.textContent = `${checkeds.flat().reduce((a, b) => a + b, 0)}`;
+    const totalPrice = document.getElementById('total-price-0');
+    totalPrice!.textContent = currency(
+      checkeds.flat().reduce((a, b) => a + b, 0)
+    );
   };
 
   const handleUpdateCount = (
@@ -165,12 +173,72 @@ const Cart = ({ onCheckout }: CartProps) => {
     productIdx: number,
     value: number
   ) => {
-    const counts = productCounts;
-    counts[pharmaIdx][productIdx] = value;
-    setProductCounts(counts);
+    const itemCounts = productCounts;
+    if (value == 0) {
+      handleModalRemove(pharmaIdx, productIdx);
+      return;
+    }
+    itemCounts[pharmaIdx][productIdx] = value;
+    setProductCounts(itemCounts);
+    if (productChecks[pharmaIdx][productIdx]) {
+      countTotalPrice(productChecks, itemCounts);
+    }
   };
 
-  const handleRemove = (pharmaIdx: number, productIdx: number) => {};
+  const handleModalRemove = (pharmaIdx: number, productIdx: number) => {
+    setProductToRemove([pharmacies[pharmaIdx].products[productIdx]]);
+    setShowModal(true);
+  };
+
+  const handleRemove = (id: number) => {
+    setIsLoading({ ...isLoading, removeItem: true });
+    let pharmas = pharmacies.map((ph) => {
+      const products = ph.products.filter((p) => p.id !== id);
+      return { ...ph, products };
+    });
+
+    const pharmaIdx = pharmas.findIndex(
+      (ph, i) => ph.products.length < pharmacies[i].products.length
+    );
+    const productIdx = pharmacies[pharmaIdx].products.findIndex(
+      (p) => p.id == id
+    );
+
+    let itemList = productChecks.map((pc, idx) =>
+      idx == pharmaIdx ? pc.filter((_, i) => i != productIdx) : pc
+    );
+    let pharmaList = pharmaChecks.map((ph, idx) =>
+      idx == pharmaIdx
+        ? itemList[pharmaIdx].every((pc) => pc) ||
+          itemList[pharmaIdx].some((pc) => pc)
+          ? 'indeterminate'
+          : false
+        : ph
+    );
+    let itemCounts = productCounts.map((pc, idx) =>
+      idx == pharmaIdx ? pc.filter((_, i) => i != productIdx) : pc
+    );
+
+    const emptyProductIndex = pharmas.findIndex(
+      (ph) => ph.products.length == 0
+    );
+    if (emptyProductIndex >= 0) {
+      pharmaList = pharmaChecks.filter((_, i) => i !== emptyProductIndex);
+      itemList = productChecks.filter((_, i) => i !== emptyProductIndex);
+      itemCounts = productCounts.filter((_, i) => i !== emptyProductIndex);
+    }
+
+    pharmas = pharmas.filter((ph) => ph.products.length > 0);
+    setTimeout(() => {
+      setIsLoading({ ...isLoading, removeItem: false });
+      setPharmacies(pharmas);
+      setPharmaChecks(pharmaList);
+      setProductChecks(itemList);
+      setProductCounts(itemCounts);
+      countTotalPrice(itemList, itemCounts);
+      setShowModal(false);
+    }, 2000);
+  };
 
   const totalItemInCart = () => {
     let total: ProductsProps[] = [];
@@ -179,13 +247,14 @@ const Cart = ({ onCheckout }: CartProps) => {
   };
 
   const handleCheckout = () => {
+    setIsLoading({ ...isLoading, checkout: true });
     const checkedPharmas = pharmacies.filter((_, idx) =>
       productChecks[idx].some((prod) => prod)
     );
 
     const checkedProducts = checkedPharmas.map((pharma, idx) => {
       const products = pharma.products.map((prod, i) => {
-        return { ...prod, count: productCounts[idx][i] };
+        return { ...prod, inCart: productCounts[idx][i] };
       });
       const checkeds = products.filter((_, i) => {
         return productChecks[idx][i];
@@ -193,83 +262,97 @@ const Cart = ({ onCheckout }: CartProps) => {
       return { ...pharma, products: checkeds };
     });
 
-    onCheckout(checkedProducts);
+    setTimeout(() => {
+      setIsLoading({ ...isLoading, checkout: false });
+      onCheckout(checkedProducts);
+    }, 2000);
   };
-
-  useEffect(() => {
-    overflowHandler('hidden');
-  });
   return (
-    <div className="min-w-full relative overflow-y-auto h-[calc(100%-54px)] lg:h-full bottom-0 bg-light z-[41] pb-14">
-      <div className="max-w-[1440px] m-auto px-[calc(8px+3vw)] pt-5">
-        <div className="flex lg:flex-col gap-1 justify-between lg:justify-normal items-center lg:items-start">
-          <h2 className="text-dark text-lg lg:text-2xl font-semibold font-poppins">
-            My Cart
-          </h2>
-          <span className="font-medium text-[14px] text-dark-gray">
-            {totalItemInCart()} item
-          </span>
+    <div className="min-w-full overflow-y-auto h-[calc(100%-54px)] lg:h-full bottom-0 bg-light z-[41] pb-14">
+      <CartLayout
+        pageTitle="My Cart"
+        summaryTitle="Summary"
+        summarySubTitle="Total"
+        pageIndex={0}
+        mainButton={{
+          text: 'Checkout',
+          disabled: productChecks.flat().every((p) => !p),
+          loading: isLoading['checkout'],
+          action: () => handleCheckout(),
+        }}
+        secondaryButton={{
+          text: '+ Tambah Obat Lain',
+          action: () => {},
+        }}
+        breadcrumb={[{ text: 'Home', action: () => onClose() }]}
+        navLabel={`${totalItemInCart()}`}
+      >
+        <div className="flex flex-col gap-5 w-full lg:w-[calc(100%-377px)] lg:overflow-hidden">
+          {pharmacies.map((p, idx) => (
+            <OrderCard
+              key={idx}
+              isChecked={pharmaChecks[idx]}
+              productChecks={productChecks[idx]}
+              products={p.products}
+              pharmacyName={p.name}
+              name={p.slug}
+              id={p.slug}
+              productCount={productCounts[idx]}
+              onCheck={() => handlePharmaCheck(idx)}
+              productAction={{
+                onCheck: (productIdx) => handleProductCheck(idx, productIdx),
+                updateCount: (productIdx, value) =>
+                  handleUpdateCount(idx, productIdx, value),
+                onRemove: (productIdx) => handleModalRemove(idx, productIdx),
+              }}
+            >
+              <Icon
+                name="Trash"
+                className="w-[18px] h-[18px] lg:w-5 lg:h-5 stroke-gray"
+              />
+            </OrderCard>
+          ))}
         </div>
-        <div className="flex gap-[27px] mt-5">
-          <div className="flex flex-col gap-5 w-full lg:w-[calc(100%-377px)] lg:overflow-hidden">
-            {pharmacies.map((p, idx) => (
-              <OrderCard
-                key={idx}
-                isChecked={pharmaChecks[idx]}
-                productChecks={productChecks[idx]}
-                products={p.products}
-                pharmacyName={p.name}
-                name={p.slug}
-                id={p.slug}
-                productCount={productCounts[idx]}
-                onCheck={() => handlePharmaCheck(idx)}
-                productAction={{
-                  onCheck: (productIdx) => handleProductCheck(idx, productIdx),
-                  updateCount: (productIdx, value) =>
-                    handleUpdateCount(idx, productIdx, value),
-                  onRemove: (productIdx) => handleRemove(idx, productIdx),
-                }}
-              >
-                <Icon
-                  name="Trash"
-                  className="w-[18px] h-[18px] lg:w-5 lg:h-5 stroke-gray"
-                />
-              </OrderCard>
-            ))}
-          </div>
-          <div className="fixed lg:sticky w-full lg:w-[357px] flex justify-between items-center lg:block bg-light h-[78px] lg:h-[268px] bottom-0 left-0 lg:top-12 z-[42] shadow-[0_-1px_8px_0] shadow-gray/50 lg:shadow-none px-5 lg:p-7 lg:border lg:border-primary-border rounded-t-3xl lg:rounded-lg gap-4">
-            <strong className="hidden lg:block text-[20px] font-semibold font-poppins text-darker">
-              Ringkasan
+      </CartLayout>
+      <Modal
+        modalClass="[&>*]:rounded-t-2xl sm:[&>*]:rounded-b-2xl sm:[&>*]:max-w-[540px]"
+        showModal={showModal}
+        onClick={() => isLoading['removeItem'] || setShowModal(false)}
+      >
+        <div className="p-8 sm:p-6 flex flex-col items-center sm:items-start gap-4 [&>*]:w-full">
+          <p className="text-primary-text sm:text-lg text-center sm:text-left">
+            By clicking <b>{'"Yes, Remove"'}</b>, the product bellow will be
+            removed from the cart.
+          </p>
+          <OrderCard products={productToRemove} />
+          <div className="flex flex-col items-center sm:items-end gap-3 sm:gap-4">
+            <strong className="text-secondary text-lg sm:text-xl text-center sm:text-left">
+              Are you sure to continue ?
             </strong>
-            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center lg:mt-[18px] lg:mb-6">
-              <span className="text-gray-cart lg:text-dark-gray font-medium text-sm lg:text-base">
-                Total
-              </span>
-              <strong
-                id="total-price"
-                className="text-secondary font-bold lg:font-semibold text-lg lg:text-base whitespace-nowrap"
-              >
-                Rp 0
-              </strong>
-            </div>
-            <div className="flex flex-col gap-[14px]">
+            <div className="flex gap-3">
               <Button
-                onClick={handleCheckout}
-                variant="primary"
-                className="h-11 lg:h-12 px-6 lg:px-0 w-full sm:w-40 lg:w-full font-poppins font-semibold rounded-xl text-sm lg:text-base"
+                onClick={() => handleRemove(productToRemove[0].id)}
+                loading={isLoading['removeItem']}
+                className="w-32 sm:w-36 text-sm sm:text-base h-11 sm:h-12 !font-semibold"
+                variant="danger"
               >
-                Checkout
+                {isLoading['removeItem'] ? (
+                  <Loading name="jump-dots" />
+                ) : (
+                  'Yes, Remove'
+                )}
               </Button>
               <Button
-                variant="outlined-primary"
-                className="hidden lg:block h-12 w-full font-poppins font-semibold rounded-xl"
+                onClick={() => setShowModal(false)}
+                className="w-32 sm:w-36 text-sm sm:text-base h-11 sm:h-12 !font-semibold"
+                variant="primary"
               >
-                + Tambah Obat Lain
+                No, Keep It
               </Button>
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
     </div>
   );
 };

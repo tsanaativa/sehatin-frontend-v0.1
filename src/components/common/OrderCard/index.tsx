@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import Badge from '../Badge';
 import { Store } from 'lucide-react';
@@ -22,14 +21,19 @@ type OrderCardProps = {
   id?: string;
   name?: string;
   badge?: string;
-  pharmacyName: string;
+  pharmacyName?: string;
   products: ProductsProps[];
   productChecks?: boolean[];
   redirectTo?: string;
   withSubTotal?: boolean;
   productCount?: number[];
-  children: React.ReactNode;
-  isChecked: boolean | 'indeterminate';
+  children?: React.ReactNode;
+  childrenKey?: {
+    prefix?: string;
+    key: keyof ProductsProps;
+    suffix?: string;
+  };
+  isChecked?: boolean | 'indeterminate';
   onCheck?: () => void;
   productAction?: {
     onCheck: (idx: number) => void;
@@ -49,7 +53,8 @@ const OrderCard = ({
   withSubTotal = false,
   productCount,
   children,
-  isChecked,
+  childrenKey,
+  isChecked = false,
   onCheck,
   productAction,
 }: OrderCardProps) => {
@@ -64,36 +69,39 @@ const OrderCard = ({
         href={redirectTo}
         scroll={false}
       >
-        <div className="flex items-center justify-between border-b border-primary-border px-4 py-2 md:py-4">
-          <div className="flex items-center">
-            {productChecks && (
-              <label
-                htmlFor={id}
-                aria-label={name}
-                className={`relative grid place-items-center w-4 h-4 rounded-[3px] mr-3 md:mr-[18px] border ${[true, 'indeterminate'].includes(isChecked) ? 'bg-primary-dark border-primary-dark' : 'bg-gray-lighter border-gray'}`}
-              >
-                <Icon
-                  name={isChecked == 'indeterminate' ? 'Minus' : 'Check'}
-                  className="w-2 h-2 stroke-[6] text-gray-light"
-                />
-                <input
-                  type="checkbox"
-                  name={name}
-                  id={id}
-                  checked={isChecked == true}
-                  onChange={onCheck}
-                  disabled={products.every((p) => !p.is_available)}
-                  className="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed"
-                />
-              </label>
-            )}
-            <span className="flex items-center gap-x-2 font-medium text-xs leading-[19px] text-dark md:text-[17px]">
-              <Store className="w-4 h-4 md:w-[18px] md:h-[18px] text-dark" />{' '}
-              <span className="translate-y-px">{pharmacyName}</span>
-            </span>
+        {pharmacyName && (
+          <div className="flex items-center justify-between border-b border-primary-border px-4 py-2 md:py-4">
+            <div className="flex items-center">
+              {productChecks && (
+                <label
+                  htmlFor={id}
+                  aria-label={name}
+                  className={`relative grid place-items-center w-4 h-4 rounded-[3px] mr-3 md:mr-[18px] border ${[true, 'indeterminate'].includes(isChecked) ? 'bg-primary-dark border-primary-dark' : 'bg-gray-lighter border-gray'}`}
+                >
+                  <Icon
+                    name={isChecked == 'indeterminate' ? 'Minus' : 'Check'}
+                    className="w-2 h-2 stroke-[6] text-gray-light"
+                  />
+                  <input
+                    type="checkbox"
+                    name={name}
+                    id={id}
+                    checked={isChecked == true}
+                    value={id}
+                    onChange={onCheck}
+                    disabled={products.every((p) => !p.is_available)}
+                    className="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                  />
+                </label>
+              )}
+              <span className="flex items-center gap-x-2 font-medium text-xs leading-[19px] text-dark md:text-[17px]">
+                <Store className="w-4 h-4 md:w-[18px] md:h-[18px] text-dark" />{' '}
+                <span className="translate-y-px">{pharmacyName}</span>
+              </span>
+            </div>
+            {badge && <Badge>{badge}</Badge>}
           </div>
-          {badge && <Badge>{badge}</Badge>}
-        </div>
+        )}
         {products.map((p, idx) => (
           <div
             key={p.slug}
@@ -117,6 +125,7 @@ const OrderCard = ({
                       id={p.slug}
                       checked={productChecks[idx]}
                       disabled={!p.is_available}
+                      value={p.slug}
                       onChange={() => productAction?.onCheck(idx)}
                       className="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed"
                     />
@@ -134,7 +143,7 @@ const OrderCard = ({
               </div>
               <div className="w-full overflow-hidden">
                 <div className="md:relative flex justify-between md:items-end">
-                  <div className="flex flex-col gap-4 w-[calc(100%-34px)] md:w-[calc(100%-8px)]">
+                  <div className="flex flex-col gap-1 md:gap-0.5 w-[calc(100%-34px)] md:w-[calc(100%-8px)]">
                     <strong className="font-poppins font-medium text-xs leading-4 text-dark md:text-base whitespace-nowrap overflow-hidden text-ellipsis">
                       {p.name}
                     </strong>
@@ -142,13 +151,22 @@ const OrderCard = ({
                       {p.label}
                     </span>
                   </div>
-                  <div className="flex h-fit items-center gap-4 md:translate-y-7 md:absolute right-0 bottom-0">
-                    <button
-                      aria-label="children-or-action"
-                      onClick={() => productAction?.onRemove(idx)}
-                    >
-                      {children}
-                    </button>
+                  <div className="flex h-fit items-center gap-4 md:translate-y-7 md:absolute right-0 bottom-0 text-dark font-semibold text-sm md:text-base">
+                    {childrenKey ? (
+                      <span>
+                        {childrenKey.prefix}
+                        {p[childrenKey.key]}
+                        {childrenKey.suffix}
+                      </span>
+                    ) : (
+                      <button
+                        className={`${productAction ? '' : 'select-none pointer-events-none'}`}
+                        aria-label="children-action"
+                        onClick={() => productAction?.onRemove(idx)}
+                      >
+                        {children}
+                      </button>
+                    )}
                     {productCount && (
                       <Counter
                         updateValue={(value) =>
@@ -162,10 +180,10 @@ const OrderCard = ({
                     )}
                   </div>
                 </div>
-                <div>
+                <div className="mt-0 md:mt-1">
                   <div>
                     {badge && (
-                      <span className="font-medium text-xs text-dark mt-2 md:text-base">
+                      <span className="font-medium text-xs text-dark md:text-base">
                         Total Payment:
                       </span>
                     )}

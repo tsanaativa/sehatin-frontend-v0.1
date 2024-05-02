@@ -1,8 +1,12 @@
 export const overflowHandler = (type: 'hidden' | 'auto') => {
   setTimeout(() => {
     const notif = document.getElementById('unregister-notif');
+    const bottomNav = document.getElementById('bottom-navigation');
     if (notif) {
       notif.style.display = type == 'hidden' ? 'none' : 'block';
+    }
+    if (bottomNav) {
+      bottomNav.style.display = type == 'hidden' ? 'none' : 'block';
     }
     document.getElementsByTagName('body')[0].style.overflow = type;
   }, 0);
@@ -37,4 +41,4 @@ export const minuteDifference = (date: string): number => {
 };
 
 export const currency = (val: number): string =>
-  'Rp' + new Intl.NumberFormat('id-ID').format(val);
+  'Rp ' + new Intl.NumberFormat('id-ID').format(val);

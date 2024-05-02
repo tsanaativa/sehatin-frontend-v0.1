@@ -13,7 +13,7 @@ const RadioBox = ({
 }: RadioBoxProps) => {
   return (
     <label
-      className={`w-full cursor-pointer h-[99px] border rounded-[10px] flex flex-col items-center justify-center font-semibold ${isActive ? 'border-primary bg-primary-light text-primary' : 'border-gray-light text-gray transition duration-300 hover:border-primary'} ${boxClass}`}
+      className={`w-full h-[99px] border rounded-[10px] flex flex-col items-center justify-center font-semibold select-none ${props.disabled ? 'opacity-50 cursor-not-allowed' : `cursor-pointer ${isActive ? 'border-primary bg-primary-light text-primary' : 'border-gray-light text-gray transition duration-300 hover:border-primary'}`} ${boxClass}`}
       htmlFor={props.id}
       aria-label={props.name}
     >

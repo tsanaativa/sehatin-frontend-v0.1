@@ -1,13 +1,12 @@
 import Image, { StaticImageData } from 'next/image';
 import AuthHero from '@/assets/images/register-hero.png';
-import { ComponentPropsWithoutRef } from 'react';
 
 type AuthWithRoleProps = {
   children: React.ReactNode;
   heroImage?: StaticImageData;
   reverse?: boolean;
   pageTitle?: string;
-  wrapperClass?: ComponentPropsWithoutRef<'div'>['className'];
+  wrapperClass?: React.ComponentPropsWithoutRef<'div'>['className'];
 };
 
 const AuthWithRole = ({
