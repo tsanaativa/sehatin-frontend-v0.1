@@ -47,7 +47,7 @@ const Doctors = () => {
               ))}
             </div>
           </CategorizeSection>
-          <DoctorsBySpecialists />
+          <DoctorsBySpecialists isAuthenticated={!!user} />
         </div>
       </div>
     </div>
