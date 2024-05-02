@@ -10,6 +10,7 @@ import { useParams } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
+import { User } from '@/types/User';
 
 export type Message = {
   content: string;
@@ -19,8 +20,11 @@ export type Message = {
   type: string;
 };
 
-const ConsultRoom = () => {
-  const user = DUMMY_USER;
+type ConsultRoomProps = {
+  user: User;
+};
+
+const ConsultRoom = ({ user }: ConsultRoomProps) => {
   const { id } = useParams();
   const { conn, setConn } = useContext(WebsocketContext);
 
