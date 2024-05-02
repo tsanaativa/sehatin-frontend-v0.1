@@ -2,6 +2,8 @@
 
 import { LoginResponse } from '@/types/Auth';
 import api from '@/utils/api';
+import cookiesStore from '@/utils/cookies';
+import { cookies } from 'next/headers';
 // import local from '@/utils/localStorage';
 
 export default async function login(formData: FormData) {
@@ -14,9 +16,21 @@ export default async function login(formData: FormData) {
   try {
     const res = await api.post('/auth/login', rawFormData);
     const user = res.data as LoginResponse;
+    cookiesStore.set('healthcare-app-user', user);
     return user;
   } catch (error) {
-    console.log(error);
-    throw error;
+    let message: string;
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (error && typeof error === 'object' && 'message' in error) {
+      message = String(error.message);
+    } else if (typeof error === 'string') {
+      message = error;
+    } else {
+      message = 'Something when wrong';
+    }
+
+    throw new Error(message);
   }
 }

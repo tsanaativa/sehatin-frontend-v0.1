@@ -1,13 +1,11 @@
 'use client';
 import { DoctorBadge, PatientBadge } from '@/assets/icons';
 import { Button, Icon, Input, RadioBox } from '@/components/common';
-import { useRef, useState } from 'react';
-import GoogleSection from './GoogleSection';
 import Link from 'next/link';
-import api from '@/utils/api';
-import { LoginResponse } from '@/types/Auth';
-import local from '@/utils/localStorage';
 import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
+import login from '../actions/login';
+import GoogleSection from './GoogleSection';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +14,7 @@ const LoginForm = () => {
     email: '',
     password: '',
   });
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(true);
 
   const email = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
@@ -45,33 +43,27 @@ const LoginForm = () => {
       setErrors({ ...errs });
       return;
     }
-
-    const req = {
-      email: email.current?.value,
-      password: password.current?.value,
-      role: role,
-    };
-
+  };
+  const loginUser = async (formData: FormData) => {
+    console.log(formData.get('role'));
     try {
-      setIsLoading(true);
-      const res = await api.post('/auth/login', req);
-      const user = res.data as LoginResponse;
-      local.set(process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string, user);
+      const message = await login(formData);
+      if (message) console.log('SUCCESS', message);
       push('/');
-      console.log(user);
     } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+      if (error instanceof Error) console.log('ERROR', error?.message);
     }
   };
   return (
     <>
-      <form className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]">
+      <form
+        action={loginUser}
+        className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
+      >
         <div className="flex items-center gap-[20px] [&_span]:pt-[7px] [&_span]:text-[11px] mt-[6px]">
           <RadioBox
             id="user"
-            name="user"
+            name="role"
             value="user"
             isActive={role === 'user'}
             onChange={() => setRole('user')}
@@ -81,7 +73,7 @@ const LoginForm = () => {
           </RadioBox>
           <RadioBox
             id="doctor"
-            name="doctor"
+            name="role"
             value="doctor"
             isActive={role === 'doctor'}
             onChange={() => setRole('doctor')}
@@ -127,7 +119,7 @@ const LoginForm = () => {
           Forgot Password
         </Link>
         <Button
-          type="button"
+          type="submit"
           onClick={handleSubmit}
           disabled={isLoading}
           className="h-14 mt-7 grid place-items-center"
