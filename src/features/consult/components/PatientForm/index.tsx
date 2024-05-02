@@ -1,18 +1,20 @@
 'use client';
+
 import { Button, Input } from '@/components/common';
 import { DUMMY_USER } from '@/constants/dummy';
+import { User } from '@/types/User';
 import api from '@/utils/api';
-import { getUser } from '@/utils/user';
 import { validate } from '@/utils/validation';
-import { redirect, useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 type PatientFormProps = {
   isEdit?: boolean;
+  user?: User;
 };
 
-const PatientForm = ({ isEdit }: PatientFormProps) => {
+const PatientForm = ({ isEdit, user }: PatientFormProps) => {
   const router = useRouter();
   const { id } = useParams();
 
@@ -27,8 +29,8 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
   const [birthDate, setBirthDate] = useState<string>(
     defaultUser?.birth_date || ''
   );
-  const [gender, setGender] = useState<'male' | 'female'>(
-    defaultUser?.gender ? defaultUser?.gender : 'male'
+  const [gender, setGender] = useState<number>(
+    defaultUser?.gender?.id ? defaultUser?.gender?.id : 0
   );
 
   const name = useRef<HTMLInputElement>(null);
@@ -93,11 +95,10 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const createRoom = async () => {
-    const user = getUser();
     if (user) {
       const req = {
-        id: `${user.email}-${id}`,
-        name: `room-${user.email}-${id}`,
+        id: `${user?.email}-${id}`,
+        name: `room-${user?.email}-${id}`,
       };
 
       try {
@@ -168,9 +169,10 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
                 type="radio"
                 name="gender"
                 id="male"
+                value={1}
                 className="peer"
-                checked={gender == 'male'}
-                onChange={() => setGender('male')}
+                checked={gender === 1}
+                onChange={() => setGender(1)}
               />
               <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
               <span>Male</span>
@@ -181,8 +183,9 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
                 name="gender"
                 id="female"
                 className="peer"
-                checked={gender == 'female'}
-                onChange={() => setGender('female')}
+                value={2}
+                checked={gender === 2}
+                onChange={() => setGender(2)}
               />
               <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
               <span>Female</span>

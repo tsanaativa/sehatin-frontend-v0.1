@@ -4,9 +4,14 @@ export type User = {
   id: number;
   name: string;
   email: string;
-  gender?: 'male' | 'female';
+  gender?: Gender;
   birth_date?: string;
   profile_picture?: string;
   role: string;
   addresses: Address[];
+};
+
+export type Gender = {
+  id?: number;
+  name?: string;
 };

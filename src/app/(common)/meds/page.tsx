@@ -1,12 +1,9 @@
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import MedsByCategories from '@/features/meds/components/MedsByCategories';
-import { LoginData } from '@/types/LoginData';
-import cookiesStore from '@/utils/cookies';
+import { getUser } from '@/utils/user';
 
 const Meds = () => {
-  const user = cookiesStore.get<LoginData>(
-    process.env.NEXT_PUBLIC_USER_LOCAL_KEY || ''
-  )?.user;
+  const user = getUser();
 
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">

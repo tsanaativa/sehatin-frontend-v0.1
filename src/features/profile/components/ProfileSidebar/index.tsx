@@ -2,7 +2,7 @@
 
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { PROFILE_MENUS } from '@/constants/menus';
-import { getUser } from '@/utils/user';
+import { User } from '@/types/User';
 import { ChevronRight, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,11 +11,12 @@ import React from 'react';
 
 type ProfileSidebarProps = {
   isMobile?: boolean;
+  user: User;
 };
 
-const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
+const ProfileSidebar = ({ isMobile = false, user }: ProfileSidebarProps) => {
   const pathname = usePathname();
-  const user = getUser();
+  console.log(user);
 
   return (
     <div>

@@ -37,11 +37,11 @@ const ProfileForm = ({
   });
 
   const [birthDate, setBirthDate] = useState<string>(
-    defaultUser?.birth_date || ''
+    defaultUser?.birth_date ? defaultUser.birth_date.split('T')[0] : ''
   );
   const [workStart, setWorkStart] = useState<string>('');
-  const [gender, setGender] = useState<'male' | 'female'>(
-    defaultUser?.gender ? defaultUser?.gender : 'male'
+  const [genderId, setGenderId] = useState<number>(
+    defaultUser?.gender?.id ? defaultUser?.gender.id : 0
   );
   const [specialty, setSpecialty] = useState<string>(
     defaultDoctor?.specialist?.name || ''
@@ -269,7 +269,11 @@ const ProfileForm = ({
                     birthDatePicker.current?.focus();
                     birthDatePicker.current?.showPicker();
                   }}
-                  defaultValue={defaultUser?.birth_date}
+                  defaultValue={
+                    defaultUser?.birth_date
+                      ? defaultUser.birth_date.split('T')[0]
+                      : ''
+                  }
                 />
               </label>
               <div>
@@ -283,11 +287,11 @@ const ProfileForm = ({
                   <label htmlFor="male">
                     <input
                       type="radio"
-                      name="gender"
-                      id="male"
+                      name="genderId"
+                      id="1"
                       className="peer"
-                      checked={gender == 'male'}
-                      onChange={() => setGender('male')}
+                      checked={genderId === 1}
+                      onChange={() => setGenderId(1)}
                     />
                     <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
                     <span>Male</span>
@@ -295,11 +299,12 @@ const ProfileForm = ({
                   <label htmlFor="female">
                     <input
                       type="radio"
-                      name="gender"
+                      name="genderId"
                       id="female"
+                      value="2"
                       className="peer"
-                      checked={gender == 'female'}
-                      onChange={() => setGender('female')}
+                      checked={genderId === 2}
+                      onChange={() => setGenderId(2)}
                     />
                     <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
                     <span>Female</span>

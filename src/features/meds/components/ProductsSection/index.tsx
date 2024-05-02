@@ -71,6 +71,7 @@ const ProductsSection = ({ category, user }: ProductsSectionProps) => {
                         key={idx}
                         width="max-w-[197.2px]"
                         product={product}
+                        isAuthenticated={!!user}
                       />
                     ))}
                   </React.Fragment>
@@ -94,6 +95,7 @@ const ProductsSection = ({ category, user }: ProductsSectionProps) => {
                           key={idx}
                           width="min-w-[197.2px]"
                           product={product}
+                          isAuthenticated={!!user}
                         />
                       ))}
                     </div>
