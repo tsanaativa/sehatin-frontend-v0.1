@@ -3,7 +3,7 @@
 import { LocationIcon } from '@/assets/icons';
 import UpdateAddressButton from '@/features/profile/components/UpdateAddressButton';
 import { Address } from '@/types/Address';
-import { formatAddress } from '@/utils/address';
+import { formatAddress } from '@/utils/formatter';
 import { Check, ChevronRight } from 'lucide-react';
 import Badge from '../Badge';
 import DeleteModalButton from '../DeleteModalButton';

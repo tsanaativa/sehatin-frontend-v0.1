@@ -106,17 +106,17 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     }
   };
 
-  function doneTyping() {
+  const doneTyping = () => {
     const msgToSend = {
       content: 'false',
       type: 'typing',
     };
     if (conn !== null) conn.send(JSON.stringify(msgToSend));
-  }
+  };
 
   const messageRef = useRef<HTMLInputElement>(null);
 
-  function handleKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (messageRef.current) {
         sendMessage();
@@ -124,7 +124,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     } else {
       typing();
     }
-  }
+  };
 
   const chatBoxRef = useRef<HTMLDivElement>(null);
 

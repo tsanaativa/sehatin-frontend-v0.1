@@ -5,7 +5,7 @@ import { DEFAULT_ADDRESS } from '@/constants/address';
 import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
-import { formatAddress } from '@/utils/address';
+import { formatAddress } from '@/utils/formatter';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ const AddressDropdown = () => {
   const [addressOpts, setAddressOpts] = useState<Address[]>([]);
 
   useEffect(() => {
-    function getAddrOpts() {
+    const getAddrOpts = () => {
       const addrOpts = DUMMY_ADDRESSES.filter((addr) => {
         if (addr.is_active) {
           setAddress(addr);
@@ -25,13 +25,13 @@ const AddressDropdown = () => {
       });
 
       setAddressOpts(addrOpts);
-    }
+    };
     getAddrOpts();
   }, []);
 
-  function show() {
+  const show = () => {
     setShowDropdown(true);
-  }
+  };
 
   const ref = useOutsideClick(() => {
     setShowDropdown(false);

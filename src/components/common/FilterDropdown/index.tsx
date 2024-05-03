@@ -21,20 +21,20 @@ const FilterDropdown = ({
 }: FilterDropdownProps) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-  function show() {
+  const show = () => {
     setShowDropdown(true);
-  }
+  };
 
   const ref = useOutsideClick(() => {
     setShowDropdown(false);
   });
 
-  function reset() {
+  const reset = () => {
     setShowDropdown(false);
     if (onReset) {
       onReset();
     }
-  }
+  };
 
   return (
     <div className="relative">

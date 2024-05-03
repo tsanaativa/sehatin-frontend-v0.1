@@ -6,7 +6,7 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { formatAddress } from '@/utils/address';
+import { formatAddress } from '@/utils/formatter';
 import { useEffect, useMemo, useState } from 'react';
 import { User } from '@/types/User';
 import { useRouter } from 'next/navigation';
@@ -41,9 +41,9 @@ const AddressCard = ({ user }: AddressCardProps) => {
     }
   }, [addressOpts, router]);
 
-  function show() {
+  const show = () => {
     setShowDropdown(true);
-  }
+  };
 
   const ref = useOutsideClick(() => {
     setShowDropdown(false);
