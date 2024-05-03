@@ -90,20 +90,18 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
     });
 
     const req = {
-      id: `${user?.id}-${id}`,
-      name: `room-${user?.id}-${id}`,
+      id: `${user?.email}-${id}`,
+      name: `room-${user?.email}-${id}`,
     };
 
     setIsLoading(true);
     try {
       await createRoom(req);
+      router.push(`/consult/${id}`);
     } catch (error) {
       toast.error((error as Error).message);
     }
-    setIsLoading(false);
   };
-
-  console.log(user);
 
   return (
     <div>

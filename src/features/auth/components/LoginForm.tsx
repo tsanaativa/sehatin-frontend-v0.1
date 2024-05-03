@@ -1,12 +1,12 @@
 'use client';
 
 import { DoctorBadge, PatientBadge } from '@/assets/icons';
-import { Button, Icon, Input, RadioBox } from '@/components/common';
+import { Button, Input, RadioBox } from '@/components/common';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import login from '../actions/login';
-import { useRef, useState } from 'react';
 import GoogleSection from './GoogleSection';
 
 const LoginForm = () => {
@@ -55,7 +55,7 @@ const LoginForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         console.log('ERROR', error?.message);
-        toast.error(error?.message);
+        toast.error('please enter correct credentials');
       }
     } finally {
       setIsLoading(false);
@@ -128,21 +128,11 @@ const LoginForm = () => {
         <Button
           type="submit"
           onClick={handleSubmit}
-          disabled={isLoading}
           className="h-14 mt-7 grid place-items-center"
           variant="primary"
+          loading={isLoading}
         >
-          <>
-            {isLoading ? (
-              <Icon
-                name="LoaderCircle"
-                size={24}
-                className="animate-spin text-light"
-              />
-            ) : (
-              'Login'
-            )}
-          </>
+          Login
         </Button>
       </form>
       <GoogleSection mode="login" />

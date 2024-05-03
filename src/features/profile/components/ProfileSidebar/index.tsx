@@ -16,7 +16,6 @@ type ProfileSidebarProps = {
 
 const ProfileSidebar = ({ isMobile = false, user }: ProfileSidebarProps) => {
   const pathname = usePathname();
-  console.log(user);
 
   return (
     <div>

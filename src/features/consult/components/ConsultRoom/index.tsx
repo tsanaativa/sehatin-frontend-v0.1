@@ -35,7 +35,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
   useEffect(() => {
     const joinRoom = (roomId: string) => {
       const ws = new WebSocket(
-        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/joinRoom/${roomId}?userId=${user.id}&username=${user.email}`
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/join-room/${roomId}?userId=${user.id}&username=${user.email}`
       );
       if (ws.OPEN) {
         ws.onmessage = (message) => {

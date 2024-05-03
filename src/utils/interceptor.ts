@@ -19,6 +19,7 @@ const publicApiRoute = [
   '/doctors',
   '/specialists',
   '/users',
+  '/ws',
 ];
 
 const logout = async (): Promise<void> => {
