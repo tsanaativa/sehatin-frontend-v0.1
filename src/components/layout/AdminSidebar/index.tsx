@@ -29,7 +29,7 @@ const AdminSidebar = () => {
           {ADMIN_MENUS.map((menu, idx) => (
             <li key={idx}>
               <Link
-                className={`flex items-center gap-x-2 rounded-lg px-4 py-4 ${pathname.includes(menu.link) ? 'bg-primary-dark text-light' : 'text-gray'}`}
+                className={`flex items-center gap-x-2 rounded-lg px-4 py-4 ${pathname.includes(menu.link) ? 'bg-primary-dark text-light hover:bg-primary-dark/90' : 'text-gray'}`}
                 href={
                   menu.link === '/admin/dashboard'
                     ? menu.link

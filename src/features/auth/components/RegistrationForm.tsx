@@ -255,6 +255,7 @@ const RegistrationForm = () => {
             onInput={({ target }) =>
               handleInput('all', 'name', (target as HTMLInputElement).value)
             }
+            inputClass="w-full"
           />
         </label>
         <label htmlFor="email">
@@ -270,6 +271,7 @@ const RegistrationForm = () => {
             onInput={({ target }) =>
               handleInput('all', 'email', (target as HTMLInputElement).value)
             }
+            inputClass="w-full"
           />
         </label>
         <label htmlFor="password">
@@ -288,6 +290,7 @@ const RegistrationForm = () => {
             onBlur={handleOnBlurPassword}
             invalid={errors['all']['password'] !== ''}
             onAppend={() => setShowPassword(!showPassword)}
+            inputClass="w-full"
           />
         </label>
         <label htmlFor="password-confirmation">
@@ -309,6 +312,7 @@ const RegistrationForm = () => {
               )
             }
             onAppend={() => setShowConfirmPassword(!showConfirmPassword)}
+            inputClass="w-full"
           />
         </label>
         {role == 'user' && (
@@ -330,6 +334,7 @@ const RegistrationForm = () => {
                   birthDatePicker.current?.focus();
                   birthDatePicker.current?.showPicker();
                 }}
+                inputClass="w-full"
               />
             </label>
             <div>
@@ -403,6 +408,7 @@ const RegistrationForm = () => {
                     (target as HTMLInputElement).value
                   )
                 }
+                inputClass="w-full"
               />
             </label>
             <label htmlFor="work-start">

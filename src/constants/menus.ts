@@ -77,12 +77,16 @@ export const ADMIN_MENUS: MENU_TYPE[] = [
   },
 ];
 
-export const MEDS_PATHS_MAP = {
+export const PATHS_MAP = {
   meds: 'Medicines',
   category: 'Category',
   search: 'Search',
   doctors: 'Doctors',
   specialist: 'Specialist',
+  user: 'User',
+  list: 'List',
+  create: 'Create',
+  update: 'Update',
 };
 
 export const PROFILE_MENUS: MENU_TYPE[] = [

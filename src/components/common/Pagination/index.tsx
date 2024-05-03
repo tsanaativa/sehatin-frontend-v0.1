@@ -1,9 +1,22 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import PaginationButton from './PaginationButton';
 
-const Pagination = ({ className }: { className?: string }) => {
+type PaginationProps = {
+  position?: 'start' | 'center' | 'end';
+  className?: string;
+};
+
+const Pagination = ({ position = 'center', className }: PaginationProps) => {
+  const TYPE_POSITION = {
+    start: 'justify-start',
+    center: 'justify-center',
+    end: 'justify-end',
+  };
+
   return (
-    <div className={`flex justify-center gap-2 md:gap-3 w-full ${className}`}>
+    <div
+      className={`flex ${TYPE_POSITION[position]} gap-2 md:gap-3 w-full ${className}`}
+    >
       <PaginationButton disabled>
         <ChevronLeft />
       </PaginationButton>

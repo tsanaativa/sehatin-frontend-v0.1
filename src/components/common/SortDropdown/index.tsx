@@ -57,7 +57,7 @@ const SortDropdown = ({
               <label
                 key={idx}
                 htmlFor={option}
-                className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs flex gap-2 flex items-center cursor-pointer capitalize md:text-sm"
+                className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs gap-2 flex items-center cursor-pointer capitalize md:text-sm"
               >
                 <span
                   className={`${sortBy === option ? 'visible' : 'invisible'}`}
