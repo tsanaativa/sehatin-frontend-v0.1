@@ -1,13 +1,10 @@
 import { ProfileForm } from '@/components/common';
 import { getProfile } from '@/services/profile';
 import { User } from '@/types/User';
-import { getUser } from '@/services/user';
 
 const MyProfile = async () => {
-  const user = getUser();
-
   let profileData: User | undefined;
-  profileData = await getProfile(user.id);
+  profileData = await getProfile();
 
   return (
     <div>

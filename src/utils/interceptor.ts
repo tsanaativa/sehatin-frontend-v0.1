@@ -18,7 +18,6 @@ const publicApiRoute = [
   '/categories',
   '/doctors',
   '/specialists',
-  '/users',
   '/ws',
 ];
 
