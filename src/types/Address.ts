@@ -8,4 +8,6 @@ export type Address = {
   district: string;
   subdistrict: string;
   postal_code: number;
+  latitude: number;
+  longitude: number;
 };

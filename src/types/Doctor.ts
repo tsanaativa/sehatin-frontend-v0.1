@@ -6,9 +6,19 @@ export type Specialist = {
 export type Doctor = {
   id: number;
   name: string;
+  email: string;
   specialist: Specialist;
   is_online: boolean;
   work_start_year: number;
   fee: number;
-  photo_url: string;
+  profile_picture: string;
+};
+
+export type DoctorsParams = {
+  keyword: string;
+  page: number;
+  limit: number;
+  specialistId: string;
+  sortBy: string;
+  sort: string;
 };

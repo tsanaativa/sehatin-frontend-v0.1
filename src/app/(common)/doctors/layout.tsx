@@ -1,4 +1,5 @@
 import UserPageHeader from '@/components/common/UserPageHeader';
+import WebSocketProvider from '@/context/WebsocketProvider';
 import React from 'react';
 
 const DoctorsLayout = ({ children }: { children: React.ReactNode }) => {
@@ -7,7 +8,7 @@ const DoctorsLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex justify-center px-1 md:px-6">
         <UserPageHeader />
       </div>
-      {children}
+      <WebSocketProvider>{children}</WebSocketProvider>
     </div>
   );
 };
