@@ -1,7 +1,7 @@
 import PatientForm from '@/features/consult/components/PatientForm';
 import { getProfile } from '@/services/profile';
 import { User } from '@/types/User';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const ConsultStart = async () => {
   const user = getUser();

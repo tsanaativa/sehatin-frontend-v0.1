@@ -1,5 +1,5 @@
 import ProfileSidebar from '@/features/profile/components/ProfileSidebar';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 import React from 'react';
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {

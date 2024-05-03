@@ -5,7 +5,7 @@ import {
   SehatinBanner,
 } from '@/components/layout';
 import LoginBar from '@/components/layout/LoginBar';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   const user = getUser();

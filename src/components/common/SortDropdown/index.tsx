@@ -28,14 +28,14 @@ const SortDropdown = ({
     setShowDropdown(false);
   });
 
-  function handleChange(e: React.MouseEvent<HTMLInputElement>) {
+  const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     if (target.checked) {
       onSort(target.id, sort);
     } else {
       onSort(target.id, '');
     }
-  }
+  };
 
   return (
     <div className="relative">

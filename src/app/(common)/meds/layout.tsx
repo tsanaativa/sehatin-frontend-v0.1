@@ -1,5 +1,5 @@
 import UserPageHeader from '@/components/common/UserPageHeader';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const MedsLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = getUser();

@@ -4,7 +4,7 @@ import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
 import DoctorsBySpecialists from '@/features/doctors/components/DoctorsBySpecialists';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const Doctors = () => {
   const user = getUser();

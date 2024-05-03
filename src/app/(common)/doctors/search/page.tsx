@@ -1,5 +1,5 @@
 import SearchDoctors from '@/features/doctors/components/SearchDoctors';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 import React from 'react';
 
 const SearchDoctorsPage = () => {

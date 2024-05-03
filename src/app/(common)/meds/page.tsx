@@ -1,6 +1,6 @@
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import MedsByCategories from '@/features/meds/components/MedsByCategories';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const Meds = () => {
   const user = getUser();

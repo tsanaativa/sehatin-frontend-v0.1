@@ -29,8 +29,8 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
   const [chats, setChats] = useState<Chat[]>([]);
 
-  var typingInterval = 1250;
-  var typingTimer: string | number | NodeJS.Timeout | undefined;
+  let typingInterval = 1250;
+  let typingTimer: string | number | NodeJS.Timeout | undefined;
 
   useEffect(() => {
     const joinRoom = (roomId: string) => {

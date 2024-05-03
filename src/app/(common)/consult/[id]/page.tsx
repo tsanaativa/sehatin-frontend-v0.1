@@ -1,5 +1,5 @@
 import ConsultRoom from '@/features/consult/components/ConsultRoom';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const Consult = () => {
   const user = getUser();

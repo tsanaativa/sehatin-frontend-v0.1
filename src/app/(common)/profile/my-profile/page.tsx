@@ -1,7 +1,7 @@
 import { ProfileForm } from '@/components/common';
 import { getProfile } from '@/services/profile';
 import { User } from '@/types/User';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 
 const MyProfile = async () => {
   const user = getUser();

@@ -1,5 +1,5 @@
 import { LoginData } from '@/types/LoginData';
-import cookiesStore from './cookies';
+import cookiesStore from '../utils/cookies';
 
 export function getUser() {
   const user = cookiesStore.get<LoginData>(

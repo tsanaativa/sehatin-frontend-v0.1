@@ -1,7 +1,7 @@
 import { Sehatin } from '@/assets/icons';
 import { Button } from '@/components/common';
 import ProfileDropdown from '@/components/common/ProfileDropdown';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 import { AlignLeft, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 

@@ -49,13 +49,13 @@ const AddressCard = ({ user }: AddressCardProps) => {
     setShowDropdown(false);
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       const idx = parseInt(e.target.id.split('-')[1]);
       setAddress(addressOpts[idx]);
     }
     setShowDropdown(false);
-  }
+  };
 
   return (
     <div className="relative">

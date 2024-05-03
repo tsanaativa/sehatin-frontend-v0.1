@@ -1,6 +1,6 @@
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { ProfileSidebar } from '@/features/profile/components';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 import Image from 'next/image';
 
 const Profile = () => {

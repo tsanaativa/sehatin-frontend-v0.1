@@ -7,7 +7,7 @@ import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_PRODUCT } from '@/constants/dummy';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
-import { getUser } from '@/utils/user';
+import { getUser } from '@/services/user';
 import Image from 'next/image';
 import Link from 'next/link';
 
