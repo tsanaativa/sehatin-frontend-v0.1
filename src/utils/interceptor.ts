@@ -42,7 +42,6 @@ const interceptor = async (url: string) => {
       }
       cookiesStore.set(USER_KEY, { ...isValidUser, exp: result.data.exp });
       cookiesStore.set('access_token', result.data.token.access_token, true);
-      cookiesStore.set('refresh_token', result.data.token.refresh_token, true);
     }
   }
 };
