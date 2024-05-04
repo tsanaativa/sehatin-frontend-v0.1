@@ -7,4 +7,8 @@ export type LoginResponse = {
     is_verified: boolean;
     is_google: boolean;
   };
+  token: {
+    access_token: string;
+    refresh_token: string;
+  };
 };

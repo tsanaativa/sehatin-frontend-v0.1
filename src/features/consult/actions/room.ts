@@ -1,6 +1,6 @@
 'use server';
 
-import api from '@/utils/api';
+import { get } from '@/utils/api';
 
 export default async function createRoom(req: any) {
   try {

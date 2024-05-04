@@ -4,7 +4,7 @@ import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
 import { Category } from '@/types/Product';
 import { Product } from '@/types/Product';
-import api from '@/utils/api';
+import { get } from '@/utils/api';
 import { splitToNArrays } from '@/utils/helper';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -36,7 +36,7 @@ const ProductsSection = ({ category, user }: ProductsSectionProps) => {
           categoryId: category.id,
           limit: 15,
         };
-        const res = await api.get<typeof params, { products: Product[] }>(
+        const res = await get<typeof params, { products: Product[] }>(
           `/products/nearest`,
           params
         );

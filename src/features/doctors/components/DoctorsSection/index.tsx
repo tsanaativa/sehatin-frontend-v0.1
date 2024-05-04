@@ -2,7 +2,7 @@
 
 import { CategorizeSection } from '@/components/common';
 import { Doctor, Specialist } from '@/types/Doctor';
-import api from '@/utils/api';
+import { get } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import DoctorCard from '../DoctorCard';
@@ -27,7 +27,7 @@ const DoctorsSection = ({
           specialistId: specialist.id,
           limit: 6,
         };
-        const res = await api.get<typeof params, { doctors: Doctor[] }>(
+        const res = await get<typeof params, { doctors: Doctor[] }>(
           `/doctors`,
           params
         );

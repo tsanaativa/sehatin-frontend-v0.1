@@ -1,6 +1,10 @@
+'use server';
+
+import { PUBLIC_API_ROUTES } from '@/constants/routes';
+import cookiesStore from './cookies';
 import { interceptor } from './interceptor';
 
-const base = process.env.NEXT_PUBLIC_BACKEND_URL as string;
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL as string;
 
 type ApiParam = {
   url: string;
@@ -11,7 +15,14 @@ type ApiParam = {
 async function request<S, T>(
   {
     url,
-    headers = { 'Content-Type': 'application/json' },
+    headers = PUBLIC_API_ROUTES.some((p) => url.includes(p))
+      ? {
+          'Content-Type': 'application/json',
+        }
+      : {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + cookiesStore.get('access_token'),
+        },
     method = 'GET',
   }: ApiParam,
   param?: S
@@ -19,7 +30,6 @@ async function request<S, T>(
   const options: RequestInit = {
     method,
     headers,
-    credentials: 'include',
   };
 
   await interceptor(url);
@@ -29,7 +39,7 @@ async function request<S, T>(
     else options.body = JSON.stringify(param);
   }
 
-  const response = await fetch(base + url, options);
+  const response = await fetch(BASE_URL + url, options);
   const result = await response.json();
   if (!response.ok)
     throw {
@@ -49,7 +59,7 @@ async function request<S, T>(
   return result;
 }
 
-function get<S, T>(
+export async function get<S, T>(
   url: ApiParam['url'],
   params?: S,
   headers?: ApiParam['headers']
@@ -57,7 +67,7 @@ function get<S, T>(
   return request({ url, headers }, params);
 }
 
-function post<S, T>(
+export async function post<S, T>(
   url: ApiParam['url'],
   params?: S,
   headers?: ApiParam['headers']
@@ -65,7 +75,7 @@ function post<S, T>(
   return request({ url, headers, method: 'POST' }, params);
 }
 
-function patch<S, T>(
+export async function patch<S, T>(
   url: ApiParam['url'],
   params?: S,
   headers?: ApiParam['headers']
@@ -73,7 +83,7 @@ function patch<S, T>(
   return request({ url, headers, method: 'PATCH' }, params);
 }
 
-function put<S, T>(
+export async function put<S, T>(
   url: ApiParam['url'],
   params?: S,
   headers?: ApiParam['headers']
@@ -81,13 +91,10 @@ function put<S, T>(
   return request({ url, headers, method: 'PUT' }, params);
 }
 
-function remove<S, T>(
+export async function remove<S, T>(
   url: ApiParam['url'],
   params?: S,
   headers?: ApiParam['headers']
 ): Promise<{ message: string; data: T }> {
   return request({ url, headers, method: 'DELETE' }, params);
 }
-
-const api = { get, post, patch, put, remove };
-export default api;

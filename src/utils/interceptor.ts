@@ -2,53 +2,47 @@
 
 import { LoginResponse } from '@/types/Auth';
 import cookiesStore from './cookies';
-import { minuteDifference } from './helper';
+import { PUBLIC_API_ROUTES } from '@/constants/routes';
 
-const userkey = process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string;
-const base = process.env.NEXT_PUBLIC_BASE_URL as string;
-
-const publicApiRoute = [
-  '/auth/register',
-  '/auth/login',
-  '/auth/refresh-token',
-  '/auth/oauth/google',
-  '/auth/verify',
-  '/auth/logout',
-  '/products',
-  '/categories',
-  '/doctors',
-  '/specialists',
-  '/ws',
-];
+const USER_KEY = process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 
 const logout = async (): Promise<void> => {
-  const response = await fetch(base + '/logout', {
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  });
-  await response.json();
-  if (cookiesStore.get(userkey)) cookiesStore.remove(userkey);
+  // const response = await fetch(BASE_URL + '/logout', {
+  //   headers: {
+  //     Authorization: `Bearer ${cookiesStore.get('access_token')}`,
+  //     'Content-Type': 'application/json',
+  //   },
+  // });
+  // await response.json();
+  cookiesStore.remove(USER_KEY || '');
+  cookiesStore.remove('access_token');
+  cookiesStore.remove('refresh_token');
 };
 
 const interceptor = async (url: string) => {
-  if (!publicApiRoute.some((p) => url.includes(p))) {
-    const isValidUser = cookiesStore.get(userkey) as LoginResponse;
+  if (!PUBLIC_API_ROUTES.some((p) => url.includes(p))) {
+    const isValidUser = cookiesStore.get(USER_KEY) as LoginResponse;
     if (!isValidUser) {
       await logout();
       window.location.replace('/auth/login');
     }
-    if (minuteDifference(isValidUser.exp) <= 0) {
-      const response = await fetch(base + '/refresh-token', {
+    if (new Date(isValidUser.exp) <= new Date()) {
+      const response = await fetch(BASE_URL + '/auth/refresh-token', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${cookiesStore.get('refresh_token')}`,
+          'Content-Type': 'application/json',
+        },
       });
       const result = await response.json();
       if (!response.ok) {
         await logout();
         window.location.replace('/auth/login');
       }
-      cookiesStore.set(userkey, { ...isValidUser, exp: result.data.exp });
+      cookiesStore.set(USER_KEY, { ...isValidUser, exp: result.data.exp });
+      cookiesStore.set('access_token', result.data.token.access_token, true);
+      cookiesStore.set('refresh_token', result.data.token.refresh_token, true);
     }
   }
 };
