@@ -13,3 +13,14 @@ export function formatDate(dateStr: string) {
 export function formatAddress(address: Address) {
   return `${address.address}, ${address.subdistrict}, ${address.district}, ${address.city}, ${address.province}, ${address.postal_code}`;
 }
+
+export function formatYearToExp(startYear: number) {
+  const yearsOfExp = new Date().getFullYear() - startYear;
+  if (!!!startYear || yearsOfExp === 0) {
+    return '< 1 year';
+  } else if (yearsOfExp === 1) {
+    return '1 year';
+  } else {
+    return yearsOfExp + ' years';
+  }
+}
