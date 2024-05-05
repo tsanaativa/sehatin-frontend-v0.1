@@ -5,20 +5,20 @@ import { useState } from 'react';
 import CartLayout from '../layout';
 import { useRouter } from 'next/navigation';
 
-export type PharmaciesProps = {
+export type PharmaciesInCartProps = {
   products: ProductsProps[];
   name: string;
   id: number;
 };
 
 type CartProps = {
-  onCheckout: (products: PharmaciesProps[]) => void;
+  onCheckout: (products: PharmaciesInCartProps[]) => void;
   onClose: () => void;
 };
 
 const Cart = ({ onCheckout, onClose }: CartProps) => {
   const { push } = useRouter();
-  const [pharmacies, setPharmacies] = useState<PharmaciesProps[]>([
+  const [pharmacies, setPharmacies] = useState<PharmaciesInCartProps[]>([
     {
       products: [
         {

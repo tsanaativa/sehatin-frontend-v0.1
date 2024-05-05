@@ -6,6 +6,7 @@ import { overflowHandler } from '@/utils/helper';
 
 type SelectorProps = {
   id: string;
+  wrapperId?: string;
   name: string;
   placeholder?: string;
   invalid?: boolean;
@@ -24,6 +25,7 @@ type SelectorProps = {
 
 const Selector = ({
   id,
+  wrapperId,
   name,
   placeholder,
   invalid,
@@ -77,13 +79,13 @@ const Selector = ({
 
   const OnSelectorClick = () => {
     setShowPane(true);
-    if (screenWidth < 768) overflowHandler('hidden', 'auth-main');
+    if (screenWidth < 768 && wrapperId) overflowHandler('hidden', wrapperId);
     inputInPane.current?.focus();
   };
 
   const handleClosePane = () => {
     setShowPane(false);
-    overflowHandler('auto', 'auth-main');
+    if (wrapperId) overflowHandler('auto', wrapperId);
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);
     }, 300);
@@ -99,7 +101,7 @@ const Selector = ({
         pickerWrapper.current?.classList.remove('md:hover:scale-y-100');
       }, 0);
     } else {
-      overflowHandler('auto', 'auth-main');
+      if (wrapperId) overflowHandler('auto', wrapperId);
     }
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);

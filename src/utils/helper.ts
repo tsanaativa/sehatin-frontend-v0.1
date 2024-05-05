@@ -6,7 +6,9 @@ export const overflowHandler = (type: 'hidden' | 'auto', id?: string) => {
       notif.style.display = type == 'hidden' ? 'none' : 'block';
     }
     if (bottomNav) {
-      bottomNav.style.display = type == 'hidden' ? 'none' : 'block';
+      type == 'hidden'
+        ? bottomNav.classList.add('hidden')
+        : bottomNav.classList.remove('hidden');
     }
     if (id) {
       const el = document.getElementById(id);

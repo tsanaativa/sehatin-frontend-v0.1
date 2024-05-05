@@ -1,16 +1,14 @@
 'use client';
 
-import { Sehatin } from '@/assets/icons';
-import { Button } from '@/components/common';
-import ProfileDropdown from '@/components/common/ProfileDropdown';
-import { overflowHandler } from '@/utils/helper';
-import { AlignLeft, ShoppingCart } from 'lucide-react';
-import Link from 'next/link';
 import CartPage from '@/features/cart/components';
-import { useState } from 'react';
-import { User } from '@/types/User';
+import { useContext, useEffect, useState } from 'react';
+import { overflowHandler } from '@/utils/helper';
 import { UserContext } from '@/context/UserProvider';
-import { useContext, useEffect } from 'react';
+import { User } from '@/types/User';
+import { AlignLeft, ShoppingCart } from 'lucide-react';
+import { Sehatin } from '@/assets/icons';
+import Link from 'next/link';
+import { Button, ProfileDropdown } from '@/components/common';
 
 type NavbarProps = {
   user?: User;
@@ -74,8 +72,8 @@ const Navbar = ({ user }: NavbarProps) => {
                     <div className="w-16 h-full grid place-items-center -ms-6">
                       <button
                         onClick={() => {
-                          setOpenCart(true);
                           overflowHandler('hidden');
+                          setOpenCart(true);
                         }}
                         className="relative cursor-pointer"
                       >
