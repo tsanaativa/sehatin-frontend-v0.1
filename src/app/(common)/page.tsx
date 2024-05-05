@@ -6,6 +6,7 @@ import BannerHero2 from '@/assets/images/banner-hero-2.png';
 import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_PRODUCT } from '@/constants/dummy';
+import ConsultationHistory from '@/features/consult/components/ConsultationHistory';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import { getUser } from '@/services/session';
 import Image from 'next/image';
@@ -16,18 +17,7 @@ const Home = async () => {
   let consultationHistory;
 
   if (user && user.role === 'doctor') {
-    consultationHistory = [
-      {
-        id: 1,
-        doctor: {
-          id: 1,
-        },
-        user: {
-          id: 2,
-          name: 'vivin',
-        },
-      },
-    ];
+    consultationHistory = [];
   }
 
   return (
@@ -163,27 +153,7 @@ const Home = async () => {
           </div>
         </>
       ) : (
-        <div className="flex justify-center">
-          <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
-            <div className="flex justify-between">
-              <h2 className="text-xl text-center font-semibold font-poppins md:text-start md:text-2xl">
-                My Consultation History
-              </h2>
-              <label className="inline-flex items-center cursor-pointer">
-                <span className="me-3 text-sm font-medium">
-                  Set your online status
-                </span>
-                <input
-                  type="checkbox"
-                  value=""
-                  className="sr-only peer"
-                  defaultChecked={user?.is_online}
-                />
-                <div className="relative w-11 h-6 bg-gray rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-border dark:peer-focus:ring-primary dark:bg-light peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-              </label>
-            </div>
-          </div>
-        </div>
+        <ConsultationHistory user={user} history={consultationHistory} />
       )}
     </main>
   );
