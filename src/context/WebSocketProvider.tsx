@@ -4,7 +4,7 @@ import React, { useState, createContext } from 'react';
 
 type Conn = WebSocket | null;
 
-export const WebsocketContext = createContext<{
+export const WebSocketContext = createContext<{
   conn: Conn;
   setConn: (c: Conn) => void;
 }>({
@@ -16,14 +16,14 @@ const WebSocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [conn, setConn] = useState<Conn>(null);
 
   return (
-    <WebsocketContext.Provider
+    <WebSocketContext.Provider
       value={{
         conn: conn,
         setConn: setConn,
       }}
     >
       {children}
-    </WebsocketContext.Provider>
+    </WebSocketContext.Provider>
   );
 };
 

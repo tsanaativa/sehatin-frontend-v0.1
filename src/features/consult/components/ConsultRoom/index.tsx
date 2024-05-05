@@ -1,7 +1,7 @@
 'use client';
 
 import { Badge, Button, Input } from '@/components/common';
-import { WebsocketContext } from '@/context/WebsocketProvider';
+import { WebSocketContext } from '@/context/WebSocketProvider';
 import { Chat } from '@/types/Chat';
 import { User } from '@/types/User';
 import { formatDate } from '@/utils/formatter';
@@ -25,7 +25,7 @@ type ConsultRoomProps = {
 
 const ConsultRoom = ({ user }: ConsultRoomProps) => {
   const { id } = useParams();
-  const { conn, setConn } = useContext(WebsocketContext);
+  const { conn, setConn } = useContext(WebSocketContext);
 
   const [chats, setChats] = useState<Chat[]>([]);
 

@@ -1,5 +1,5 @@
 import UserPageHeader from '@/components/common/UserPageHeader';
-import WebSocketProvider from '@/context/WebsocketProvider';
+import WebSocketProvider from '@/context/WebSocketProvider';
 import React from 'react';
 
 const DoctorsLayout = ({ children }: { children: React.ReactNode }) => {

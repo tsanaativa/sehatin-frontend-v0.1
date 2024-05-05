@@ -1,6 +1,6 @@
 'use client';
 
-import WebSocketProvider from '@/context/WebsocketProvider';
+import WebSocketProvider from '@/context/WebSocketProvider';
 
 const ConsultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
