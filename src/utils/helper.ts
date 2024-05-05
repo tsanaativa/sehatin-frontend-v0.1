@@ -42,6 +42,14 @@ export const convertBlob = (blob: Blob): Promise<string> => {
   });
 };
 
+export const splitToNArrays = <T>(array: T[], n: number) => {
+  let result = [];
+  for (let i = Math.ceil(array.length / n); i > 0; i--) {
+    result.push(array.splice(0, n));
+  }
+  return result;
+};
+
 export const minuteDifference = (date: string): number => {
   let diff = (new Date(date).getTime() - new Date().getTime()) / 1000;
   diff /= 60;
