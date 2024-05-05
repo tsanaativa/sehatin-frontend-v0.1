@@ -7,6 +7,7 @@ export type User = {
   gender?: Gender;
   birth_date?: string;
   profile_picture?: string;
+  is_online?: boolean;
   role: string;
   addresses: Address[];
 };

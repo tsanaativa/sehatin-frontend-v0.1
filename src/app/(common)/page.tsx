@@ -13,133 +13,178 @@ import Link from 'next/link';
 
 const Home = async () => {
   const user = await getUser();
+  let consultationHistory;
+
+  if (user && user.role === 'doctor') {
+    consultationHistory = [
+      {
+        id: 1,
+        doctor: {
+          id: 1,
+        },
+        user: {
+          id: 2,
+          name: 'vivin',
+        },
+      },
+    ];
+  }
 
   return (
     <main className="w-full">
-      <div className="bg-primary-dark flex justify-center lg:px-24">
-        <div className="max-w-[1440px]">
-          <Carousel autoSlide autoSlideInterval={5000}>
-            <div className="min-w-full relative">
-              <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6 md:w-[663px] md:top-28 md:left-20">
-                <span className="font-poppins font-medium text-secondary text-xs md:text-3xl">
-                  No More Hassle! Take Online
-                </span>
-                <h1 className="font-poppins font-bold text-xl text-secondary mt-1 md:text-6xl md:mt-4">
-                  Doctor <span className="text-primary-dark">Consultation</span>
-                </h1>
-                <p className="text-[0.625rem] mt-1 md:text-xl md:mt-4">
-                  Connect instantly with a specialist who provides accurate
-                  diagnosis and medical advice. Get your medical certificates
-                  and digital prescription.
-                </p>
-                <div className="mt-6 hidden md:block">
-                  <Link href="/doctors">
-                    <Button className="px-4 min-w-[9rem] text-lg">
-                      Consult Now
-                    </Button>
-                  </Link>
+      {!!!user || user?.role === 'user' ? (
+        <>
+          <div className="bg-primary-dark flex justify-center lg:px-24">
+            <div className="max-w-[1440px]">
+              <Carousel autoSlide autoSlideInterval={5000}>
+                <div className="min-w-full relative">
+                  <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6 md:w-[663px] md:top-28 md:left-20">
+                    <span className="font-poppins font-medium text-secondary text-xs md:text-3xl">
+                      No More Hassle! Take Online
+                    </span>
+                    <h1 className="font-poppins font-bold text-xl text-secondary mt-1 md:text-6xl md:mt-4">
+                      Doctor{' '}
+                      <span className="text-primary-dark">Consultation</span>
+                    </h1>
+                    <p className="text-[0.625rem] mt-1 md:text-xl md:mt-4">
+                      Connect instantly with a specialist who provides accurate
+                      diagnosis and medical advice. Get your medical
+                      certificates and digital prescription.
+                    </p>
+                    <div className="mt-6 hidden md:block">
+                      <Link href="/doctors">
+                        <Button className="px-4 min-w-[9rem] text-lg">
+                          Consult Now
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="md:hidden">
+                    <Image
+                      src={BannerHero1}
+                      className="w-full h-full object-cover"
+                      priority
+                      alt="banner-hero-1"
+                    />
+                  </div>
+                  <div className="hidden md:inline">
+                    <Image
+                      src={BannerHero1Desktop}
+                      className="w-full h-full object-cover"
+                      priority
+                      alt="banner-hero-1"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="md:hidden">
-                <Image
-                  src={BannerHero1}
-                  className="w-full h-full object-cover"
-                  priority
-                  alt="banner-hero-1"
-                />
-              </div>
-              <div className="hidden md:inline">
-                <Image
-                  src={BannerHero1Desktop}
-                  className="w-full h-full object-cover"
-                  priority
-                  alt="banner-hero-1"
-                />
-              </div>
-            </div>
-            <div className="min-w-full relative">
-              <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6 md:w-[663px] md:top-28 md:left-20">
-                <span className="font-poppins font-medium text-secondary text-xs md:text-3xl">
-                  Right at Your Door! Get Fast
-                </span>
-                <h1 className="font-poppins font-bold text-xl text-secondary mt-1 md:text-6xl md:mt-4">
-                  Medicine <span className="text-primary-dark">Delivery</span>
-                </h1>
-                <p className="text-[0.625rem] mt-1 md:text-xl md:mt-4">
-                  Add medicines of your choice to cart or click on your digital
-                  prescription and place order. Get your medicines delivered.
-                </p>
-                <div className="mt-6 hidden md:block">
-                  <Link href="/meds">
-                    <Button className="px-4 min-w-[9rem] text-lg">
-                      Order Now
-                    </Button>
-                  </Link>
+                <div className="min-w-full relative">
+                  <div className="absolute top-4 left-4 w-56 sm:top-6 sm:left-6 md:w-[663px] md:top-28 md:left-20">
+                    <span className="font-poppins font-medium text-secondary text-xs md:text-3xl">
+                      Right at Your Door! Get Fast
+                    </span>
+                    <h1 className="font-poppins font-bold text-xl text-secondary mt-1 md:text-6xl md:mt-4">
+                      Medicine{' '}
+                      <span className="text-primary-dark">Delivery</span>
+                    </h1>
+                    <p className="text-[0.625rem] mt-1 md:text-xl md:mt-4">
+                      Add medicines of your choice to cart or click on your
+                      digital prescription and place order. Get your medicines
+                      delivered.
+                    </p>
+                    <div className="mt-6 hidden md:block">
+                      <Link href="/meds">
+                        <Button className="px-4 min-w-[9rem] text-lg">
+                          Order Now
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="md:hidden">
+                    <Image
+                      src={BannerHero2}
+                      className="w-full h-full object-cover"
+                      priority
+                      alt="banner-hero-2"
+                    />
+                  </div>
+                  <div className="hidden md:inline">
+                    <Image
+                      src={BannerHero2Desktop}
+                      className="w-full h-full object-cover"
+                      priority
+                      alt="banner-hero-2"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="md:hidden">
-                <Image
-                  src={BannerHero2}
-                  className="w-full h-full object-cover"
-                  priority
-                  alt="banner-hero-2"
-                />
-              </div>
-              <div className="hidden md:inline">
-                <Image
-                  src={BannerHero2Desktop}
-                  className="w-full h-full object-cover"
-                  priority
-                  alt="banner-hero-2"
-                />
-              </div>
-            </div>
-          </Carousel>
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
-          <section className="flex flex-col items-center">
-            <span className="font-poppins font-semibold text-dark md:text-2xl">
-              Our Services
-            </span>
-            <div className="flex justify-between w-full mt-2 sm:justify-center sm:gap-x-8 md:mt-4">
-              <div className="bg-primary-light px-8 p-4 flex flex-col items-center">
-                <MedicineBadge size={70} />
-                <span className="text-[0.625rem] text-secondary mt-2 font-medium md:text-lg">
-                  Medicine Delivery
-                </span>
-              </div>
-              <div className="bg-primary-light px-8 p-4 flex flex-col items-center">
-                <DoctorBadge size={70} />
-                <span className="text-[0.625rem] text-secondary mt-2 font-medium md:text-lg">
-                  Doctor Consultation
-                </span>
-              </div>
-            </div>
-          </section>
-          <div className="mt-6">
-            <div className="mt-2 md:mt-16">
-              <CategoriesSection />
+              </Carousel>
             </div>
           </div>
-          <CategorizeSection
-            title="Most Bought Products"
-            seeAllUrl="/meds?sortBy=sales"
-            className="mt-6 md:mt-16"
-          >
-            <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
-              {Array.from({ length: 10 }).map((val, idx) => (
-                <ProductCard
-                  isAuthenticated={!!user}
-                  product={DUMMY_PRODUCT}
-                  key={idx}
-                />
-              ))}
+          <div className="flex justify-center">
+            <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
+              <section className="flex flex-col items-center">
+                <span className="font-poppins font-semibold text-dark md:text-2xl">
+                  Our Services
+                </span>
+                <div className="flex justify-between w-full mt-2 sm:justify-center sm:gap-x-8 md:mt-4">
+                  <div className="bg-primary-light px-8 p-4 flex flex-col items-center">
+                    <MedicineBadge size={70} />
+                    <span className="text-[0.625rem] text-secondary mt-2 font-medium md:text-lg">
+                      Medicine Delivery
+                    </span>
+                  </div>
+                  <div className="bg-primary-light px-8 p-4 flex flex-col items-center">
+                    <DoctorBadge size={70} />
+                    <span className="text-[0.625rem] text-secondary mt-2 font-medium md:text-lg">
+                      Doctor Consultation
+                    </span>
+                  </div>
+                </div>
+              </section>
+              <div className="mt-6">
+                <div className="mt-2 md:mt-16">
+                  <CategoriesSection />
+                </div>
+              </div>
+              <CategorizeSection
+                title="Most Bought Products"
+                seeAllUrl="/meds?sortBy=sales"
+                className="mt-6 md:mt-16"
+              >
+                <div className="grid gap-3 mt-2 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:mt-4 md:gap-6">
+                  {Array.from({ length: 10 }).map((val, idx) => (
+                    <ProductCard
+                      isAuthenticated={!!user}
+                      product={DUMMY_PRODUCT}
+                      key={idx}
+                    />
+                  ))}
+                </div>
+              </CategorizeSection>
             </div>
-          </CategorizeSection>
+          </div>
+        </>
+      ) : (
+        <div className="flex justify-center">
+          <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
+            <div className="flex justify-between">
+              <h2 className="text-xl text-center font-semibold font-poppins md:text-start md:text-2xl">
+                My Consultation History
+              </h2>
+              <label className="inline-flex items-center cursor-pointer">
+                <span className="me-3 text-sm font-medium">
+                  Set your online status
+                </span>
+                <input
+                  type="checkbox"
+                  value=""
+                  className="sr-only peer"
+                  defaultChecked={user?.is_online}
+                />
+                <div className="relative w-11 h-6 bg-gray rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-border dark:peer-focus:ring-primary dark:bg-light peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+              </label>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </main>
   );
 };
