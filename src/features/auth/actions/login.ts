@@ -1,9 +1,8 @@
 'use server';
 
-import { getSession } from '@/utils/session';
 import { LoginResponse } from '@/types/Auth';
 import { post } from '@/utils/api';
-import cookiesStore from '@/utils/cookies';
+import { getSession } from '@/utils/session';
 
 export default async function login(formData: FormData) {
   const session = await getSession();
@@ -20,11 +19,9 @@ export default async function login(formData: FormData) {
 
     session.exp = loginData.exp;
     session.user = loginData.user;
-    session.isAuthenticated = true;
+    session.access_token = loginData.token.access_token;
+    session.refresh_token = loginData.token.refresh_token;
     await session.save();
-
-    cookiesStore.set('access_token', loginData.token.access_token, true);
-    cookiesStore.set('refresh_token', loginData.token.refresh_token, true);
 
     return loginData;
   } catch (error) {

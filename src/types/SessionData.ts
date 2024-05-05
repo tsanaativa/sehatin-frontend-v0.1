@@ -4,6 +4,8 @@ import { User } from './User';
 export interface SessionData {
   exp?: string;
   user?: User;
+  access_token?: string;
+  refresh_token?: string;
 }
 
 export const sessionOptions: SessionOptions = {

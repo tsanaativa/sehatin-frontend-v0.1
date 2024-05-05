@@ -1,8 +1,8 @@
 'use server';
 
 import { PUBLIC_API_ROUTES } from '@/constants/routes';
-import cookiesStore from './cookies';
 import { interceptor } from './interceptor';
+import { getSession } from './session';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL as string;
 
@@ -15,18 +15,20 @@ type ApiParam = {
 async function request<S, T>(
   {
     url,
-    headers = PUBLIC_API_ROUTES.some((p) => url.includes(p))
-      ? {
-          'Content-Type': 'application/json',
-        }
-      : {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + cookiesStore.get('access_token'),
-        },
+    headers = {
+      'Content-Type': 'application/json',
+    },
     method = 'GET',
   }: ApiParam,
   param?: S
 ): Promise<{ message: string; data: T }> {
+  const session = await getSession();
+  headers = PUBLIC_API_ROUTES.some((p) => url.includes(p))
+    ? headers
+    : {
+        ...headers,
+        Authorization: 'Bearer ' + session?.access_token,
+      };
   const options: RequestInit = {
     method,
     headers,

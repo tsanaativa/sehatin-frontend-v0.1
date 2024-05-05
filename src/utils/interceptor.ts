@@ -3,7 +3,6 @@
 import { PUBLIC_API_ROUTES } from '@/constants/routes';
 import { getSession } from '@/utils/session';
 import { redirect } from 'next/navigation';
-import cookiesStore from './cookies';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 
@@ -17,19 +16,14 @@ const logout = async (): Promise<void> => {
   // await response.json();
 
   const session = await getSession();
-  console.log(session, 'sssssssssss');
   session.destroy();
-
-  cookiesStore.remove('access_token');
-  cookiesStore.remove('refresh_token');
-
   redirect('/');
 };
 
 const interceptor = async (url: string) => {
   const session = await getSession();
   if (!PUBLIC_API_ROUTES.some((p) => url.includes(p))) {
-    if (!session.user) {
+    if (!session?.user) {
       await logout();
     }
 
@@ -37,7 +31,7 @@ const interceptor = async (url: string) => {
       const response = await fetch(BASE_URL + '/auth/refresh-token', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${cookiesStore.get('refresh_token')}`,
+          Authorization: `Bearer ${session?.refresh_token}`,
           'Content-Type': 'application/json',
         },
       });
@@ -48,9 +42,9 @@ const interceptor = async (url: string) => {
       }
 
       session.exp = result.data.exp;
+      session.access_token = result.data.access_token;
+      session.refresh_token = undefined;
       await session.save();
-
-      cookiesStore.set('access_token', result.data.token.access_token, true);
     }
   }
 };
