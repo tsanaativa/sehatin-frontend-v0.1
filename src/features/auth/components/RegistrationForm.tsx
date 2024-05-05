@@ -212,7 +212,6 @@ const RegistrationForm = () => {
         })
       );
       if (uploaded.file) allErrors['doctor']['doctor-certificate'] = '';
-      console.log(!uploaded.file, allErrors['doctor']['doctor-certificate']);
       setUploaded({
         ...uploaded,
         error: allErrors['doctor']['doctor-certificate'],
