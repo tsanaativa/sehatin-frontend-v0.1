@@ -47,7 +47,7 @@ const config: Config = {
         dark: '#221F1F',
         darker: '#0E1422',
         'white-fa': '#FAFAFA',
-        danger: '#E40000',
+        danger: '#E02D3C',
         'danger-light': '#FCEBEB',
         blue: '#358BDA',
         'blue-light': '#E8F0FF',

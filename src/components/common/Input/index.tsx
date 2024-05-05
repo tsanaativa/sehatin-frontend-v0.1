@@ -13,7 +13,7 @@ type InputProps = ComponentPropsWithoutRef<'input'> & {
   onAppend?: () => void;
 };
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement | null, InputProps>(
   (
     {
       invalid,

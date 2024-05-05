@@ -20,7 +20,7 @@ const CategorizeSection = ({
         <span className="font-poppins font-semibold text-dark md:text-2xl">
           {title}
         </span>
-        <Link className="text-primary-dark text-sm sm:text-xl" href={seeAllUrl}>
+        <Link className="text-primary-dark text-sm md:text-xl" href={seeAllUrl}>
           See All
         </Link>
       </div>

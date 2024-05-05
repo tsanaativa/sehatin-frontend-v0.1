@@ -1,6 +1,8 @@
+'use server';
+
 import { LoginResponse } from '@/types/Auth';
+import cookiesStore from './cookies';
 import { minuteDifference } from './helper';
-import local from './localStorage';
 
 const userkey = process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string;
 const base = process.env.NEXT_PUBLIC_BASE_URL as string;
@@ -12,6 +14,12 @@ const publicApiRoute = [
   '/auth/oauth/google',
   '/auth/verify',
   '/auth/logout',
+  '/products',
+  '/categories',
+  '/doctors',
+  '/specialists',
+  '/users',
+  '/ws',
 ];
 
 const logout = async (): Promise<void> => {
@@ -20,12 +28,12 @@ const logout = async (): Promise<void> => {
     credentials: 'include',
   });
   await response.json();
-  if (local.get(userkey)) local.remove(userkey);
+  if (cookiesStore.get(userkey)) cookiesStore.remove(userkey);
 };
 
 const interceptor = async (url: string) => {
   if (!publicApiRoute.some((p) => url.includes(p))) {
-    const isValidUser = local.get(userkey) as LoginResponse;
+    const isValidUser = cookiesStore.get(userkey) as LoginResponse;
     if (!isValidUser) {
       await logout();
       window.location.replace('/auth/login');
@@ -41,9 +49,9 @@ const interceptor = async (url: string) => {
         await logout();
         window.location.replace('/auth/login');
       }
-      local.set(userkey, { ...isValidUser, exp: result.data.exp });
+      cookiesStore.set(userkey, { ...isValidUser, exp: result.data.exp });
     }
   }
 };
 
-export { logout, interceptor };
+export { interceptor, logout };
