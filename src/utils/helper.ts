@@ -1,4 +1,4 @@
-export const overflowHandler = (type: 'hidden' | 'auto') => {
+export const overflowHandler = (type: 'hidden' | 'auto', id?: string) => {
   setTimeout(() => {
     const notif = document.getElementById('unregister-notif');
     const bottomNav = document.getElementById('bottom-navigation');
@@ -7,6 +7,14 @@ export const overflowHandler = (type: 'hidden' | 'auto') => {
     }
     if (bottomNav) {
       bottomNav.style.display = type == 'hidden' ? 'none' : 'block';
+    }
+    if (id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.overflow = type;
+        el.scrollTo(0, 0);
+      }
+      return;
     }
     document.getElementsByTagName('body')[0].style.overflow = type;
   }, 0);

@@ -1,14 +1,14 @@
 'use client';
 import { Button, Icon, Loading, Modal, OrderCard } from '@/components/common';
 import { ProductsProps } from '@/components/common/OrderCard';
-import { currency } from '@/utils/helper';
 import { useState } from 'react';
 import CartLayout from '../layout';
+import { useRouter } from 'next/navigation';
 
 export type PharmaciesProps = {
   products: ProductsProps[];
   name: string;
-  slug: string;
+  id: number;
 };
 
 type CartProps = {
@@ -17,6 +17,7 @@ type CartProps = {
 };
 
 const Cart = ({ onCheckout, onClose }: CartProps) => {
+  const { push } = useRouter();
   const [pharmacies, setPharmacies] = useState<PharmaciesProps[]>([
     {
       products: [
@@ -70,7 +71,7 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
         },
       ],
       name: 'K-24 Mampang Prapatan',
-      slug: 'k-24-mampang-prapatan-1',
+      id: 1,
     },
     {
       products: [
@@ -100,7 +101,7 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
         },
       ],
       name: 'Century Mampang Prapatan',
-      slug: 'century-mampang-prapatan-1',
+      id: 2,
     },
   ]);
 
@@ -116,6 +117,8 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
     pharmacies.map((ph) => ph.products.map((p) => p.inCart))
   );
 
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const [showModal, setShowModal] = useState(false);
   const [productToRemove, setProductToRemove] = useState<ProductsProps[]>([]);
   const [isLoading, setIsLoading] = useState({
@@ -125,32 +128,24 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
 
   const handlePharmaCheck = (idx: number) => {
     const checks = pharmaChecks;
-    if (checks[idx] == false || checks[idx] == 'indeterminate') {
-      checks[idx] = true;
-    } else {
-      checks[idx] = false;
-    }
-    setPharmaChecks(checks);
+    checks[idx] = checks[idx] == false || checks[idx] == 'indeterminate';
+    setPharmaChecks([...checks]);
 
     const prodChecks = productChecks;
-    prodChecks[idx].forEach(
-      (_, i) => (prodChecks[idx][i] = checks[idx] as boolean)
-    );
-    setProductChecks(prodChecks);
+    prodChecks[idx] = prodChecks[idx].map(() => checks[idx] as boolean);
     countTotalPrice(prodChecks, productCounts);
   };
 
   const handleProductCheck = (pharmaIdx: number, productIdx: number) => {
     const checks = productChecks;
     checks[pharmaIdx][productIdx] = !checks[pharmaIdx][productIdx];
-    setProductChecks(checks);
+    setProductChecks([...checks]);
 
     const pharChecks = pharmaChecks;
     if (checks[pharmaIdx].every((c) => c)) pharChecks[pharmaIdx] = true;
     else if (checks[pharmaIdx].some((c) => c))
       pharChecks[pharmaIdx] = 'indeterminate';
     else pharChecks[pharmaIdx] = false;
-
     countTotalPrice(checks, productCounts);
   };
 
@@ -162,10 +157,7 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
       const count = pharmacies[idx].products.map((p, i) => p.price * pc[i]);
       return count.filter((_, i) => checkedProducts[idx][i]);
     });
-    const totalPrice = document.getElementById('total-price-0');
-    totalPrice!.textContent = currency(
-      checkeds.flat().reduce((a, b) => a + b, 0)
-    );
+    setTotalPrice(checkeds.flat().reduce((a, b) => a + b, 0));
   };
 
   const handleUpdateCount = (
@@ -179,7 +171,7 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
       return;
     }
     itemCounts[pharmaIdx][productIdx] = value;
-    setProductCounts(itemCounts);
+    setProductCounts([...itemCounts]);
     if (productChecks[pharmaIdx][productIdx]) {
       countTotalPrice(productChecks, itemCounts);
     }
@@ -231,10 +223,10 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
     pharmas = pharmas.filter((ph) => ph.products.length > 0);
     setTimeout(() => {
       setIsLoading({ ...isLoading, removeItem: false });
-      setPharmacies(pharmas);
-      setPharmaChecks(pharmaList);
-      setProductChecks(itemList);
-      setProductCounts(itemCounts);
+      setPharmacies([...pharmas]);
+      setPharmaChecks([...pharmaList]);
+      setProductChecks([...itemList]);
+      setProductCounts([...itemCounts]);
       countTotalPrice(itemList, itemCounts);
       setShowModal(false);
     }, 2000);
@@ -267,12 +259,20 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
       onCheckout(checkedProducts);
     }, 2000);
   };
+
+  const handleAddProduct = () => {
+    push('/meds');
+    setTimeout(() => {
+      onClose();
+    }, 200);
+  };
   return (
     <div className="min-w-full overflow-y-auto h-[calc(100%-54px)] lg:h-full bottom-0 bg-light z-[41] pb-14">
       <CartLayout
         pageTitle="My Cart"
         summaryTitle="Summary"
         summarySubTitle="Total"
+        summaryTotal={totalPrice}
         pageIndex={0}
         mainButton={{
           text: 'Checkout',
@@ -282,12 +282,12 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
         }}
         secondaryButton={{
           text: '+ Tambah Obat Lain',
-          action: () => {},
+          action: () => handleAddProduct(),
         }}
-        breadcrumb={[{ text: 'Home', action: () => onClose() }]}
+        breadcrumb={[{ text: 'Current Page', action: () => onClose() }]}
         navLabel={`${totalItemInCart()}`}
       >
-        <div className="flex flex-col gap-5 w-full lg:w-[calc(100%-377px)] lg:overflow-hidden">
+        <div className="flex flex-col gap-5 w-full lg:w-[calc(100%-384px)] lg:overflow-hidden">
           {pharmacies.map((p, idx) => (
             <OrderCard
               key={idx}
@@ -295,8 +295,8 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
               productChecks={productChecks[idx]}
               products={p.products}
               pharmacyName={p.name}
-              name={p.slug}
-              id={p.slug}
+              name="pharmacy"
+              id={p.id.toString()}
               productCount={productCounts[idx]}
               onCheck={() => handlePharmaCheck(idx)}
               productAction={{

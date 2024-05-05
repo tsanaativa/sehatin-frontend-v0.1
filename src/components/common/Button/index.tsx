@@ -23,7 +23,7 @@ const Button = ({
     primary:
       'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary-disabled disabled:cursor-not-allowed',
     'outlined-primary':
-      'text-primary-dark bg-light border border-primary-dark hover:bg-primary/10',
+      'text-primary-dark bg-light border border-primary-dark hover:bg-primary/10 disabled:hover:bg-light disabled:border-primary-disabled disabled:text-primary-disabled disabled:cursor-not-allowed',
     danger:
       'text-light bg-danger/85 hover:bg-danger/90 active:bg-danger disabled:bg-danger/60',
     'outlined-danger': '',

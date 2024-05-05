@@ -21,6 +21,7 @@ const AuthWithRole = ({
       className={`flex ${reverse ? 'flex-row-reverse' : ''} h-screen overflow-hidden`}
     >
       <div
+        id="auth-main"
         className={`${reverse ? '' : 'no-scrollbar'} relative z-[1] grid place-items-center h-screen overflow-y-auto py-[35px] px-[23px] sm:p-[35px] lg:py-[calc(.5rem+2vw)] min-w-[280px] w-full sm:min-w-[480px] md:min-w-[576px] md:w-1/2 bg-light/50 backdrop-blur-xl ${wrapperClass}`}
       >
         <div className="w-full max-w-[520px]">

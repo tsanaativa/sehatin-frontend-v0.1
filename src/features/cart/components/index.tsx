@@ -13,17 +13,19 @@ type CartPageProps = {
 const CartPage = ({ openCart, onCloseCart }: CartPageProps) => {
   const [step, setStep] = useState(0);
   const [cart, setCart] = useState<PharmaciesProps[]>([]);
-  const [payment, setPayment] = useState('Rp 0');
+  const [payment, setPayment] = useState('');
+  const [startCount, setStartCount] = useState(false);
   const handleCloseCart = () => {
     onCloseCart();
     setTimeout(() => {
       setStep(0);
+      setStartCount(false);
     }, 300);
   };
   return (
     <div
       style={{ transform: `translateX(${openCart ? -step * 100 : 100}%)` }}
-      className={`fixed h-[calc(100%-74px)] top-[74px] bottom-0 bg-light z-[41] flex w-full transition duration-300 lg:duration-0`}
+      className={`fixed h-[calc(100%-74px)] top-[ bottom-0 bg-light z-[41] flex w-full transition-transform duration-300`}
     >
       <Cart
         onCheckout={(cart) => {
@@ -38,10 +40,15 @@ const CartPage = ({ openCart, onCloseCart }: CartPageProps) => {
         onOrder={(payment) => {
           setPayment(payment);
           setStep(2);
+          setStartCount(true);
         }}
         toOrder={cart}
       />
-      <ConfirmPayment />
+      <ConfirmPayment
+        startCount={startCount}
+        payment={payment}
+        onClose={handleCloseCart}
+      />
     </div>
   );
 };

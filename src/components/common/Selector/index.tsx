@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react';
 import { Icon, Input } from '..';
 import { icons } from 'lucide-react';
+import { overflowHandler } from '@/utils/helper';
 
 type SelectorProps = {
   id: string;
@@ -76,11 +77,13 @@ const Selector = ({
 
   const OnSelectorClick = () => {
     setShowPane(true);
+    if (screenWidth < 768) overflowHandler('hidden', 'auth-main');
     inputInPane.current?.focus();
   };
 
   const handleClosePane = () => {
     setShowPane(false);
+    overflowHandler('auto', 'auth-main');
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);
     }, 300);
@@ -95,6 +98,8 @@ const Selector = ({
       setTimeout(() => {
         pickerWrapper.current?.classList.remove('md:hover:scale-y-100');
       }, 0);
+    } else {
+      overflowHandler('auto', 'auth-main');
     }
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);

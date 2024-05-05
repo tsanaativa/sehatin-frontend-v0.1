@@ -87,8 +87,8 @@ const OrderCard = ({
                     name={name}
                     id={id}
                     checked={isChecked == true}
-                    value={id}
-                    onChange={onCheck}
+                    onClick={onCheck}
+                    onChange={() => {}}
                     disabled={products.every((p) => !p.is_available)}
                     className="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed"
                   />
@@ -125,8 +125,8 @@ const OrderCard = ({
                       id={p.slug}
                       checked={productChecks[idx]}
                       disabled={!p.is_available}
-                      value={p.slug}
-                      onChange={() => productAction?.onCheck(idx)}
+                      onClick={() => productAction?.onCheck(idx)}
+                      onChange={() => {}}
                       className="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed"
                     />
                   </label>

@@ -17,3 +17,4 @@ export { default as OrderCard } from './OrderCard';
 export { default as CategorizeCard } from './CategorizeCard';
 export { default as CategorizeSection } from './CategorizeSection';
 export { default as Loading } from './Loading';
+export { default as FileUploader } from './FileUploader';

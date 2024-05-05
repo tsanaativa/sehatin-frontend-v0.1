@@ -1,9 +1,12 @@
-import { Icon, Button, Loading } from '@/components/common';
+import { Icon, Button, FileUploader } from '@/components/common';
+import { FileProps } from '@/components/common/FileUploader';
+import { currency } from '@/utils/helper';
 
 type CartLayoutProps = {
   summaryTitle?: string;
   summarySubTitle?: string;
   summarySubTotal?: Record<string, string>;
+  summaryTotal?: number;
   mainButton: {
     text: string;
     loading: boolean;
@@ -19,13 +22,15 @@ type CartLayoutProps = {
   pageTitle: string;
   children: React.ReactNode;
   pageIndex: number;
-  fileAction?: boolean;
+  uploaded?: FileProps;
+  onUpload?: (uploaded: FileProps) => void;
 };
 
 const CartLayout = ({
   summaryTitle,
   summarySubTitle,
   summarySubTotal,
+  summaryTotal,
   mainButton,
   secondaryButton,
   navLabel,
@@ -33,7 +38,8 @@ const CartLayout = ({
   pageTitle,
   children,
   pageIndex,
-  fileAction,
+  uploaded,
+  onUpload,
 }: CartLayoutProps) => {
   return (
     <div className="max-w-[1440px] m-auto px-[calc(8px+4vw)] pt-5">
@@ -77,7 +83,7 @@ const CartLayout = ({
         {children}
         <div
           style={{ left: `${pageIndex * 100}%` }}
-          className="absolute lg:sticky w-full lg:w-[357px] flex justify-between items-center lg:block bg-light h-[78px] lg:h-[268px] bottom-0 lg:top-12 z-[42] shadow-[0_-1px_8px_0] shadow-gray/50 lg:shadow-none px-5 lg:p-7 lg:border lg:border-primary-border rounded-t-3xl lg:rounded-lg gap-4"
+          className={`absolute lg:sticky w-full lg:w-[357px] justify-between items-center lg:block bg-light h-[78px] lg:h-fit bottom-0 lg:top-12 z-[42] shadow-[0_-1px_8px_0] shadow-gray/50 lg:shadow-none px-5 lg:p-7 lg:border lg:border-primary-border rounded-t-3xl lg:rounded-lg gap-4 ${onUpload ? 'hidden' : 'flex'}`}
         >
           <strong className="hidden lg:block text-[20px] font-semibold font-poppins text-darker">
             {summaryTitle}
@@ -100,12 +106,25 @@ const CartLayout = ({
               <span className="text-gray-cart lg:text-dark-gray font-medium text-sm lg:text-base">
                 {summarySubTitle}
               </span>
-              <strong
-                id={`total-price-${pageIndex}`}
-                className="text-secondary font-bold lg:font-semibold text-lg lg:text-base whitespace-nowrap"
-              >
-                Rp 0
+              <strong className="text-secondary font-bold lg:font-semibold text-lg lg:text-base whitespace-nowrap">
+                {currency(summaryTotal as number)}
               </strong>
+            </div>
+          )}
+          {onUpload && (
+            <div className="mt-[18px] mb-6">
+              <FileUploader
+                id="payment-proof-lg"
+                name="payment-proof-lg"
+                instruction="Image format, max 500 KB"
+                placeholder={`${uploaded?.file ? 'Change' : 'Choose'} File...`}
+                accept="image/*"
+                maxSize={500}
+                uploaded={uploaded as FileProps}
+                onUpload={(file, image, error) =>
+                  onUpload({ file, image, error })
+                }
+              />
             </div>
           )}
           <div className="flex flex-col gap-[14px]">
@@ -120,6 +139,7 @@ const CartLayout = ({
             </Button>
             {secondaryButton && (
               <Button
+                disabled={mainButton.loading}
                 onClick={secondaryButton.action}
                 variant="outlined-primary"
                 className="hidden lg:block h-12 w-full font-poppins font-semibold rounded-xl"
