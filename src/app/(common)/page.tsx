@@ -11,8 +11,8 @@ import { getUser } from '@/services/user';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Home = () => {
-  const user = getUser();
+const Home = async () => {
+  const user = await getUser();
 
   return (
     <main className="w-full">

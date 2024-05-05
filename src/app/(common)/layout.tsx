@@ -5,10 +5,10 @@ import {
   SehatinBanner,
 } from '@/components/layout';
 import LoginBar from '@/components/layout/LoginBar';
-import { getUser } from '@/services/user';
+import { getSession } from '@/utils/session';
 
-const CommonLayout = ({ children }: { children: React.ReactNode }) => {
-  const user = getUser();
+const CommonLayout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await getSession();
 
   return (
     <div className="w-full min-h-screen relative">

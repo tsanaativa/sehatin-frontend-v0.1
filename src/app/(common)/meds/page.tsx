@@ -2,8 +2,8 @@ import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import MedsByCategories from '@/features/meds/components/MedsByCategories';
 import { getUser } from '@/services/user';
 
-const Meds = () => {
-  const user = getUser();
+const Meds = async () => {
+  const user = await getUser();
 
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">

@@ -1,9 +1,6 @@
-import { LoginData } from '@/types/LoginData';
-import cookiesStore from '../utils/cookies';
+import { getSession } from '@/utils/session';
 
-export function getUser() {
-  const user = cookiesStore.get<LoginData>(
-    process.env.NEXT_PUBLIC_USER_LOCAL_KEY || ''
-  )?.user;
-  return user;
-}
+export const getUser = async () => {
+  const session = await getSession();
+  return session.user;
+};

@@ -1,10 +1,13 @@
 'use server';
 
+import { getSession } from '@/utils/session';
 import { LoginResponse } from '@/types/Auth';
 import { post } from '@/utils/api';
 import cookiesStore from '@/utils/cookies';
 
 export default async function login(formData: FormData) {
+  const session = await getSession();
+
   const rawFormData = {
     email: formData.get('email'),
     password: formData.get('password'),
@@ -13,11 +16,17 @@ export default async function login(formData: FormData) {
 
   try {
     const res = await post('/auth/login', rawFormData);
-    const user = res.data as LoginResponse;
-    cookiesStore.set('healthcare-app-user', user);
-    cookiesStore.set('access_token', user.token.access_token, true);
-    cookiesStore.set('refresh_token', user.token.refresh_token, true);
-    return user;
+    const loginData = res.data as LoginResponse;
+
+    session.exp = loginData.exp;
+    session.user = loginData.user;
+    session.isAuthenticated = true;
+    await session.save();
+
+    cookiesStore.set('access_token', loginData.token.access_token, true);
+    cookiesStore.set('refresh_token', loginData.token.refresh_token, true);
+
+    return loginData;
   } catch (error) {
     let message: string;
 

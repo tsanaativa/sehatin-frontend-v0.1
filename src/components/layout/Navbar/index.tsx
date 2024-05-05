@@ -5,8 +5,8 @@ import { getUser } from '@/services/user';
 import { AlignLeft, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 
-const Navbar = () => {
-  const user = getUser();
+const Navbar = async () => {
+  const user = await getUser();
 
   return (
     <header className="sticky top-0 z-40 bg-light border-b-2 border-b-gray-lighter">

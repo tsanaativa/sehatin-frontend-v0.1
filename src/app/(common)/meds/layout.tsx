@@ -2,7 +2,7 @@ import UserPageHeader from '@/components/common/UserPageHeader';
 import { getUser } from '@/services/user';
 
 const MedsLayout = async ({ children }: { children: React.ReactNode }) => {
-  const user = getUser();
+  const user = await getUser();
 
   return (
     <div className="bg-primary-dark bg-gradient-to-r from-slate-900/0 to-primary w-full">

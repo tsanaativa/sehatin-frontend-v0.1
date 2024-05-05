@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { User } from '@/types/User';
 
 type MedsByCategoriesProps = {
-  user: User;
+  user?: User;
 };
 
 const MedsByCategories = ({ user }: MedsByCategoriesProps) => {

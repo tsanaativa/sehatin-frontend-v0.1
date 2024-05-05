@@ -1,11 +1,10 @@
 'use server';
 
-import { LoginResponse } from '@/types/Auth';
-import cookiesStore from './cookies';
 import { PUBLIC_API_ROUTES } from '@/constants/routes';
+import { getSession } from '@/utils/session';
 import { redirect } from 'next/navigation';
+import cookiesStore from './cookies';
 
-const USER_KEY = process.env.NEXT_PUBLIC_USER_LOCAL_KEY as string;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 
 const logout = async (): Promise<void> => {
@@ -16,19 +15,25 @@ const logout = async (): Promise<void> => {
   //   },
   // });
   // await response.json();
-  cookiesStore.remove(USER_KEY || '');
+
+  const session = await getSession();
+  console.log(session, 'sssssssssss');
+  session.destroy();
+
   cookiesStore.remove('access_token');
   cookiesStore.remove('refresh_token');
+
   redirect('/');
 };
 
 const interceptor = async (url: string) => {
+  const session = await getSession();
   if (!PUBLIC_API_ROUTES.some((p) => url.includes(p))) {
-    const isValidUser = cookiesStore.get(USER_KEY) as LoginResponse;
-    if (!isValidUser) {
+    if (!session.user) {
       await logout();
     }
-    if (new Date(isValidUser.exp) <= new Date()) {
+
+    if (session.exp && new Date(session.exp) <= new Date()) {
       const response = await fetch(BASE_URL + '/auth/refresh-token', {
         method: 'POST',
         headers: {
@@ -36,11 +41,15 @@ const interceptor = async (url: string) => {
           'Content-Type': 'application/json',
         },
       });
+
       const result = await response.json();
       if (!response.ok) {
         await logout();
       }
-      cookiesStore.set(USER_KEY, { ...isValidUser, exp: result.data.exp });
+
+      session.exp = result.data.exp;
+      await session.save();
+
       cookiesStore.set('access_token', result.data.token.access_token, true);
     }
   }

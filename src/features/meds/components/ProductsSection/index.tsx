@@ -14,7 +14,7 @@ import { DEFAULT_ADDRESS } from '@/constants/address';
 
 type ProductsSectionProps = {
   category: Category;
-  user: User;
+  user?: User;
 };
 
 const ProductsSection = ({ category, user }: ProductsSectionProps) => {
@@ -26,11 +26,11 @@ const ProductsSection = ({ category, user }: ProductsSectionProps) => {
       try {
         const params = {
           longitude:
-            user?.addresses?.length > 0
+            user && user?.addresses?.length > 0
               ? user.addresses[0]?.longitude
               : DEFAULT_ADDRESS.longitude,
           latitude:
-            user?.addresses?.length > 0
+            user && user?.addresses?.length > 0
               ? user.addresses[0]?.latitude
               : DEFAULT_ADDRESS.latitude,
           categoryId: category.id,
