@@ -8,7 +8,6 @@ const ProfileLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getUser();
 
   if (!user) {
-    await logout();
     redirect('/');
   }
 

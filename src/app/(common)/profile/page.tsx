@@ -1,7 +1,6 @@
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { ProfileSidebar } from '@/features/profile/components';
 import { getUser } from '@/services/user';
-import { logout } from '@/utils/interceptor';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 
@@ -9,7 +8,6 @@ const Profile = async () => {
   const user = await getUser();
 
   if (!user) {
-    await logout();
     redirect('/');
   }
 
