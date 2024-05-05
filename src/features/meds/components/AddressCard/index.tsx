@@ -2,48 +2,56 @@
 
 import { LocationIcon } from '@/assets/icons';
 import { DEFAULT_ADDRESS } from '@/constants/address';
-import { DUMMY_ADDRESSES } from '@/constants/dummy';
+import { UserContext } from '@/context/UserProvider';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
+import { formatAddress } from '@/utils/formatter';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { formatAddress } from '@/utils/address';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import ModalSetAddress from '../ModalSetAddress';
 
 const AddressCard = () => {
+  const { user } = useContext(UserContext);
+
+  const router = useRouter();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [address, setAddress] = useState<Address>(DEFAULT_ADDRESS);
-  const [addressOpts, setAddressOpts] = useState<Address[]>([]);
+  const [address, setAddress] = useState<Address>(
+    user && user.addresses?.length > 0 ? user.addresses[0] : DEFAULT_ADDRESS
+  );
+  const addressOpts = useMemo(
+    () => (user && user.addresses ? user.addresses : []),
+    [user]
+  );
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
-    function getAddrOpts() {
-      const addrOpts = DUMMY_ADDRESSES.filter((addr) => {
-        if (addr.is_active) {
-          setAddress(addr);
-        }
-        return addr.is_active === false;
-      });
-
-      setAddressOpts(addrOpts);
+    if (user && addressOpts.length === 0) {
+      setShowModal(true);
+      const timer = setTimeout(() => {
+        router.push('/profile/my-addresses');
+      }, 5000);
+      return () => clearTimeout(timer);
     }
-    getAddrOpts();
-  }, []);
+  }, [addressOpts, router, user]);
 
-  function show() {
+  const show = () => {
     setShowDropdown(true);
-  }
+  };
 
   const ref = useOutsideClick(() => {
     setShowDropdown(false);
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       const idx = parseInt(e.target.id.split('-')[1]);
       setAddress(addressOpts[idx]);
     }
     setShowDropdown(false);
-  }
+  };
 
   return (
     <div className="relative">
@@ -56,7 +64,11 @@ const AddressCard = () => {
             <LocationIcon width={12} />
           </div>
           <p className="truncate max-h-10">
-            {address && formatAddress(address)}
+            {user && addressOpts.length === 0 ? (
+              'You have no addresses'
+            ) : (
+              <>{address && formatAddress(address)}</>
+            )}
           </p>
         </div>
         <span>
@@ -102,6 +114,7 @@ const AddressCard = () => {
           )}
         </div>
       </div>
+      <ModalSetAddress showModal={showModal} />
     </div>
   );
 };

@@ -15,11 +15,18 @@ const EndChatButton = ({ onConfirm }: EndChatButtonProps) => {
     <div>
       <Button
         variant="danger"
-        className="text-center rounded ps-4 pe-5 py-2 gap-2 w-full"
+        className="hidden text-center rounded ps-4 pe-5 py-2 gap-2 w-full md:block"
         onClick={() => setShowModal(true)}
       >
         End Chat
       </Button>
+      <div
+        className="text-danger hover:bg-gray-lighter flex gap-2 flex items-center cursor-pointer capitalize justify-between py-2 px-3 md:hidden"
+        role="button"
+        onClick={() => setShowModal(true)}
+      >
+        End Chat
+      </div>
       <ModalEndChat
         onConfirm={onConfirm}
         onShowModal={setShowModal}

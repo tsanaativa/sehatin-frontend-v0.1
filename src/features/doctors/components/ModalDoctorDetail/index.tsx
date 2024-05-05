@@ -2,14 +2,12 @@
 
 import { Button, Modal } from '@/components/common';
 import { Doctor } from '@/types/Doctor';
-import { User } from '@/types/User';
-import { getUser } from '@/utils/auth';
 import { MessageCircleMore, X } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import DoctorDetailCard from '../DoctorDetailCard';
 
 type ModalDoctorDetailProps = {
+  isAuthenticated: boolean;
   doctor: Doctor;
   onShowModal: (showModal: boolean) => void;
   showModal: boolean;
@@ -17,15 +15,10 @@ type ModalDoctorDetailProps = {
 
 const ModalDoctorDetail = ({
   doctor,
+  isAuthenticated,
   onShowModal,
   showModal,
 }: ModalDoctorDetailProps) => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
-
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
       <div className="flex items-center justify-between font-poppins font-semibold text-sm px-4 pt-4 md:text-lg">
@@ -50,7 +43,7 @@ const ModalDoctorDetail = ({
             <Button
               className="flex items-center text-nowrap justify-center gap-x-2 ps-4 pe-5"
               variant="primary"
-              disabled={!!!user}
+              disabled={!isAuthenticated}
             >
               <MessageCircleMore size={14} /> Chat Now
             </Button>

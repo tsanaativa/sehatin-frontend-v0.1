@@ -6,7 +6,6 @@ export { default as ModalChoosePharmacies } from './ModalChoosePharmacies';
 export { default as MedsSortDropdown } from './MedsSortDropdown';
 export { default as CategoriesSection } from './CategoriesSection';
 export { default as AddressCard } from './AddressCard';
-export { default as AllCategories } from './AllCategories';
 export { default as MedsByCategories } from './MedsByCategories';
 export { default as ProductCardSkeleton } from './ProductCardSkeleton';
 export { default as ProductsSection } from './ProductsSection';

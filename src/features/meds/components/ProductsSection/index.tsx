@@ -2,12 +2,12 @@
 
 import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
-import { Category } from '@/types/Product';
-import { Product } from '@/types/Product';
-import api from '@/utils/api';
-import { getUser } from '@/utils/auth';
+import { DEFAULT_ADDRESS } from '@/constants/address';
+import { UserContext } from '@/context/UserProvider';
+import { Category, Product } from '@/types/Product';
+import { get } from '@/utils/api';
 import { splitToNArrays } from '@/utils/helper';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ProductCardSkeleton from '../ProductCardSkeleton';
 
@@ -16,20 +16,26 @@ type ProductsSectionProps = {
 };
 
 const ProductsSection = ({ category }: ProductsSectionProps) => {
+  const { user } = useContext(UserContext);
   const [productsSlices, setProductsSlices] = useState<Array<Product[]>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [user, setUser] = useState(getUser());
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const params = {
-          longitude: -6.226135037364805,
-          latitude: 106.80978466685714,
+          longitude:
+            user && user?.addresses?.length > 0
+              ? user.addresses[0]?.longitude
+              : DEFAULT_ADDRESS.longitude,
+          latitude:
+            user && user?.addresses?.length > 0
+              ? user.addresses[0]?.latitude
+              : DEFAULT_ADDRESS.latitude,
           categoryId: category.id,
           limit: 15,
         };
-        const res = await api.get<typeof params, { products: Product[] }>(
+        const res = await get<typeof params, { products: Product[] }>(
           `/products/nearest`,
           params
         );
@@ -43,7 +49,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
       }
     };
 
-    fetchProducts();
+    if (!(user && user?.addresses?.length === 0)) fetchProducts();
   }, [category.id, user]);
 
   return (
@@ -58,15 +64,16 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
             {productsSlices.length > 0 ? (
               <div className="grid grid-cols-6 min-w-max gap-3 sm:gap-4 md:gap-6 ">
                 {productsSlices.map((products, iter) => (
-                  <>
+                  <React.Fragment key={iter}>
                     {products.map((product, idx) => (
                       <ProductCard
                         key={idx}
                         width="max-w-[197.2px]"
                         product={product}
+                        isAuthenticated={!!user}
                       />
                     ))}
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
             ) : (
@@ -87,6 +94,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
                           key={idx}
                           width="min-w-[197.2px]"
                           product={product}
+                          isAuthenticated={!!user}
                         />
                       ))}
                     </div>

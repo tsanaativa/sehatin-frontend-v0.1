@@ -1,3 +1,5 @@
+import Icon from '../Icon';
+
 type ButtonProps = {
   variant?:
     | 'primary'
@@ -38,7 +40,15 @@ const Button = ({
       disabled={disabled || loading}
       {...buttonProps}
     >
-      {loading ? 'loading' : children}
+      {loading ? (
+        <Icon
+          name="LoaderCircle"
+          size={24}
+          className="animate-spin text-light"
+        />
+      ) : (
+        <>{children}</>
+      )}
     </button>
   );
 };

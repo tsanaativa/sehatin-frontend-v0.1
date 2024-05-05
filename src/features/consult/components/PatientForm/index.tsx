@@ -1,19 +1,24 @@
 'use client';
+
 import { Button, Input } from '@/components/common';
-import { DUMMY_USER } from '@/constants/dummy';
+import { User } from '@/types/User';
 import { validate } from '@/utils/validation';
-import { redirect, useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import createRoom from '../../actions/room';
+import { toast } from 'react-toastify';
 
 type PatientFormProps = {
   isEdit?: boolean;
+  user: User;
 };
 
-const PatientForm = ({ isEdit }: PatientFormProps) => {
+const PatientForm = ({ isEdit, user }: PatientFormProps) => {
   const router = useRouter();
   const { id } = useParams();
 
-  const defaultUser = DUMMY_USER;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
@@ -22,10 +27,10 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
 
   const birthDatePicker = useRef<HTMLInputElement>(null);
   const [birthDate, setBirthDate] = useState<string>(
-    defaultUser?.birth_date || ''
+    user?.birth_date ? user?.birth_date.split('T')[0] : ''
   );
-  const [gender, setGender] = useState<'male' | 'female'>(
-    defaultUser?.gender ? defaultUser?.gender : 'male'
+  const [gender, setGender] = useState<number>(
+    user?.gender?.id ? user?.gender?.id : 0
   );
 
   const name = useRef<HTMLInputElement>(null);
@@ -57,7 +62,7 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
     return name.current?.value == '' || birthDate == '';
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (invalidSubmission() || anyEmptyField()) {
       const allErrors = Object.fromEntries(
         Object.keys(errors).map((i) => {
@@ -84,7 +89,18 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
       birthDate: birthDate,
     });
 
-    redirect(`/consult/${id}`);
+    const req = {
+      id: `${user?.email}-${id}`,
+      name: `room-${user?.email}-${id}`,
+    };
+
+    setIsLoading(true);
+    try {
+      await createRoom(req);
+      router.push(`/consult/${id}`);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   };
 
   return (
@@ -106,7 +122,7 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
             onInput={({ target }) =>
               handleInput('name', (target as HTMLInputElement).value)
             }
-            defaultValue={defaultUser?.name}
+            defaultValue={user?.name}
           />
         </label>
         <label htmlFor="birth-date">
@@ -126,7 +142,9 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
               birthDatePicker.current?.focus();
               birthDatePicker.current?.showPicker();
             }}
-            defaultValue={defaultUser?.birth_date}
+            defaultValue={
+              user?.birth_date ? user?.birth_date.split('T')[0] : ''
+            }
           />
         </label>
         <div>
@@ -142,9 +160,10 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
                 type="radio"
                 name="gender"
                 id="male"
+                value={1}
                 className="peer"
-                checked={gender == 'male'}
-                onChange={() => setGender('male')}
+                checked={gender === 1}
+                onChange={() => setGender(1)}
               />
               <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
               <span>Male</span>
@@ -155,25 +174,27 @@ const PatientForm = ({ isEdit }: PatientFormProps) => {
                 name="gender"
                 id="female"
                 className="peer"
-                checked={gender == 'female'}
-                onChange={() => setGender('female')}
+                value={2}
+                checked={gender === 2}
+                onChange={() => setGender(2)}
               />
               <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
               <span>Female</span>
             </label>
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between gap-5 items-center mt-6">
           <Button
             variant="outlined-gray"
-            className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-full md:w-fit"
+            className="hidden items-center py-3 justify-center gap-1 px-6 min-w-[190px] mt-3 w-full md:w-fit md:flex"
             onClick={router.back}
           >
             Back
           </Button>
           <Button
-            className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-full md:w-fit"
+            className="flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full md:min-w-[190px] md:w-fit"
             onClick={handleSubmit}
+            loading={isLoading}
           >
             {isEdit ? 'Save' : 'Start Consultation'}
           </Button>

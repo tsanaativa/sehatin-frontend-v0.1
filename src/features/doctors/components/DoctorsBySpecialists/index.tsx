@@ -7,7 +7,13 @@ import { useState } from 'react';
 import DoctorsSection from '../DoctorsSection';
 import Link from 'next/link';
 
-const DoctorsBySpecialists = () => {
+type DoctorsBySpecialistsProps = {
+  isAuthenticated: boolean;
+};
+
+const DoctorsBySpecialists = ({
+  isAuthenticated,
+}: DoctorsBySpecialistsProps) => {
   const NUMBER_OF_SPECIALISTS_TO_FETCH = 2;
   const [offset, setOffset] = useState(NUMBER_OF_SPECIALISTS_TO_FETCH);
   const [specialists, setSpecialists] = useState<Specialist[]>(
@@ -23,7 +29,11 @@ const DoctorsBySpecialists = () => {
   return (
     <div>
       {specialists.map((specialist, idx) => (
-        <DoctorsSection specialist={specialist} key={idx} />
+        <DoctorsSection
+          specialist={specialist}
+          key={idx}
+          isAuthenticated={isAuthenticated}
+        />
       ))}
       <div className="w-full flex justify-center mt-2 md:mt-10">
         {offset !== 8 ? (

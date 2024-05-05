@@ -4,6 +4,7 @@ import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';
 import { User } from '@/types/User';
+import { Chat } from '@/types/Chat';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
@@ -73,14 +74,6 @@ export const DUMMY_ADDRESSES: Address[] = [
     longitude: 0,
   },
 ];
-
-export const DUMMY_USER: User = {
-  id: 1,
-  name: 'Vivin',
-  email: 'vivin@gmail.com',
-  gender: 'male',
-  birth_date: '2001-01-01',
-};
 
 export const DUMMY_CHOOSE_PHARMACIES = [
   {
@@ -223,36 +216,3 @@ export const DUMMY_SPECIALISTS = {
   '106': 'Spesialis Penyakit Dalam (Pulmonologi)',
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
-
-export const DUMMY_CHAT = [
-  {
-    date: '2020-05-01',
-    chats: [
-      {
-        sentBy: 1,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hi. Please help',
-      },
-      {
-        sentBy: 2,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hello, how can I help you?',
-      },
-    ],
-  },
-  {
-    date: '2020-05-01',
-    chats: [
-      {
-        sentBy: 1,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hi. Please help',
-      },
-      {
-        sentBy: 2,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hello, how can I help you?',
-      },
-    ],
-  },
-];

@@ -1,14 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 import { Doctor } from '@/types/Doctor';
-import { getYearsOfExp } from '@/utils/doctor';
+import { formatYearToExp } from '@/utils/formatter';
 
 type DoctorDetailCardProps = {
   doctor: Doctor;
+  isTyping?: boolean;
 };
 
-const DoctorDetailCard = ({ doctor }: DoctorDetailCardProps) => {
-  const yearsOfExp = getYearsOfExp(doctor.work_start_year);
+const DoctorDetailCard = ({ doctor, isTyping }: DoctorDetailCardProps) => {
+  const yearsOfExp = formatYearToExp(doctor.work_start_year);
   return (
     <div className="px-4 py-8 flex flex-col items-center gap-y-2 ">
       <div className="relative w-fit h-fit">
@@ -19,9 +20,17 @@ const DoctorDetailCard = ({ doctor }: DoctorDetailCardProps) => {
           height={300}
           alt=""
         />
-        <div
-          className={`absolute bottom-1 right-[0.4rem] rounded-full border border-light ${doctor.is_online ? 'bg-green' : 'bg-gray'} w-4 h-4`}
-        ></div>
+        {!isTyping ? (
+          <div
+            className={`absolute bottom-1 right-[0.7rem] rounded-full border border-light ${doctor.is_online ? 'bg-green' : 'bg-gray'} w-4 h-4`}
+          ></div>
+        ) : (
+          <div
+            className={`absolute bottom-1 flex justify-center right-[0.3rem] rounded-full border border-light bg-gray-light text-dark-gray font-bold text-xl w-8 h-5`}
+          >
+            <span className="-mt-[0.6rem] animate-pulse">...</span>
+          </div>
+        )}
       </div>
       <div className="flex flex-col items-center">
         <span className="font-poppins font-medium text-dark text-lg">

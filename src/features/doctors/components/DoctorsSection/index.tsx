@@ -2,8 +2,7 @@
 
 import { CategorizeSection } from '@/components/common';
 import { Doctor, Specialist } from '@/types/Doctor';
-import api from '@/utils/api';
-import { getUser } from '@/utils/auth';
+import { get } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import DoctorCard from '../DoctorCard';
@@ -11,12 +10,15 @@ import DoctorCardSkeleton from '../DoctorCardSkeleton';
 
 type DoctorsSectionProps = {
   specialist: Specialist;
+  isAuthenticated: boolean;
 };
 
-const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
+const DoctorsSection = ({
+  specialist,
+  isAuthenticated,
+}: DoctorsSectionProps) => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [user, setUser] = useState(getUser());
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -25,7 +27,7 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
           specialistId: specialist.id,
           limit: 6,
         };
-        const res = await api.get<typeof params, { doctors: Doctor[] }>(
+        const res = await get<typeof params, { doctors: Doctor[] }>(
           `/doctors`,
           params
         );
@@ -39,7 +41,7 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
     };
 
     fetchDoctors();
-  }, [specialist.id, user]);
+  }, [specialist.id]);
 
   return (
     <CategorizeSection
@@ -56,6 +58,7 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
                   key={idx}
                   width="min-w-[350px] md:min-w-[400px]"
                   doctor={doctor}
+                  isAuthenticated={isAuthenticated}
                 />
               ))}
             </>
