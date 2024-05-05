@@ -1,5 +1,5 @@
 import { SessionOptions } from 'iron-session';
-import { User } from './User';
+import { User } from '../types/User';
 
 export interface SessionData {
   exp?: string;
