@@ -25,7 +25,7 @@ const ModalSetAddress = ({ showModal }: ModalSetAddressProps) => {
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Link href={'/profile/my-profile'}>
+          <Link href={'/profile/my-addresses'}>
             <Button className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2">
               Set Address
             </Button>

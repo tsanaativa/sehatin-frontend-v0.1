@@ -1,4 +1,14 @@
-export const overflowHandler = (type: 'hidden' | 'auto', id?: string) => {
+type overflowProps = {
+  type: 'hidden' | 'auto';
+  targetId?: string;
+  hideHeader?: boolean;
+};
+
+export const overflowHandler = ({
+  type,
+  targetId,
+  hideHeader,
+}: overflowProps) => {
   setTimeout(() => {
     const notif = document.getElementById('unregister-notif');
     const bottomNav = document.getElementById('bottom-navigation');
@@ -10,8 +20,12 @@ export const overflowHandler = (type: 'hidden' | 'auto', id?: string) => {
         ? bottomNav.classList.add('hidden')
         : bottomNav.classList.remove('hidden');
     }
-    if (id) {
-      const el = document.getElementById(id);
+    if (hideHeader) {
+      const el = document.getElementById('header-main');
+      if (el) el.style.display = type == 'hidden' ? 'none' : 'block';
+    }
+    if (targetId) {
+      const el = document.getElementById(targetId);
       if (el) {
         el.style.overflow = type;
         el.scrollTo(0, 0);
@@ -44,7 +58,7 @@ export const convertBlob = (blob: Blob): Promise<string> => {
   });
 };
 
-export const splitToNArrays = <T>(array: T[], n: number) => {
+export const splitToNArrays = <T>(array: T[], n: number = 5) => {
   let result = [];
   for (let i = Math.ceil(array.length / n); i > 0; i--) {
     result.push(array.splice(0, n));

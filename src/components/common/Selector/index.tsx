@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Icon, Input } from '..';
 import { icons } from 'lucide-react';
 import { overflowHandler } from '@/utils/helper';
@@ -20,6 +20,7 @@ type SelectorProps = {
   append?: keyof typeof icons;
   isLoading?: boolean;
   required?: boolean;
+  gridView?: string;
   onSelect: (text: string) => void;
 };
 
@@ -39,6 +40,7 @@ const Selector = ({
   append,
   isLoading,
   required,
+  gridView,
   onSelect,
 }: SelectorProps) => {
   const [input, setInput] = useState({
@@ -79,13 +81,11 @@ const Selector = ({
 
   const OnSelectorClick = () => {
     setShowPane(true);
-    if (screenWidth < 768 && wrapperId) overflowHandler('hidden', wrapperId);
     inputInPane.current?.focus();
   };
 
   const handleClosePane = () => {
     setShowPane(false);
-    if (wrapperId) overflowHandler('auto', wrapperId);
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);
     }, 300);
@@ -100,8 +100,6 @@ const Selector = ({
       setTimeout(() => {
         pickerWrapper.current?.classList.remove('md:hover:scale-y-100');
       }, 0);
-    } else {
-      if (wrapperId) overflowHandler('auto', wrapperId);
     }
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);
@@ -125,11 +123,17 @@ const Selector = ({
   };
 
   const optionsTransition = (idx: number) =>
-    screenWidth >= 768
+    screenWidth >= 768 && !gridView
       ? {
           transition: `${idx < 5 ? 0.5 + (idx + 1) * 0.2 : 0}s`,
         }
       : {};
+
+  useEffect(() => {
+    if (screenWidth < 768 && wrapperId && showPane)
+      overflowHandler({ type: 'hidden', targetId: wrapperId });
+    else overflowHandler({ type: 'auto', targetId: wrapperId });
+  }, [screenWidth, showPane, wrapperId]);
   return (
     <div
       className="flex flex-col gap-1 relative"
@@ -180,7 +184,7 @@ const Selector = ({
             ></button>
             <div
               ref={picker}
-              className={`bg-light w-full flex flex-col md:rounded-[10px] border border-gray-light overflow-y-auto z-[3] overflow-x-hidden md:h-72 absolute bottom-0 md:top-2 ${screenWidth < 768 ? 'transition-transform duration-300' : ''} ${showPane ? 'translate-y-0' : 'translate-y-full md:translate-y-0 '} ${searchable ? 'h-full' : 'h-[calc(50vh+5.75rem)] rounded-t-2xl'}`}
+              className={`bg-light w-full ${gridView ? `grid ${gridView} [&>*]:grid [&>*]:place-items-center` : 'flex flex-col'} md:rounded-[10px] border border-gray-light overflow-y-auto z-[3] overflow-x-hidden md:h-72 absolute bottom-0 md:top-2 ${screenWidth < 768 ? 'transition-transform duration-300' : ''} ${showPane ? 'translate-y-0' : 'translate-y-full md:translate-y-0 '} ${searchable ? 'h-full' : 'h-[calc(50vh+5.75rem)] rounded-t-2xl'}`}
             >
               {searchable && screenWidth < 768 && (
                 <label

@@ -3,7 +3,7 @@
 import { Button } from '@/components/common';
 import Badge from '@/components/common/Badge';
 import { Doctor } from '@/types/Doctor';
-import { getYearsOfExp } from '@/utils/doctor';
+import { formatYearToExp } from '@/utils/formatter';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ const DoctorCard = ({
   doctor,
   isMini = false,
 }: DoctorCardProps) => {
-  const yearsOfExp = getYearsOfExp(doctor.work_start_year);
+  const yearsOfExp = formatYearToExp(doctor.work_start_year);
   const [showDetail, setShowDetail] = useState(false);
 
   const disableDefaultClick = (e: React.MouseEvent) => {

@@ -103,6 +103,36 @@ const Cart = ({ onCheckout, onClose }: CartProps) => {
       name: 'Century Mampang Prapatan',
       id: 2,
     },
+    {
+      products: [
+        {
+          id: 13,
+          picture:
+            'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          name: 'Panadol Obat Pusing',
+          slug: 'panadol-obat-pusingg-13',
+          price: 15990,
+          stock: 3,
+          inCart: 2,
+          label: 'per BOTOL',
+          is_available: true,
+        },
+        {
+          id: 14,
+          picture:
+            'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          name: 'Panadol Obat Pusing',
+          slug: 'panadol-obat-pusingg-14',
+          price: 15990,
+          stock: 5,
+          inCart: 2,
+          label: 'per BOTOL',
+          is_available: true,
+        },
+      ],
+      name: 'Century Mampang Prapatan',
+      id: 3,
+    },
   ]);
 
   const [productChecks, setProductChecks] = useState(

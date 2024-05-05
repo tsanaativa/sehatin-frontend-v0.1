@@ -430,6 +430,7 @@ const RegistrationForm = () => {
                   message={errors['doctor']['work-start']}
                   onSelect={handleWorkStart}
                   append="Calendar"
+                  gridView="[grid-template-columns:repeat(auto-fit,minmax(100px,1fr))]"
                   placeholder="Choose the year you start working ..."
                 />
               </label>

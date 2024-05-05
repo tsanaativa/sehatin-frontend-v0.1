@@ -11,7 +11,7 @@ import DoctorCard from '@/features/doctors/components/DoctorCard';
 import DoctorCardSkeleton from '@/features/doctors/components/DoctorCardSkeleton';
 import { Doctor, DoctorsParams } from '@/types/Doctor';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import api from '@/utils/api';
+import { get } from '@/utils/api';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -57,7 +57,7 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
     const fetchDoctors = async () => {
       try {
         setIsLoading(true);
-        const res = await api.get<
+        const res = await get<
           DoctorsParams,
           { pagination_info: PaginationInfo; doctors: Doctor[] }
         >(`/doctors`, params);

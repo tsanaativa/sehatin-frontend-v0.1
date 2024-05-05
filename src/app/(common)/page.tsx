@@ -7,12 +7,12 @@ import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_PRODUCT } from '@/constants/dummy';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Home = () => {
-  const user = getUser();
+const Home = async () => {
+  const user = await getUser();
 
   return (
     <main className="w-full">

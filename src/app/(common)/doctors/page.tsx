@@ -4,10 +4,10 @@ import { DUMMY_DOCTOR } from '@/constants/dummy';
 import { DISPLAYED_SPECIALISTS } from '@/constants/specialists';
 import DoctorCard from '@/features/doctors/components/DoctorCard';
 import DoctorsBySpecialists from '@/features/doctors/components/DoctorsBySpecialists';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 
-const Doctors = () => {
-  const user = getUser();
+const Doctors = async () => {
+  const user = await getUser();
 
   return (
     <div className="w-full bg-light rounded-tr-2xl rounded-tl-2xl flex justify-center px-1 md:px-6 md:rounded-none">

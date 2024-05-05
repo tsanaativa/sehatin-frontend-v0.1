@@ -25,7 +25,7 @@ const CartPage = ({ openCart, onCloseCart }: CartPageProps) => {
   return (
     <div
       style={{ transform: `translateX(${openCart ? -step * 100 : 100}%)` }}
-      className={`fixed h-[calc(100%-74px)] top-[ bottom-0 bg-light z-[41] flex w-full transition-transform duration-300`}
+      className={`fixed bg-light z-[41] flex inset-0 transition-transform duration-300`}
     >
       <Cart
         onCheckout={(cart) => {
