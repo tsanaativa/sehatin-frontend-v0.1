@@ -27,7 +27,7 @@ const Profile = async () => {
         </div>
       </div>
       <div className="bg-light rounded-tl-xl rounded-tr-xl p-5">
-        <ProfileSidebar isMobile user={user} />
+        <ProfileSidebar isMobile />
       </div>
     </div>
   );

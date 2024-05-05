@@ -3,13 +3,13 @@
 import { Badge, Button, Input } from '@/components/common';
 import { WebSocketContext } from '@/context/WebSocketProvider';
 import { Chat } from '@/types/Chat';
-import { User } from '@/types/User';
 import { formatDate } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
+import { UserContext } from '@/context/UserProvider';
 
 export type Message = {
   content: string;
@@ -19,11 +19,13 @@ export type Message = {
   type: string;
 };
 
-type ConsultRoomProps = {
-  user: User;
-};
+const ConsultRoom = () => {
+  const { user } = useContext(UserContext);
 
-const ConsultRoom = ({ user }: ConsultRoomProps) => {
+  if (!user) {
+    redirect('/');
+  }
+
   const { id } = useParams();
   const { conn, setConn } = useContext(WebSocketContext);
 
