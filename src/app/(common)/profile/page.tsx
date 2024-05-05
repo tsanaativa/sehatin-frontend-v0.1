@@ -1,15 +1,10 @@
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { ProfileSidebar } from '@/features/profile/components';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
 
 const Profile = async () => {
   const user = await getUser();
-
-  if (!user) {
-    redirect('/');
-  }
 
   return (
     <div className="-mx-4 -my-6 bg-primary-dark bg-gradient-to-r from-slate-900/0 to-primary sm:-mx-6 md:hidden">
@@ -22,12 +17,12 @@ const Profile = async () => {
           alt="Profile"
         />
         <div className="text-center">
-          <p className="font-poppins text-lg font-semibold">{user.name}</p>
-          <p>{user.email}</p>
+          <p className="font-poppins text-lg font-semibold">{user?.name}</p>
+          <p>{user?.email}</p>
         </div>
       </div>
       <div className="bg-light rounded-tl-xl rounded-tr-xl p-5">
-        <ProfileSidebar isMobile user={user} />
+        <ProfileSidebar isMobile />
       </div>
     </div>
   );

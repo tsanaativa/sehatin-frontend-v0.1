@@ -2,7 +2,7 @@
 
 import { LoginResponse } from '@/types/Auth';
 import { post } from '@/utils/api';
-import { getSession } from '@/utils/session';
+import { getSession } from '@/services/session';
 
 export default async function login(formData: FormData) {
   const session = await getSession();

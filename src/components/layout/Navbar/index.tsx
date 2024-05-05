@@ -9,6 +9,8 @@ import Link from 'next/link';
 import CartPage from '@/features/cart/components';
 import { useState } from 'react';
 import { User } from '@/types/User';
+import { UserContext } from '@/context/UserProvider';
+import { useContext, useEffect } from 'react';
 
 type NavbarProps = {
   user?: User;
@@ -16,6 +18,11 @@ type NavbarProps = {
 
 const Navbar = ({ user }: NavbarProps) => {
   const [openCart, setOpenCart] = useState(false);
+  const { setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    setUser(user);
+  }, [setUser, user]);
 
   return (
     <>

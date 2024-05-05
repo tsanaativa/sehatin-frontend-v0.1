@@ -1,18 +1,15 @@
-import { SessionOptions } from 'iron-session';
-import { User } from '../types/User';
+'use server';
 
-export interface SessionData {
-  exp?: string;
-  user?: User;
-  access_token?: string;
-  refresh_token?: string;
-}
+import { getIronSession } from 'iron-session';
+import { cookies } from 'next/headers';
+import { SessionData, sessionOptions } from './session_data';
 
-export const sessionOptions: SessionOptions = {
-  password: process.env.NEXT_PUBLIC_SECRET_KEY!,
-  cookieName: process.env.NEXT_PUBLIC_USER_KEY || '',
-  cookieOptions: {
-    httpOnly: true,
-    secure: process.env.NEXT_PUBLIC_NODE_ENV === 'production',
-  },
+export const getSession = async () => {
+  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  return session;
+};
+
+export const getUser = async () => {
+  const session = await getSession();
+  return session?.user;
 };

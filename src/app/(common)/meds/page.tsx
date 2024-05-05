@@ -1,6 +1,6 @@
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import MedsByCategories from '@/features/meds/components/MedsByCategories';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 
 const Meds = async () => {
   const user = await getUser();
@@ -10,7 +10,7 @@ const Meds = async () => {
       <div className="max-w-[1150px] py-4 w-full px-4 sm:px-6 md:py-10">
         <div className="flex flex-col">
           <CategoriesSection />
-          <MedsByCategories user={user} />
+          <MedsByCategories />
         </div>
       </div>
     </div>

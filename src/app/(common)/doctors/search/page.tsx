@@ -1,5 +1,5 @@
 import SearchDoctors from '@/features/doctors/components/SearchDoctors';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 import React from 'react';
 
 const SearchDoctorsPage = async () => {

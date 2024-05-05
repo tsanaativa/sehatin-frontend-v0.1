@@ -2,20 +2,20 @@
 
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { PROFILE_MENUS } from '@/constants/menus';
-import { User } from '@/types/User';
+import { UserContext } from '@/context/UserProvider';
 import { logout } from '@/utils/interceptor';
 import { ChevronRight, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useContext } from 'react';
 
 type ProfileSidebarProps = {
   isMobile?: boolean;
-  user: User;
 };
 
-const ProfileSidebar = ({ isMobile = false, user }: ProfileSidebarProps) => {
+const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
+  const { user } = useContext(UserContext);
   const pathname = usePathname();
 
   const handleLogout = async () => {
