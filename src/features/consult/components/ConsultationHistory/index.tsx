@@ -1,13 +1,19 @@
 import OnlineToggle from '@/features/doctors/components/OnlineToggle';
 import { Consultation } from '@/types/Consultation';
 import { User } from '@/types/User';
+import { redirect } from 'next/navigation';
 
 type ConsultationHistoryProps = {
   user: User;
-  history: Consultation[];
 };
 
-const ConsultationHistory = ({ user, history }: ConsultationHistoryProps) => {
+const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
+  let history: Consultation[] = [];
+
+  if (!user) {
+    redirect('/login');
+  }
+
   return (
     <div className="flex justify-center">
       <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
