@@ -2,7 +2,7 @@
 
 import { PUBLIC_API_ROUTES } from '@/constants/routes';
 import { interceptor } from './interceptor';
-import { getSession } from './session';
+import { getSession } from '../services/session';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL as string;
 

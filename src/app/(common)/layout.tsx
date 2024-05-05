@@ -6,7 +6,7 @@ import {
 } from '@/components/layout';
 import LoginBar from '@/components/layout/LoginBar';
 import UserProvider from '@/context/UserProvider';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 
 const CommonLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getUser();

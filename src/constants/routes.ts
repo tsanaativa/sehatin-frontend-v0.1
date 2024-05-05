@@ -11,3 +11,7 @@ export const PUBLIC_API_ROUTES = [
   '/specialists',
   '/ws',
 ];
+
+export const AUTH_ROUTES = ['/login', '/register'];
+
+export const PROTECTED_ROUTES = ['/profile', '/consult'];

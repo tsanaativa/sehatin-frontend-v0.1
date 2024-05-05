@@ -1,7 +1,7 @@
 'use server';
 
 import { PUBLIC_API_ROUTES } from '@/constants/routes';
-import { getSession } from '@/utils/session';
+import { getSession } from '@/services/session';
 import { redirect } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;

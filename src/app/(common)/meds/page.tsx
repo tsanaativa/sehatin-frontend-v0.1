@@ -1,6 +1,6 @@
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import MedsByCategories from '@/features/meds/components/MedsByCategories';
-import { getUser } from '@/services/user';
+import { getUser } from '@/services/session';
 
 const Meds = async () => {
   const user = await getUser();
