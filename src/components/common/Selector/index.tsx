@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react';
 import { Icon, Input } from '..';
 import { icons } from 'lucide-react';
+import { overflowHandler } from '@/utils/helper';
 
 type SelectorProps = {
   id: string;
@@ -76,11 +77,13 @@ const Selector = ({
 
   const OnSelectorClick = () => {
     setShowPane(true);
+    if (screenWidth < 768) overflowHandler('hidden', 'auth-main');
     inputInPane.current?.focus();
   };
 
   const handleClosePane = () => {
     setShowPane(false);
+    overflowHandler('auto', 'auth-main');
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);
     }, 300);
@@ -95,6 +98,8 @@ const Selector = ({
       setTimeout(() => {
         pickerWrapper.current?.classList.remove('md:hover:scale-y-100');
       }, 0);
+    } else {
+      overflowHandler('auto', 'auth-main');
     }
     setTimeout(() => {
       picker.current?.scrollTo(0, 0);
@@ -132,7 +137,7 @@ const Selector = ({
         id="selector"
         onMouseOver={handleHoverSelector}
         onClick={OnSelectorClick}
-        className={`border-[1px] peer relative h-14 rounded-[10px] overflow-hidden w-full flex transition-colors duration-300
+        className={`border peer relative h-14 rounded-[10px] overflow-hidden w-full flex transition-colors duration-300
         ${invalid ? 'border-danger' : 'border-gray-light hover:border-gray [&:has(:focus)]:border-primary'}
         ${disabled || isLoading ? 'bg-gray-light hover:border-gray-light cursor-not-allowed' : ''} ${selectorClass}`}
       >
@@ -173,7 +178,7 @@ const Selector = ({
             ></button>
             <div
               ref={picker}
-              className={`bg-light w-full flex flex-col md:rounded-[10px] border-[1px] border-gray-light overflow-y-auto z-[3] overflow-x-hidden md:h-72 absolute bottom-0 md:top-2 ${screenWidth < 768 ? 'transition-transform duration-300' : ''} ${showPane ? 'translate-y-0' : 'translate-y-full md:translate-y-0 '} ${searchable ? 'h-full' : 'h-[calc(50vh+5.75rem)] rounded-t-2xl'}`}
+              className={`bg-light w-full flex flex-col md:rounded-[10px] border border-gray-light overflow-y-auto z-[3] overflow-x-hidden md:h-72 absolute bottom-0 md:top-2 ${screenWidth < 768 ? 'transition-transform duration-300' : ''} ${showPane ? 'translate-y-0' : 'translate-y-full md:translate-y-0 '} ${searchable ? 'h-full' : 'h-[calc(50vh+5.75rem)] rounded-t-2xl'}`}
             >
               {searchable && screenWidth < 768 && (
                 <label
