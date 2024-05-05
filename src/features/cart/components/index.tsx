@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Cart, { PharmaciesProps } from './Cart';
+import Cart, { PharmaciesInCartProps } from './Cart';
 import Checkout from './Checkout';
 import ConfirmPayment from './ConfirmPayment';
 
@@ -12,7 +12,7 @@ type CartPageProps = {
 
 const CartPage = ({ openCart, onCloseCart }: CartPageProps) => {
   const [step, setStep] = useState(0);
-  const [cart, setCart] = useState<PharmaciesProps[]>([]);
+  const [cart, setCart] = useState<PharmaciesInCartProps[]>([]);
   const [payment, setPayment] = useState('');
   const [startCount, setStartCount] = useState(false);
   const handleCloseCart = () => {

@@ -2,14 +2,14 @@
 import { Icon, Modal, OrderCard, RadioBox } from '@/components/common';
 import { useEffect, useState } from 'react';
 import CartLayout from '../layout';
-import { PharmaciesProps } from '../Cart';
+import { PharmaciesInCartProps } from '../Cart';
 import { currency } from '@/utils/helper';
 import { TikiIcon, JNEIcon } from '@/assets/icons';
 import Image from 'next/image';
 import seabank from '@/assets/images/seabank.png';
 
 type CheckoutProps = {
-  toOrder: PharmaciesProps[];
+  toOrder: PharmaciesInCartProps[];
   onClose: () => void;
   onBack: () => void;
   onOrder: (totalPayment: string) => void;

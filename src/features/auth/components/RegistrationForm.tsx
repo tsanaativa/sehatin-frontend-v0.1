@@ -386,6 +386,7 @@ const RegistrationForm = () => {
                 <h5>Specialist</h5>
                 <Selector
                   id="specialist"
+                  wrapperId="auth-main"
                   options={specialistOptions}
                   selected={specialty}
                   name="specialist"
@@ -421,6 +422,7 @@ const RegistrationForm = () => {
                 <h5>Work Start</h5>
                 <Selector
                   id="work-start"
+                  wrapperId="auth-main"
                   options={workStartOptions}
                   selected={workStart}
                   name="work-start"

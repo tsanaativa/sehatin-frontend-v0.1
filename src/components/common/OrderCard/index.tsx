@@ -17,10 +17,18 @@ export type ProductsProps = {
   is_available: boolean;
 };
 
+export type BadgeProps =
+  | 'Canceled'
+  | 'Pending'
+  | 'Processing'
+  | 'Shipped'
+  | 'Delivered'
+  | 'Completed';
+
 type OrderCardProps = {
   id?: string;
   name?: string;
-  badge?: string;
+  badge?: BadgeProps;
   pharmacyName?: string;
   products: ProductsProps[];
   productChecks?: boolean[];
@@ -30,6 +38,7 @@ type OrderCardProps = {
   children?: React.ReactNode;
   childrenKey?: {
     prefix?: string;
+    customKey?: string | number;
     key: keyof ProductsProps;
     suffix?: string;
   };
@@ -155,7 +164,9 @@ const OrderCard = ({
                     {childrenKey ? (
                       <span>
                         {childrenKey.prefix}
-                        {p[childrenKey.key]}
+                        {childrenKey.customKey
+                          ? childrenKey.customKey
+                          : p[childrenKey.key]}
                         {childrenKey.suffix}
                       </span>
                     ) : (
