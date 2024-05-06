@@ -4,18 +4,15 @@ import {
   Navbar,
   SehatinBanner,
 } from '@/components/layout';
-import Link from 'next/link';
+import LoginBar from '@/components/layout/LoginBar';
+import { getUser } from '@/services/user';
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
+  const user = getUser();
+
   return (
     <div className="w-full min-h-screen relative">
-      <div className="w-full bg-dark-gray text-light text-center text-[0.625rem] font-medium py-1 md:text-sm">
-        You are not registered. To access all features,{' '}
-        <Link className="font-bold underline" href="/register">
-          register here
-        </Link>
-        .
-      </div>
+      <LoginBar isAuthenticated={!!user} />
       <Navbar />
       <div className="w-full m-auto flex justify-center">{children}</div>
       <SehatinBanner />

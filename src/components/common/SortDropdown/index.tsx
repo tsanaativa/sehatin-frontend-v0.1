@@ -2,18 +2,20 @@
 
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { CheckIcon, ChevronDown } from 'lucide-react';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '..';
 
 type SortDropdownProps = {
   sortBy: string;
-  setSortBy: Dispatch<SetStateAction<string>>;
+  sort: string;
+  onSort?: (sortBy: string, sort: string) => void;
   options?: string[];
 };
 
 const SortDropdown = ({
   sortBy,
-  setSortBy,
+  sort,
+  onSort = () => {},
   options = [],
 }: SortDropdownProps) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -26,17 +28,20 @@ const SortDropdown = ({
     setShowDropdown(false);
   });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.checked) {
-      setSortBy(e.target.id);
+  const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (target.checked) {
+      onSort(target.id, sort);
+    } else {
+      onSort(target.id, '');
     }
-  }
+  };
 
   return (
     <div className="relative">
       <Button
         variant="primary-light"
-        className="flex justify-between items-center gap-2 p-2 md:px-3 text-xs md:text-sm"
+        className="flex justify-between items-center gap-2 p-2 md:px-3 text-sm"
         onClick={show}
       >
         Sort by
@@ -48,7 +53,7 @@ const SortDropdown = ({
         </div>
       </Button>
       <div
-        className={`mt-1 min-w-20 absolute right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
+        className={`mt-1 min-w-20 absolute z-10 right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
         ref={ref}
       >
         {options && (
@@ -57,17 +62,12 @@ const SortDropdown = ({
               <label
                 key={idx}
                 htmlFor={option}
-                className="px-2 md:px-3 py-1 md:py-2 hover:bg-gray-lighter text-xs gap-2 flex items-center cursor-pointer capitalize md:text-sm"
+                className="px-2 md:px-3 py-2 hover:bg-gray-lighter flex gap-2 flex items-center cursor-pointer capitalize text-sm"
               >
                 <span
                   className={`${sortBy === option ? 'visible' : 'invisible'}`}
                 >
-                  <div className="md:hidden">
-                    <CheckIcon size={12} />
-                  </div>
-                  <div className="hidden md:block">
-                    <CheckIcon size={15} />
-                  </div>
+                  <CheckIcon size={15} />
                 </span>
                 <input
                   id={option}
@@ -75,13 +75,46 @@ const SortDropdown = ({
                   name="sortby"
                   defaultChecked={sortBy === option}
                   className="hidden"
-                  onChange={handleChange}
+                  onClick={handleChange}
                 />
                 {option}
               </label>
             ))}
           </div>
         )}
+        <div className="px-3 py-2 border-t border-gray-light text-sm">
+          <div
+            className="flex gap-5 items-center [&>label]:flex [&>label]:cursor-pointer [&>label]:items-center [&>label]:gap-1.5 [&_input]:hidden
+              [&_mark]:grid [&_mark]:place-items-center [&_mark]:w-4 [&_mark]:h-4 [&_mark]:rounded-full [&_mark]:border-[1px] [&_mark]:border-gray
+              [&_mark]:bg-transparent after:[&_mark]:content-[''] after:[&_mark]:h-2.5 after:[&_mark]:w-2.5 after:[&_mark]:rounded-full
+              after:[&_mark]:bg-primary-dark after:[&_mark]:hidden [&_span]:leading-[150%] [&_span]:tracking-[0.5px]"
+          >
+            <label htmlFor="asc">
+              <input
+                type="radio"
+                name="sort"
+                id="asc"
+                className="peer"
+                checked={sort === 'asc'}
+                onChange={() => onSort(sortBy, 'asc')}
+              />
+              <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
+              <span>ASC</span>
+            </label>
+            <label htmlFor="desc">
+              <input
+                type="radio"
+                name="sort"
+                id="desc"
+                className="peer"
+                checked={sort === 'desc'}
+                onChange={() => onSort(sortBy, 'desc')}
+              />
+              <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
+              <span>DESC</span>
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { interceptor } from './interceptor';
 
-const base = process.env.BASE_URL as string;
+const base = process.env.NEXT_PUBLIC_BACKEND_URL as string;
 
 type ApiParam = {
   url: string;

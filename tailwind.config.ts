@@ -32,7 +32,7 @@ const config: Config = {
         dark: '#221F1F',
         'white-fa': '#FAFAFA',
         'white-fe': '#FEFEFE',
-        danger: '#E40000',
+        danger: '#E02D3C',
         'danger-light': '#FCEBEB',
         blue: '#358BDA',
         'blue-light': '#E8F0FF',

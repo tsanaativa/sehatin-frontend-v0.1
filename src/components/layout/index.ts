@@ -5,3 +5,4 @@ export { default as SehatinBanner } from './SehatinBanner';
 export { default as Auth } from './Auth';
 export { default as AdminSidebar } from './AdminSidebar';
 export { default as AdminHeader } from './AdminHeader';
+export { default as LoginBar } from './LoginBar';
