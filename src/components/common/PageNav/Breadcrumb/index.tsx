@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react';
 type BreadcrumbProps = {
   paths: string;
   pathnames: string[];
-  homeElement: ReactNode;
+  homeElement?: ReactNode;
   separator: ReactNode;
   containerClasses?: string;
   listClasses?: string;
@@ -24,10 +24,14 @@ const Breadcrumb = ({
   return (
     <div className="hidden -mt-2 md:block">
       <ul className={containerClasses}>
-        <li className={listClasses}>
-          <Link href={'/'}>{homeElement}</Link>
-        </li>
-        {pathnames.length > 0 && separator}
+        {homeElement && (
+          <>
+            <li className={listClasses}>
+              <Link href={'/'}>{homeElement}</Link>
+            </li>
+            {pathnames.length > 0 && separator}
+          </>
+        )}
         {pathnames.map((link, index) => {
           let href = `/${pathnames.slice(0, index + 1).join('/')}`;
           let itemClasses =
@@ -43,7 +47,9 @@ const Breadcrumb = ({
                   `${getPageName(link)}`
                 )}
               </li>
-              {pathnames.length !== index + 1 && separator}
+              {!(!!!homeElement && index === 0) && (
+                <>{pathnames.length !== index + 1 && separator}</>
+              )}
             </React.Fragment>
           );
         })}

@@ -19,7 +19,7 @@ const BottomNavigation = () => {
                 return (
                   <li className="flex flex-col items-center relative" key={idx}>
                     <div className="absolute -top-12 bg-primary text-white-fa p-4 rounded-full border-8 border-primary-outline">
-                      <Icon name={menu.icon} />
+                      <Icon name={menu.icon || 'Ban'} />
                     </div>
                     <span className="mt-8 text-dark-gray">Consult</span>
                   </li>
@@ -36,7 +36,7 @@ const BottomNavigation = () => {
                     }`}
                     href={menu.link}
                   >
-                    <Icon name={menu.icon} />
+                    <Icon name={menu.icon || 'Ban'} />
                     <span>{menu.label}</span>
                   </Link>
                 </li>

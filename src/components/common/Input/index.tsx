@@ -31,7 +31,7 @@ const Input = forwardRef<HTMLInputElement | null, InputProps>(
     return (
       <div className="flex flex-col gap-1">
         <div
-          className={`border-[1px] relative h-14 rounded-[10px] overflow-hidden w-full flex transition-colors duration-300
+          className={`border-[1px] relative h-14 rounded-[10px] overflow-hidden flex transition-colors duration-300
           ${invalid ? 'border-danger' : 'border-gray-light hover:border-gray [&:has(:focus)]:border-primary-dark'}
           ${disabled ? 'bg-gray-light hover:border-gray-light' : ''} ${inputClass}`}
         >
