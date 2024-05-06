@@ -2,22 +2,21 @@
 
 import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
-import { Category } from '@/types/Product';
-import { Product } from '@/types/Product';
-import api from '@/utils/api';
+import { DEFAULT_ADDRESS } from '@/constants/address';
+import { UserContext } from '@/context/UserProvider';
+import { Category, Product } from '@/types/Product';
+import { get } from '@/utils/api';
 import { splitToNArrays } from '@/utils/helper';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ProductCardSkeleton from '../ProductCardSkeleton';
-import { User } from '@/types/User';
-import { DEFAULT_ADDRESS } from '@/constants/address';
 
 type ProductsSectionProps = {
   category: Category;
-  user: User;
 };
 
-const ProductsSection = ({ category, user }: ProductsSectionProps) => {
+const ProductsSection = ({ category }: ProductsSectionProps) => {
+  const { user } = useContext(UserContext);
   const [productsSlices, setProductsSlices] = useState<Array<Product[]>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -26,17 +25,17 @@ const ProductsSection = ({ category, user }: ProductsSectionProps) => {
       try {
         const params = {
           longitude:
-            user?.addresses?.length > 0
+            user && user?.addresses?.length > 0
               ? user.addresses[0]?.longitude
               : DEFAULT_ADDRESS.longitude,
           latitude:
-            user?.addresses?.length > 0
+            user && user?.addresses?.length > 0
               ? user.addresses[0]?.latitude
               : DEFAULT_ADDRESS.latitude,
           categoryId: category.id,
           limit: 15,
         };
-        const res = await api.get<typeof params, { products: Product[] }>(
+        const res = await get<typeof params, { products: Product[] }>(
           `/products/nearest`,
           params
         );

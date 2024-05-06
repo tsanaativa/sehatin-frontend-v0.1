@@ -1,12 +1,24 @@
+'use client';
+
 import { Sehatin } from '@/assets/icons';
 import { Button } from '@/components/common';
 import ProfileDropdown from '@/components/common/ProfileDropdown';
-import { getUser } from '@/services/user';
+import { UserContext } from '@/context/UserProvider';
+import { User } from '@/types/User';
 import { AlignLeft, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
+import { useContext, useEffect } from 'react';
 
-const Navbar = () => {
-  const user = getUser();
+type NavbarProps = {
+  user?: User;
+};
+
+const Navbar = ({ user }: NavbarProps) => {
+  const { setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    setUser(user);
+  }, [setUser, user]);
 
   return (
     <header className="sticky top-0 z-40 bg-light border-b-2 border-b-gray-lighter">

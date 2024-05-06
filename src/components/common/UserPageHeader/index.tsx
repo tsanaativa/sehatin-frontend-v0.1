@@ -5,13 +5,8 @@ import { getPageName, getPathNames } from '@/utils/pageHeader';
 import { usePathname } from 'next/navigation';
 import PageNav from '../PageNav';
 import SearchBar from '../SearchBar';
-import { User } from '@/types/User';
 
-type UserPageHeaderProps = {
-  user?: User;
-};
-
-const UserPageHeader = ({ user }: UserPageHeaderProps) => {
+const UserPageHeader = () => {
   const paths = usePathname();
   const pathnames = getPathNames(paths);
   const currentPath = pathnames[pathnames.length - 1];
@@ -23,7 +18,7 @@ const UserPageHeader = ({ user }: UserPageHeaderProps) => {
           <PageNav>
             {currentPath !== 'doctors' && (
               <div className="w-full md:max-w-[280px]">
-                <AddressCard user={user} />
+                <AddressCard />
               </div>
             )}
           </PageNav>

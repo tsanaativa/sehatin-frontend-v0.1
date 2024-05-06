@@ -1,5 +1,5 @@
 import { Pagination } from '@/components/common';
-import { OrderList } from '@/features/profile';
+import { OrderList } from '@/features/profile/components';
 
 const MyOrders = () => {
   return (

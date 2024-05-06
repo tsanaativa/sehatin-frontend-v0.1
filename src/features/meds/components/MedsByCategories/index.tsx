@@ -1,18 +1,13 @@
 'use client';
 
 import { Button } from '@/components/common';
-import ProductsSection from '@/features/meds/components/ProductsSection';
 import { DISPLAYED_CATEGORIES } from '@/constants/categories';
+import ProductsSection from '@/features/meds/components/ProductsSection';
 import { Category } from '@/types/Product';
-import React, { useState } from 'react';
 import Link from 'next/link';
-import { User } from '@/types/User';
+import { useState } from 'react';
 
-type MedsByCategoriesProps = {
-  user: User;
-};
-
-const MedsByCategories = ({ user }: MedsByCategoriesProps) => {
+const MedsByCategories = () => {
   const NUMBER_OF_CATEGORIES_TO_FETCH = 2;
   const [offset, setOffset] = useState(NUMBER_OF_CATEGORIES_TO_FETCH);
   const [categories, setCategories] = useState<Category[]>(
@@ -28,7 +23,7 @@ const MedsByCategories = ({ user }: MedsByCategoriesProps) => {
   return (
     <div>
       {categories.map((category, idx) => (
-        <ProductsSection user={user} category={category} key={idx} />
+        <ProductsSection category={category} key={idx} />
       ))}
       <div className="w-full flex justify-center mt-2 md:mt-10">
         {offset !== 8 ? (

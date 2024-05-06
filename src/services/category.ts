@@ -1,10 +1,10 @@
 import { Category } from '@/types/Product';
-import api from '@/utils/api';
+import { get } from '@/utils/api';
 
 export const getCategories = async () => {
   try {
     const params = {};
-    const res = await api.get<typeof params, { categories: Category[] }>(
+    const res = await get<typeof params, { categories: Category[] }>(
       `/categories`
     );
     return res.data.categories;

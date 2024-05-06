@@ -1,10 +1,10 @@
 import { Specialist } from '@/types/Doctor';
-import api from '@/utils/api';
+import { get } from '@/utils/api';
 
 export const getSpecialists = async () => {
   try {
     const params = {};
-    const res = await api.get<typeof params, { specialists: Specialist[] }>(
+    const res = await get<typeof params, { specialists: Specialist[] }>(
       `/specialists`
     );
     return res.data.specialists;
