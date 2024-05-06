@@ -15,3 +15,11 @@ export type Gender = {
   id?: number;
   name?: string;
 };
+
+export type UsersParams = {
+  keyword: string;
+  page: number;
+  limit: number;
+  sortBy: string;
+  sort: string;
+};

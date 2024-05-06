@@ -1,13 +1,17 @@
 import { AvatarUploader, Button } from '@/components/common';
-import { CreateUserForm } from '@/features/admin/components';
+import { UpdateUserForm } from '@/features/admin/components';
+import { getProfile } from '@/services/profile';
 import { Save } from 'lucide-react';
 
-const CreateUser = () => {
+const UpdateUser = async ({ params }: { params: { userId: string } }) => {
+  // const user = await getProfile(parseInt(params.userId));
+  // console.log(user);
+
   return (
     <form className="mt-2">
       <div className="flex items-center justify-between">
         <h1 className="font-poppins font-semibold text-3xl text-dark">
-          User List
+          Update User
         </h1>
         <Button type="submit" className="flex items-center gap-x-1 px-6 py-3">
           <Save /> Save
@@ -19,11 +23,11 @@ const CreateUser = () => {
           <span className="font-semibold text-base text-dark-gray">
             User Data
           </span>
-          <CreateUserForm />
+          <UpdateUserForm />
         </div>
       </div>
     </form>
   );
 };
 
-export default CreateUser;
+export default UpdateUser;
