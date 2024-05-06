@@ -19,7 +19,7 @@ const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
       <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
         <div className="flex justify-between">
           <h2 className="text-xl text-center font-semibold font-poppins md:text-start md:text-2xl">
-            My Consultation History
+            My Consultation History{user.is_online?.toString()}
           </h2>
           {user.role === 'doctor' && (
             <OnlineToggle defaultIsOnline={user.is_online} />

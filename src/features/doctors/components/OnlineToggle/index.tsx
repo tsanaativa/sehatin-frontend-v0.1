@@ -1,9 +1,10 @@
 'use client';
 
 import ToggleInput from '@/components/common/ToggleInput';
-import { useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import toggleOnline from '../../actions/toggleOnline';
 import { toast } from 'react-toastify';
+import { WebSocketContext } from '@/context/WebSocketProvider';
 
 type OnlineToggleProps = {
   defaultIsOnline?: boolean;
@@ -24,12 +25,53 @@ const OnlineToggle = ({ defaultIsOnline = false }: OnlineToggleProps) => {
 
     try {
       await toggleOnline();
+      sendMessage();
     } catch (error) {
       setChecked(checked);
       toast.error((error as Error).message);
     }
 
     setIsLoading(false);
+  };
+
+  const { conn, setConn } = useContext(WebSocketContext);
+
+  useEffect(() => {
+    const joinRoom = () => {
+      const ws = new WebSocket(
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/doctors/subscribe`
+      );
+      if (ws.OPEN) {
+        ws.onmessage = (message) => {
+          'Received';
+        };
+
+        ws.onclose = () => {
+          console.log('Closed...');
+        };
+        ws.onerror = () => {
+          console.log('Error!');
+        };
+        ws.onopen = () => {
+          console.log('Opened..');
+        };
+
+        setConn(ws);
+      }
+    };
+
+    joinRoom();
+  }, [setConn]);
+
+  const sendMessage = () => {
+    const msgToSend = {
+      content: '',
+      type: 'doctor',
+    };
+
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+    }
   };
 
   return (
