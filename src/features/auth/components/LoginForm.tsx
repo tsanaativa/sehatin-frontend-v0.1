@@ -101,6 +101,7 @@ const LoginForm = () => {
             onInput={({ target }) =>
               handleInput('email', (target as HTMLInputElement).value)
             }
+            inputClass="w-full"
           />
         </label>
         <label htmlFor="password">
@@ -117,6 +118,7 @@ const LoginForm = () => {
             }
             invalid={errors['password'] !== ''}
             onAppend={() => setShowPassword(!showPassword)}
+            inputClass="w-full"
           />
         </label>
         <Link
