@@ -1,10 +1,21 @@
 import { ProfileForm } from '@/components/common';
-import { getProfile } from '@/services/profile';
+import { getDoctorProfile, getProfile } from '@/services/profile';
+import { getUser } from '@/services/session';
+import { Doctor } from '@/types/Doctor';
 import { User } from '@/types/User';
 
 const MyProfile = async () => {
-  let profileData: User | undefined;
-  profileData = await getProfile();
+  const user = await getUser();
+
+  let userProfile: User | undefined;
+  let doctorProfile: Doctor | undefined;
+
+  if (user?.role === 'user') {
+    userProfile = await getProfile();
+  }
+  if (user?.role === 'doctor') {
+    doctorProfile = await getDoctorProfile();
+  }
 
   return (
     <div>
@@ -12,7 +23,11 @@ const MyProfile = async () => {
         My Profile
       </h2>
       <div className="flex flex-col items-center gap-5 md:gap-10 mt-5 md:flex-row md:items-start">
-        <ProfileForm defaultUser={profileData} />
+        <ProfileForm
+          role={user?.role}
+          defaultUser={userProfile}
+          defaultDoctor={doctorProfile}
+        />
       </div>
     </div>
   );

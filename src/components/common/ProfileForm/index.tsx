@@ -10,7 +10,7 @@ import { useRef, useState } from 'react';
 import ChangePasswordButton from '../ChangePasswordButton';
 
 type ProfileFormProps = {
-  role?: 'user' | 'doctor';
+  role?: string;
   defaultUser?: User;
   defaultDoctor?: Doctor;
 };
@@ -39,12 +39,14 @@ const ProfileForm = ({
   const [birthDate, setBirthDate] = useState<string>(
     defaultUser?.birth_date ? defaultUser.birth_date.split('T')[0] : ''
   );
-  const [workStart, setWorkStart] = useState<string>('');
+  const [workStart, setWorkStart] = useState<string>(
+    `y-${defaultDoctor?.work_start_year}` || ''
+  );
   const [genderId, setGenderId] = useState<number>(
     defaultUser?.gender?.id ? defaultUser?.gender.id : 0
   );
   const [specialty, setSpecialty] = useState<string>(
-    defaultDoctor?.specialist?.name || ''
+    defaultDoctor?.specialist?.id ? `${defaultDoctor?.specialist?.id}` : '0'
   );
   const [filename, setFilename] = useState<string>('');
 
@@ -201,7 +203,14 @@ const ProfileForm = ({
       setErrors({ ...allErrors });
       return;
     }
-    console.log(birthDate);
+
+    console.log({
+      name: name.current?.value,
+      specialist_id: parseInt(specialty),
+      fee: consultationFee.current?.value,
+      work_start: parseInt(workStartOptions[workStart]),
+      certificate: '',
+    });
   };
 
   return (
@@ -246,6 +255,7 @@ const ProfileForm = ({
               defaultValue={
                 role === 'doctor' ? defaultDoctor?.email : defaultUser?.email
               }
+              disabled={!!defaultDoctor || !!defaultUser}
             />
           </label>
           {role == 'user' && (
