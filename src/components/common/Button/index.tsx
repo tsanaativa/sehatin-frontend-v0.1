@@ -32,7 +32,7 @@ const Button = ({
     'primary-light': 'text-primary-dark bg-primary-border',
     'outlined-gray': 'text-dark-gray border border-gray hover:bg-gray-light',
     google:
-      'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark',
+      'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark hover:border-gray-cart disabled:opacity-50 disabled:cursor-not-allowed',
   };
 
   return (

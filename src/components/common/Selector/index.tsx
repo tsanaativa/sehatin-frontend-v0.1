@@ -44,7 +44,7 @@ const Selector = ({
   onSelect,
 }: SelectorProps) => {
   const [input, setInput] = useState({
-    current: '',
+    current: selected,
     previous: '',
   });
   const [filteredOptions, setFilteredOptions] = useState(options);
@@ -205,7 +205,7 @@ const Selector = ({
                     onChange={({ target }) =>
                       handleInput((target as HTMLInputElement).value)
                     }
-                    inputClass="border-t-0 border-x-0 border-b-2"
+                    inputClass="w-full border-t-0 border-x-0 border-b-2"
                   />
                 </label>
               )}

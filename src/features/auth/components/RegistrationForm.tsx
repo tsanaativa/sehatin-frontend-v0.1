@@ -30,7 +30,7 @@ const RegistrationForm = () => {
 
   const [role, setRole] = useState<'user' | 'doctor'>('user');
   const [birthDate, setBirthDate] = useState<string>('');
-  const [workStart, setWorkStart] = useState<string>('');
+  const [workStart, setWorkStart] = useState<string>('2019');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [specialty, setSpecialty] = useState<string>('');
   const [uploaded, setUploaded] = useState<FileProps>({
@@ -460,7 +460,7 @@ const RegistrationForm = () => {
           Register
         </Button>
       </form>
-      <GoogleSection />
+      <GoogleSection role={role} />
     </>
   );
 };

@@ -10,14 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
 import { UserContext } from '@/context/UserProvider';
-
-export type Message = {
-  content: string;
-  client_id: string;
-  username: string;
-  room_id: string;
-  type: string;
-};
+import { WebSocketMessage } from '@/types/WebSocketMessage';
 
 const ConsultRoom = () => {
   const { user } = useContext(UserContext);
@@ -37,11 +30,11 @@ const ConsultRoom = () => {
   useEffect(() => {
     const joinRoom = (roomId: string) => {
       const ws = new WebSocket(
-        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/join-room/${roomId}?userId=${user.id}&username=${user.email}`
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${user.role}s/consultations/rooms/${roomId}`
       );
       if (ws.OPEN) {
         ws.onmessage = (message) => {
-          const m: Message = JSON.parse(message.data);
+          const m: WebSocketMessage = JSON.parse(message.data);
           const isSent = user?.email === m.username;
           if (m.type === 'text' || m.type === 'file') {
             const rcvMsg: Chat = {
@@ -74,9 +67,9 @@ const ConsultRoom = () => {
       }
     };
 
-    const roomId = `${user.email}-${id}`;
+    const roomId = `consult-${id}`;
     joinRoom(roomId);
-  }, [id, setConn, user.email, user.id]);
+  }, [id, setConn, user?.email, user.role]);
 
   const sendMessage = () => {
     const message = messageRef.current?.value;
