@@ -1,12 +1,38 @@
-import { Product } from '@/types/Product';
+type overflowProps = {
+  type: 'hidden' | 'auto';
+  targetId?: string;
+  hideHeader?: boolean;
+};
 
-export const overflowHandler = (type: 'hidden' | 'auto') => {
+export const overflowHandler = ({
+  type,
+  targetId,
+  hideHeader,
+}: overflowProps) => {
   setTimeout(() => {
-    document.getElementsByTagName('body')[0].style.overflow = type;
     const notif = document.getElementById('unregister-notif');
+    const bottomNav = document.getElementById('bottom-navigation');
     if (notif) {
       notif.style.display = type == 'hidden' ? 'none' : 'block';
     }
+    if (bottomNav) {
+      type == 'hidden'
+        ? bottomNav.classList.add('hidden')
+        : bottomNav.classList.remove('hidden');
+    }
+    if (hideHeader) {
+      const el = document.getElementById('header-main');
+      if (el) el.style.display = type == 'hidden' ? 'none' : 'block';
+    }
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.style.overflow = type;
+        el.scrollTo(0, 0);
+      }
+      return;
+    }
+    document.getElementsByTagName('body')[0].style.overflow = type;
   }, 0);
 };
 
@@ -39,3 +65,12 @@ export const splitToNArrays = <T>(array: T[], n: number = 5) => {
   }
   return result;
 };
+
+export const minuteDifference = (date: string): number => {
+  let diff = (new Date(date).getTime() - new Date().getTime()) / 1000;
+  diff /= 60;
+  return Math.round((diff + Number.EPSILON) * 100) / 100;
+};
+
+export const currency = (val: number): string =>
+  'Rp ' + new Intl.NumberFormat('id-ID').format(val);
