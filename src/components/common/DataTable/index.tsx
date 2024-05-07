@@ -84,6 +84,8 @@ const DataTable = <T,>({
                       <Trash2 className="text-danger" />
                     </Link>
                   </>
+                ) : column.accessor === 'active_status' ? (
+                  'Ok'
                 ) : (
                   <>{item[column.accessor as keyof typeof item]}</>
                 )}

@@ -256,3 +256,24 @@ export const DOCTOR_TABLE_DATA = [
     status: true,
   },
 ];
+
+export const MEDICINE_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Box',
+    active_status: false,
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Strip',
+    active_status: true,
+  },
+];
