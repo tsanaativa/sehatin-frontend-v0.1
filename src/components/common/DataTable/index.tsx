@@ -2,6 +2,7 @@ import { TableHeader } from '@/types/Tables';
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '..';
+import ToggleInput from '../ToggleInput';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -84,6 +85,12 @@ const DataTable = <T,>({
                       <Trash2 className="text-danger" />
                     </Link>
                   </>
+                ) : column.accessor === 'active_status' ? (
+                  <ToggleInput
+                    checked={
+                      item[column.accessor as keyof typeof item] as boolean
+                    }
+                  />
                 ) : (
                   <>{item[column.accessor as keyof typeof item]}</>
                 )}

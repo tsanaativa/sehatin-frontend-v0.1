@@ -19,6 +19,15 @@ export const ADMIN_DOCTOR_SORT_OPTIONS = [
   'status',
 ];
 
+export const ADMIN_MEDICINE_SORT_OPTIONS = [
+  'name',
+  'generic name',
+  'category',
+  'classification',
+  'selling unit',
+  'active status',
+];
+
 export const ADMIN_PHARMACY_SORT_OPTIONS = [
   'name',
   'address',

@@ -4,3 +4,6 @@ export { default as UpdateUserForm } from './UpdateUserForm';
 export { default as AdminDoctorList } from './AdminDoctorList';
 export { default as CreateDoctorForm } from './CreateDoctorForm';
 export { default as UpdateDoctorForm } from './UpdateDoctorForm';
+export { default as AdminMedicineList } from './AdminMedicineList';
+export { default as CreateMedicineForm } from './CreateMedicineForm';
+export { default as UpdateMedicineForm } from './UpdateMedicineForm';

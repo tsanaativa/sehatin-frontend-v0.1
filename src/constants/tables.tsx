@@ -62,6 +62,37 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
 ];
 
+export const MEDICINE_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Generic Name',
+    accessor: 'generic_name',
+  },
+  {
+    label: 'Category',
+    accessor: 'category',
+  },
+  {
+    label: 'Classification',
+    accessor: 'classification',
+  },
+  {
+    label: 'Selling Unit',
+    accessor: 'selling_unit',
+  },
+  {
+    label: 'Active Status',
+    accessor: 'active_status',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
 export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Name',

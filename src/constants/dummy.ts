@@ -373,3 +373,35 @@ export const DOCTOR_TABLE_DATA = [
     status: true,
   },
 ];
+
+export const MEDICINE_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Box',
+    active_status: false,
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Strip',
+    active_status: true,
+  },
+];
+
+export const DUMMY_CATEGORY_FORM = {
+  1: 'Vitamin C',
+  2: 'Obat Sakit Kepala',
+  3: 'Suplemen Daya Tahan',
+  4: 'Obat Demam',
+  5: 'Obat Batuk',
+  6: 'Obat Sakit Tenggorokan',
+  7: 'Vitamin Anak',
+  8: 'Vitamin Ibu Hamil',
+};
