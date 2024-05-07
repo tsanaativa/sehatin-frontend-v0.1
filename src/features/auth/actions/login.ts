@@ -14,7 +14,7 @@ export default async function login(formData: FormData) {
   };
 
   try {
-    const res = await post('auth/login', rawFormData);
+    const res = await post('/auth/login', rawFormData);
     const loginData = res.data as LoginResponse;
 
     session.exp = loginData.exp;

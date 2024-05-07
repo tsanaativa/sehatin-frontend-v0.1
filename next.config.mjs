@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: 'scontent-cgk1-2.xx.fbcdn.net',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+      },
     ],
   },
 };

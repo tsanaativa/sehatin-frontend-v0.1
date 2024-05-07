@@ -14,7 +14,7 @@ export default async function google(data: OauthReqProps) {
 
   try {
     const res = await post<OauthReqProps, LoginResponse>(
-      'auth/oauth/google',
+      '/auth/oauth/google',
       data
     );
     const loginData = res.data;
@@ -24,6 +24,7 @@ export default async function google(data: OauthReqProps) {
     session.access_token = loginData.token.access_token;
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
+
     return loginData;
   } catch (error) {
     let message: string;
