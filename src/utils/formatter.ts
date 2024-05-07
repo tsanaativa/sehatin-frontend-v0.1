@@ -2,11 +2,13 @@ import { Address } from '@/types/Address';
 
 export function formatTime(timestamp: string) {
   const date = new Date(timestamp);
+  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   return `${date.toLocaleTimeString('default', { hour: '2-digit', minute: '2-digit' })}`;
 }
 
 export function formatDate(dateStr: string) {
   const date = new Date(dateStr);
+  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
   return `${date.toLocaleString('default', { day: 'numeric', month: 'short' })}${date.getFullYear() !== new Date().getFullYear() ? ` ${date.getFullYear()}` : ''}`;
 }
 

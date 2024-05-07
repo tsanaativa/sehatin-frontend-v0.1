@@ -30,7 +30,7 @@ const ConsultationCard = ({
         />
         <div className="flex justify-between w-full h-fit">
           <div className=" flex flex-col gap-1">
-            <span className="font-poppins font-medium text-xs text-dark md:text-lg">
+            <span className="font-poppins font-medium text-dark md:text-lg">
               {isDoctor ? consultation.doctor.name : consultation.user.name}
             </span>
             <span className="font-medium text-dark-gray">
@@ -55,12 +55,22 @@ const ConsultationCard = ({
         <div className="flex items-center gap-2">
           {consultation.certificate_url && (
             <a href={consultation.certificate_url || ''} target="_blank">
-              <Button className="px-4">View Certificate</Button>
+              <Button
+                variant="outlined-primary"
+                className="px-2 text-sm md:px-4"
+              >
+                View Certificate
+              </Button>
             </a>
           )}
           {consultation.prescription_url && (
             <a href={consultation.prescription_url || ''} target="_blank">
-              <Button className="px-4">View Prescription</Button>
+              <Button
+                variant="outlined-primary"
+                className="px-2 text-sm md:px-4"
+              >
+                View Prescription
+              </Button>
             </a>
           )}
         </div>
