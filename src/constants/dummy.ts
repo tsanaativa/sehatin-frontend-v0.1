@@ -333,3 +333,43 @@ export const DUMMY_CART = [
     id: 3,
   },
 ];
+
+export const USER_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Riyyan',
+    email: 'riyyan@gmail.com',
+    birth_date: '2001-01-01',
+    gender: 'Male',
+    status: true,
+  },
+  {
+    id: 2,
+    name: 'Vivin',
+    email: 'vivin@gmail.com',
+    birth_date: '2001-01-01',
+    gender: 'Female',
+    status: false,
+  },
+];
+
+export const DOCTOR_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Zen',
+    email: 'zen@gmail.com',
+    specialist: 'Anak',
+    consultation_fee: 'Rp150.000',
+    year_of_experience: '10 years',
+    status: false,
+  },
+  {
+    id: 2,
+    name: 'Fajar',
+    email: 'fajar@gmail.com',
+    specialist: 'Anak',
+    consultation_fee: 'Rp150.000',
+    year_of_experience: '10 years',
+    status: true,
+  },
+];

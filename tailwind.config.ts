@@ -43,6 +43,7 @@ const config: Config = {
         'gray-light': '#E5E7EB',
         'gray-lighter': '#E7EEEE',
         'gray-cart': '#ADADAD',
+        'gray-soft': '#F2F5FA',
         light: '#FDFDFD',
         dark: '#221F1F',
         darker: '#0E1422',

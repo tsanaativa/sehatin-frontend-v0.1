@@ -20,7 +20,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
           listClasses="font-semibold hover:underline"
         />
       </span>
-      <div className="bg-light rounded-xl px-9 pt-6 pb-2 mt-6">{children}</div>
+      <div className="bg-light rounded-xl px-9 py-6 mt-6">{children}</div>
     </div>
   );
 };
