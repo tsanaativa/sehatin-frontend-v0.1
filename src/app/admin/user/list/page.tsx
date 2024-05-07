@@ -1,11 +1,4 @@
-import {
-  DataTable,
-  FilterDropdown,
-  Input,
-  Pagination,
-} from '@/components/common';
-import { USER_COLUMN_LIST } from '@/constants/tables';
-import { UserSortDropdown } from '@/features/admin/components';
+import { AdminUserList } from '@/features/admin/components';
 import Link from 'next/link';
 
 const UserList = () => {
@@ -22,15 +15,7 @@ const UserList = () => {
           + Create User
         </Link>
       </div>
-      <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
-        <div className="flex gap-x-4">
-          <UserSortDropdown />
-          <FilterDropdown />
-        </div>
-      </div>
-      <DataTable className="mt-8" columnList={USER_COLUMN_LIST} />
-      <Pagination position="end" className="mt-6" />
+      <AdminUserList />
     </>
   );
 };

@@ -1,7 +1,4 @@
-import { Badge, Button } from '@/components/common';
 import { TableHeader } from '@/types/Tables';
-import { Pencil, Trash2 } from 'lucide-react';
-import Link from 'next/link';
 
 export const USER_COLUMN_LIST: TableHeader[] = [
   {
@@ -14,7 +11,7 @@ export const USER_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Birth Date',
-    accessor: 'birthDate',
+    accessor: 'birth_date',
   },
   {
     label: 'Gender',
@@ -22,20 +19,15 @@ export const USER_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Status',
-    customCell: <Badge variant="success">Verified</Badge>,
+    accessor: 'status',
+  },
+  {
+    label: 'User Detail',
+    accessor: 'id',
   },
   {
     label: 'Action',
-    customCell: (
-      <>
-        <Link href="/admin/user/update">
-          <Pencil className="text-blue" />
-        </Link>
-        <Link href="/admin/user/delete">
-          <Trash2 className="text-danger" />
-        </Link>
-      </>
-    ),
+    accessor: 'action',
   },
 ];
 
@@ -54,28 +46,19 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Consultation Fee',
-    accessor: 'consultationFee',
+    accessor: 'consultation_fee',
   },
   {
     label: 'Year of Experience',
-    accessor: 'yearOfExperinece',
+    accessor: 'year_of_experience',
   },
   {
     label: 'Status',
-    customCell: <Badge variant="success">Verified</Badge>,
+    accessor: 'status',
   },
   {
     label: 'Action',
-    customCell: (
-      <>
-        <Link href="/admin/user/update">
-          <Pencil className="text-blue" />
-        </Link>
-        <Link href="/admin/user/delete">
-          <Trash2 className="text-danger" />
-        </Link>
-      </>
-    ),
+    accessor: 'action',
   },
 ];
 
@@ -102,19 +85,10 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Product',
-    customCell: <Button>View List</Button>,
+    accessor: 'id',
   },
   {
     label: 'Action',
-    customCell: (
-      <>
-        <Link href="/admin/user/update">
-          <Pencil className="text-blue" />
-        </Link>
-        <Link href="/admin/user/delete">
-          <Trash2 className="text-danger" />
-        </Link>
-      </>
-    ),
+    accessor: 'action',
   },
 ];

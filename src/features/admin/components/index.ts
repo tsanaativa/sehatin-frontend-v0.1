@@ -1,3 +1,5 @@
-export { default as UserSortDropdown } from './UserSortDropdown';
-export { default as DoctorSortDropdown } from './DoctorSortDropdown';
-export { default as PharmacySortDropdown } from './PharmacySortDropdown';
+export { default as CreateUserForm } from './CreateUserForm';
+export { default as UpdateUserForm } from './UpdateUserForm';
+export { default as CreateDoctorForm } from './CreateDoctorForm';
+export { default as AdminUserList } from './AdminUserList';
+export { default as AdminDoctorList } from './AdminDoctorList';
