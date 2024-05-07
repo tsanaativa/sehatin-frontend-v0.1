@@ -28,9 +28,9 @@ const ConsultRoom = () => {
   let typingTimer: string | number | NodeJS.Timeout | undefined;
 
   useEffect(() => {
-    const joinRoom = (roomId: string) => {
+    const joinRoom = () => {
       const ws = new WebSocket(
-        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${user.role}s/consultations/rooms/${roomId}`
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${user.role}s/consultations/rooms/${id}`
       );
       if (ws.OPEN) {
         ws.onmessage = (message) => {
@@ -67,8 +67,7 @@ const ConsultRoom = () => {
       }
     };
 
-    const roomId = `consult-${id}`;
-    joinRoom(roomId);
+    joinRoom();
   }, [id, setConn, user?.email, user.role]);
 
   const sendMessage = () => {

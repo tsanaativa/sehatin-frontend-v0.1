@@ -12,6 +12,7 @@ export type Doctor = {
   work_start_year: number;
   fee: number;
   profile_picture: string;
+  certificate: string;
 };
 
 export type DoctorsParams = {

@@ -67,7 +67,7 @@ const DoctorsSection = ({
           limit: 6,
         };
         const res = await get<typeof params, { doctors: Doctor[] }>(
-          `/doctors`,
+          `/doctors/verified`,
           params
         );
 

@@ -48,7 +48,10 @@ const ProfileForm = ({
   const [specialty, setSpecialty] = useState<string>(
     defaultDoctor?.specialist?.id ? `${defaultDoctor?.specialist?.id}` : '0'
   );
-  const [filename, setFilename] = useState<string>('');
+  const [file, setFile] = useState<File | undefined>();
+  const [fileName, setFileName] = useState<string>(
+    defaultDoctor?.certificate || ''
+  );
 
   const name = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
@@ -109,7 +112,8 @@ const ProfileForm = ({
   const handleCertificate = async (target: HTMLInputElement) => {
     const errs = errors;
     if (target.files) {
-      const fileSize = Math.round((target.files[0].size / 1024) * 100) / 100;
+      const fileInput = target.files[0];
+      const fileSize = Math.round((fileInput.size / 1024) * 100) / 100;
       if (fileSize > 1000) {
         errs['doctor']['doctor-certificate'] =
           `maximum file size is 1 MB, while your upload size is ${fileSize} KB`;
@@ -118,7 +122,8 @@ const ProfileForm = ({
       }
       errs['doctor']['doctor-certificate'] = '';
       setErrors({ ...errs });
-      setFilename(target.files[0].name);
+      setFile(fileInput);
+      setFileName(fileInput.name);
     }
   };
 
@@ -209,7 +214,7 @@ const ProfileForm = ({
       specialist_id: parseInt(specialty),
       fee: consultationFee.current?.value,
       work_start: parseInt(workStartOptions[workStart]),
-      certificate: '',
+      certificate: file,
     });
   };
 
@@ -395,10 +400,10 @@ const ProfileForm = ({
                     onClick={() => certificate.current?.click()}
                     className="font-poppins text-primary border-[1px] text-sm min-w-32 border-primary rounded-md h-10 px-3 leading-[150%] hover:border-primary-dark hover:text-primary-dark transition-colors duration-300"
                   >
-                    {filename.length > 0 ? 'Change' : 'Choose'} File...
+                    {file ? 'Change' : 'Choose'} File...
                   </button>
                   <p className="text-xs leading-[150%] text-dark-gray overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
-                    {filename.length > 0 ? filename : 'PDF format, max 1 MB'}
+                    {file ? fileName : 'PDF format, max 1 MB'}
                   </p>
                 </div>
                 {errors['doctor']['doctor-certificate'].length > 0 && (
