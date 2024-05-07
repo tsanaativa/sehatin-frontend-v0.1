@@ -1,6 +1,7 @@
 'use client';
 
-import { Input, Selector } from '@/components/common';
+import { FileUploader, Input, Selector } from '@/components/common';
+import { FileProps } from '@/components/common/FileUploader';
 import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { validate } from '@/utils/validation';
 import { useRef, useState } from 'react';
@@ -20,6 +21,11 @@ const CreateDoctorForm = () => {
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [specialty, setSpecialty] = useState<string>('');
   const [filename, setFilename] = useState<string>('');
+  const [uploaded, setUploaded] = useState<FileProps>({
+    file: null,
+    image: '',
+    error: '',
+  });
 
   const name = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
@@ -99,6 +105,16 @@ const CreateDoctorForm = () => {
       errs['doctor-certificate'] = '';
       setErrors({ ...errs });
       setFilename(target.files[0].name);
+    }
+  };
+
+  const handleUpload = (uploaded: FileProps) => {
+    setUploaded(uploaded);
+    if (uploaded.error !== '') {
+      setErrors({
+        ...errors,
+        'doctor-certificate': uploaded.error,
+      });
     }
   };
 
@@ -238,7 +254,7 @@ const CreateDoctorForm = () => {
       </div>
       <div className="flex flex-col gap-y-6 w-1/3">
         <label htmlFor="specialist">
-          <h5>Specialist</h5>
+          <h5 className="text-sm text-dark-gray">Specialist</h5>
           <Selector
             id="specialist"
             options={specialistOptions}
@@ -253,7 +269,7 @@ const CreateDoctorForm = () => {
           />
         </label>
         <label htmlFor="consultation-fee">
-          <h5>Consultation Fee</h5>
+          <h5 className="text-sm text-dark-gray">Consultation Fee</h5>
           <Input
             ref={consultationFee}
             id="consultation-fee"
@@ -273,36 +289,23 @@ const CreateDoctorForm = () => {
           />
         </label>
         <label htmlFor="certificate">
-          <h5>Doctor Certificate</h5>
-          <div className="flex items-center gap-3">
-            <input
-              ref={certificate}
-              type="file"
-              name="certificate"
-              id="certificate"
-              className="hidden"
-              accept="application/pdf"
-              onInput={({ target }) => {
-                handleCertificate(target as HTMLInputElement);
-                (target as HTMLInputElement).value = '';
-              }}
-            />
-            <button
-              type="button"
-              onClick={() => certificate.current?.click()}
-              className="font-poppins text-primary border-[1px] text-sm min-w-32 border-primary rounded-md h-10 px-3 leading-[150%] hover:border-primary-dark hover:text-primary-dark transition-colors duration-300"
-            >
-              {filename.length > 0 ? 'Change' : 'Choose'} File...
-            </button>
-            <p className="text-xs leading-[150%] text-dark-gray overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
-              {filename.length > 0 ? filename : 'PDF format, max 1 MB'}
-            </p>
+          <h5 className="text-sm text-dark-gray">Doctor Certificate</h5>
+          <div className="2xl:min-h-[56px] flex items-center">
+            <div className="max-w-[585px] 2xl:w-[337px]">
+              <FileUploader
+                id="certificate"
+                name="certificate"
+                uploaded={uploaded}
+                instruction="Image format, max 1 MB"
+                placeholder={`${uploaded.file ? 'Change' : 'Choose'} File...`}
+                accept="application/pdf"
+                maxSize={1000}
+                onUpload={(file, image, error) =>
+                  handleUpload({ file, image, error })
+                }
+              />
+            </div>
           </div>
-          {errors['doctor-certificate'].length > 0 && (
-            <span className={`text-danger text-xs`}>
-              {errors['doctor-certificate']}
-            </span>
-          )}
         </label>
       </div>
     </>
