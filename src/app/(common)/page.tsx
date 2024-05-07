@@ -9,7 +9,6 @@ import { DUMMY_PRODUCT } from '@/constants/dummy';
 import ConsultationHistory from '@/features/consult/components/ConsultationHistory';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import { getUser } from '@/services/session';
-import { Consultation } from '@/types/Consultation';
 import Image from 'next/image';
 import Link from 'next/link';
 

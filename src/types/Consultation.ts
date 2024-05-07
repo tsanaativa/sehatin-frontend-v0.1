@@ -8,15 +8,22 @@ export type Consultation = {
   doctor: Doctor;
   patient_gender?: Gender;
   patient_name?: string;
-  patient_birth_date?: string;
+  patient_birth_date: string;
   certificate_url?: string;
   prescription_url?: string;
   prescription_items: PrescriptionItems[];
   ended_at?: string;
+  created_at: string;
 };
 
 export type PrescriptionItems = {
   id: number;
   product: Product;
   quantity: number;
+};
+
+export type ConsultationParams = {
+  page: number;
+  limit: number;
+  status: string;
 };
