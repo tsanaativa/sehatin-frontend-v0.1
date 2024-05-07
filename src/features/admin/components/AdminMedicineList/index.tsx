@@ -5,16 +5,9 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import {
-  DOCTOR_TABLE_DATA,
-  MEDICINE_TABLE_DATA,
-  USER_TABLE_DATA,
-} from '@/constants/dummy';
-import {
-  ADMIN_DOCTOR_SORT_OPTIONS,
-  ADMIN_MEDICINE_SORT_OPTIONS,
-} from '@/constants/sort';
-import { DOCTOR_COLUMN_LIST, MEDICINE_COLUMN_LIST } from '@/constants/tables';
+import { MEDICINE_TABLE_DATA } from '@/constants/dummy';
+import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
+import { MEDICINE_COLUMN_LIST } from '@/constants/tables';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
