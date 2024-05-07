@@ -1,31 +1,26 @@
 'use client';
 
 import { Badge, Button, Input } from '@/components/common';
-import { WebsocketContext } from '@/context/WebsocketProvider';
+import { WebSocketContext } from '@/context/WebSocketProvider';
 import { Chat } from '@/types/Chat';
-import { User } from '@/types/User';
 import { formatDate } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
-import { useParams } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
+import { UserContext } from '@/context/UserProvider';
+import { WebSocketMessage } from '@/types/WebSocketMessage';
 
-export type Message = {
-  content: string;
-  client_id: string;
-  username: string;
-  room_id: string;
-  type: string;
-};
+const ConsultRoom = () => {
+  const { user } = useContext(UserContext);
 
-type ConsultRoomProps = {
-  user: User;
-};
+  if (!user) {
+    redirect('/');
+  }
 
-const ConsultRoom = ({ user }: ConsultRoomProps) => {
   const { id } = useParams();
-  const { conn, setConn } = useContext(WebsocketContext);
+  const { conn, setConn } = useContext(WebSocketContext);
 
   const [chats, setChats] = useState<Chat[]>([]);
 
@@ -35,11 +30,11 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
   useEffect(() => {
     const joinRoom = (roomId: string) => {
       const ws = new WebSocket(
-        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/join-room/${roomId}?userId=${user.id}&username=${user.email}`
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${user.role}s/consultations/rooms/${roomId}`
       );
       if (ws.OPEN) {
         ws.onmessage = (message) => {
-          const m: Message = JSON.parse(message.data);
+          const m: WebSocketMessage = JSON.parse(message.data);
           const isSent = user?.email === m.username;
           if (m.type === 'text' || m.type === 'file') {
             const rcvMsg: Chat = {
@@ -72,9 +67,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
       }
     };
 
-    const roomId = `${user.email}-${id}`;
+    const roomId = `consult-${id}`;
     joinRoom(roomId);
-  }, [id, setConn, user.email, user.id]);
+  }, [id, setConn, user?.email, user.role]);
 
   const sendMessage = () => {
     const message = messageRef.current?.value;

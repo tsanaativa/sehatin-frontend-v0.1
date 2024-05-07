@@ -55,7 +55,7 @@ const LoginForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         console.log('ERROR', error?.message);
-        toast.error('please enter correct credentials');
+        toast.error(error?.message);
       }
     } finally {
       setIsLoading(false);

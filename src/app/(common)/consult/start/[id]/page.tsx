@@ -1,13 +1,10 @@
 import PatientForm from '@/features/consult/components/PatientForm';
 import { getProfile } from '@/services/profile';
 import { User } from '@/types/User';
-import { getUser } from '@/services/user';
 
 const ConsultStart = async () => {
-  const user = getUser();
-
   let profileData: User | undefined;
-  profileData = await getProfile(user.id);
+  profileData = await getProfile();
 
   return (
     <div className="d-flex w-full">

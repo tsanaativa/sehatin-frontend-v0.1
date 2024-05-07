@@ -2,7 +2,7 @@ import { Modal } from '@/components/common';
 import { X } from 'lucide-react';
 import { ChoosePharmaciesList } from '..';
 
-type ModalChoosePharmaciesProps = {
+type ModalChoosePharmaciesInCartProps = {
   onShowModal: (showModal: boolean) => void;
   showModal: boolean;
 };
@@ -10,7 +10,7 @@ type ModalChoosePharmaciesProps = {
 const ModalChoosePharmacies = ({
   onShowModal,
   showModal,
-}: ModalChoosePharmaciesProps) => {
+}: ModalChoosePharmaciesInCartProps) => {
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
       <div className="flex items-center justify-between border-b border-gray-light font-poppins font-semibold text-sm px-4 py-4 md:text-lg">

@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Doctor } from '@/types/Doctor';
-import { getYearsOfExp } from '@/utils/doctor';
+import { formatYearToExp } from '@/utils/formatter';
 
 type DoctorDetailCardProps = {
   doctor: Doctor;
@@ -9,7 +9,7 @@ type DoctorDetailCardProps = {
 };
 
 const DoctorDetailCard = ({ doctor, isTyping }: DoctorDetailCardProps) => {
-  const yearsOfExp = getYearsOfExp(doctor.work_start_year);
+  const yearsOfExp = formatYearToExp(doctor.work_start_year);
   return (
     <div className="px-4 py-8 flex flex-col items-center gap-y-2 ">
       <div className="relative w-fit h-fit">

@@ -2,44 +2,40 @@
 
 import { LocationIcon } from '@/assets/icons';
 import { DEFAULT_ADDRESS } from '@/constants/address';
+import { UserContext } from '@/context/UserProvider';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Address } from '@/types/Address';
+import { formatAddress } from '@/utils/formatter';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { formatAddress } from '@/utils/formatter';
-import { useEffect, useMemo, useState } from 'react';
-import { User } from '@/types/User';
 import { useRouter } from 'next/navigation';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import ModalSetAddress from '../ModalSetAddress';
 
-type AddressCardProps = {
-  user?: User;
-};
+const AddressCard = () => {
+  const { user } = useContext(UserContext);
 
-const AddressCard = ({ user }: AddressCardProps) => {
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [address, setAddress] = useState<Address>(
-    user?.addresses && user.addresses.length > 0
-      ? user?.addresses[0]
-      : DEFAULT_ADDRESS
+    user && user.addresses?.length > 0 ? user.addresses[0] : DEFAULT_ADDRESS
   );
   const addressOpts = useMemo(
-    () => (user?.addresses ? user?.addresses : []),
-    [user?.addresses]
+    () => (user && user.addresses ? user.addresses : []),
+    [user]
   );
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
-    if (addressOpts.length === 0) {
+    if (user && addressOpts.length === 0) {
       setShowModal(true);
       const timer = setTimeout(() => {
         router.push('/profile/my-addresses');
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [addressOpts, router]);
+  }, [addressOpts, router, user]);
 
   const show = () => {
     setShowDropdown(true);
@@ -68,7 +64,7 @@ const AddressCard = ({ user }: AddressCardProps) => {
             <LocationIcon width={12} />
           </div>
           <p className="truncate max-h-10">
-            {addressOpts.length === 0 ? (
+            {user && addressOpts.length === 0 ? (
               'You have no addresses'
             ) : (
               <>{address && formatAddress(address)}</>
