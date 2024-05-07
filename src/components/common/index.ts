@@ -18,6 +18,7 @@ export { default as CategorizeCard } from './CategorizeCard';
 export { default as CategorizeSection } from './CategorizeSection';
 export { default as Loading } from './Loading';
 export { default as FileUploader } from './FileUploader';
+export { default as DataTable } from './DataTable';
 export { default as Skeleton } from './Skeleton';
 export { default as NoDataFound } from './NoDataFound';
 export { default as ChangePasswordButton } from './ChangePasswordButton';

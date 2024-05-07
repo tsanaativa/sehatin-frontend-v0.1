@@ -55,7 +55,7 @@ const LoginForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         console.log('ERROR', error?.message);
-        toast.error('please enter correct credentials');
+        toast.error(error?.message);
       }
     } finally {
       setIsLoading(false);
@@ -101,6 +101,7 @@ const LoginForm = () => {
             onInput={({ target }) =>
               handleInput('email', (target as HTMLInputElement).value)
             }
+            inputClass="w-full"
           />
         </label>
         <label htmlFor="password">
@@ -117,6 +118,7 @@ const LoginForm = () => {
             }
             invalid={errors['password'] !== ''}
             onAppend={() => setShowPassword(!showPassword)}
+            inputClass="w-full"
           />
         </label>
         <Link
