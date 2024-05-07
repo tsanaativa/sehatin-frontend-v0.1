@@ -1,7 +1,9 @@
 'use client';
 
+import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { Badge } from '@/components/common';
-import { DUMMY_DOCTOR } from '@/constants/dummy';
+import { Consultation } from '@/types/Consultation';
+import { formatBirthDateToAge } from '@/utils/formatter';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { ConsultDropdown } from '..';
@@ -10,10 +12,11 @@ import EndChatButton from '../EndChatButton';
 
 type ConsultBarProps = {
   isTyping: boolean;
+  consultation: Consultation;
+  isDoctor: boolean;
 };
 
-const ConsultBar = ({ isTyping }: ConsultBarProps) => {
-  const doctor = DUMMY_DOCTOR;
+const ConsultBar = ({ isTyping, consultation, isDoctor }: ConsultBarProps) => {
   const { id } = useParams();
 
   const handleEndChat = () => {};
@@ -22,7 +25,59 @@ const ConsultBar = ({ isTyping }: ConsultBarProps) => {
     <div className="w-full">
       <div className="hidden flex-col gap-5 text-center items-center md:flex">
         <div className="border border-gray-light rounded min-w-[300px]">
-          <DoctorDetailCard doctor={doctor} isTyping={isTyping} />
+          {isDoctor ? (
+            <DoctorDetailCard
+              doctor={consultation.doctor}
+              isTyping={isTyping}
+            />
+          ) : (
+            <div>
+              <div className="px-4 py-8 flex flex-col items-center gap-y-2 ">
+                <div className="relative w-fit h-fit">
+                  <Image
+                    src={consultation.user.profile_picture || DefaultAvatarImg}
+                    className="object-cover rounded-full w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
+                    width={300}
+                    height={300}
+                    alt=""
+                  />
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="font-poppins font-medium text-dark text-lg mb-1">
+                    {consultation.user.name}
+                  </span>
+                  <div className="text-sm text-dark-gray md:text-base">
+                    {isDoctor ? (
+                      <>{consultation.doctor.specialist.name}</>
+                    ) : (
+                      <table className="text-start">
+                        <tr className="align-top">
+                          <td>Patient Name</td>
+                          <td className="ps-1 pe-2">:</td>
+                          <td>{consultation.patient_name}</td>
+                        </tr>
+                        <tr className="align-top">
+                          <td>Patient Gender</td>
+                          <td className="ps-1 pe-2">:</td>
+                          <td>{consultation.patient_gender?.name}</td>
+                        </tr>
+                        <tr className="align-top">
+                          <td>Patient Age</td>
+                          <td className="ps-1 pe-2">:</td>
+                          <td>
+                            {formatBirthDateToAge(
+                              consultation.patient_birth_date
+                            )}{' '}
+                            y.o.
+                          </td>
+                        </tr>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-3 w-full">
           <EndChatButton onConfirm={handleEndChat} />
@@ -31,7 +86,11 @@ const ConsultBar = ({ isTyping }: ConsultBarProps) => {
       <div className="flex justify-between items-center w-full md:hidden">
         <div className="flex gap-4 w-full">
           <Image
-            src={doctor.profile_picture}
+            src={
+              (isDoctor
+                ? consultation.doctor.profile_picture
+                : consultation.user.profile_picture) || DefaultAvatarImg
+            }
             className="object-cover rounded-full w-14 h-14"
             width={300}
             height={300}
@@ -39,18 +98,30 @@ const ConsultBar = ({ isTyping }: ConsultBarProps) => {
             alt=""
           />
           <div className="flex flex-col gap-[0.125rem]">
-            <span className="font-semibold text-lg">{doctor.name}</span>
-            {!isTyping ? (
-              <div className="max-w-fit">
-                <Badge
-                  variant={`${doctor.is_online ? 'success' : 'gray'}`}
-                  className="text-nowrap px-2"
-                >
-                  • {doctor.is_online ? 'Online' : 'Offline'}
-                </Badge>
+            <span className="font-semibold text-lg">
+              {isDoctor ? consultation.doctor.name : consultation.user.name}
+            </span>
+            {isDoctor ? (
+              <div>
+                {!isTyping ? (
+                  <div className="max-w-fit">
+                    <Badge
+                      variant={`${consultation.doctor.is_online ? 'success' : 'gray'}`}
+                      className="text-nowrap px-2"
+                    >
+                      • {consultation.doctor.is_online ? 'Online' : 'Offline'}
+                    </Badge>
+                  </div>
+                ) : (
+                  <div className="text-sm text-dark-gray">typing...</div>
+                )}
               </div>
             ) : (
-              <div className="text-sm text-dark-gray">typing...</div>
+              <div className="text-dark-gray text-sm">
+                {consultation.patient_name} (
+                {formatBirthDateToAge(consultation.patient_birth_date)} y.o.,{' '}
+                {consultation.patient_gender?.name})
+              </div>
             )}
           </div>
         </div>

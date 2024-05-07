@@ -43,7 +43,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
         ws.onmessage = (message) => {
           const m: WebSocketMessage = JSON.parse(message.data);
           console.log(m);
-          const isSent = user?.id === m.user_id;
+          const isSent = user?.id === m.user_id && user.role === m.user_role;
           if (m.type === 'text' || m.type === 'file') {
             const rcvMsg: Chat = {
               content: m.content,
@@ -156,65 +156,83 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
   return (
     <>
-      <div className="hidden md:block">
-        <ConsultBar isTyping={isTyping} />
-      </div>
-      <div className="relative w-full">
-        <div className="flex bg-light sticky top-0 w-[calc(100%+2rem)] -mt-3 pb-3 px-3 -ms-4 border-b border-gray-light md:hidden">
-          <ConsultBar isTyping={isTyping} />
-        </div>
-        <div className="flex flex-col w-full h-[calc(100vh-10.5rem)] md:h-[75vh] md:border md:border-gray-light md:rounded">
-          <div
-            className="w-full h-full overflow-x-hidden overflow-y-auto max-h-full md:pt-6 md:px-7"
-            ref={chatBoxRef}
-          >
-            <div className="mt-3 flex flex-col gap-5 items-center md:mt-0">
-              {chats.map((chat, idx) => (
-                <React.Fragment key={idx}>
-                  {(idx === 0 ||
-                    new Date(chats[idx - 1].timestamp).toDateString() !==
-                      new Date(chat.timestamp).toDateString()) && (
-                    <div className="w-fit" key={idx}>
-                      <Badge variant="gray">{formatDate(chat.timestamp)}</Badge>
-                    </div>
-                  )}
-                  <div className="flex flex-col gap-5 w-full bubble">
-                    <ChatBubble
-                      isSent={chat.isSent}
-                      timestamp={chat.timestamp}
-                      key={idx}
-                    >
-                      {chat.content}
-                    </ChatBubble>
-                  </div>
-                </React.Fragment>
-              ))}
-            </div>
+      {consultation ? (
+        <>
+          <div className="hidden md:block">
+            <ConsultBar
+              isTyping={isTyping}
+              consultation={consultation}
+              isDoctor={user.role === 'user'}
+            />
           </div>
-          <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
-            <div className="relative w-full">
-              <Input
-                ref={messageRef}
-                type="text"
-                placeholder="Enter message..."
-                className="w-full"
-                onKeyUp={handleKeyUp}
+          <div className="relative w-full">
+            <div className="flex bg-light sticky top-0 w-[calc(100%+2rem)] -mt-3 pb-3 px-3 -ms-4 border-b border-gray-light md:hidden">
+              <ConsultBar
+                isTyping={isTyping}
+                consultation={consultation}
+                isDoctor={user.role === 'user'}
               />
-              <label
-                htmlFor="attach"
-                role="button"
-                className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
-              >
-                <Paperclip />
-                <input id="attach" type="file" className="hidden" />
-              </label>
             </div>
-            <Button className="px-6 h-full py-4" onClick={sendMessage}>
-              Send
-            </Button>
+            <div className="flex flex-col w-full h-[calc(100vh-10.5rem)] md:h-[75vh] md:border md:border-gray-light md:rounded">
+              <div
+                className="w-full h-full overflow-x-hidden overflow-y-auto max-h-full md:pt-6 md:px-7"
+                ref={chatBoxRef}
+              >
+                <div className="mt-3 flex flex-col gap-5 items-center md:mt-0">
+                  {chats.map((chat, idx) => (
+                    <React.Fragment key={idx}>
+                      {(idx === 0 ||
+                        new Date(chats[idx - 1].timestamp).toDateString() !==
+                          new Date(chat.timestamp).toDateString()) && (
+                        <div className="w-fit" key={idx}>
+                          <Badge variant="gray">
+                            {formatDate(chat.timestamp)}
+                          </Badge>
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-5 w-full bubble">
+                        <ChatBubble
+                          isSent={chat.isSent}
+                          timestamp={chat.timestamp}
+                          key={idx}
+                        >
+                          {chat.content}
+                        </ChatBubble>
+                      </div>
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+              <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
+                <div className="relative w-full">
+                  <Input
+                    ref={messageRef}
+                    type="text"
+                    placeholder="Enter message..."
+                    className="w-full"
+                    onKeyUp={handleKeyUp}
+                  />
+                  <label
+                    htmlFor="attach"
+                    role="button"
+                    className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
+                  >
+                    <Paperclip />
+                    <input id="attach" type="file" className="hidden" />
+                  </label>
+                </div>
+                <Button className="px-6 h-full py-4" onClick={sendMessage}>
+                  Send
+                </Button>
+              </div>
+            </div>
           </div>
+        </>
+      ) : (
+        <div className="w-full flex items-center justify-center text-gray h-[calc(100vh-10.5rem)] md:h-[75vh]">
+          Loading...
         </div>
-      </div>
+      )}
     </>
   );
 };
