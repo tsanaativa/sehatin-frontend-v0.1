@@ -201,11 +201,14 @@ const UpdateUserForm = () => {
             <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
             <span>Female</span>
           </label>
-          <Link className="text-right" href="/">
-            Change Password?
-          </Link>
         </div>
       </div>
+      <Link
+        className="text-right text-sm text-primary-dark"
+        href="/admin/user/list"
+      >
+        Change Password?
+      </Link>
     </div>
   );
 };
