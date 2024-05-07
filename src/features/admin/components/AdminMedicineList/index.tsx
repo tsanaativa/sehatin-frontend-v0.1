@@ -122,7 +122,7 @@ const AdminMedicineList = () => {
         className="mt-8"
         dataList={MEDICINE_TABLE_DATA}
         columnList={MEDICINE_COLUMN_LIST}
-        tabelName="doctor"
+        tabelName="medicine"
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

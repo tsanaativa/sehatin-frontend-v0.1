@@ -277,3 +277,14 @@ export const MEDICINE_TABLE_DATA = [
     active_status: true,
   },
 ];
+
+export const DUMMY_CATEGORY_FORM = {
+  1: 'Vitamin C',
+  2: 'Obat Sakit Kepala',
+  3: 'Suplemen Daya Tahan',
+  4: 'Obat Demam',
+  5: 'Obat Batuk',
+  6: 'Obat Sakit Tenggorokan',
+  7: 'Vitamin Anak',
+  8: 'Vitamin Ibu Hamil',
+};

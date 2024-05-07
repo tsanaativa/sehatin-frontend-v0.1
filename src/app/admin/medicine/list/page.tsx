@@ -10,9 +10,9 @@ const MedicineList = () => {
         </h1>
         <Link
           className="bg-primary-dark font-poppins font-medium text-base text-white rounded-lg px-6 py-3 hover:bg-primary-dark/90"
-          href="/admin/user/create"
+          href="/admin/medicine/create"
         >
-          + Create User
+          + Create Medicine
         </Link>
       </div>
       <AdminMedicineList />
