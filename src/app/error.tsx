@@ -28,7 +28,7 @@ export default function Error({
                 alt="500"
               />
             </div>
-            <Link href="/login">
+            <Link href="/auth/login">
               <Button className="px-5 w-full md:w-fit md:px-16">Login</Button>
             </Link>
           </div>

@@ -11,7 +11,7 @@ const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
   let history: Consultation[] = [];
 
   if (!user) {
-    redirect('/login');
+    redirect('/auth/login');
   }
 
   return (

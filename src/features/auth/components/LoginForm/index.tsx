@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import login from '../actions/login';
-import GoogleSection from './GoogleSection';
+import login from '../../actions/login';
+import GoogleSection from '../GoogleSection';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +46,7 @@ const LoginForm = () => {
       return;
     }
   };
+
   const loginUser = async (formData: FormData) => {
     setIsLoading(true);
     try {
@@ -137,7 +138,7 @@ const LoginForm = () => {
           Login
         </Button>
       </form>
-      <GoogleSection mode="login" />
+      <GoogleSection mode="login" role={role} />
     </>
   );
 };

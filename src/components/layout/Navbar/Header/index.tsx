@@ -51,12 +51,12 @@ const Header = ({ user, onCart }: HeaderProps) => {
             )}
             {!!!user && (
               <li className="flex gap-4">
-                <Link href="/register">
+                <Link href="/auth/register">
                   <Button variant="outlined-primary" className="w-32 h-11 py-2">
                     Register
                   </Button>
                 </Link>
-                <Link href="/login">
+                <Link href="/auth/login">
                   <Button className="w-32 h-11 py-2">Login</Button>
                 </Link>
               </li>
