@@ -17,7 +17,7 @@ const get = <T>(cname: string): T | null => {
       return c.substring(name.length, c.length) as T;
     }
   }
-  return '' as T;
+  return null;
 };
 
 const remove = (cname: string): void => set(cname, '', -1);
