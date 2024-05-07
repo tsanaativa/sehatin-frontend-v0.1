@@ -216,3 +216,120 @@ export const DUMMY_SPECIALISTS = {
   '106': 'Spesialis Penyakit Dalam (Pulmonologi)',
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
+
+export const DUMMY_CART = [
+  {
+    products: [
+      {
+        id: 1,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-1',
+        price: 15990,
+        stock: 3,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 2,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing Pusing Pusing Pusing',
+        slug: 'panadol-obat-pusingg-2',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 3,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-3',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 4,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-4',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+    ],
+    name: 'K-24 Mampang Prapatan',
+    id: 1,
+  },
+  {
+    products: [
+      {
+        id: 11,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-11',
+        price: 15990,
+        stock: 3,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 12,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-12',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+    ],
+    name: 'Century Mampang Prapatan',
+    id: 2,
+  },
+  {
+    products: [
+      {
+        id: 13,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-13',
+        price: 15990,
+        stock: 3,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 14,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-14',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+    ],
+    name: 'Century Mampang Prapatan',
+    id: 3,
+  },
+];

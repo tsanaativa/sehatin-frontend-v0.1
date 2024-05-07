@@ -12,6 +12,6 @@ export const PUBLIC_API_ROUTES = [
   '/ws',
 ];
 
-export const AUTH_ROUTES = ['/login', '/register'];
+export const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth'];
 
 export const PROTECTED_ROUTES = ['/profile', '/consult'];

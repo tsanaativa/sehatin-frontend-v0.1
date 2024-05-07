@@ -6,7 +6,7 @@ import { DoctorBadge, PatientBadge } from '@/assets/icons';
 import Selector from '@/components/common/Selector';
 import { validate } from '@/utils/validation';
 import { DUMMY_SPECIALISTS } from '@/constants/dummy';
-import GoogleSection from './GoogleSection';
+import GoogleSection from '../GoogleSection';
 import { FileProps } from '@/components/common/FileUploader';
 
 const RegistrationForm = () => {
@@ -460,7 +460,7 @@ const RegistrationForm = () => {
           Register
         </Button>
       </form>
-      <GoogleSection />
+      <GoogleSection role={role} />
     </>
   );
 };

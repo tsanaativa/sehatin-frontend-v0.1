@@ -7,6 +7,7 @@ import { currency } from '@/utils/helper';
 import { TikiIcon, JNEIcon } from '@/assets/icons';
 import Image from 'next/image';
 import seabank from '@/assets/images/seabank.png';
+import { DUMMY_ADDRESSES } from '@/constants/dummy';
 
 type CheckoutProps = {
   toOrder: PharmaciesInCartProps[];
@@ -25,20 +26,10 @@ const Checkout = ({
     order: false,
   });
 
-  const address = [
-    {
-      id: 1,
-      address: '2640 Cabin Creek Rd #102 Alexandria, Virginia (VA), 22314',
-    },
-    {
-      id: 2,
-      address: '2660 Cabin Creek Rd #102 Alexandria, Virginia (VA), 22314',
-    },
-    {
-      id: 3,
-      address: '2360 Cabin Creek Rd #102 Alexandria, Virginia (VA), 22314',
-    },
-  ];
+  const address = DUMMY_ADDRESSES.map((a) => ({
+    id: a.id,
+    address: a.address,
+  }));
 
   const [currentAddress, setCurrentAddress] = useState(address[0]['id']);
 
