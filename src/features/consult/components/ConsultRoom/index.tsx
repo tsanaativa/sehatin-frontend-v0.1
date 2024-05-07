@@ -5,23 +5,30 @@ import { WebSocketContext } from '@/context/WebSocketProvider';
 import { Chat } from '@/types/Chat';
 import { formatDate } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
-import { redirect, useParams } from 'next/navigation';
+import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
-import { UserContext } from '@/context/UserProvider';
 import { WebSocketMessage } from '@/types/WebSocketMessage';
+import { User } from '@/types/User';
+import { Consultation } from '@/types/Consultation';
+import { getConsultation } from '@/services/consultation';
+import { toast } from 'react-toastify';
 
-const ConsultRoom = () => {
-  const { user } = useContext(UserContext);
+type ConsultRoomProps = {
+  user?: User;
+};
 
+const ConsultRoom = ({ user }: ConsultRoomProps) => {
   if (!user) {
     redirect('/');
   }
 
   const { id } = useParams();
+  const router = useRouter();
   const { conn, setConn } = useContext(WebSocketContext);
 
+  const [consultation, setConsultation] = useState<Consultation>();
   const [chats, setChats] = useState<Chat[]>([]);
 
   let typingInterval = 1250;
@@ -30,12 +37,13 @@ const ConsultRoom = () => {
   useEffect(() => {
     const joinRoom = () => {
       const ws = new WebSocket(
-        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${user.role}s/consultations/rooms/${id}`
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${user.role}s/${user.id}/consultations/${id}/rooms`
       );
       if (ws.OPEN) {
         ws.onmessage = (message) => {
           const m: WebSocketMessage = JSON.parse(message.data);
-          const isSent = user?.email === m.username;
+          console.log(m);
+          const isSent = user?.id === m.user_id;
           if (m.type === 'text' || m.type === 'file') {
             const rcvMsg: Chat = {
               content: m.content,
@@ -67,8 +75,22 @@ const ConsultRoom = () => {
       }
     };
 
-    joinRoom();
-  }, [id, setConn, user?.email, user.role]);
+    const fetchConsultation = async () => {
+      try {
+        const consultation = await getConsultation(user.role, `${id}`);
+        setConsultation(consultation);
+        if (consultation) {
+          console.log(consultation);
+          joinRoom();
+        }
+      } catch (err) {
+        toast.error((err as Error).message);
+        router.back();
+      }
+    };
+
+    fetchConsultation();
+  }, [id, router, setConn, user]);
 
   const sendMessage = () => {
     const message = messageRef.current?.value;
