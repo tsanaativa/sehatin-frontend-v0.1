@@ -7,3 +7,6 @@ export { default as UpdateDoctorForm } from './UpdateDoctorForm';
 export { default as AdminMedicineList } from './AdminMedicineList';
 export { default as CreateMedicineForm } from './CreateMedicineForm';
 export { default as UpdateMedicineForm } from './UpdateMedicineForm';
+export { default as AdminPharmacyList } from './AdminPharmacyList';
+export { default as CreatePharmacyForm } from './CreatePharmacyForm';
+export { default as UpdatePharmacyForm } from './UpdatePharmacyForm';

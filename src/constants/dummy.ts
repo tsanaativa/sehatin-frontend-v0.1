@@ -405,3 +405,22 @@ export const DUMMY_CATEGORY_FORM = {
   7: 'Vitamin Anak',
   8: 'Vitamin Ibu Hamil',
 };
+
+export const PHARMACY_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Egi',
+    address: 'Jl. Hutan No.1 Kuningan, Kunigan, Kunigan, Kuningan',
+    pharmacist: 'Apotek Sebelah 7978364284 081231812212',
+    operational: 'Mon to Fri, 10:00 - 20:00',
+    available_shipping_methods: 'Official Next Day, JNE Next Day',
+  },
+  {
+    id: 2,
+    name: 'Vivin',
+    address: 'Jl. Hutan No.1 Kuningan, Kunigan, Kunigan, Kuningan',
+    pharmacist: 'Apotek Sebelah 7978364284 081231812212',
+    operational: 'Mon to Fri, 10:00 - 20:00',
+    available_shipping_methods: 'Official Next Day, JNE Next Day',
+  },
+];

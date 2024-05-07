@@ -112,7 +112,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Available Shipping Methods',
-    accessor: 'availableShippingMethods',
+    accessor: 'available_shipping_methods',
   },
   {
     label: 'Product',
