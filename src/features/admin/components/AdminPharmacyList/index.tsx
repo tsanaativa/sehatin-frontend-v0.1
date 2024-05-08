@@ -5,15 +5,15 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { MEDICINE_TABLE_DATA } from '@/constants/dummy';
+import { MEDICINE_TABLE_DATA, PHARMACY_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
-import { MEDICINE_COLUMN_LIST } from '@/constants/tables';
+import { MEDICINE_COLUMN_LIST, PHARMACY_COLUMN_LIST } from '@/constants/tables';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-const AdminMedicineList = () => {
+const AdminPharmacyList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -113,13 +113,13 @@ const AdminMedicineList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={MEDICINE_TABLE_DATA}
-        columnList={MEDICINE_COLUMN_LIST}
-        tabelName="medicine"
+        dataList={PHARMACY_TABLE_DATA}
+        columnList={PHARMACY_COLUMN_LIST}
+        tabelName="pharmacy"
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>
   );
 };
 
-export default AdminMedicineList;
+export default AdminPharmacyList;

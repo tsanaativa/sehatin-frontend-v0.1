@@ -5,15 +5,24 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { MEDICINE_TABLE_DATA } from '@/constants/dummy';
-import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
-import { MEDICINE_COLUMN_LIST } from '@/constants/tables';
+import {
+  PHARMACY_PRODUCT_TABLE_DATA,
+  PHARMACY_TABLE_DATA,
+} from '@/constants/dummy';
+import {
+  ADMIN_MEDICINE_SORT_OPTIONS,
+  ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS,
+} from '@/constants/sort';
+import {
+  PHARMACY_COLUMN_LIST,
+  PHARMACY_PRODUCT_COLUMN_LIST,
+} from '@/constants/tables';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-const AdminMedicineList = () => {
+const AdminPharmacyProductList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -101,7 +110,7 @@ const AdminMedicineList = () => {
             onSort={handleSort}
             sortBy={params.sortBy}
             sort={params.sort}
-            options={ADMIN_MEDICINE_SORT_OPTIONS}
+            options={ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS}
           />
           {/* <FilterDropdown
             options={}
@@ -113,13 +122,13 @@ const AdminMedicineList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={MEDICINE_TABLE_DATA}
-        columnList={MEDICINE_COLUMN_LIST}
-        tabelName="medicine"
+        dataList={PHARMACY_PRODUCT_TABLE_DATA}
+        columnList={PHARMACY_PRODUCT_COLUMN_LIST}
+        tabelName="pharmacy"
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>
   );
 };
 
-export default AdminMedicineList;
+export default AdminPharmacyProductList;
