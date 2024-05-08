@@ -443,3 +443,30 @@ export const PHARMACY_PRODUCT_TABLE_DATA = [
     stock: '150',
   },
 ];
+
+export const STOCK_MUTATION_TABLE_DATA = [
+  {
+    id: 1,
+    product_name: 'Panadol',
+    sender: 'Pharmacy B',
+    reciever: 'Pharmacy A',
+    quantity: '30',
+    status: null,
+  },
+  {
+    id: 2,
+    product_name: 'Panadol',
+    sender: 'Pharmacy A',
+    reciever: 'Pharmacy B',
+    quantity: '30',
+    status: true,
+  },
+  {
+    id: 3,
+    product_name: 'Panadol',
+    sender: 'Pharmacy C',
+    reciever: 'Pharmacy A',
+    quantity: '30',
+    status: false,
+  },
+];
