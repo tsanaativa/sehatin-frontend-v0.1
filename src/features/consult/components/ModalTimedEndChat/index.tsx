@@ -1,27 +1,37 @@
 import { Button, Modal } from '@/components/common';
-import { TriangleAlert, X } from 'lucide-react';
+import { TriangleAlert } from 'lucide-react';
 
-type ModalEndChatProps = {
+type ModalTimedEndChatProps = {
   onConfirm: () => void;
-  onShowModal: (showModal: boolean) => void;
   showModal: boolean;
-  isDoctor: boolean;
+  countDown?: number;
 };
 
-const ModalEndChat = ({
-  onShowModal,
+const ModalTimedEndChat = ({
   showModal,
   onConfirm,
-  isDoctor,
-}: ModalEndChatProps) => {
+  countDown,
+}: ModalTimedEndChatProps) => {
+  // const [countDown, setCountDown] = useState(30);
+
+  // useEffect(() => {
+  //   function startTimer() {
+  //     setInterval(function () {
+  //       setCountDown(countDown - 1);
+  //     }, 1000);
+  //   }
+
+  //   startTimer();
+  // }, []);
+
   return (
-    <Modal onClick={() => onShowModal(false)} showModal={showModal}>
+    <Modal onClick={() => {}} showModal={showModal}>
       <div className="flex items-center justify-between  font-poppins font-semibold text-sm px-4 pt-4 md:text-lg">
         <div></div>
-        <X
+        {/* <X
           className="text-gray cursor-pointer"
           onClick={() => onShowModal(false)}
-        />
+        /> */}
       </div>
       <div className="flex flex-col items-center gap-y-2 px-5 pb-5 md:pb-8 md:px-10">
         <div className="bg-danger-light text-danger rounded-full p-4">
@@ -29,34 +39,26 @@ const ModalEndChat = ({
         </div>
         <div className="flex flex-col items-center">
           <div className="font-poppins font-semibold text-lg mb-1">
-            Are you sure?
+            Chat will end
           </div>
           <div className="text-dark-gray text-center">
-            {!isDoctor ? (
-              <>
-                You will have to wait for {"patient's"} confirmation or
-                <br />
-                it will automatically end in 30 seconds.
-              </>
-            ) : (
-              <>Consultation with the doctor will end.</>
-            )}
+            Doctor wants to end chat. Consultation will end in {countDown}...
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button
+          {/* <Button
             variant="outlined-gray"
             className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2"
             onClick={() => onShowModal(false)}
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
             variant="danger"
             className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2"
             onClick={onConfirm}
           >
-            Yes
+            End Now
           </Button>
         </div>
       </div>
@@ -64,4 +66,4 @@ const ModalEndChat = ({
   );
 };
 
-export default ModalEndChat;
+export default ModalTimedEndChat;

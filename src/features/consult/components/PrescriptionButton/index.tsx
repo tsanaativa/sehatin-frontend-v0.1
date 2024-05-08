@@ -8,12 +8,14 @@ import { Consultation } from '@/types/Consultation';
 
 type PrescriptionButtonProps = {
   consultation: Consultation;
-  notify: (url: string, pharmacyProductIdArr: number[]) => void;
+  notify: (url: string) => void;
+  isDoctor: boolean;
 };
 
 const PrescriptionButton = ({
   notify,
   consultation,
+  isDoctor,
 }: PrescriptionButtonProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -40,25 +42,29 @@ const PrescriptionButton = ({
         </div>
       ) : (
         <>
-          <Button
-            variant="outlined-primary"
-            className="hidden text-center rounded ps-4 pe-5 py-2 gap-2 w-full md:block"
-            onClick={() => setShowModal(true)}
-          >
-            Prescribe Medicine
-          </Button>
-          <div
-            className="hover:bg-gray-lighter gap-2 flex items-center cursor-pointer capitalize justify-between py-2 px-3 md:hidden"
-            role="button"
-            onClick={() => setShowModal(true)}
-          >
-            Prescribe Medicine
-          </div>
-          <ModalPrescription
-            notify={notify}
-            onShowModal={setShowModal}
-            showModal={showModal}
-          />
+          {!isDoctor && (
+            <>
+              <Button
+                variant="outlined-primary"
+                className="hidden text-center rounded ps-4 pe-5 py-2 gap-2 w-full md:block"
+                onClick={() => setShowModal(true)}
+              >
+                Prescribe Medicine
+              </Button>
+              <div
+                className="hover:bg-gray-lighter gap-2 flex items-center cursor-pointer capitalize justify-between py-2 px-3 md:hidden"
+                role="button"
+                onClick={() => setShowModal(true)}
+              >
+                Prescribe Medicine
+              </div>
+              <ModalPrescription
+                notify={notify}
+                onShowModal={setShowModal}
+                showModal={showModal}
+              />
+            </>
+          )}
         </>
       )}
     </div>

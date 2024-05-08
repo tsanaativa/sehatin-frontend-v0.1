@@ -39,3 +39,12 @@ export async function createMedicalCertificate(req: any, id: string) {
     throw new Error((error as Error).message);
   }
 }
+
+export async function endConsultation(role: string, id: string) {
+  try {
+    const res = await post(`/${role}s/consultations/${id}/end`);
+    return res.data;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+}

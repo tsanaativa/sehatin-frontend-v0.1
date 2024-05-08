@@ -40,22 +40,18 @@ const ConsultDropdown = ({
             className={`mt-2 min-w-56 absolute right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
             ref={ref}
           >
-            {(!isDoctor && !!!consultation.certificate_url) ||
-              (consultation.certificate_url && (
-                <MedicalCertButton
-                  notify={notifyCert}
-                  consultation={consultation}
-                />
-              ))}
-            {(!isDoctor && !!!consultation.prescription_url) ||
-              (consultation.prescription_url && (
-                <PrescriptionButton
-                  notify={notifyPrescription}
-                  consultation={consultation}
-                />
-              ))}
+            <MedicalCertButton
+              notify={notifyCert}
+              consultation={consultation}
+              isDoctor={isDoctor}
+            />
+            <PrescriptionButton
+              notify={notifyPrescription}
+              consultation={consultation}
+              isDoctor={isDoctor}
+            />
             {!!!consultation.ended_at && (
-              <EndChatButton onConfirm={onEndChat} />
+              <EndChatButton onConfirm={onEndChat} isDoctor={isDoctor} />
             )}
           </div>
         </div>

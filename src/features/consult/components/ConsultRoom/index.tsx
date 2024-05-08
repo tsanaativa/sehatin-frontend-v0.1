@@ -14,7 +14,8 @@ import { User } from '@/types/User';
 import { Consultation } from '@/types/Consultation';
 import { getConsultation } from '@/services/consultation';
 import { toast } from 'react-toastify';
-import { createChat } from '../../actions/consultation';
+import { createChat, endConsultation } from '../../actions/consultation';
+import ModalTimedEndChat from '../ModalTimedEndChat';
 
 type ConsultRoomProps = {
   user?: User;
@@ -31,9 +32,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
   const [consultation, setConsultation] = useState<Consultation>();
   const [chats, setChats] = useState<Chat[]>([]);
-  const [isEnded, setIsEnded] = useState(false);
-  const [hasCertificate, setHasCertificate] = useState(false);
-  const [hasPrescription, setHasPrescription] = useState(false);
+  // const [isEnded, setIsEnded] = useState(false);
 
   let typingInterval = 1250;
   let typingTimer: string | number | NodeJS.Timeout | undefined;
@@ -66,9 +65,36 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               type: m.type,
             };
             setChats((prev) => [...prev, rcvMsg]);
+
+            if (consultation && m.type === 'certificate')
+              setConsultation({
+                ...consultation,
+                certificate_url: m.content,
+              });
+
+            if (consultation && m.type === 'prescription')
+              setConsultation({
+                ...consultation,
+                prescription_url: m.content,
+              });
           } else if (m.type === 'typing') {
             if (!isSent) {
               setIsTyping(m.content === 'true');
+            }
+          } else if (m.type === 'end') {
+            if (m.content === 'now') {
+              if (consultation)
+                setConsultation({
+                  ...consultation,
+                  ended_at: new Date().toISOString(),
+                });
+              endChat();
+            } else {
+              let time = parseInt(m.content);
+              if (time >= 0) {
+                setIsCountingDown(true);
+                setCountDown(time);
+              }
             }
           }
         };
@@ -91,9 +117,6 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
       try {
         const consultation = await getConsultation(user.role, `${id}`);
         setConsultation(consultation);
-        setIsEnded(!!consultation.ended_at);
-        setHasCertificate(!!consultation.certificate_url);
-        setHasPrescription(!!consultation.prescription_url);
         setChats(consultation.chats);
 
         if (consultation) {
@@ -106,6 +129,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     };
 
     fetchConsultation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, router, setConn, user]);
 
   const sendMessage = () => {
@@ -177,12 +201,6 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
       conn.send(JSON.stringify(msgToSend));
       createChat(`${id}`, user.role, msgToSend);
     }
-
-    if (consultation)
-      setConsultation({
-        ...consultation,
-        certificate_url: url,
-      });
   };
 
   const notifyPrescription = (url: string) => {
@@ -197,34 +215,62 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
         createChat(`${id}`, user.role, msgToSend);
       }
     }
-
-    if (consultation)
-      setConsultation({
-        ...consultation,
-        prescription_url: url,
-      });
   };
 
-  const notifyEnd = () => {
+  const notifyEnd = (seconds: number) => {
     const msgToSend = {
-      content: 'in 30',
+      content: seconds > 0 ? '30' : 'now',
       type: 'end',
     };
 
     if (conn !== null) {
-      conn.send(JSON.stringify(msgToSend));
+      if (user.role === 'doctor') {
+        notifyEndChatIn30s();
+      } else {
+        conn.send(JSON.stringify(msgToSend));
+        endChat();
+      }
     }
+  };
 
-    if (consultation)
-      setConsultation({
-        ...consultation,
-        ended_at: new Date().toISOString(),
-      });
+  const endChat = async () => {
+    setShowModal(false);
+    console.log('chat ended');
+    try {
+      await endConsultation(user.role, `${id}`);
+      toast.success('successfully ended');
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+    router.push(
+      user.role === 'user' ? '/profile/my-consultation-history' : '/'
+    );
+  };
+
+  const [countDown, setCountDown] = useState(30);
+
+  const notifyEndChatIn30s = () => {
+    const msgToSend = {
+      content: countDown,
+      type: 'end',
+    };
+
+    const timer = setInterval(() => {
+      if (conn !== null) {
+        setCountDown(countDown - 1);
+        conn.send(JSON.stringify(msgToSend));
+        console.log(countDown - 1);
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isCountingDown, setIsCountingDown] = useState<boolean>(false);
 
   return (
     <>
@@ -289,7 +335,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                   </div>
                 )}
               </div>
-              {!isEnded ? (
+              {!!!consultation.ended_at ? (
                 <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
                   <div className="relative w-full">
                     <Input
@@ -319,6 +365,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               )}
             </div>
           </div>
+          {isCountingDown && (
+            <ModalTimedEndChat onConfirm={endChat} showModal={showModal} />
+          )}
         </>
       ) : (
         <div className="w-full flex items-center justify-center text-gray h-[calc(100vh-10.5rem)] md:h-[75vh]">

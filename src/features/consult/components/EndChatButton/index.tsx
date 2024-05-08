@@ -6,9 +6,10 @@ import ModalEndChat from '../ModalEndChat';
 
 type EndChatButtonProps = {
   onConfirm: () => void;
+  isDoctor: boolean;
 };
 
-const EndChatButton = ({ onConfirm }: EndChatButtonProps) => {
+const EndChatButton = ({ onConfirm, isDoctor }: EndChatButtonProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
@@ -21,7 +22,7 @@ const EndChatButton = ({ onConfirm }: EndChatButtonProps) => {
         End Chat
       </Button>
       <div
-        className="text-danger hover:bg-gray-lighter flex gap-2 flex items-center cursor-pointer capitalize justify-between py-2 px-3 md:hidden"
+        className="text-danger hover:bg-gray-lighter flex gap-2 items-center cursor-pointer capitalize justify-between py-2 px-3 md:hidden"
         role="button"
         onClick={() => setShowModal(true)}
       >
@@ -31,6 +32,7 @@ const EndChatButton = ({ onConfirm }: EndChatButtonProps) => {
         onConfirm={onConfirm}
         onShowModal={setShowModal}
         showModal={showModal}
+        isDoctor={isDoctor}
       />
     </div>
   );
