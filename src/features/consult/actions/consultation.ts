@@ -28,10 +28,10 @@ export async function createChat(
   }
 }
 
-export async function createMedicalCertificate(req: any) {
+export async function createMedicalCertificate(req: any, id: string) {
   try {
-    const res = await post<{ url: string }>(
-      `/doctors/consultations/certificate`,
+    const res = await post<{ certificate_url: string }>(
+      `/doctors/consultations/${id}/certificate`,
       req
     );
     return res.data;

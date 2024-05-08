@@ -1,25 +1,22 @@
 import { Button, Input, Modal, TextArea } from '@/components/common';
+import { formatBirthDateToAge } from '@/utils/formatter';
 import { validate } from '@/utils/validation';
 import { X } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { createMedicalCertificate } from '../../actions/consultation';
-import { formatBirthDateToAge } from '@/utils/formatter';
 
-type ModalMedicalCertProps = {
+type ModalPrescriptionProps = {
   onShowModal: (showModal: boolean) => void;
   showModal: boolean;
-  notify: (url: string) => void;
-  patientBirthDate: string;
+  notify: (url: string, pharmacyProductIdArr: number[]) => void;
 };
 
-const ModalMedicalCert = ({
+const ModalPrescription = ({
   onShowModal,
   showModal,
   notify,
-  patientBirthDate,
-}: ModalMedicalCertProps) => {
+}: ModalPrescriptionProps) => {
   const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -82,19 +79,21 @@ const ModalMedicalCert = ({
       return;
     }
 
+    const consultationId = parseInt(`${id}`);
+
     const certReq = {
       start_date: new Date().toISOString().split('T')[0],
       end_date: endDate,
       diagnosis: diagnosisRef.current?.value,
-      patient_age: formatBirthDateToAge(patientBirthDate),
+      // patient_age: formatBirthDateToAge(patientBirthDate)
     };
 
     console.log(certReq);
 
     setIsLoading(true);
     try {
-      const certUrl = await createMedicalCertificate(certReq, `${id}`);
-      notify(certUrl.certificate_url);
+      // const certUrl = await createMedicalCertificate(certReq, `${id}`);
+      // notify(certUrl.certificate_url);
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -167,7 +166,7 @@ const ModalMedicalCert = ({
             </div>
             <div className="flex justify-end gap-5 items-center mb-2">
               <Button
-                className="text-sm flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full min-h-[44px] md:min-w-[150px] md:w-fit"
+                className="text-sm flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full md:min-w-[150px] md:w-fit"
                 onClick={handleSubmit}
                 loading={isLoading}
               >
@@ -181,4 +180,4 @@ const ModalMedicalCert = ({
   );
 };
 
-export default ModalMedicalCert;
+export default ModalPrescription;

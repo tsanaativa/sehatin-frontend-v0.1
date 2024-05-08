@@ -3,7 +3,7 @@
 import { Badge, Button, Input } from '@/components/common';
 import { WebSocketContext } from '@/context/WebSocketProvider';
 import { Chat } from '@/types/Chat';
-import { formatDate } from '@/utils/formatter';
+import { formatDate, formatDateTime } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -31,6 +31,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
   const [consultation, setConsultation] = useState<Consultation>();
   const [chats, setChats] = useState<Chat[]>([]);
+  const [isEnded, setIsEnded] = useState(false);
+  const [hasCertificate, setHasCertificate] = useState(false);
+  const [hasPrescription, setHasPrescription] = useState(false);
 
   let typingInterval = 1250;
   let typingTimer: string | number | NodeJS.Timeout | undefined;
@@ -45,7 +48,12 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
           const m: WebSocketMessage = JSON.parse(message.data);
           console.log(m);
           const isSent = m.user_role === 'user';
-          if (m.type === 'text' || m.type === 'file') {
+          if (
+            m.type === 'text' ||
+            m.type === 'file' ||
+            m.type === 'certificate' ||
+            m.type === 'prescription'
+          ) {
             var tzoffset = new Date().getTimezoneOffset() * 60000;
             var localISOTime = new Date(Date.now() - tzoffset)
               .toISOString()
@@ -83,9 +91,12 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
       try {
         const consultation = await getConsultation(user.role, `${id}`);
         setConsultation(consultation);
+        setIsEnded(!!consultation.ended_at);
+        setHasCertificate(!!consultation.certificate_url);
+        setHasPrescription(!!consultation.prescription_url);
         setChats(consultation.chats);
+
         if (consultation) {
-          console.log(consultation);
           joinRoom();
         }
       } catch (err) {
@@ -156,6 +167,61 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     }
   };
 
+  const notifyCert = (url: string) => {
+    const msgToSend = {
+      content: url,
+      type: 'certificate',
+    };
+
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+      createChat(`${id}`, user.role, msgToSend);
+    }
+
+    if (consultation)
+      setConsultation({
+        ...consultation,
+        certificate_url: url,
+      });
+  };
+
+  const notifyPrescription = (url: string) => {
+    const msgToSend = {
+      content: url,
+      type: 'prescription',
+    };
+
+    if (url && url !== '') {
+      if (conn !== null) {
+        conn.send(JSON.stringify(msgToSend));
+        createChat(`${id}`, user.role, msgToSend);
+      }
+    }
+
+    if (consultation)
+      setConsultation({
+        ...consultation,
+        prescription_url: url,
+      });
+  };
+
+  const notifyEnd = () => {
+    const msgToSend = {
+      content: 'in 30',
+      type: 'end',
+    };
+
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+    }
+
+    if (consultation)
+      setConsultation({
+        ...consultation,
+        ended_at: new Date().toISOString(),
+      });
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
@@ -169,6 +235,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               isTyping={isTyping}
               consultation={consultation}
               isDoctor={user.role === 'user'}
+              notifyCert={notifyCert}
+              notifyPrescription={notifyPrescription}
+              notifyEnd={notifyEnd}
             />
           </div>
           <div className="relative w-full">
@@ -177,6 +246,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                 isTyping={isTyping}
                 consultation={consultation}
                 isDoctor={user.role === 'user'}
+                notifyCert={notifyCert}
+                notifyPrescription={notifyPrescription}
+                notifyEnd={notifyEnd}
               />
             </div>
             <div className="flex flex-col w-full h-[calc(100vh-10.5rem)] md:h-[75vh] md:border md:border-gray-light md:rounded">
@@ -206,6 +278,8 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                             }
                             createdAt={chat.created_at}
                             key={idx}
+                            type={chat.type}
+                            isFromUser={chat.is_from_user}
                           >
                             {chat.content}
                           </ChatBubble>
@@ -215,28 +289,34 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                   </div>
                 )}
               </div>
-              <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
-                <div className="relative w-full">
-                  <Input
-                    ref={messageRef}
-                    type="text"
-                    placeholder="Enter message..."
-                    className="w-full"
-                    onKeyUp={handleKeyUp}
-                  />
-                  <label
-                    htmlFor="attach"
-                    role="button"
-                    className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
-                  >
-                    <Paperclip />
-                    <input id="attach" type="file" className="hidden" />
-                  </label>
+              {!isEnded ? (
+                <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
+                  <div className="relative w-full">
+                    <Input
+                      ref={messageRef}
+                      type="text"
+                      placeholder="Enter message..."
+                      className="w-full"
+                      onKeyUp={handleKeyUp}
+                    />
+                    <label
+                      htmlFor="attach"
+                      role="button"
+                      className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
+                    >
+                      <Paperclip />
+                      <input id="attach" type="file" className="hidden" />
+                    </label>
+                  </div>
+                  <Button className="px-6 h-full py-4" onClick={sendMessage}>
+                    Send
+                  </Button>
                 </div>
-                <Button className="px-6 h-full py-4" onClick={sendMessage}>
-                  Send
-                </Button>
-              </div>
+              ) : (
+                <div className="flex justify-center py-1 bg-gray-light text-dark-gray text-sm">
+                  Chat ended
+                </div>
+              )}
             </div>
           </div>
         </>

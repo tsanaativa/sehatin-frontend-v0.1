@@ -18,6 +18,7 @@ type ConsultBarProps = {
   isDoctor: boolean;
   notifyCert: (url: string) => void;
   notifyPrescription: (url: string) => void;
+  notifyEnd: () => void;
 };
 
 const ConsultBar = ({
@@ -26,6 +27,7 @@ const ConsultBar = ({
   isDoctor,
   notifyCert,
   notifyPrescription,
+  notifyEnd,
 }: ConsultBarProps) => {
   const { id } = useParams();
 
@@ -92,9 +94,23 @@ const ConsultBar = ({
           )}
         </div>
         <div className="flex flex-col gap-3 w-full">
-          {!isDoctor && <MedicalCertButton notify={notifyCert} />}
-          {!isDoctor && <PrescriptionButton notify={notifyPrescription} />}
-          <EndChatButton onConfirm={handleEndChat} />
+          {(!isDoctor && !!!consultation.certificate_url) ||
+            (!!consultation.certificate_url && (
+              <MedicalCertButton
+                notify={notifyCert}
+                consultation={consultation}
+              />
+            ))}
+          {(!isDoctor && !!!consultation.prescription_url) ||
+            (!!consultation.prescription_url && (
+              <PrescriptionButton
+                notify={notifyPrescription}
+                consultation={consultation}
+              />
+            ))}
+          {!!!consultation.ended_at && (
+            <EndChatButton onConfirm={handleEndChat} />
+          )}
         </div>
       </div>
       <div className="flex justify-between items-center w-full md:hidden">
@@ -139,7 +155,13 @@ const ConsultBar = ({
             )}
           </div>
         </div>
-        <ConsultDropdown onEndChat={handleEndChat} />
+        <ConsultDropdown
+          isDoctor={isDoctor}
+          onEndChat={handleEndChat}
+          notifyCert={notifyCert}
+          notifyPrescription={notifyPrescription}
+          consultation={consultation}
+        />
       </div>
     </div>
   );
