@@ -57,10 +57,10 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
     const fetchDoctors = async () => {
       try {
         setIsLoading(true);
-        const res = await get<
-          DoctorsParams,
-          { pagination_info: PaginationInfo; doctors: Doctor[] }
-        >(`/doctors`, params);
+        const res = await get<{
+          pagination_info: PaginationInfo;
+          doctors: Doctor[];
+        }>(`/doctors`, params);
         setDoctors(res.data.doctors);
         setPaginationInfo(res.data.pagination_info);
       } catch (error: any) {

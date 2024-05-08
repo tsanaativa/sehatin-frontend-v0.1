@@ -35,7 +35,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           categoryId: category.id,
           limit: 15,
         };
-        const res = await get<typeof params, { products: Product[] }>(
+        const res = await get<{ products: Product[] }>(
           `/products/nearest`,
           params
         );
