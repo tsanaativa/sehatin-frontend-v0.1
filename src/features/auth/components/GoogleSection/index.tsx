@@ -31,7 +31,7 @@ const GoogleSection = ({
     cookie.set('g-session', role, 5);
   };
   return (
-    <div className="flex flex-col gap-7 items-center mt-6">
+    <div id="google-section" className="flex flex-col gap-7 items-center mt-6">
       <span className="text-dark-gray [&>a]:text-primary-dark">
         {mode == 'login' ? "Don't" : 'Already'} have an account?{' '}
         <Link href={`/auth/${mode == 'login' ? 'register' : 'login'}`}>
