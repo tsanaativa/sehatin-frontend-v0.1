@@ -424,3 +424,22 @@ export const PHARMACY_TABLE_DATA = [
     available_shipping_methods: 'Official Next Day, JNE Next Day',
   },
 ];
+
+export const PHARMACY_PRODUCT_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    category: 'Obat Sakit Kepala',
+    selling_unit: 'Box',
+    price: 'Rp100.000',
+    stock: '200',
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    category: 'Obat Sakit Kepala',
+    selling_unit: 'Box',
+    price: 'Rp75.000',
+    stock: '150',
+  },
+];

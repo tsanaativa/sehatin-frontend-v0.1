@@ -123,3 +123,34 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
     accessor: 'action',
   },
 ];
+
+export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Category',
+    accessor: 'category',
+  },
+  {
+    label: 'Selling Unit',
+    accessor: 'selling_unit',
+  },
+  {
+    label: 'Price',
+    accessor: 'price',
+  },
+  {
+    label: 'Stock',
+    accessor: 'stock',
+  },
+  {
+    label: 'Details',
+    accessor: 'id',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];

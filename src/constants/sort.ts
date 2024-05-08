@@ -35,3 +35,12 @@ export const ADMIN_PHARMACY_SORT_OPTIONS = [
   'operational',
   'available shipping methods',
 ];
+
+export const ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS = [
+  'name',
+  'category',
+  'classification',
+  'selling unit',
+  'price',
+  'stock',
+];

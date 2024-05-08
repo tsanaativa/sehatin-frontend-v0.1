@@ -10,3 +10,6 @@ export { default as UpdateMedicineForm } from './UpdateMedicineForm';
 export { default as AdminPharmacyList } from './AdminPharmacyList';
 export { default as CreatePharmacyForm } from './CreatePharmacyForm';
 export { default as UpdatePharmacyForm } from './UpdatePharmacyForm';
+export { default as AdminPharmacyPrductList } from './AdminPharmacyProductList';
+export { default as AddPharmacyProductForm } from './AddPharmacyProductForm';
+export { default as UpdatePharmacyProductForm } from './UpdatePharmacyProductForm';

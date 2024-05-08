@@ -1,8 +1,10 @@
+'use client';
 import { TableHeader } from '@/types/Tables';
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '..';
 import ToggleInput from '../ToggleInput';
+import { usePathname } from 'next/navigation';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -17,6 +19,8 @@ const DataTable = <T,>({
   tabelName,
   className,
 }: DataTableProps<T>) => {
+  const pathname = usePathname();
+
   return (
     <table
       className={`w-full border border-gray-lighter text-left text-base ${className}`}
@@ -68,7 +72,7 @@ const DataTable = <T,>({
                 ) : column.accessor === 'id' ? (
                   <Link
                     className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
-                    href={`/admin/${tabelName}/${item[column.accessor as keyof typeof item]}`}
+                    href={`${pathname}/${item[column.accessor as keyof typeof item]}`}
                   >
                     View
                   </Link>
