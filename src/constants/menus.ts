@@ -66,6 +66,16 @@ export const ADMIN_MENUS: MENU_TYPE[] = [
     icon: 'Pill',
   },
   {
+    label: 'Pharmacy',
+    link: '/admin/pharmacy',
+    icon: 'Store',
+  },
+  {
+    label: 'Stock Mutation Request',
+    link: '/admin/stock-mutation',
+    icon: 'Archive',
+  },
+  {
     label: 'Order',
     link: '/admin/order',
     icon: 'ClipboardList',
