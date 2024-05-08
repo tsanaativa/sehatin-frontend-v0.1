@@ -9,14 +9,24 @@ import { useParams } from 'next/navigation';
 import { ConsultDropdown } from '..';
 import DoctorDetailCard from '../../../doctors/components/DoctorDetailCard';
 import EndChatButton from '../EndChatButton';
+import MedicalCertButton from '../MedicalCertButton';
+import PrescriptionButton from '../PrescriptionButton';
 
 type ConsultBarProps = {
   isTyping: boolean;
   consultation: Consultation;
   isDoctor: boolean;
+  notifyCert: (url: string) => void;
+  notifyPrescription: (url: string) => void;
 };
 
-const ConsultBar = ({ isTyping, consultation, isDoctor }: ConsultBarProps) => {
+const ConsultBar = ({
+  isTyping,
+  consultation,
+  isDoctor,
+  notifyCert,
+  notifyPrescription,
+}: ConsultBarProps) => {
   const { id } = useParams();
 
   const handleEndChat = () => {};
@@ -82,6 +92,8 @@ const ConsultBar = ({ isTyping, consultation, isDoctor }: ConsultBarProps) => {
           )}
         </div>
         <div className="flex flex-col gap-3 w-full">
+          {!isDoctor && <MedicalCertButton notify={notifyCert} />}
+          {!isDoctor && <PrescriptionButton notify={notifyPrescription} />}
           <EndChatButton onConfirm={handleEndChat} />
         </div>
       </div>

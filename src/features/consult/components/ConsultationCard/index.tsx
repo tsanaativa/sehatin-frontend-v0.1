@@ -74,9 +74,11 @@ const ConsultationCard = ({
             </a>
           )}
         </div>
-        <Link href={`/consult/${consultation.id}`}>
+        <Link
+          href={`/consult/${consultation.ended_at && isDoctor ? `start/${consultation.doctor.id}` : `${consultation.id}`}`}
+        >
           <Button className="px-3 text-sm min-w-[120px]">
-            {consultation.ended_at ? 'Chat Again' : 'View Chat'}
+            {consultation.ended_at && isDoctor ? 'Chat Again' : 'View Chat'}
           </Button>
         </Link>
       </div>

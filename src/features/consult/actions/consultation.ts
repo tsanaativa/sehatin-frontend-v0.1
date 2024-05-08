@@ -30,3 +30,15 @@ export async function createChat(
     throw new Error((error as Error).message);
   }
 }
+
+export async function createMedicalCertificate(req: any) {
+  try {
+    const res = await post<typeof req, { url: string }>(
+      `/doctors/consultations/certificate`,
+      req
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+}

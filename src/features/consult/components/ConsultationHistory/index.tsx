@@ -75,7 +75,7 @@ const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex flex-col-reverse gap-3 justify-between items-center md:flex-row">
         <h2 className="text-xl text-center font-semibold font-poppins md:text-start md:text-2xl">
           My Consultation History
         </h2>
@@ -114,10 +114,10 @@ const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
                 </div>
                 <div className="flex justify-between p-4">
                   <div className="flex gap-2">
-                    <div className="bg-gray-light py-5 px-3 md:min-w-[100px]"></div>
-                    <div className="bg-gray-light py-5 px-3 md:min-w-[100px]"></div>
+                    <div className="bg-gray-light py-5 px-3 min-w-[100px]"></div>
+                    <div className="bg-gray-light py-5 px-3 min-w-[100px]"></div>
                   </div>
-                  <div className="bg-gray-light py-5 px-3 md:min-w-[100px]"></div>
+                  <div className="bg-gray-light py-5 px-3 min-w-[100px]"></div>
                 </div>
               </div>
             </Skeleton>
