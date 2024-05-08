@@ -12,6 +12,19 @@ export const PUBLIC_API_ROUTES = [
   '/ws',
 ];
 
-export const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth'];
+export const AUTH_ROUTES = [
+  '/auth/login',
+  '/auth/register',
+  '/auth',
+  '/admin/login',
+];
 
-export const PROTECTED_ROUTES = ['/profile', '/consult', '/admin'];
+export const PROTECTED_ROUTES = ['/profile', '/consult'];
+
+export const ADMIN_PROTECTED_ROUTES = [
+  '/admin/dashboard',
+  '/admin/user',
+  '/admin/doctor',
+  '/admin/pharmacy',
+  '/admin/stock-mutaton',
+];
