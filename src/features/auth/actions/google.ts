@@ -13,10 +13,7 @@ export default async function google(data: OauthReqProps) {
   const session = await getSession();
 
   try {
-    const res = await post<OauthReqProps, LoginResponse>(
-      '/auth/oauth/google',
-      data
-    );
+    const res = await post<LoginResponse>('/auth/oauth/google', data);
     const loginData = res.data;
 
     session.exp = loginData.exp;
