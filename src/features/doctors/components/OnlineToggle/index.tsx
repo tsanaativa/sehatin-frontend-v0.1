@@ -43,7 +43,7 @@ const OnlineToggle = ({ defaultIsOnline = false }: OnlineToggleProps) => {
       );
       if (ws.OPEN) {
         ws.onmessage = (message) => {
-          'Received';
+          console.log('Received...');
         };
 
         ws.onclose = () => {

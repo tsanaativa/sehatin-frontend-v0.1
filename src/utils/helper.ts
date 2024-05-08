@@ -28,7 +28,6 @@ export const overflowHandler = ({
       const el = document.getElementById(targetId);
       if (el) {
         el.style.overflow = type;
-        el.scrollTo(0, 0);
       }
       return;
     }

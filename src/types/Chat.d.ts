@@ -1,7 +1,7 @@
 export type Chat = {
-  timestamp: string;
+  created_at: string;
   content: string;
   id: number;
-  isSent: boolean;
+  is_from_user: boolean;
   type: string;
 };

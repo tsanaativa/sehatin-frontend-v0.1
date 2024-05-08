@@ -7,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import createRoom from '../../actions/room';
 import { toast } from 'react-toastify';
+import { createConsultation } from '../../actions/consultation';
 
 type PatientFormProps = {
   isEdit?: boolean;
@@ -83,21 +84,33 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
       return;
     }
 
+    const doctorId = parseInt(`${id}`);
+
     console.log({
       name: name.current?.value,
       gender: gender,
       birthDate: birthDate,
     });
 
-    const req = {
-      id: `${user?.email}-${id}`,
-      name: `room-${user?.email}-${id}`,
+    const consultationReq = {
+      doctor_id: doctorId,
+      patient_name: name.current?.value,
+      patient_gender_id: gender,
+      patient_birth_date: birthDate,
     };
 
     setIsLoading(true);
     try {
-      await createRoom(req);
-      router.push(`/consult/${id}`);
+      const consultation = await createConsultation(consultationReq);
+      console.log(consultation);
+
+      const createRoomReq = {
+        id: consultation.id,
+        doctor_id: doctorId,
+      };
+
+      await createRoom(createRoomReq);
+      router.push(`/consult/${consultation.id}`);
     } catch (error) {
       toast.error((error as Error).message);
     }

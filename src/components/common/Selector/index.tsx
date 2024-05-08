@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon, Input } from '..';
 import { icons } from 'lucide-react';
 import { overflowHandler } from '@/utils/helper';
+import useDebounce from '@/utils/debounce';
 
 type SelectorProps = {
   id: string;
@@ -21,6 +22,7 @@ type SelectorProps = {
   isLoading?: boolean;
   required?: boolean;
   gridView?: string;
+  onSearch?: (text: string) => void;
   onSelect: (text: string) => void;
 };
 
@@ -41,12 +43,14 @@ const Selector = ({
   isLoading,
   required,
   gridView,
+  onSearch,
   onSelect,
 }: SelectorProps) => {
   const [input, setInput] = useState({
-    current: selected,
+    current: options[selected],
     previous: '',
   });
+
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [showPane, setShowPane] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -114,12 +118,14 @@ const Selector = ({
 
   const handleInput = (value: string) => {
     setInput({ ...input, current: value });
-    const filtered = Object.fromEntries(
-      Object.entries(options).filter(([_, o]) =>
-        o.toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setFilteredOptions(filtered);
+    if (!onSearch) {
+      const filtered = Object.fromEntries(
+        Object.entries(options).filter(([_, o]) =>
+          o.toLowerCase().includes(value.toLowerCase())
+        )
+      );
+      setFilteredOptions(filtered);
+    }
   };
 
   const optionsTransition = (idx: number) =>
@@ -129,10 +135,19 @@ const Selector = ({
         }
       : {};
 
+  const debounce = useDebounce(input['current'], 500);
   useEffect(() => {
-    if (screenWidth < 768 && wrapperId && showPane)
+    if (debounce && onSearch) {
+      onSearch(debounce);
+    }
+  }, [debounce, onSearch]);
+
+  useEffect(() => {
+    if (screenWidth < 768 && wrapperId && showPane) {
       overflowHandler({ type: 'hidden', targetId: wrapperId });
-    else overflowHandler({ type: 'auto', targetId: wrapperId });
+      const el = document.getElementById(wrapperId);
+      if (el) el.scrollTo(0, 0);
+    } else overflowHandler({ type: 'auto', targetId: wrapperId });
   }, [screenWidth, showPane, wrapperId]);
   return (
     <div
