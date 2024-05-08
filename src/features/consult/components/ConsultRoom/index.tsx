@@ -2,19 +2,19 @@
 
 import { Badge, Button, Input } from '@/components/common';
 import { WebSocketContext } from '@/context/WebSocketProvider';
+import { getConsultation } from '@/services/consultation';
 import { Chat } from '@/types/Chat';
-import { formatDate, formatDateTime } from '@/utils/formatter';
+import { Consultation } from '@/types/Consultation';
+import { User } from '@/types/User';
+import { WebSocketMessage } from '@/types/WebSocketMessage';
+import { formatDate } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import ChatBubble from '../ChatBubble';
-import ConsultBar from '../ConsultBar';
-import { WebSocketMessage } from '@/types/WebSocketMessage';
-import { User } from '@/types/User';
-import { Consultation } from '@/types/Consultation';
-import { getConsultation } from '@/services/consultation';
 import { toast } from 'react-toastify';
 import { createChat, endConsultation } from '../../actions/consultation';
+import ChatBubble from '../ChatBubble';
+import ConsultBar from '../ConsultBar';
 import ModalTimedEndChat from '../ModalTimedEndChat';
 
 type ConsultRoomProps = {
@@ -32,7 +32,6 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
   const [consultation, setConsultation] = useState<Consultation>();
   const [chats, setChats] = useState<Chat[]>([]);
-  // const [isEnded, setIsEnded] = useState(false);
 
   let typingInterval = 1250;
   let typingTimer: string | number | NodeJS.Timeout | undefined;
@@ -93,7 +92,6 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               let time = parseInt(m.content);
               if (time >= 0) {
                 setIsCountingDown(true);
-                setCountDown(time);
               }
             }
           }
@@ -225,7 +223,8 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
     if (conn !== null) {
       if (user.role === 'doctor') {
-        notifyEndChatIn30s();
+        setIsCountingDown(true);
+        setShowModal(true);
       } else {
         conn.send(JSON.stringify(msgToSend));
         endChat();
@@ -235,7 +234,6 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
 
   const endChat = async () => {
     setShowModal(false);
-    console.log('chat ended');
     try {
       await endConsultation(user.role, `${id}`);
       toast.success('successfully ended');
@@ -247,22 +245,15 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     );
   };
 
-  const [countDown, setCountDown] = useState(30);
-
-  const notifyEndChatIn30s = () => {
+  const notifyCountDown = (countDown: number) => {
     const msgToSend = {
       content: countDown,
       type: 'end',
     };
 
-    const timer = setInterval(() => {
-      if (conn !== null) {
-        setCountDown(countDown - 1);
-        conn.send(JSON.stringify(msgToSend));
-        console.log(countDown - 1);
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+    }
   };
 
   useEffect(() => {
@@ -366,7 +357,12 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
             </div>
           </div>
           {isCountingDown && (
-            <ModalTimedEndChat onConfirm={endChat} showModal={showModal} />
+            <ModalTimedEndChat
+              startCount={isCountingDown}
+              notify={notifyCountDown}
+              onConfirm={endChat}
+              showModal={showModal}
+            />
           )}
         </>
       ) : (

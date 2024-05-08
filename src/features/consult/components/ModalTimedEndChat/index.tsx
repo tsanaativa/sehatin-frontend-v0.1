@@ -1,28 +1,35 @@
 import { Button, Modal } from '@/components/common';
 import { TriangleAlert } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 type ModalTimedEndChatProps = {
   onConfirm: () => void;
   showModal: boolean;
-  countDown?: number;
+  startCount: boolean;
+  notify: (countDown: number) => void;
 };
 
 const ModalTimedEndChat = ({
   showModal,
   onConfirm,
-  countDown,
+  startCount,
+  notify,
 }: ModalTimedEndChatProps) => {
-  // const [countDown, setCountDown] = useState(30);
+  const [countDown, setCountDown] = useState(30);
 
-  // useEffect(() => {
-  //   function startTimer() {
-  //     setInterval(function () {
-  //       setCountDown(countDown - 1);
-  //     }, 1000);
-  //   }
+  useEffect(() => {
+    if (startCount) {
+      const interval = setInterval(() => {
+        if (countDown > 0) {
+          notify(countDown);
+          setCountDown(countDown - 1);
+        } else onConfirm();
+      }, 1000);
 
-  //   startTimer();
-  // }, []);
+      return () => clearInterval(interval);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countDown, startCount]);
 
   return (
     <Modal onClick={() => {}} showModal={showModal}>
@@ -42,17 +49,11 @@ const ModalTimedEndChat = ({
             Chat will end
           </div>
           <div className="text-dark-gray text-center">
-            Doctor wants to end chat. Consultation will end in {countDown}...
+            Doctor wants to end chat. Consultation will end in {countDown}{' '}
+            seconds...
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          {/* <Button
-            variant="outlined-gray"
-            className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2"
-            onClick={() => onShowModal(false)}
-          >
-            Cancel
-          </Button> */}
           <Button
             variant="danger"
             className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2"
