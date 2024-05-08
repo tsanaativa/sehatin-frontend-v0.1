@@ -7,9 +7,8 @@ export const PUBLIC_API_ROUTES = [
   '/auth/logout',
   '/products',
   '/categories',
-  '/doctors',
+  '/doctors/verified',
   '/specialists',
-  '/ws',
 ];
 
 export const AUTH_ROUTES = [

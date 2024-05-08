@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Doctor } from '@/types/Doctor';
 import { formatYearToExp } from '@/utils/formatter';
+import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 
 type DoctorDetailCardProps = {
   doctor: Doctor;
@@ -14,7 +15,7 @@ const DoctorDetailCard = ({ doctor, isTyping }: DoctorDetailCardProps) => {
     <div className="px-4 py-8 flex flex-col items-center gap-y-2 ">
       <div className="relative w-fit h-fit">
         <Image
-          src={doctor.profile_picture}
+          src={doctor.profile_picture || DefaultAvatarImg}
           className="object-cover rounded-full w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
           width={300}
           height={300}
@@ -39,9 +40,11 @@ const DoctorDetailCard = ({ doctor, isTyping }: DoctorDetailCardProps) => {
         <div className="font-semibold text-sm text-dark-gray md:text-base">
           {doctor.specialist.name}
         </div>
-        <div className="font-semibold text-sm text-dark-gray md:text-base">
-          {yearsOfExp} of experience
-        </div>
+        {doctor.work_start_year && (
+          <div className="font-semibold text-sm text-dark-gray md:text-base">
+            {yearsOfExp} of experience
+          </div>
+        )}
       </div>
     </div>
   );

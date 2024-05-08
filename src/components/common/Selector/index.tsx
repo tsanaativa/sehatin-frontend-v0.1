@@ -47,7 +47,7 @@ const Selector = ({
   onSelect,
 }: SelectorProps) => {
   const [input, setInput] = useState({
-    current: selected,
+    current: options[selected],
     previous: '',
   });
 

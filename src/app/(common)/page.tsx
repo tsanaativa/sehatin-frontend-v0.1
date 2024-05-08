@@ -9,7 +9,6 @@ import { DUMMY_PRODUCT } from '@/constants/dummy';
 import ConsultationHistory from '@/features/consult/components/ConsultationHistory';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import { getUser } from '@/services/session';
-import { Consultation } from '@/types/Consultation';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -149,7 +148,11 @@ const Home = async () => {
           </div>
         </>
       ) : (
-        <ConsultationHistory user={user} />
+        <div className="flex justify-center">
+          <div className="max-w-[1150px] bg-light w-full -mt-2 z-20 py-4 px-4 rounded-tl-lg rounded-tr-lg sm:px-6 md:py-10 md:top-0 md:rounded-tl-none md:rounded-tr-none md:mt-0">
+            <ConsultationHistory user={user} />
+          </div>
+        </div>
       )}
     </main>
   );
