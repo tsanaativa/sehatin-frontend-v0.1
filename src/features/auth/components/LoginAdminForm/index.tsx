@@ -1,17 +1,14 @@
 'use client';
 
-import { DoctorBadge, PatientBadge } from '@/assets/icons';
-import { Button, Input, RadioBox } from '@/components/common';
+import { Button, Input } from '@/components/common';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { login } from '../../actions/login';
-import GoogleSection from '../GoogleSection';
+import { loginAdmin } from '../../actions/login';
 
-const LoginForm = () => {
+const LoginAdminForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState<'user' | 'doctor'>('user');
   const [errors, setErrors] = useState<Record<string, string>>({
     email: '',
     password: '',
@@ -47,15 +44,14 @@ const LoginForm = () => {
     }
   };
 
-  const loginUser = async (formData: FormData) => {
+  const loginAction = async (formData: FormData) => {
     setIsLoading(true);
     try {
-      const message = await login(formData);
+      const message = await loginAdmin(formData);
       if (message) toast.success('successfully logged in');
-      push('/');
+      push('/admin/dashboard');
     } catch (error) {
       if (error instanceof Error) {
-        console.log('ERROR', error?.message);
         toast.error(error?.message);
       }
     } finally {
@@ -64,35 +60,10 @@ const LoginForm = () => {
   };
   return (
     <>
-      <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
-        Please select your role
-      </div>
       <form
-        action={loginUser}
+        action={loginAction}
         className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
       >
-        <div className="flex items-center gap-[20px] [&_span]:pt-[7px] [&_span]:text-[11px] mt-[6px]">
-          <RadioBox
-            id="user"
-            name="role"
-            value="user"
-            isActive={role === 'user'}
-            onChange={() => setRole('user')}
-          >
-            <PatientBadge isWhite={role !== 'user'} />
-            <span>User</span>
-          </RadioBox>
-          <RadioBox
-            id="doctor"
-            name="role"
-            value="doctor"
-            isActive={role === 'doctor'}
-            onChange={() => setRole('doctor')}
-          >
-            <DoctorBadge isWhite={role !== 'doctor'} />
-            <span>Doctor</span>
-          </RadioBox>
-        </div>
         <label htmlFor="email">
           <h5>Email</h5>
           <Input
@@ -141,9 +112,8 @@ const LoginForm = () => {
           Login
         </Button>
       </form>
-      <GoogleSection mode="login" role={role} />
     </>
   );
 };
 
-export default LoginForm;
+export default LoginAdminForm;
