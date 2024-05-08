@@ -1,10 +1,17 @@
 'use client';
 import { TableHeader } from '@/types/Tables';
-import { Check, Pencil, Trash2, X } from 'lucide-react';
+import { Check, Eye, Pencil, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { Badge, Button } from '..';
 import ToggleInput from '../ToggleInput';
 import { usePathname } from 'next/navigation';
+import { any, string } from 'prop-types';
+import { Gender } from '@/types/User';
+import { formatDate } from '@/utils/formatter';
+import { Category } from '@/types/Product';
+import { useState } from 'react';
+import { ModalPharmacyProduct } from '@/features/admin/components';
+import { PharmacyAddress } from '@/types/Pharmacy';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -20,6 +27,7 @@ const DataTable = <T,>({
   className,
 }: DataTableProps<T>) => {
   const pathname = usePathname();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
     <table
@@ -51,7 +59,7 @@ const DataTable = <T,>({
               >
                 {column.customCell ? (
                   <>{column.customCell}</>
-                ) : column.accessor === 'status' ? (
+                ) : column.accessor === 'is_verified' ? (
                   <Badge
                     variant={
                       item[column.accessor as keyof typeof item]
@@ -132,6 +140,79 @@ const DataTable = <T,>({
                         </Button>
                       </>
                     )}
+                  </>
+                ) : column.accessor === 'gender' ? (
+                  <>
+                    {
+                      (item[column.accessor as keyof typeof item] as Gender)[
+                        'name'
+                      ]
+                    }
+                  </>
+                ) : column.accessor === 'birth_date' ? (
+                  <>
+                    {formatDate(
+                      item[column.accessor as keyof typeof item] as string
+                    )}{' '}
+                    {new Date(
+                      item[column.accessor as keyof typeof item] as string
+                    ).getFullYear()}
+                  </>
+                ) : column.accessor === 'categories' ? (
+                  <>
+                    {(
+                      item[column.accessor as keyof typeof item] as Category[]
+                    )?.map((category) => <>{category.name}</>)}
+                  </>
+                ) : column.accessor === 'modal' ? (
+                  <>
+                    <Button
+                      className="w-full"
+                      onClick={() => setShowModal(true)}
+                    >
+                      View
+                    </Button>
+                    <ModalPharmacyProduct
+                      onShowModal={setShowModal}
+                      showModal={showModal}
+                    />
+                  </>
+                ) : column.accessor === 'pharmacy_address' ? (
+                  <>
+                    {
+                      (
+                        item[
+                          column.accessor as keyof typeof item
+                        ] as PharmacyAddress
+                      )['address']
+                    }
+                  </>
+                ) : column.accessor === 'pharmacist' ? (
+                  <div className="flex flex-col">
+                    <span>
+                      {item['pharmacist_name' as keyof typeof item] as string}
+                    </span>
+                    <span>
+                      {
+                        item[
+                          'pharmacist_license_number' as keyof typeof item
+                        ] as string
+                      }
+                    </span>
+                    <span>
+                      {
+                        item[
+                          'pharmacist_phone_number' as keyof typeof item
+                        ] as string
+                      }
+                    </span>
+                  </div>
+                ) : column.accessor === 'operational' ? (
+                  <>
+                    <span>
+                      {item['operational_day' as keyof typeof item] as string},{' '}
+                      {item['operational_hour' as keyof typeof item] as string}
+                    </span>
                   </>
                 ) : (
                   <>{item[column.accessor as keyof typeof item]}</>

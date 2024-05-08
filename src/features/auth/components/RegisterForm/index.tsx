@@ -223,9 +223,6 @@ const RegistrationForm = () => {
 
   return (
     <>
-      <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
-        Please select your role
-      </div>
       <form
         action={handleSubmit}
         className="flex flex-col gap-4 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"

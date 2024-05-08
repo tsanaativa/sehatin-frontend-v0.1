@@ -1,4 +1,3 @@
-import LoginHero from '@/assets/images/login-hero.png';
 import { Auth } from '@/components/layout';
 import LoginAdminForm from '@/features/auth/components/LoginAdminForm';
 

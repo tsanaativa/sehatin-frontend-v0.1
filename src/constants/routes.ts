@@ -21,10 +21,11 @@ export const AUTH_ROUTES = [
 
 export const PROTECTED_ROUTES = ['/profile', '/consult'];
 
-export const ADMIN_PROTECTED_ROUTES = [
-  '/admin/dashboard',
-  '/admin/user',
-  '/admin/doctor',
+export const GENERAL_ADMIN_PROTECTED_ROUTES = ['/admin/dashboard'];
+
+export const ADMIN_PROTECTED_ROUTES = ['/admin/user', '/admin/doctor'];
+
+export const PHARMACY_MANAGER_PROTECTED_ROUTES = [
   '/admin/pharmacy',
-  '/admin/stock-mutaton',
+  '/admin/stock-mutation',
 ];

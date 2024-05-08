@@ -66,6 +66,24 @@ export const ADMIN_MENUS: MENU_TYPE[] = [
     icon: 'Pill',
   },
   {
+    label: 'Order',
+    link: '/admin/order',
+    icon: 'ClipboardList',
+  },
+  {
+    label: 'Sales Report',
+    link: '/admin/sales-report',
+    icon: 'LineChart',
+  },
+];
+
+export const PHARMACY_MANAGER_MENUS: MENU_TYPE[] = [
+  {
+    label: 'Dashboard',
+    link: '/admin/dashboard',
+    icon: 'LayoutDashboard',
+  },
+  {
     label: 'Pharmacy',
     link: '/admin/pharmacy',
     icon: 'Store',

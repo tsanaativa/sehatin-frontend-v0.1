@@ -9,10 +9,12 @@ import {
 import { USER_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_USER_SORT_OPTIONS } from '@/constants/sort';
 import { USER_COLUMN_LIST } from '@/constants/tables';
+import { getAllUser } from '@/services/user';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import { UsersParams } from '@/types/User';
+import { User, UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminUserList = () => {
   const searchParams = useSearchParams();
@@ -34,6 +36,8 @@ const AdminUserList = () => {
     total_page: 0,
   });
 
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
     setParams((prev) => ({
@@ -42,6 +46,19 @@ const AdminUserList = () => {
       keyword: newKeyword,
     }));
   }, [searchParams]);
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const res = await getAllUser();
+        setAllUsers(res.users);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+    fetchAllUsers();
+  }, [params]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -114,7 +131,7 @@ const AdminUserList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={USER_TABLE_DATA}
+        dataList={allUsers}
         columnList={USER_COLUMN_LIST}
         tabelName="user"
       />
