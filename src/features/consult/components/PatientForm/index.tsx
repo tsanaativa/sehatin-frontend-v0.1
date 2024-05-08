@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import createRoom from '../../actions/room';
 import { toast } from 'react-toastify';
-import createConsultation from '../../actions/consultation';
+import { createConsultation } from '../../actions/consultation';
 
 type PatientFormProps = {
   isEdit?: boolean;

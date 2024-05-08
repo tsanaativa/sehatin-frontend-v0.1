@@ -3,11 +3,11 @@ import React from 'react';
 
 type ChatBubbleProps = {
   isSent?: boolean;
-  timestamp: string;
+  createdAt: string;
   children: React.ReactNode;
 };
 
-const ChatBubble = ({ isSent, timestamp, children }: ChatBubbleProps) => {
+const ChatBubble = ({ isSent, createdAt, children }: ChatBubbleProps) => {
   return (
     <div
       className={`w-full flex gap-3 items-end ${isSent && 'flex-row-reverse'}`}
@@ -17,7 +17,7 @@ const ChatBubble = ({ isSent, timestamp, children }: ChatBubbleProps) => {
       >
         {children}
       </div>
-      <div className="text-sm text-dark-gray">{formatTime(timestamp)}</div>
+      <div className="text-sm text-dark-gray">{formatTime(createdAt)}</div>
     </div>
   );
 };

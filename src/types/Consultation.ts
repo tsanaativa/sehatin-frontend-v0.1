@@ -1,3 +1,4 @@
+import { Chat } from './Chat';
 import { Doctor } from './Doctor';
 import { Product } from './Product';
 import { Gender, User } from './User';
@@ -14,6 +15,7 @@ export type Consultation = {
   prescription_items: PrescriptionItems[];
   ended_at?: string;
   created_at: string;
+  chats: Chat[];
 };
 
 export type PrescriptionItems = {

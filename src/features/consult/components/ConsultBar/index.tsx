@@ -51,26 +51,28 @@ const ConsultBar = ({ isTyping, consultation, isDoctor }: ConsultBarProps) => {
                       <>{consultation.doctor.specialist.name}</>
                     ) : (
                       <table className="text-start">
-                        <tr className="align-top">
-                          <td>Patient Name</td>
-                          <td className="ps-1 pe-2">:</td>
-                          <td>{consultation.patient_name}</td>
-                        </tr>
-                        <tr className="align-top">
-                          <td>Patient Gender</td>
-                          <td className="ps-1 pe-2">:</td>
-                          <td>{consultation.patient_gender?.name}</td>
-                        </tr>
-                        <tr className="align-top">
-                          <td>Patient Age</td>
-                          <td className="ps-1 pe-2">:</td>
-                          <td>
-                            {formatBirthDateToAge(
-                              consultation.patient_birth_date
-                            )}{' '}
-                            y.o.
-                          </td>
-                        </tr>
+                        <tbody>
+                          <tr className="align-top">
+                            <td>Patient Name</td>
+                            <td className="ps-1 pe-2">:</td>
+                            <td>{consultation.patient_name}</td>
+                          </tr>
+                          <tr className="align-top">
+                            <td>Patient Gender</td>
+                            <td className="ps-1 pe-2">:</td>
+                            <td>{consultation.patient_gender?.name}</td>
+                          </tr>
+                          <tr className="align-top">
+                            <td>Patient Age</td>
+                            <td className="ps-1 pe-2">:</td>
+                            <td>
+                              {formatBirthDateToAge(
+                                consultation.patient_birth_date
+                              )}{' '}
+                              y.o.
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                     )}
                   </div>

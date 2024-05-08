@@ -14,6 +14,7 @@ import { User } from '@/types/User';
 import { Consultation } from '@/types/Consultation';
 import { getConsultation } from '@/services/consultation';
 import { toast } from 'react-toastify';
+import { createChat } from '../../actions/consultation';
 
 type ConsultRoomProps = {
   user?: User;
@@ -43,16 +44,19 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
         ws.onmessage = (message) => {
           const m: WebSocketMessage = JSON.parse(message.data);
           console.log(m);
-          const isSent = user?.id === m.user_id && user.role === m.user_role;
+          const isSent = m.user_role === 'user';
           if (m.type === 'text' || m.type === 'file') {
+            var tzoffset = new Date().getTimezoneOffset() * 60000;
+            var localISOTime = new Date(Date.now() - tzoffset)
+              .toISOString()
+              .slice(0, -1);
             const rcvMsg: Chat = {
               content: m.content,
-              timestamp: new Date().toISOString(),
+              created_at: localISOTime + 'Z',
               id: 1,
-              isSent: isSent,
+              is_from_user: isSent,
               type: m.type,
             };
-
             setChats((prev) => [...prev, rcvMsg]);
           } else if (m.type === 'typing') {
             if (!isSent) {
@@ -79,6 +83,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
       try {
         const consultation = await getConsultation(user.role, `${id}`);
         setConsultation(consultation);
+        setChats(consultation.chats);
         if (consultation) {
           console.log(consultation);
           joinRoom();
@@ -102,6 +107,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     if (message && message !== '') {
       if (conn !== null) {
         conn.send(JSON.stringify(msgToSend));
+        createChat(`${id}`, user.role, msgToSend);
       }
     }
 
@@ -178,30 +184,36 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                 className="w-full h-full overflow-x-hidden overflow-y-auto max-h-full md:pt-6 md:px-7"
                 ref={chatBoxRef}
               >
-                <div className="mt-3 flex flex-col gap-5 items-center md:mt-0">
-                  {chats.map((chat, idx) => (
-                    <React.Fragment key={idx}>
-                      {(idx === 0 ||
-                        new Date(chats[idx - 1].timestamp).toDateString() !==
-                          new Date(chat.timestamp).toDateString()) && (
-                        <div className="w-fit" key={idx}>
-                          <Badge variant="gray">
-                            {formatDate(chat.timestamp)}
-                          </Badge>
+                {chats && (
+                  <div className="mt-3 flex flex-col gap-5 items-center md:mt-0">
+                    {chats.map((chat, idx) => (
+                      <React.Fragment key={idx}>
+                        {(idx === 0 ||
+                          new Date(chats[idx - 1].created_at).toDateString() !==
+                            new Date(chat.created_at).toDateString()) && (
+                          <div className="w-fit" key={idx}>
+                            <Badge variant="gray">
+                              {formatDate(chat.created_at)}
+                            </Badge>
+                          </div>
+                        )}
+                        <div className="flex flex-col gap-5 w-full bubble">
+                          <ChatBubble
+                            isSent={
+                              user.role === 'user'
+                                ? chat.is_from_user
+                                : !chat.is_from_user
+                            }
+                            createdAt={chat.created_at}
+                            key={idx}
+                          >
+                            {chat.content}
+                          </ChatBubble>
                         </div>
-                      )}
-                      <div className="flex flex-col gap-5 w-full bubble">
-                        <ChatBubble
-                          isSent={chat.isSent}
-                          timestamp={chat.timestamp}
-                          key={idx}
-                        >
-                          {chat.content}
-                        </ChatBubble>
-                      </div>
-                    </React.Fragment>
-                  ))}
-                </div>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
                 <div className="relative w-full">
