@@ -1,8 +1,8 @@
 'use client';
 import { TableHeader } from '@/types/Tables';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Check, Pencil, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
-import { Badge } from '..';
+import { Badge, Button } from '..';
 import ToggleInput from '../ToggleInput';
 import { usePathname } from 'next/navigation';
 
@@ -95,6 +95,44 @@ const DataTable = <T,>({
                       item[column.accessor as keyof typeof item] as boolean
                     }
                   />
+                ) : column.accessor === 'confirm' ? (
+                  <>
+                    {(item['status' as keyof typeof item] as boolean) !==
+                    null ? (
+                      <Badge
+                        variant={
+                          item['status' as keyof typeof item]
+                            ? 'success'
+                            : 'danger'
+                        }
+                      >
+                        <>
+                          {
+                            <>
+                              {item['status' as keyof typeof item]
+                                ? 'Processed'
+                                : 'Canceled'}
+                            </>
+                          }
+                        </>
+                      </Badge>
+                    ) : (
+                      <>
+                        <Button
+                          className="flex items-center gap-x-1 px-3"
+                          variant="green"
+                        >
+                          <Check /> Processed
+                        </Button>
+                        <Button
+                          className="flex items-center gap-x-1 px-3"
+                          variant="danger"
+                        >
+                          <X /> Canceled
+                        </Button>
+                      </>
+                    )}
+                  </>
                 ) : (
                   <>{item[column.accessor as keyof typeof item]}</>
                 )}

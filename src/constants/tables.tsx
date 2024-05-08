@@ -154,3 +154,30 @@ export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
     accessor: 'action',
   },
 ];
+
+export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Product Name',
+    accessor: 'product_name',
+  },
+  {
+    label: 'Sender',
+    accessor: 'sender',
+  },
+  {
+    label: 'Reciever',
+    accessor: 'reciever',
+  },
+  {
+    label: 'Quantity',
+    accessor: 'quantity',
+  },
+  {
+    label: 'Product Details',
+    accessor: 'id',
+  },
+  {
+    label: 'Action',
+    accessor: 'confirm',
+  },
+];
