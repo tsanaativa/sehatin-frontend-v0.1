@@ -31,7 +31,7 @@ const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   if (!user) {
-    redirect('/login');
+    redirect('/auth/login');
   }
 
   const handleSelect = (selected: string) => {

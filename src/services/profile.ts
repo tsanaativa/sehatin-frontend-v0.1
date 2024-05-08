@@ -5,8 +5,7 @@ import { getSession } from './session';
 
 export const getProfile = async () => {
   try {
-    const params = {};
-    const res = await get<typeof params, User>(`/users/profile`);
+    const res = await get<User>(`/users/profile`);
     return res.data;
   } catch (error) {
     throw new Error(String((error as Error).message));
@@ -16,8 +15,7 @@ export const getProfile = async () => {
 export const getDoctorProfile = async () => {
   try {
     const session = await getSession();
-    const params = {};
-    const res = await get<typeof params, Doctor>(
+    const res = await get<Doctor>(
       `/doctors/profile`,
       {},
       {

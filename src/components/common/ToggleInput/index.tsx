@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ToggleInputProps = {
-  label: string;
+  label?: string;
 } & React.ComponentPropsWithoutRef<'input'>;
 
 const ToggleInput = ({ label, ...props }: ToggleInputProps) => {

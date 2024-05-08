@@ -19,10 +19,35 @@ export const ADMIN_DOCTOR_SORT_OPTIONS = [
   'status',
 ];
 
+export const ADMIN_MEDICINE_SORT_OPTIONS = [
+  'name',
+  'generic name',
+  'category',
+  'classification',
+  'selling unit',
+  'active status',
+];
+
 export const ADMIN_PHARMACY_SORT_OPTIONS = [
   'name',
   'address',
   'pharmacist',
   'operational',
   'available shipping methods',
+];
+
+export const ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS = [
+  'name',
+  'category',
+  'classification',
+  'selling unit',
+  'price',
+  'stock',
+];
+
+export const STOCK_MUTATION_SORT_OPTIONS = [
+  'product name',
+  'sender',
+  'reciever',
+  'quantity',
 ];

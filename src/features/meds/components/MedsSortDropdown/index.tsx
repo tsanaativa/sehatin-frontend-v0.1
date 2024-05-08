@@ -7,11 +7,13 @@ import { useState } from 'react';
 const MedsSortDropdown = () => {
   const [sortBy, setSortBy] = useState<string>(MEDS_SORT_OPTIONS[0]);
   return (
-    <SortDropdown
-      sortBy={sortBy}
-      setSortBy={setSortBy}
-      options={MEDS_SORT_OPTIONS}
-    />
+    <>
+      <SortDropdown
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        options={MEDS_SORT_OPTIONS}
+      />
+    </>
   );
 };
 

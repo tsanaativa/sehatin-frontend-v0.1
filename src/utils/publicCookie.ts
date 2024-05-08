@@ -5,7 +5,7 @@ const set = (cname: string, cvalue: string | number, minute: number): void => {
   document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
 };
 
-const get = (cname: string): string => {
+const get = <T>(cname: string): T | null => {
   const name = cname + '=';
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -14,10 +14,10 @@ const get = (cname: string): string => {
       c = c.substring(1);
     }
     if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
+      return c.substring(name.length, c.length) as T;
     }
   }
-  return '';
+  return null;
 };
 
 const remove = (cname: string): void => set(cname, '', -1);

@@ -66,7 +66,7 @@ const DoctorsSection = ({
           specialistId: specialist.id,
           limit: 6,
         };
-        const res = await get<typeof params, { doctors: Doctor[] }>(
+        const res = await get<{ doctors: Doctor[] }>(
           `/doctors/verified`,
           params
         );

@@ -2,29 +2,24 @@
 import { Sehatin } from '@/assets/icons';
 import { Icon } from '@/components/common';
 import { ADMIN_MENUS } from '@/constants/menus';
-import {
-  ClipboardList,
-  LayoutDashboard,
-  LineChart,
-  LogOut,
-  Pill,
-  Stethoscope,
-  Store,
-  User,
-  UserRoundCog,
-} from 'lucide-react';
+import { logout } from '@/utils/interceptor';
+import { LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const AdminSidebar = () => {
   const pathname = usePathname();
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <aside className="w-80 min-h-screen bg-white-fe border-r border-gray-light px-6 py-7">
       <Link href="/admin/dashboard">
         <Sehatin />
       </Link>
-      <div className="flex flex-col justify-between h-full mt-12">
+      <div className="flex flex-col justify-between h-5/6 mt-12">
         <ul>
           {ADMIN_MENUS.map((menu, idx) => (
             <li key={idx}>
@@ -41,7 +36,10 @@ const AdminSidebar = () => {
             </li>
           ))}
         </ul>
-        <span className="flex gap-x-2">
+        <span
+          className="flex gap-x-2 text-danger px-4 py-4 cursor-pointer"
+          onClick={handleLogout}
+        >
           <LogOut /> Logout
         </span>
       </div>

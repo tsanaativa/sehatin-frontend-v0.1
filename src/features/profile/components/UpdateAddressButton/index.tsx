@@ -15,7 +15,7 @@ const UpdateAddressButton = ({ address }: UpdateAddressButtonProps) => {
   return (
     <div>
       <button
-        role="button"
+        type="button"
         className="flex items-center text-blue"
         onClick={() => setShowModal(true)}
       >

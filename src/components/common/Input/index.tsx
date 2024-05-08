@@ -31,7 +31,7 @@ const Input = forwardRef<HTMLInputElement | null, InputProps>(
     return (
       <div className="flex flex-col gap-1">
         <div
-          className={`border-[1px] relative h-14 rounded-[10px] overflow-hidden flex transition-colors duration-300
+          className={`border relative h-14 rounded-[10px] overflow-hidden flex transition-colors duration-300
           ${invalid ? 'border-danger' : 'border-gray-light hover:border-gray [&:has(:focus)]:border-primary-dark'}
           ${disabled ? 'bg-gray-light hover:border-gray-light' : ''} ${inputClass}`}
         >
@@ -67,18 +67,24 @@ const Input = forwardRef<HTMLInputElement | null, InputProps>(
             ${typeof valueMode == 'string' ? 'absolute invisible' : ''} ${disabled ? 'cursor-not-allowed' : ''}`}
           />
           {append && !disabled && (
-            <button
-              type="button"
-              onClick={onAppend}
-              aria-label="append-button"
-              className="border-none pr-4 h-full flex items-center group/append"
-            >
-              <Icon
-                name={append as keyof typeof icons}
-                size={24}
-                className={`stroke-gray transition-colors duration-300 ${invalid ? 'group-hover/append:stroke-danger' : 'group-hover/append:stroke-primary-dark'}`}
-              />
-            </button>
+            <i className="pr-4 h-full flex items-center">
+              {append in icons ? (
+                <button
+                  type="button"
+                  onClick={onAppend}
+                  aria-label="append-button"
+                  className="border-none"
+                >
+                  <Icon
+                    name={append as keyof typeof icons}
+                    size={24}
+                    className={`stroke-gray transition-colors duration-300 ${invalid ? 'group-hover/append:stroke-danger' : 'group-hover/append:stroke-primary-dark'}`}
+                  />
+                </button>
+              ) : (
+                <span className="text-gray not-italic">{append}</span>
+              )}
+            </i>
           )}
         </div>
         {message && message.length > 0 && (

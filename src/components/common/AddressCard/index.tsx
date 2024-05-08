@@ -45,7 +45,7 @@ const AddressCard = ({ address }: AddressCardProps) => {
       <span className="md:hidden text-dark-gray">
         <ChevronRight size={20} />
       </span>
-      <div className="flex items-center gap-2 hidden md:flex">
+      <div className="items-center gap-2 hidden md:flex">
         <UpdateAddressButton address={address} />
         <DeleteModalButton isIcon objName="address" onConfirm={onDelete} />
       </div>

@@ -1,7 +1,4 @@
-import { Badge, Button } from '@/components/common';
 import { TableHeader } from '@/types/Tables';
-import { Pencil, Trash2 } from 'lucide-react';
-import Link from 'next/link';
 
 export const USER_COLUMN_LIST: TableHeader[] = [
   {
@@ -14,7 +11,7 @@ export const USER_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Birth Date',
-    accessor: 'birthDate',
+    accessor: 'birth_date',
   },
   {
     label: 'Gender',
@@ -22,20 +19,15 @@ export const USER_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Status',
-    customCell: <Badge variant="success">Verified</Badge>,
+    accessor: 'status',
+  },
+  {
+    label: 'User Detail',
+    accessor: 'id',
   },
   {
     label: 'Action',
-    customCell: (
-      <>
-        <Link href="/admin/user/update">
-          <Pencil className="text-blue" />
-        </Link>
-        <Link href="/admin/user/delete">
-          <Trash2 className="text-danger" />
-        </Link>
-      </>
-    ),
+    accessor: 'action',
   },
 ];
 
@@ -54,28 +46,50 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Consultation Fee',
-    accessor: 'consultationFee',
+    accessor: 'consultation_fee',
   },
   {
     label: 'Year of Experience',
-    accessor: 'yearOfExperinece',
+    accessor: 'year_of_experience',
   },
   {
     label: 'Status',
-    customCell: <Badge variant="success">Verified</Badge>,
+    accessor: 'status',
   },
   {
     label: 'Action',
-    customCell: (
-      <>
-        <Link href="/admin/user/update">
-          <Pencil className="text-blue" />
-        </Link>
-        <Link href="/admin/user/delete">
-          <Trash2 className="text-danger" />
-        </Link>
-      </>
-    ),
+    accessor: 'action',
+  },
+];
+
+export const MEDICINE_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Generic Name',
+    accessor: 'generic_name',
+  },
+  {
+    label: 'Category',
+    accessor: 'category',
+  },
+  {
+    label: 'Classification',
+    accessor: 'classification',
+  },
+  {
+    label: 'Selling Unit',
+    accessor: 'selling_unit',
+  },
+  {
+    label: 'Active Status',
+    accessor: 'active_status',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
   },
 ];
 
@@ -98,23 +112,72 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Available Shipping Methods',
-    accessor: 'availableShippingMethods',
+    accessor: 'available_shipping_methods',
   },
   {
     label: 'Product',
-    customCell: <Button>View List</Button>,
+    accessor: 'id',
   },
   {
     label: 'Action',
-    customCell: (
-      <>
-        <Link href="/admin/user/update">
-          <Pencil className="text-blue" />
-        </Link>
-        <Link href="/admin/user/delete">
-          <Trash2 className="text-danger" />
-        </Link>
-      </>
-    ),
+    accessor: 'action',
+  },
+];
+
+export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Category',
+    accessor: 'category',
+  },
+  {
+    label: 'Selling Unit',
+    accessor: 'selling_unit',
+  },
+  {
+    label: 'Price',
+    accessor: 'price',
+  },
+  {
+    label: 'Stock',
+    accessor: 'stock',
+  },
+  {
+    label: 'Details',
+    accessor: 'id',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Product Name',
+    accessor: 'product_name',
+  },
+  {
+    label: 'Sender',
+    accessor: 'sender',
+  },
+  {
+    label: 'Reciever',
+    accessor: 'reciever',
+  },
+  {
+    label: 'Quantity',
+    accessor: 'quantity',
+  },
+  {
+    label: 'Product Details',
+    accessor: 'id',
+  },
+  {
+    label: 'Action',
+    accessor: 'confirm',
   },
 ];
