@@ -23,7 +23,7 @@ const ConsultationCard = ({
               ? consultation.doctor.profile_picture
               : consultation.user.profile_picture) || DefaultAvatarImg
           }
-          className="rounded-full w-20 h-20"
+          className="rounded-full w-20 h-20 object-cover"
           width={600}
           height={300}
           alt=""

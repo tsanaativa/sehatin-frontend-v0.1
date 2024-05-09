@@ -63,6 +63,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               is_from_user: isSent,
               type: m.type,
             };
+
             setChats((prev) => [...prev, rcvMsg]);
 
             if (consultation && m.type === 'certificate')
@@ -207,11 +208,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
       type: 'prescription',
     };
 
-    if (url && url !== '') {
-      if (conn !== null) {
-        conn.send(JSON.stringify(msgToSend));
-        createChat(`${id}`, user.role, msgToSend);
-      }
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+      createChat(`${id}`, user.role, msgToSend);
     }
   };
 

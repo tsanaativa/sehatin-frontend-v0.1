@@ -59,6 +59,7 @@ const PrescriptionButton = ({
                 Prescribe Medicine
               </div>
               <ModalPrescription
+                patientBirthDate={consultation.patient_birth_date}
                 notify={notify}
                 onShowModal={setShowModal}
                 showModal={showModal}

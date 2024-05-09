@@ -89,8 +89,6 @@ const ModalMedicalCert = ({
       patient_age: formatBirthDateToAge(patientBirthDate),
     };
 
-    console.log(certReq);
-
     setIsLoading(true);
     try {
       const certUrl = await createMedicalCertificate(certReq, `${id}`);

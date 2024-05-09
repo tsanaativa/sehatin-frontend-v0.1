@@ -1,99 +1,129 @@
-import { Button, Input, Modal, TextArea } from '@/components/common';
+import { Button, Input, Modal } from '@/components/common';
+import { getProducts } from '@/services/product';
+import { PaginationInfo } from '@/types/PaginationInfo';
+import { Product, ProductsParams } from '@/types/Product';
 import { formatBirthDateToAge } from '@/utils/formatter';
-import { validate } from '@/utils/validation';
-import { X } from 'lucide-react';
+import { Plus, Trash2, X } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { createPrescription } from '../../actions/consultation';
 
 type ModalPrescriptionProps = {
   onShowModal: (showModal: boolean) => void;
   showModal: boolean;
-  notify: (url: string, pharmacyProductIdArr: number[]) => void;
+  notify: (url: string) => void;
+  patientBirthDate: string;
 };
 
 const ModalPrescription = ({
   onShowModal,
   showModal,
   notify,
+  patientBirthDate,
 }: ModalPrescriptionProps) => {
   const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [errors, setErrors] = useState<Record<string, string>>({
-    'end-date': '',
-    diagnosis: '',
+  const [products, setProducts] = useState<Product[]>([]);
+  const [items, setItems] = useState<Product[]>([]);
+  const [quantities, setQuantities] = useState<number[]>([]);
+
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>();
+  const [searchParams, setSearchParams] = useState<ProductsParams>({
+    limit: 3,
+    page: 1,
+    keyword: '',
   });
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
-  const endDatePicker = useRef<HTMLInputElement>(null);
-  const [endDate, setEndDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  );
+  const fetchProducts = async (searchParams: ProductsParams) => {
+    try {
+      if (searchParams.page > 1) {
+        setIsLoadingMore(true);
+      }
 
-  const diagnosisRef = useRef<HTMLTextAreaElement>(null);
+      const res = await getProducts(searchParams);
+      setPaginationInfo(res.pagination_info);
 
-  const handleDate = (target: HTMLInputElement) => {
-    setEndDate(target.value);
-    handleInput('end-date', target.value);
-  };
-
-  const handleInput = (id: string, value: string) => {
-    const errs = errors;
-
-    if (value == '') {
-      errs[id] = `${id.replace('-', ' ')} cannot be empty`;
-      setErrors({ ...errs });
-      return;
+      if (searchParams.page > 1) {
+        setProducts((prev) => [...prev, ...res.products]);
+      } else {
+        setProducts(res.products);
+      }
+    } catch (err) {
+      toast.error((err as Error).message);
     }
 
-    errs[id] = validate(value, id);
-
-    setErrors({ ...errs });
+    setIsLoadingMore(false);
   };
 
-  const invalidSubmission = () => {
-    return Object.values(errors).some((err) => err !== '');
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = (e.target as HTMLInputElement).value;
+    if (keyword !== '') {
+      const newParams = {
+        ...searchParams,
+        page: 1,
+        keyword: keyword,
+      };
+      setSearchParams(newParams);
+      fetchProducts(newParams);
+    } else {
+      setProducts([]);
+    }
   };
 
-  const anyEmptyField = () => {
-    return diagnosisRef.current?.value === '' || endDate === '';
+  const loadMore = async () => {
+    const newParams = {
+      ...searchParams,
+      page: searchParams.page + 1,
+    };
+    setSearchParams(newParams);
+    fetchProducts(newParams);
+  };
+
+  const [idIdxMap, setIdIdxMap] = useState(new Map<number, number>());
+
+  const handleAddItem = (product: Product) => {
+    const foundIdx = idIdxMap.get(product.id);
+    if (foundIdx !== undefined) {
+      const prevQuantity = quantities[foundIdx];
+      setQuantities((prev) => [
+        ...prev.slice(0, foundIdx),
+        prevQuantity + 1,
+        ...prev.slice(foundIdx + 1),
+      ]);
+    } else {
+      const idx = items.length;
+      setIdIdxMap(new Map(idIdxMap.set(product.id, idx)));
+      setItems((prev) => [...prev, product]);
+      setQuantities((prev) => [...prev, 1]);
+    }
+  };
+
+  const handleDeleteItem = (product: Product, idx: number) => {
+    setQuantities((prev) => [...prev.slice(0, idx), ...prev.slice(idx + 1)]);
+    setItems((prev) => [...prev.slice(0, idx), ...prev.slice(idx + 1)]);
+    const newMap = new Map(idIdxMap);
+    newMap.delete(product.id);
+    setIdIdxMap(new Map(newMap));
   };
 
   const handleSubmit = async () => {
-    if (invalidSubmission() || anyEmptyField()) {
-      const allErrors = Object.fromEntries(
-        Object.keys(errors).map((i) => {
-          const err: Record<string, string> = {
-            diagnosis:
-              diagnosisRef.current?.value == ''
-                ? 'diagnosis cannot be empty'
-                : errors['diagnosis'],
-            'end-date':
-              endDate == '' ? 'end date cannot be empty' : errors['end-date'],
-          };
-          return [i, err[i]];
-        })
-      );
-      setErrors({ ...allErrors });
-      return;
-    }
+    const productIds = items.map((item) => item.id);
 
-    const consultationId = parseInt(`${id}`);
-
-    const certReq = {
-      start_date: new Date().toISOString().split('T')[0],
-      end_date: endDate,
-      diagnosis: diagnosisRef.current?.value,
-      // patient_age: formatBirthDateToAge(patientBirthDate)
+    const prescReq = {
+      products: productIds,
+      quantities: quantities,
+      patient_age: formatBirthDateToAge(patientBirthDate),
     };
-
-    console.log(certReq);
 
     setIsLoading(true);
     try {
-      // const certUrl = await createMedicalCertificate(certReq, `${id}`);
-      // notify(certUrl.certificate_url);
+      const prescUrl = await createPrescription(prescReq, `${id}`);
+      notify(prescUrl.prescription_url);
+      onShowModal(false);
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -103,7 +133,7 @@ const ModalPrescription = ({
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
       <div className="flex items-center justify-between border-b border-gray-light font-poppins font-semibold text-sm px-4 py-4 md:text-lg">
-        Create Medical Certificate{' '}
+        Prescribe Medicine{' '}
         <X
           className="text-gray cursor-pointer"
           onClick={() => onShowModal(false)}
@@ -115,60 +145,87 @@ const ModalPrescription = ({
             action={handleSubmit}
             className="text-start flex flex-col pt-5 gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
           >
-            <label htmlFor="diagnosis" className="w-full">
-              <h5 className="text-start">Diagnosis</h5>
-              <TextArea
-                ref={diagnosisRef}
-                id="diagnosis"
-                name="diagnosis"
-                message={errors['diagnosis']}
-                invalid={errors['diagnosis'] !== ''}
-                onInput={({ target }) =>
-                  handleInput(
-                    'diagnosis',
-                    (target as HTMLTextAreaElement).value
-                  )
-                }
-              />
-            </label>
-            <div className="flex gap-4 text-start items-center">
-              <label htmlFor="start-date" className="w-full">
-                <h5 className="text-start">Rest Recommendation</h5>
-                <Input
-                  id="start-date"
-                  disabled
-                  defaultValue={new Date().toISOString().split('T')[0]}
-                />
-              </label>
-              <h5 className="mt-5">until</h5>
-              <label htmlFor="end-date" className="w-full">
-                <h5 className="text-start invisible">Rest Recommendation</h5>
-                <Input
-                  ref={endDatePicker}
-                  min={new Date().toISOString().split('T')[0]}
-                  id="end-date"
-                  name="end-date"
-                  placeholder="Enter your birth date ..."
-                  append="Calendar"
-                  type="date"
-                  valueMode={endDate}
-                  onInput={({ target }) =>
-                    handleDate(target as HTMLInputElement)
-                  }
-                  message={errors['end-date']}
-                  invalid={errors['end-date'] !== ''}
-                  onAppend={() => {
-                    endDatePicker.current?.focus();
-                    endDatePicker.current?.showPicker();
-                  }}
-                />
-              </label>
+            <Input
+              prepend="Search"
+              placeholder="Search medicines..."
+              onChange={handleSearch}
+            />
+            <div className="grid grid-cols-3 gap-2">
+              {products.map((product, idx) => (
+                <div
+                  key={idx}
+                  className="p-2 border border-gray-light rounded flex justify-between items-center"
+                >
+                  <span className="line-clamp-1">{product.name}</span>
+                  <Button
+                    type="button"
+                    className="px-2"
+                    onClick={() => handleAddItem(product)}
+                  >
+                    <Plus size={15} />
+                  </Button>
+                </div>
+              ))}
+            </div>
+            {paginationInfo && products.length < paginationInfo?.total_data && (
+              <div className="flex w-full justify-center">
+                <Button
+                  type="button"
+                  className="w-full md:max-w-[150px] flex justify-center text-sm"
+                  variant="outlined-primary"
+                  onClick={loadMore}
+                  loading={isLoadingMore}
+                >
+                  Load More
+                </Button>
+              </div>
+            )}
+            <div className="border border-gray-light rounded p-2">
+              <div className="flex justify-between w-full mb-1">
+                <label className="w-[60%] text-sm text-dark-gray">
+                  Product Name
+                </label>
+                <label className="w-[30%] text-sm text-dark-gray">
+                  Quantity
+                </label>
+                <label className="min-w-16 text-sm text-dark-gray">
+                  <span className="invisible">Button</span>
+                </label>
+              </div>
+              <div>
+                {items.length > 0 ? (
+                  <>
+                    {items.map((item, idx) => (
+                      <div key={idx} className="flex justify-between w-full">
+                        <div className="w-[60%]">{item.name}</div>
+                        <div className="w-[30%] text-nowrap">
+                          {quantities[idx]} Per {item.selling_unit}
+                        </div>
+                        <div className="min-w-16 flex justify-end">
+                          <button
+                            type="button"
+                            className="text-gray"
+                            onClick={() => handleDeleteItem(item, idx)}
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <div className="flex justify-center items-center text-gray py-4 text-sm">
+                    No medicines yet
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex justify-end gap-5 items-center mb-2">
               <Button
-                className="text-sm flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full md:min-w-[150px] md:w-fit"
+                className="text-sm flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full min-h-[44px] md:min-w-[150px] md:w-fit"
                 onClick={handleSubmit}
                 loading={isLoading}
+                disabled={items.length === 0}
               >
                 Save
               </Button>

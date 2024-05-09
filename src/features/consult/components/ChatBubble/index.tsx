@@ -35,7 +35,7 @@ const ChatBubble = ({
               ? 'created medical certificate'
               : 'prescribed your medicine'}
             .
-            <div className="my-2">
+            <div className="my-2 flex flex-col gap-3">
               <Link href={children} target="_blank">
                 <Button className="w-full">View</Button>
               </Link>
