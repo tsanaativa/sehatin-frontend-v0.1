@@ -10,6 +10,7 @@ type ChatBubbleProps = {
   children: string;
   type?: string;
   isFromUser?: boolean;
+  role?: string;
 };
 
 const ChatBubble = ({
@@ -18,6 +19,7 @@ const ChatBubble = ({
   children,
   type,
   isFromUser,
+  role,
 }: ChatBubbleProps) => {
   return (
     <div
@@ -33,13 +35,15 @@ const ChatBubble = ({
             Doctor has{' '}
             {type === 'certificate'
               ? 'created medical certificate'
-              : 'prescribed your medicine'}
+              : 'prescribed medicine'}
             .
             <div className="my-2 flex flex-col gap-3">
               <Link href={children} target="_blank">
                 <Button className="w-full">View</Button>
               </Link>
-              {type === 'prescription' && <AddToCartButton />}
+              {type === 'prescription' && role === 'user' && (
+                <AddToCartButton />
+              )}
             </div>
           </>
         )}

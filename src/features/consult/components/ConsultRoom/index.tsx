@@ -316,6 +316,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                             key={idx}
                             type={chat.type}
                             isFromUser={chat.is_from_user}
+                            role={user.role}
                           >
                             {chat.content}
                           </ChatBubble>

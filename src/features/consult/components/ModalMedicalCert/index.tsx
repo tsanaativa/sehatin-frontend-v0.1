@@ -93,6 +93,7 @@ const ModalMedicalCert = ({
     try {
       const certUrl = await createMedicalCertificate(certReq, `${id}`);
       notify(certUrl.certificate_url);
+      onShowModal(false);
     } catch (error) {
       toast.error((error as Error).message);
     }

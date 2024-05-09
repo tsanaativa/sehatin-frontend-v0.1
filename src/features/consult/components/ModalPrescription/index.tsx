@@ -32,7 +32,7 @@ const ModalPrescription = ({
 
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>();
   const [searchParams, setSearchParams] = useState<ProductsParams>({
-    limit: 3,
+    limit: 9,
     page: 1,
     keyword: '',
   });
