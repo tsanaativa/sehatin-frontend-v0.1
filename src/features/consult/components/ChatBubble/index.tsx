@@ -29,7 +29,20 @@ const ChatBubble = ({
         className={`py-3 px-4 bg-primary-${isFromUser ? 'dark' : 'border'} font-semibold text-${!isFromUser ? 'primary-dark' : 'light'} rounded-b-2xl rounded-t${!isSent ? 'r' : 'l'}-2xl max-w-[60%] md:max-w-[45%]`}
       >
         {type !== 'certificate' && type !== 'prescription' ? (
-          <>{children}</>
+          <>
+            {type !== 'file' ? (
+              <>{children}</>
+            ) : (
+              <div>
+                File sent
+                <div className="my-2 flex">
+                  <Link href={children} target="_blank">
+                    <Button className="w-full">View</Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <>
             Doctor has{' '}

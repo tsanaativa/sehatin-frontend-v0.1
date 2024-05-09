@@ -16,6 +16,7 @@ import { createChat, endConsultation } from '../../actions/consultation';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
 import ModalTimedEndChat from '../ModalTimedEndChat';
+import { post } from '@/utils/api';
 
 type ConsultRoomProps = {
   user?: User;
@@ -146,6 +147,43 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     }
 
     if (messageRef.current) messageRef.current.value = '';
+  };
+
+  const sendFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = (e.target as HTMLInputElement).files;
+    if (files && files[0]) {
+      const inputtedFile = files[0];
+      const msgToSend = {
+        content: 'File sent',
+        type: 'file',
+      };
+
+      if (conn !== null) {
+        conn.send(JSON.stringify(msgToSend));
+        createChatFile(`${id}`, user.role, inputtedFile);
+      }
+    }
+  };
+
+  const createChatFile = async (
+    consultationId: string,
+    role: string,
+    inputtedFile: File
+  ) => {
+    const formData = new FormData();
+    formData.append('file', inputtedFile);
+    try {
+      const res = await post(
+        `/${role}s/consultations/${consultationId}/chats/file`,
+        formData,
+        {
+          'Content-Type': 'multipart/form-data',
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
   };
 
   const [isTyping, setIsTyping] = useState(false);
@@ -342,7 +380,12 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                       className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
                     >
                       <Paperclip />
-                      <input id="attach" type="file" className="hidden" />
+                      <input
+                        id="attach"
+                        type="file"
+                        className="hidden"
+                        onChange={sendFile}
+                      />
                     </label>
                   </div>
                   <Button className="px-6 h-full py-4" onClick={sendMessage}>
