@@ -3,6 +3,7 @@ import { formatTime } from '@/utils/formatter';
 import Link from 'next/link';
 import React from 'react';
 import AddToCartButton from '../AddToCartButton';
+import Image from 'next/image';
 
 type ChatBubbleProps = {
   isSent?: boolean;
@@ -34,12 +35,22 @@ const ChatBubble = ({
               <>{children}</>
             ) : (
               <div>
-                File sent
-                <div className="my-2 flex">
-                  <Link href={children} target="_blank">
-                    <Button className="w-full">View</Button>
-                  </Link>
-                </div>
+                {children.split('.')[-1] === 'pdf' ? (
+                  <>
+                    Sent a file.{' '}
+                    <Link href={children} target="_blank" className="underline">
+                      View
+                    </Link>
+                  </>
+                ) : (
+                  <Image
+                    src={children}
+                    alt=""
+                    className="rounded object-cover"
+                    width={100}
+                    height={100}
+                  />
+                )}
               </div>
             )}
           </>
