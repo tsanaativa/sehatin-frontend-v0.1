@@ -21,7 +21,7 @@ const AddToCartButton = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <Button loading={isLoading} onClick={addToCart}>
+    <Button loading={isLoading} onClick={addToCart} className="min-h-[44px]">
       Add to Cart
     </Button>
   );
