@@ -385,6 +385,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                         type="file"
                         className="hidden"
                         onChange={sendFile}
+                        accept=".png,.jpg,.jpeg,application/pdf"
                       />
                     </label>
                   </div>
