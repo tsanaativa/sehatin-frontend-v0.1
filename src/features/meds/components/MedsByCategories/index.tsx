@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/common';
-import ProductsSection from '@/features/meds/components/ProductsSection';
 import { DISPLAYED_CATEGORIES } from '@/constants/categories';
+import ProductsSection from '@/features/meds/components/ProductsSection';
 import { Category } from '@/types/Product';
-import React, { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const MedsByCategories = () => {
   const NUMBER_OF_CATEGORIES_TO_FETCH = 2;

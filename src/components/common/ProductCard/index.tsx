@@ -1,39 +1,29 @@
-'use client';
-
+import { Product } from '@/types/Product';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '..';
-import { Product } from '@/types/Product';
-import { getUser } from '@/utils/auth';
-import { useEffect, useState } from 'react';
-import { User } from '@/types/User';
 
 type ProductCardProps = {
   width?: string;
   product: Product;
+  isAuthenticated: boolean;
 };
 
-const ProductCard = ({ width, product }: ProductCardProps) => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
-
+const ProductCard = ({ width, product, isAuthenticated }: ProductCardProps) => {
   return (
     <div
-      className={`border-2 border-primary-border rounded-lg md:w-full ${width}`}
+      className={`border-2 border-primary-border rounded-lg md:w-full min-w-[185px] ${width}`}
     >
       <Image
-        src={product.image}
+        src={product.product_picture}
         className="w-full h-24 object-cover rounded-tl-lg rounded-tr-lg"
         width={600}
         height={300}
         alt=""
       />
       <div className="pt-2 pb-3 px-2 md:px-3">
-        <Link href="/meds/panadol-extra-10-kaplet-2-box-bla">
+        <Link href={`/meds/${product.slug_id}/${product.id}`}>
           <div className="min-h-[40px]">
             <span className="font-poppins font-medium text-dark md:text-sm line-clamp-2">
               {product.name}
@@ -51,7 +41,7 @@ const ProductCard = ({ width, product }: ProductCardProps) => {
         <Button
           className="flex items-center justify-center gap-x-1 w-full text-xs mt-4 md:text-sm"
           variant="primary"
-          disabled={!!!user}
+          disabled={!isAuthenticated}
         >
           <Plus size={14} /> Add to Cart
         </Button>

@@ -2,21 +2,62 @@
 
 import { CategorizeSection } from '@/components/common';
 import { Doctor, Specialist } from '@/types/Doctor';
-import api from '@/utils/api';
-import { getUser } from '@/utils/auth';
-import { useEffect, useState } from 'react';
+import { get } from '@/utils/api';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import DoctorCard from '../DoctorCard';
 import DoctorCardSkeleton from '../DoctorCardSkeleton';
+import { WebSocketContext } from '@/context/WebSocketProvider';
+import { WebSocketMessage } from '@/types/WebSocketMessage';
+import { UserContext } from '@/context/UserProvider';
 
 type DoctorsSectionProps = {
   specialist: Specialist;
+  isAuthenticated: boolean;
 };
 
-const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
+const DoctorsSection = ({
+  specialist,
+  isAuthenticated,
+}: DoctorsSectionProps) => {
+  const { user } = useContext(UserContext);
+  const { setConn } = useContext(WebSocketContext);
+
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [user, setUser] = useState(getUser());
+  const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
+
+  useEffect(() => {
+    const joinRoom = () => {
+      const ws = new WebSocket(
+        `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/doctors/subscribe`
+      );
+      if (ws.OPEN) {
+        ws.onmessage = (message) => {
+          const m: WebSocketMessage = JSON.parse(message.data);
+          if (m.type === 'doctor') {
+            setShouldRefetch(!shouldRefetch);
+          }
+        };
+
+        ws.onclose = () => {
+          console.log('Closed...');
+        };
+        ws.onerror = () => {
+          console.log('Error!');
+        };
+        ws.onopen = () => {
+          console.log('Opened..');
+        };
+
+        setConn(ws);
+      }
+    };
+
+    joinRoom();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -25,8 +66,8 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
           specialistId: specialist.id,
           limit: 6,
         };
-        const res = await api.get<typeof params, { doctors: Doctor[] }>(
-          `/doctors`,
+        const res = await get<{ doctors: Doctor[] }>(
+          `/doctors/verified`,
           params
         );
 
@@ -39,7 +80,7 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
     };
 
     fetchDoctors();
-  }, [specialist.id, user]);
+  }, [specialist.id, shouldRefetch]);
 
   return (
     <CategorizeSection
@@ -56,6 +97,7 @@ const DoctorsSection = ({ specialist }: DoctorsSectionProps) => {
                   key={idx}
                   width="min-w-[350px] md:min-w-[400px]"
                   doctor={doctor}
+                  isAuthenticated={isAuthenticated}
                 />
               ))}
             </>

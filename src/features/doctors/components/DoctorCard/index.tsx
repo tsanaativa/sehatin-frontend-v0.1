@@ -3,29 +3,27 @@
 import { Button } from '@/components/common';
 import Badge from '@/components/common/Badge';
 import { Doctor } from '@/types/Doctor';
+import { formatYearToExp } from '@/utils/formatter';
 import { BriefcaseBusiness, MessageCircleMore } from 'lucide-react';
 import Image from 'next/image';
-import ModalDoctorDetail from '../ModalDoctorDetail';
-import React, { useEffect, useState } from 'react';
-import { getYearsOfExp } from '@/utils/doctor';
 import Link from 'next/link';
-import { getUser } from '@/utils/auth';
-import { User } from '@/types/User';
+import React, { useState } from 'react';
+import ModalDoctorDetail from '../ModalDoctorDetail';
 
 type DoctorCardProps = {
+  isAuthenticated: boolean;
   width?: string;
   doctor: Doctor;
   isMini?: boolean;
 };
 
-const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
-  const [user, setUser] = useState<User | undefined>();
-
-  useEffect(() => {
-    setUser(getUser());
-  }, []);
-
-  const yearsOfExp = getYearsOfExp(doctor.work_start_year);
+const DoctorCard = ({
+  isAuthenticated,
+  width,
+  doctor,
+  isMini = false,
+}: DoctorCardProps) => {
+  const yearsOfExp = formatYearToExp(doctor.work_start_year);
   const [showDetail, setShowDetail] = useState(false);
 
   const disableDefaultClick = (e: React.MouseEvent) => {
@@ -65,7 +63,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
             <Button
               className="flex items-center justify-center gap-x-2 px-5 text-xs w-full mt-1 md:text-sm"
               variant="primary"
-              disabled={!!!user}
+              disabled={!isAuthenticated}
             >
               <MessageCircleMore size={14} /> Chat
             </Button>
@@ -115,7 +113,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
                 <Button
                   className="flex items-center justify-center gap-x-1 px-5 text-xs w-fit md:text-sm"
                   variant="primary"
-                  disabled={!!!user}
+                  disabled={!isAuthenticated}
                 >
                   <MessageCircleMore size={14} /> Chat
                 </Button>
@@ -125,6 +123,7 @@ const DoctorCard = ({ width, doctor, isMini = false }: DoctorCardProps) => {
         </div>
       )}
       <ModalDoctorDetail
+        isAuthenticated={isAuthenticated}
         doctor={doctor}
         onShowModal={setShowDetail}
         showModal={showDetail}

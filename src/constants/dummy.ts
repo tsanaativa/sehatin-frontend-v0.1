@@ -4,6 +4,7 @@ import { Doctor } from '@/types/Doctor';
 import { Product } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';
 import { User } from '@/types/User';
+import { Chat } from '@/types/Chat';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
@@ -41,7 +42,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -54,7 +55,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -67,20 +68,12 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
   },
 ];
-
-export const DUMMY_USER: User = {
-  id: 1,
-  name: 'Vivin',
-  email: 'vivin@gmail.com',
-  gender: 'male',
-  birth_date: '2001-01-01',
-};
 
 export const DUMMY_CHOOSE_PHARMACIES = [
   {
@@ -224,35 +217,256 @@ export const DUMMY_SPECIALISTS = {
   '107': 'Spesialis Saraf Konsultan Nyeri',
 };
 
-export const DUMMY_CHAT = [
+export const DUMMY_CART = [
   {
-    date: '2020-05-01',
-    chats: [
+    products: [
       {
-        sentBy: 1,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hi. Please help',
+        id: 1,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-1',
+        price: 15990,
+        stock: 3,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
       },
       {
-        sentBy: 2,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hello, how can I help you?',
+        id: 2,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing Pusing Pusing Pusing',
+        slug: 'panadol-obat-pusingg-2',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 3,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-3',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 4,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-4',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
       },
     ],
+    name: 'K-24 Mampang Prapatan',
+    id: 1,
   },
   {
-    date: '2020-05-01',
-    chats: [
+    products: [
       {
-        sentBy: 1,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hi. Please help',
+        id: 11,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-11',
+        price: 15990,
+        stock: 3,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
       },
       {
-        sentBy: 2,
-        time: '2020-05-01T01:12:00Z',
-        content: 'Hello, how can I help you?',
+        id: 12,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-12',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
       },
     ],
+    name: 'Century Mampang Prapatan',
+    id: 2,
+  },
+  {
+    products: [
+      {
+        id: 13,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-13',
+        price: 15990,
+        stock: 3,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+      {
+        id: 14,
+        picture:
+          'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        name: 'Panadol Obat Pusing',
+        slug: 'panadol-obat-pusingg-14',
+        price: 15990,
+        stock: 5,
+        inCart: 2,
+        label: 'per BOTOL',
+        is_available: true,
+      },
+    ],
+    name: 'Century Mampang Prapatan',
+    id: 3,
+  },
+];
+
+export const USER_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Riyyan',
+    email: 'riyyan@gmail.com',
+    birth_date: '2001-01-01',
+    gender: 'Male',
+    status: true,
+  },
+  {
+    id: 2,
+    name: 'Vivin',
+    email: 'vivin@gmail.com',
+    birth_date: '2001-01-01',
+    gender: 'Female',
+    status: false,
+  },
+];
+
+export const DOCTOR_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Zen',
+    email: 'zen@gmail.com',
+    specialist: 'Anak',
+    consultation_fee: 'Rp150.000',
+    year_of_experience: '10 years',
+    status: false,
+  },
+  {
+    id: 2,
+    name: 'Fajar',
+    email: 'fajar@gmail.com',
+    specialist: 'Anak',
+    consultation_fee: 'Rp150.000',
+    year_of_experience: '10 years',
+    status: true,
+  },
+];
+
+export const MEDICINE_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Box',
+    active_status: false,
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Strip',
+    active_status: true,
+  },
+];
+
+export const DUMMY_CATEGORY_FORM = {
+  1: 'Vitamin C',
+  2: 'Obat Sakit Kepala',
+  3: 'Suplemen Daya Tahan',
+  4: 'Obat Demam',
+  5: 'Obat Batuk',
+  6: 'Obat Sakit Tenggorokan',
+  7: 'Vitamin Anak',
+  8: 'Vitamin Ibu Hamil',
+};
+
+export const PHARMACY_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Egi',
+    address: 'Jl. Hutan No.1 Kuningan, Kunigan, Kunigan, Kuningan',
+    pharmacist: 'Apotek Sebelah 7978364284 081231812212',
+    operational: 'Mon to Fri, 10:00 - 20:00',
+    available_shipping_methods: 'Official Next Day, JNE Next Day',
+  },
+  {
+    id: 2,
+    name: 'Vivin',
+    address: 'Jl. Hutan No.1 Kuningan, Kunigan, Kunigan, Kuningan',
+    pharmacist: 'Apotek Sebelah 7978364284 081231812212',
+    operational: 'Mon to Fri, 10:00 - 20:00',
+    available_shipping_methods: 'Official Next Day, JNE Next Day',
+  },
+];
+
+export const PHARMACY_PRODUCT_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    category: 'Obat Sakit Kepala',
+    selling_unit: 'Box',
+    price: 'Rp100.000',
+    stock: '200',
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    category: 'Obat Sakit Kepala',
+    selling_unit: 'Box',
+    price: 'Rp75.000',
+    stock: '150',
+  },
+];
+
+export const STOCK_MUTATION_TABLE_DATA = [
+  {
+    id: 1,
+    product_name: 'Panadol',
+    sender: 'Pharmacy B',
+    reciever: 'Pharmacy A',
+    quantity: '30',
+    status: null,
+  },
+  {
+    id: 2,
+    product_name: 'Panadol',
+    sender: 'Pharmacy A',
+    reciever: 'Pharmacy B',
+    quantity: '30',
+    status: true,
+  },
+  {
+    id: 3,
+    product_name: 'Panadol',
+    sender: 'Pharmacy C',
+    reciever: 'Pharmacy A',
+    quantity: '30',
+    status: false,
   },
 ];

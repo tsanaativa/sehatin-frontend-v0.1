@@ -2,20 +2,25 @@
 
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import { PROFILE_MENUS } from '@/constants/menus';
-import { getUser } from '@/utils/auth';
+import { UserContext } from '@/context/UserProvider';
+import { logout } from '@/utils/interceptor';
 import { ChevronRight, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useContext } from 'react';
 
 type ProfileSidebarProps = {
   isMobile?: boolean;
 };
 
 const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
+  const { user } = useContext(UserContext);
   const pathname = usePathname();
-  const user = getUser();
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   return (
     <div>
@@ -67,12 +72,14 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
           </React.Fragment>
         ))}
         {isMobile && (
-          <Link href="/logout">
-            <li className="px-4 py-4 border-t border-gray-light flex items-center justify-between text-lg md:text-base text-danger font-semibold">
-              Logout
-              <LogOut />
-            </li>
-          </Link>
+          <li
+            role="button"
+            onClick={handleLogout}
+            className="px-4 py-4 border-t border-gray-light flex items-center justify-between text-lg md:text-base text-danger font-semibold"
+          >
+            Logout
+            <LogOut />
+          </li>
         )}
       </ul>
     </div>

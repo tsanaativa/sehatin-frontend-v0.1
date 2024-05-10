@@ -3,7 +3,7 @@
 import { LocationIcon } from '@/assets/icons';
 import UpdateAddressButton from '@/features/profile/components/UpdateAddressButton';
 import { Address } from '@/types/Address';
-import { formatAddress } from '@/utils/address';
+import { formatAddress } from '@/utils/formatter';
 import { Check, ChevronRight } from 'lucide-react';
 import Badge from '../Badge';
 import DeleteModalButton from '../DeleteModalButton';
@@ -45,7 +45,7 @@ const AddressCard = ({ address }: AddressCardProps) => {
       <span className="md:hidden text-dark-gray">
         <ChevronRight size={20} />
       </span>
-      <div className="flex items-center gap-2 hidden md:flex">
+      <div className="items-center gap-2 hidden md:flex">
         <UpdateAddressButton address={address} />
         <DeleteModalButton isIcon objName="address" onConfirm={onDelete} />
       </div>

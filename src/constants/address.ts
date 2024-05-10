@@ -10,6 +10,6 @@ export const DEFAULT_ADDRESS: Address = {
   district: 'Kuningan Timur',
   subdistrict: 'Setiabudi',
   postal_code: 12950,
-  latitude: -6.2295986,
-  longitude: 106.8236209,
+  latitude: 106.80978466685714,
+  longitude: -6.226135037364805,
 };

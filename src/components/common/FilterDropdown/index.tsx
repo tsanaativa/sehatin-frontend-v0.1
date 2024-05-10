@@ -21,20 +21,20 @@ const FilterDropdown = ({
 }: FilterDropdownProps) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-  function show() {
+  const show = () => {
     setShowDropdown(true);
-  }
+  };
 
   const ref = useOutsideClick(() => {
     setShowDropdown(false);
   });
 
-  function reset() {
+  const reset = () => {
     setShowDropdown(false);
     if (onReset) {
       onReset();
     }
-  }
+  };
 
   return (
     <div className="relative">
@@ -52,7 +52,7 @@ const FilterDropdown = ({
         Filter
       </Button>
       <div
-        className={`mt-1 min-w-[280px] absolute z-10 right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
+        className={`mt-1 min-w-[280px] absolute z-10 right-0 bg-light border border-gray-light rounded p-1 ${!showDropdown ? 'hidden' : ''}`}
         ref={ref}
       >
         <div className="w-full flex items-center">

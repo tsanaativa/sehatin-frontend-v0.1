@@ -28,14 +28,14 @@ const SortDropdown = ({
     setShowDropdown(false);
   });
 
-  function handleChange(e: React.MouseEvent<HTMLInputElement>) {
+  const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     if (target.checked) {
       onSort(target.id, sort);
     } else {
       onSort(target.id, '');
     }
-  }
+  };
 
   return (
     <div className="relative">
@@ -62,7 +62,7 @@ const SortDropdown = ({
               <label
                 key={idx}
                 htmlFor={option}
-                className="px-2 md:px-3 py-2 hover:bg-gray-lighter flex gap-2 flex items-center cursor-pointer capitalize text-sm"
+                className="px-2 md:px-3 py-2 hover:bg-gray-lighter gap-2 flex items-center cursor-pointer capitalize text-sm"
               >
                 <span
                   className={`${sortBy === option ? 'visible' : 'invisible'}`}

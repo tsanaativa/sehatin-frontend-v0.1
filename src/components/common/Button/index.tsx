@@ -1,12 +1,16 @@
+import Loading from '../Loading';
+
 type ButtonProps = {
   variant?:
     | 'primary'
     | 'primary-light'
     | 'outlined-primary'
+    | 'danger'
     | 'outlined-danger'
     | 'danger'
     | 'outlined-gray'
-    | 'google';
+    | 'google'
+    | 'green';
   loading?: boolean;
 } & React.ComponentPropsWithoutRef<'button'>;
 
@@ -20,16 +24,17 @@ const Button = ({
 }: ButtonProps) => {
   const TYPE_STYLE = {
     primary:
-      'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary/70',
+      'text-light bg-primary-dark/85 hover:bg-primary-dark/90 active:bg-primary-dark disabled:bg-primary-disabled disabled:cursor-not-allowed',
     'outlined-primary':
-      'text-primary-dark bg-light border border-primary-dark hover:text-light hover:bg-primary-dark',
-    'outlined-danger':
-      'text-danger bg-danger-light border border-danger hover:text-light hover:bg-danger',
+      'text-primary-dark bg-light border border-primary-dark hover:bg-primary/10 disabled:hover:bg-light disabled:border-primary-disabled disabled:text-primary-disabled disabled:cursor-not-allowed',
+    danger:
+      'text-light bg-danger/85 hover:bg-danger/90 active:bg-danger disabled:bg-danger/60',
+    'outlined-danger': '',
     'primary-light': 'text-primary-dark bg-primary-border',
-    danger: 'text-white bg-danger hover:bg-danger/80',
     'outlined-gray': 'text-dark-gray border border-gray hover:bg-gray-light',
     google:
-      'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark',
+      'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark hover:border-gray-cart disabled:opacity-50 disabled:cursor-not-allowed',
+    green: 'text-light bg-green hover:bg-green/90',
   };
 
   return (
@@ -38,7 +43,7 @@ const Button = ({
       disabled={disabled || loading}
       {...buttonProps}
     >
-      {loading ? 'loading' : children}
+      {loading ? <Loading name="jump-dots" /> : children}
     </button>
   );
 };

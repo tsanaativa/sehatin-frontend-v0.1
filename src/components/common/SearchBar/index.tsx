@@ -12,17 +12,17 @@ const SearchBar = () => {
   const router = useRouter();
   const searchBarRef = useRef<HTMLInputElement>(null);
 
-  function handleKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       search();
     }
-  }
+  };
 
-  function search() {
+  const search = () => {
     const value = searchBarRef.current?.value;
     const path = pathname.includes('meds') ? 'meds' : 'doctors';
     router.push(`/${path}/search?keyword=${value}`);
-  }
+  };
 
   return (
     <div className="flex gap-4">
