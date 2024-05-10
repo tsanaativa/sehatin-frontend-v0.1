@@ -2,8 +2,14 @@
 import React, { useRef, useState } from 'react';
 import { Button, Input } from '@/components/common';
 import { validate } from '@/utils/validation';
+import { post } from '@/utils/api';
+import { toast } from 'react-toastify';
 
-const ChangePasswordForm = () => {
+type ChangePasswordFormProps = {
+  onSuccess: () => void;
+};
+
+const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({
     password: '',
     'new-password': '',
@@ -14,10 +20,9 @@ const ChangePasswordForm = () => {
   const newPassword = useRef<HTMLInputElement>(null);
   const confirmPassword = useRef<HTMLInputElement>(null);
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(true);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(true);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(true);
 
   const handleOnBlurPassword = () => {
     const errs = errors;
@@ -96,6 +101,22 @@ const ChangePasswordForm = () => {
       setErrors({ ...allErrors });
       return;
     }
+
+    const req = {
+      password: password.current?.value,
+      new_password: newPassword.current?.value,
+    };
+    handleChangePassword(req);
+  };
+
+  const handleChangePassword = async (req: any) => {
+    try {
+      await post(`/auth/change-password`, req);
+      toast.success('successfully changed password');
+      onSuccess();
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
   };
 
   return (
@@ -157,7 +178,7 @@ const ChangePasswordForm = () => {
             onAppend={() => setShowConfirmPassword(!showConfirmPassword)}
           />
         </label>
-        <Button className="h-14 mt-9" variant="primary">
+        <Button className="h-14 mt-2" variant="primary">
           Change Password
         </Button>
       </form>
