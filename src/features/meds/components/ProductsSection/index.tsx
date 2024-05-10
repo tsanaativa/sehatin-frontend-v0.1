@@ -10,6 +10,7 @@ import { splitToNArrays } from '@/utils/helper';
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ProductCardSkeleton from '../ProductCardSkeleton';
+import { formatCoordinateToLongLat } from '@/utils/formatter';
 
 type ProductsSectionProps = {
   category: Category;
@@ -22,21 +23,24 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      let coordinate = formatCoordinateToLongLat(
+        user?.addresses[0]?.coordinate || ''
+      );
       try {
         const params = {
           longitude:
             user && user?.addresses?.length > 0
-              ? user.addresses[0]?.longitude
+              ? coordinate.longitude
               : DEFAULT_ADDRESS.longitude,
           latitude:
             user && user?.addresses?.length > 0
-              ? user.addresses[0]?.latitude
+              ? coordinate.latitude
               : DEFAULT_ADDRESS.latitude,
           categoryId: category.id,
           limit: 15,
         };
         const res = await get<{ products: Product[] }>(
-          `/products/nearest`,
+          `/products/nearest/search`,
           params
         );
 

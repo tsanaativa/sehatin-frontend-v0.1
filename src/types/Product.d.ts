@@ -4,7 +4,8 @@ export type Product = {
   generic_name: string;
   selling_unit: string;
   price: string;
-  image: string;
+  product_picture: string;
+  slug_id: string;
 };
 
 export type Category = {
@@ -16,4 +17,9 @@ export type ProductsParams = {
   keyword: string;
   page: number;
   limit: number;
+  categoryId: string;
+  sortBy: string;
+  sort: string;
+  longitude: number;
+  latitude: number;
 };

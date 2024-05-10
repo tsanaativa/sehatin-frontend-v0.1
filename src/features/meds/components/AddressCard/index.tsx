@@ -38,7 +38,7 @@ const AddressCard = () => {
   }, [addressOpts, router, user]);
 
   const show = () => {
-    setShowDropdown(true);
+    if (user) setShowDropdown(true);
   };
 
   const ref = useOutsideClick(() => {
@@ -71,9 +71,11 @@ const AddressCard = () => {
             )}
           </p>
         </div>
-        <span>
-          <ChevronDown size={20} />
-        </span>
+        {user && (
+          <span>
+            <ChevronDown size={20} />
+          </span>
+        )}
       </div>
       <div
         className={`mt-1 w-full absolute z-10 right-0 bg-light border border-gray-light rounded ${!showDropdown ? 'hidden' : ''}`}
