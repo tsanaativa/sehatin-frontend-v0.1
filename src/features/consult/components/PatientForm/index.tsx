@@ -205,7 +205,7 @@ const PatientForm = ({ isEdit, user }: PatientFormProps) => {
             Back
           </Button>
           <Button
-            className="flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full md:min-w-[190px] md:w-fit"
+            className="flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full min-h-[44px] md:min-w-[190px] md:w-fit"
             onClick={handleSubmit}
             loading={isLoading}
           >

@@ -15,7 +15,7 @@ const ConsultationCard = ({
   isDoctor,
 }: ConsultationCardProps) => {
   return (
-    <div className="border border-primary-border rounded-lg cursor-pointer">
+    <div className="border border-primary-border rounded-lg">
       <div className="flex justify-between gap-x-4 p-4 border-b border-primary-border">
         <Image
           src={
@@ -23,7 +23,7 @@ const ConsultationCard = ({
               ? consultation.doctor.profile_picture
               : consultation.user.profile_picture) || DefaultAvatarImg
           }
-          className="rounded-full w-20 h-20"
+          className="rounded-full w-20 h-20 object-cover"
           width={600}
           height={300}
           alt=""
@@ -38,7 +38,7 @@ const ConsultationCard = ({
                 ? consultation.doctor.specialist.name
                 : `${consultation.patient_name} (${formatBirthDateToAge(consultation.patient_birth_date)} y.o., ${consultation.patient_gender?.name})`}
             </span>
-            <span className="font-medium text-dark-gray text-xs text-dark md:text-sm">
+            <span className="font-medium text-dark-gray text-xs md:text-sm">
               {consultation.ended_at
                 ? `Ended at ${formatDateTime(consultation.ended_at)}`
                 : `Started at ${formatDateTime(consultation.created_at)}`}
@@ -74,12 +74,8 @@ const ConsultationCard = ({
             </a>
           )}
         </div>
-        <Link
-          href={`/consult/${consultation.ended_at && isDoctor ? `start/${consultation.doctor.id}` : `${consultation.id}`}`}
-        >
-          <Button className="px-3 text-sm min-w-[120px]">
-            {consultation.ended_at && isDoctor ? 'Chat Again' : 'View Chat'}
-          </Button>
+        <Link href={`/consult/${consultation.id}`}>
+          <Button className="px-3 text-sm min-w-[120px]">View Chat</Button>
         </Link>
       </div>
     </div>

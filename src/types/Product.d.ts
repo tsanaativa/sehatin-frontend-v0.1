@@ -11,3 +11,9 @@ export type Category = {
   id: number;
   name: string;
 };
+
+export type ProductsParams = {
+  keyword: string;
+  page: number;
+  limit: number;
+};

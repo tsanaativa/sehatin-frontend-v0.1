@@ -2,19 +2,21 @@
 
 import { Badge, Button, Input } from '@/components/common';
 import { WebSocketContext } from '@/context/WebSocketProvider';
+import { getConsultation } from '@/services/consultation';
 import { Chat } from '@/types/Chat';
+import { Consultation } from '@/types/Consultation';
+import { User } from '@/types/User';
+import { WebSocketMessage } from '@/types/WebSocketMessage';
 import { formatDate } from '@/utils/formatter';
 import { Paperclip } from 'lucide-react';
 import { redirect, useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import { createChat, endConsultation } from '../../actions/consultation';
 import ChatBubble from '../ChatBubble';
 import ConsultBar from '../ConsultBar';
-import { WebSocketMessage } from '@/types/WebSocketMessage';
-import { User } from '@/types/User';
-import { Consultation } from '@/types/Consultation';
-import { getConsultation } from '@/services/consultation';
-import { toast } from 'react-toastify';
-import { createChat } from '../../actions/consultation';
+import ModalTimedEndChat from '../ModalTimedEndChat';
+import { post } from '@/utils/api';
 
 type ConsultRoomProps = {
   user?: User;
@@ -45,7 +47,12 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
           const m: WebSocketMessage = JSON.parse(message.data);
           console.log(m);
           const isSent = m.user_role === 'user';
-          if (m.type === 'text' || m.type === 'file') {
+          if (
+            m.type === 'text' ||
+            m.type === 'file' ||
+            m.type === 'certificate' ||
+            m.type === 'prescription'
+          ) {
             var tzoffset = new Date().getTimezoneOffset() * 60000;
             var localISOTime = new Date(Date.now() - tzoffset)
               .toISOString()
@@ -57,10 +64,37 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               is_from_user: isSent,
               type: m.type,
             };
+
             setChats((prev) => [...prev, rcvMsg]);
+
+            if (consultation && m.type === 'certificate')
+              setConsultation({
+                ...consultation,
+                certificate_url: m.content,
+              });
+
+            if (consultation && m.type === 'prescription')
+              setConsultation({
+                ...consultation,
+                prescription_url: m.content,
+              });
           } else if (m.type === 'typing') {
             if (!isSent) {
               setIsTyping(m.content === 'true');
+            }
+          } else if (m.type === 'end') {
+            if (m.content === 'now') {
+              if (consultation)
+                setConsultation({
+                  ...consultation,
+                  ended_at: new Date().toISOString(),
+                });
+              endChat();
+            } else {
+              let time = parseInt(m.content);
+              if (time >= 0) {
+                setIsCountingDown(true);
+              }
             }
           }
         };
@@ -84,8 +118,8 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
         const consultation = await getConsultation(user.role, `${id}`);
         setConsultation(consultation);
         setChats(consultation.chats);
+
         if (consultation) {
-          console.log(consultation);
           joinRoom();
         }
       } catch (err) {
@@ -95,6 +129,7 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     };
 
     fetchConsultation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, router, setConn, user]);
 
   const sendMessage = () => {
@@ -112,6 +147,43 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     }
 
     if (messageRef.current) messageRef.current.value = '';
+  };
+
+  const sendFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = (e.target as HTMLInputElement).files;
+    if (files && files[0]) {
+      const inputtedFile = files[0];
+      const msgToSend = {
+        content: 'File sent',
+        type: 'file',
+      };
+
+      if (conn !== null) {
+        conn.send(JSON.stringify(msgToSend));
+        createChatFile(`${id}`, user.role, inputtedFile);
+      }
+    }
+  };
+
+  const createChatFile = async (
+    consultationId: string,
+    role: string,
+    inputtedFile: File
+  ) => {
+    const formData = new FormData();
+    formData.append('file', inputtedFile);
+    try {
+      const res = await post(
+        `/${role}s/consultations/${consultationId}/chats/file`,
+        formData,
+        {
+          'Content-Type': 'multipart/form-data',
+        }
+      );
+      return res.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
   };
 
   const [isTyping, setIsTyping] = useState(false);
@@ -156,9 +228,77 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
     }
   };
 
+  const notifyCert = (url: string) => {
+    const msgToSend = {
+      content: url,
+      type: 'certificate',
+    };
+
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+      createChat(`${id}`, user.role, msgToSend);
+    }
+  };
+
+  const notifyPrescription = (url: string) => {
+    const msgToSend = {
+      content: url,
+      type: 'prescription',
+    };
+
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+      createChat(`${id}`, user.role, msgToSend);
+    }
+  };
+
+  const notifyEnd = (seconds: number) => {
+    const msgToSend = {
+      content: seconds > 0 ? '30' : 'now',
+      type: 'end',
+    };
+
+    if (conn !== null) {
+      if (user.role === 'doctor') {
+        setIsCountingDown(true);
+        setShowModal(true);
+      } else {
+        conn.send(JSON.stringify(msgToSend));
+        endChat();
+      }
+    }
+  };
+
+  const endChat = async () => {
+    setShowModal(false);
+    try {
+      await endConsultation(user.role, `${id}`);
+      toast.success('successfully ended');
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+    router.push(
+      user.role === 'user' ? '/profile/my-consultation-history' : '/'
+    );
+  };
+
+  const notifyCountDown = (countDown: number) => {
+    const msgToSend = {
+      content: countDown,
+      type: 'end',
+    };
+
+    if (conn !== null) {
+      conn.send(JSON.stringify(msgToSend));
+    }
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isCountingDown, setIsCountingDown] = useState<boolean>(false);
 
   return (
     <>
@@ -169,6 +309,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
               isTyping={isTyping}
               consultation={consultation}
               isDoctor={user.role === 'user'}
+              notifyCert={notifyCert}
+              notifyPrescription={notifyPrescription}
+              notifyEnd={notifyEnd}
             />
           </div>
           <div className="relative w-full">
@@ -177,6 +320,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                 isTyping={isTyping}
                 consultation={consultation}
                 isDoctor={user.role === 'user'}
+                notifyCert={notifyCert}
+                notifyPrescription={notifyPrescription}
+                notifyEnd={notifyEnd}
               />
             </div>
             <div className="flex flex-col w-full h-[calc(100vh-10.5rem)] md:h-[75vh] md:border md:border-gray-light md:rounded">
@@ -206,6 +352,9 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                             }
                             createdAt={chat.created_at}
                             key={idx}
+                            type={chat.type}
+                            isFromUser={chat.is_from_user}
+                            role={user.role}
                           >
                             {chat.content}
                           </ChatBubble>
@@ -215,30 +364,50 @@ const ConsultRoom = ({ user }: ConsultRoomProps) => {
                   </div>
                 )}
               </div>
-              <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
-                <div className="relative w-full">
-                  <Input
-                    ref={messageRef}
-                    type="text"
-                    placeholder="Enter message..."
-                    className="w-full"
-                    onKeyUp={handleKeyUp}
-                  />
-                  <label
-                    htmlFor="attach"
-                    role="button"
-                    className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
-                  >
-                    <Paperclip />
-                    <input id="attach" type="file" className="hidden" />
-                  </label>
+              {!!!consultation.ended_at ? (
+                <div className="w-full bg-light py-3 bottom-0 flex items-center gap-4 md:p-7">
+                  <div className="relative w-full">
+                    <Input
+                      ref={messageRef}
+                      type="text"
+                      placeholder="Enter message..."
+                      className="w-full"
+                      onKeyUp={handleKeyUp}
+                    />
+                    <label
+                      htmlFor="attach"
+                      role="button"
+                      className="text-dark-gray absolute right-3 bottom-[calc(50%-0.75rem)]"
+                    >
+                      <Paperclip />
+                      <input
+                        id="attach"
+                        type="file"
+                        className="hidden"
+                        onChange={sendFile}
+                        accept=".png,.jpg,.jpeg,application/pdf"
+                      />
+                    </label>
+                  </div>
+                  <Button className="px-6 h-full py-4" onClick={sendMessage}>
+                    Send
+                  </Button>
                 </div>
-                <Button className="px-6 h-full py-4" onClick={sendMessage}>
-                  Send
-                </Button>
-              </div>
+              ) : (
+                <div className="flex justify-center py-1 bg-gray-light text-dark-gray text-sm">
+                  Chat ended
+                </div>
+              )}
             </div>
           </div>
+          {isCountingDown && (
+            <ModalTimedEndChat
+              startCount={isCountingDown}
+              notify={notifyCountDown}
+              onConfirm={endChat}
+              showModal={showModal}
+            />
+          )}
         </>
       ) : (
         <div className="w-full flex items-center justify-center text-gray h-[calc(100vh-10.5rem)] md:h-[75vh]">

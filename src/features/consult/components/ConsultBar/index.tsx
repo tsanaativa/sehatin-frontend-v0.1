@@ -18,6 +18,7 @@ type ConsultBarProps = {
   isDoctor: boolean;
   notifyCert: (url: string) => void;
   notifyPrescription: (url: string) => void;
+  notifyEnd: (seconds: number) => void;
 };
 
 const ConsultBar = ({
@@ -26,10 +27,13 @@ const ConsultBar = ({
   isDoctor,
   notifyCert,
   notifyPrescription,
+  notifyEnd,
 }: ConsultBarProps) => {
   const { id } = useParams();
 
-  const handleEndChat = () => {};
+  const handleEndChat = () => {
+    notifyEnd(isDoctor ? 0 : 30);
+  };
 
   return (
     <div className="w-full">
@@ -91,10 +95,20 @@ const ConsultBar = ({
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-3 w-full">
-          {!isDoctor && <MedicalCertButton notify={notifyCert} />}
-          {!isDoctor && <PrescriptionButton notify={notifyPrescription} />}
-          <EndChatButton onConfirm={handleEndChat} />
+        <div className="flex flex-col gap-2 w-full">
+          <MedicalCertButton
+            notify={notifyCert}
+            consultation={consultation}
+            isDoctor={isDoctor}
+          />
+          <PrescriptionButton
+            notify={notifyPrescription}
+            consultation={consultation}
+            isDoctor={isDoctor}
+          />
+          {!!!consultation.ended_at && (
+            <EndChatButton onConfirm={handleEndChat} isDoctor={isDoctor} />
+          )}
         </div>
       </div>
       <div className="flex justify-between items-center w-full md:hidden">
@@ -139,7 +153,13 @@ const ConsultBar = ({
             )}
           </div>
         </div>
-        <ConsultDropdown onEndChat={handleEndChat} />
+        <ConsultDropdown
+          isDoctor={isDoctor}
+          onEndChat={handleEndChat}
+          notifyCert={notifyCert}
+          notifyPrescription={notifyPrescription}
+          consultation={consultation}
+        />
       </div>
     </div>
   );
