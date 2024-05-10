@@ -16,7 +16,6 @@ export type Product = {
   classification: string;
   manufacture: string;
   categories: Category[];
-  price?: number;
 };
 
 export type Category = {
@@ -44,4 +43,26 @@ export type ProductsParams = {
   keyword: string;
   page: number;
   limit: number;
+};
+
+export type PharmacyProductUser = {
+  id?: number;
+  name?: string;
+  generic_name?: string;
+  selling_unit?: string;
+  unit_in_pack?: string;
+  content?: string;
+  description?: string;
+  weight?: number;
+  height?: number;
+  length?: number;
+  width?: number;
+  product_picture: string;
+  slug?: string;
+  form?: string;
+  classification?: string;
+  manufacture?: string;
+  categories?: Category[];
+  price: string;
+  slug_id?: string;
 };

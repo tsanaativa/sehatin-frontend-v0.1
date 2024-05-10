@@ -1,11 +1,11 @@
 import { Address } from '@/types/Address';
 import { Doctor } from '@/types/Doctor';
-import { Category, Product } from '@/types/Product';
+import { Category, PharmacyProductUser } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
-export const DUMMY_PRODUCT: Product = {
+export const DUMMY_PRODUCT: PharmacyProductUser = {
   id: 1,
   name: 'Panadol Extra 10 Kaplet 2 box bla',
   selling_unit: 'Box',
@@ -13,7 +13,7 @@ export const DUMMY_PRODUCT: Product = {
   generic_name: 'Paracetamol',
   product_picture:
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  slug_id: 'obat-a',
+  slug: 'obat-a',
 };
 
 export const DUMMY_DOCTOR: Doctor = {
