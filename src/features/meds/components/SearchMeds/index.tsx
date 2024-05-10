@@ -8,24 +8,22 @@ import {
   Skeleton,
   SortDropdown,
 } from '@/components/common';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import MedsSortDropdown from '../MedsSortDropdown';
-import {
-  DUMMY_CATEGORIES,
-  DUMMY_PRODUCT,
-  DUMMY_SPECIALISTS,
-} from '@/constants/dummy';
-import { UserContext } from '@/context/UserProvider';
-import { User } from '@/types/User';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Product, ProductsParams } from '@/types/Product';
-import { PaginationInfo } from '@/types/PaginationInfo';
-import { getNearestProducts } from '@/services/product';
-import { toast } from 'react-toastify';
 import { DEFAULT_ADDRESS } from '@/constants/address';
-import { formatCoordinateToLongLat } from '@/utils/formatter';
-import { ProductCardSkeleton } from '..';
+import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { MEDS_SORT_OPTIONS } from '@/constants/sort';
+import { getNearestProducts } from '@/services/product';
+import { PaginationInfo } from '@/types/PaginationInfo';
+import {
+  NearestProductsParams,
+  PharmacyProductUser,
+  Product,
+} from '@/types/Product';
+import { User } from '@/types/User';
+import { formatCoordinateToLongLat } from '@/utils/formatter';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { ProductCardSkeleton } from '..';
 
 type SearchMedsProps = {
   user?: User;
@@ -43,7 +41,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
           latitude: DEFAULT_ADDRESS.latitude,
         };
 
-  const [params, setParams] = useState<ProductsParams>({
+  const [params, setParams] = useState<NearestProductsParams>({
     keyword: searchParams.get('keyword') || '',
     page: parseInt(searchParams.get('page') || '1'),
     limit: 20,
@@ -61,7 +59,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
     total_page: 0,
   });
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<PharmacyProductUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -123,7 +121,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
   };
 
   const handleChangeParams = useCallback(
-    (params: ProductsParams) => {
+    (params: NearestProductsParams) => {
       const newParams = new URLSearchParams(searchParams);
       Object.keys(params).map((key) => {
         if (key !== 'limit') {

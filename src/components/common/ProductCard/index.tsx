@@ -1,4 +1,4 @@
-import { Product } from '@/types/Product';
+import { PharmacyProductUser } from '@/types/Product';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import { Button } from '..';
 
 type ProductCardProps = {
   width?: string;
-  product: Product;
+  product: PharmacyProductUser;
   isAuthenticated: boolean;
 };
 

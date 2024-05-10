@@ -1,5 +1,5 @@
 import { PaginationInfo } from '@/types/PaginationInfo';
-import { Product, ProductsParams } from '@/types/Product';
+import { PharmacyProductUser, Product, ProductsParams } from '@/types/Product';
 import { get } from '@/utils/api';
 
 export const getProducts = async (searchParams: ProductsParams) => {
@@ -18,7 +18,7 @@ export const getNearestProducts = async (searchParams: ProductsParams) => {
   try {
     const res = await get<{
       pagination_info: PaginationInfo;
-      products: Product[];
+      products: PharmacyProductUser[];
     }>(`/products/nearest/search`, searchParams);
     return res.data;
   } catch (error: any) {

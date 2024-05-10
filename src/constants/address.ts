@@ -8,7 +8,7 @@ export const DEFAULT_ADDRESS: Address = {
   province: 'DKI Jakarta',
   city: 'Jakarta Selatan',
   district: 'Kuningan Timur',
-  subdistrict: 'Setiabudi',
+  sub_district: 'Setiabudi',
   postal_code: 12950,
   latitude: 106.80978466685714,
   longitude: -6.226135037364805,

@@ -43,20 +43,20 @@ async function request<T>(
 
   const response = await fetch(BASE_URL + url, options);
   const result = await response.json();
-  if (!response.ok)
-    throw {
-      code: response.status,
-      codeName: response.statusText,
-      message:
-        result.message ??
-        result.errors
-          .map((err: { field: string; message: string }) =>
-            err.message
-              .toLowerCase()
-              .replaceAll('this field', err.field.toLowerCase())
-          )
-          .join('. '),
-    };
+  if (!response.ok) throw new Error(result.message);
+  // ne
+  // code: response.status,
+  // codeName: response.statusText,
+  // message:
+  // result.message ??
+  // result.errors
+  //   .map((err: { field: string; message: string }) =>
+  //   err.message
+  //     .toLowerCase()
+  //     .replaceAll('this field', err.field.toLowerCase())
+  // )
+  // .join('. '),
+  // };
 
   return result;
 }

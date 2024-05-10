@@ -13,6 +13,7 @@ const AddToCartButton = () => {
     try {
       await addPrescriptionToCart(`${id}`);
       toast.success('successfully added to cart');
+      document.getElementById('cart-btn')?.click();
     } catch (err) {
       toast.error((err as Error).message);
     }
