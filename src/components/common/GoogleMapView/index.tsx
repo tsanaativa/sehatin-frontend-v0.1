@@ -32,7 +32,7 @@ const GoogleMapView = ({
 
   const mapContainerStyle = {
     width: '100%',
-    height: '300px',
+    height: '250px',
   };
 
   const handleDragEnd = (e: google.maps.MapMouseEvent) => {

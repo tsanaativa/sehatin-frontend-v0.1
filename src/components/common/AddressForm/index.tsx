@@ -221,13 +221,6 @@ const AddressForm = () => {
         `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&address=${formattedAddress}`
       );
       const result: { results: GoogleMapResult[] } = await response.json();
-      console.log(result);
-      // console.log(result, "buset");
-      // if (!result.ok) {
-      //   throw new Error(result.message);
-      // }
-      // return result;
-      console.log(result);
       if (result.results.length > 0) {
         setInput({
           ...input,
@@ -236,7 +229,7 @@ const AddressForm = () => {
         });
       }
     } catch (err) {
-      console.log((err as Error).message);
+      toast.error((err as Error).message);
     }
   };
 
@@ -330,11 +323,13 @@ const AddressForm = () => {
               onInput={({ target }) =>
                 handleInput('address', (target as HTMLTextAreaElement).value)
               }
-              // disabled={input.postalCode === ''}
+              disabled={input.postalCode === ''}
             />
           </label>
         </div>
-        <GoogleMapView lng={input.longitude} lat={input.latitude} />
+        <div className="mt-5">
+          <GoogleMapView lng={input.longitude} lat={input.latitude} />
+        </div>
         <div className="flex justify-between mt-5">
           <span
             role="button"
