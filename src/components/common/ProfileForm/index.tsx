@@ -5,11 +5,11 @@ import Selector from '@/components/common/Selector';
 import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { Doctor } from '@/types/Doctor';
 import { User } from '@/types/User';
+import { put } from '@/utils/api';
 import { validate } from '@/utils/validation';
 import { useRef, useState } from 'react';
-import ChangePasswordButton from '../ChangePasswordButton';
-import { get, put } from '@/utils/api';
 import { toast } from 'react-toastify';
+import ChangePasswordButton from '../ChangePasswordButton';
 
 type ProfileFormProps = {
   role?: string;
@@ -236,11 +236,10 @@ const ProfileForm = ({
 
   const handleUpdate = async (formData: FormData) => {
     try {
-      const res = await put(`/${role}s/profile`, formData, {
-        'Content-Type': 'multipart/form-data',
-      });
+      const res = await put(`/${role}s/profile`, formData);
       toast.success(res.message);
     } catch (err) {
+      console.log(err);
       toast.error((err as Error).message);
     }
   };
