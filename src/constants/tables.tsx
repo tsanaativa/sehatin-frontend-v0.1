@@ -46,7 +46,7 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Consultation Fee',
-    accessor: 'consultation_fee',
+    accessor: 'fee',
   },
   {
     label: 'Year of Experience',
@@ -54,7 +54,7 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Status',
-    accessor: 'status',
+    accessor: 'is_verified',
   },
   {
     label: 'Action',
@@ -112,7 +112,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Product',
-    accessor: 'id',
+    accessor: 'pharmacy_product',
   },
   {
     label: 'Action',

@@ -1,11 +1,25 @@
 'use client';
 import { Input, Selector, TextArea } from '@/components/common';
 import { DUMMY_CATEGORY_FORM } from '@/constants/dummy';
-import { useRef, useState } from 'react';
+import { getCategories } from '@/services/category';
+import { getAllClassifications } from '@/services/medicine';
+import { Category } from '@/types/Product';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const CreateMedicineForm = () => {
   const [category, setCategory] = useState<string>('');
   const [classification, setClassification] = useState<string>('');
+  const [allCategories, setAllCategories] = useState<Record<string, string>>(
+    {}
+  );
+  const [allClassifications, setAllClassifications] = useState<
+    Record<string, string>
+  >({});
+  const [isLoadingCategories, setIsLoadingCategories] =
+    useState<boolean>(false);
+  const [isLoadingClassifications, setIsLoadingClassifications] =
+    useState<boolean>(false);
 
   const name = useRef<HTMLInputElement>(null);
   const genericName = useRef<HTMLInputElement>(null);
@@ -17,6 +31,39 @@ const CreateMedicineForm = () => {
   const dimensionLength = useRef<HTMLInputElement>(null);
   const dimensionWidth = useRef<HTMLInputElement>(null);
   const dimensionHeight = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      setIsLoadingCategories(true);
+      try {
+        const res = await getCategories();
+        setAllCategories(res);
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    const fetchAllClassifications = async () => {
+      setIsLoadingClassifications(true);
+      try {
+        const res = await getAllClassifications();
+        setAllClassifications(res);
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        setIsLoadingClassifications(false);
+      }
+    };
+
+    fetchAllCategories();
+    fetchAllClassifications();
+  }, []);
+
+  useEffect(() => {
+    console.log(allClassifications);
+  });
 
   const handleCategory = (option: string) => {
     setCategory(option);
@@ -53,10 +100,12 @@ const CreateMedicineForm = () => {
             <Selector
               id="category"
               name="category"
-              options={DUMMY_CATEGORY_FORM}
+              options={allCategories}
+              isLoading={isLoadingCategories}
               selected={category}
               onSelect={handleCategory}
-              required
+              placeholder="Choose category"
+              searchable
             />
           </label>
           <label htmlFor="classification">
@@ -64,10 +113,12 @@ const CreateMedicineForm = () => {
             <Selector
               id="classification"
               name="classification"
-              options={DUMMY_CATEGORY_FORM}
+              options={allClassifications}
+              isLoading={isLoadingClassifications}
               selected={classification}
               onSelect={handleClassification}
-              required
+              placeholder="Choose classification"
+              searchable
             />
           </label>
         </div>

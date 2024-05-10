@@ -12,6 +12,9 @@ import { Category } from '@/types/Product';
 import { useState } from 'react';
 import { ModalPharmacyProduct } from '@/features/admin/components';
 import { PharmacyAddress } from '@/types/Pharmacy';
+import { getPathNames } from '@/utils/pageHeader';
+import { Specialist } from '@/types/Doctor';
+import { currency } from '@/utils/helper';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -28,6 +31,8 @@ const DataTable = <T,>({
 }: DataTableProps<T>) => {
   const pathname = usePathname();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const currentPathname =
+    '/' + getPathNames(pathname)[0] + '/' + getPathNames(pathname)[1];
 
   return (
     <table
@@ -80,7 +85,14 @@ const DataTable = <T,>({
                 ) : column.accessor === 'id' ? (
                   <Link
                     className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
-                    href={`${pathname}/${item[column.accessor as keyof typeof item]}`}
+                    href={`${currentPathname}/${item[column.accessor as keyof typeof item]}`}
+                  >
+                    View
+                  </Link>
+                ) : column.accessor === 'pharmacy_product' ? (
+                  <Link
+                    className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                    href={`${currentPathname}/${item['id' as keyof typeof item]}/product`}
                   >
                     View
                   </Link>
@@ -213,6 +225,28 @@ const DataTable = <T,>({
                       {item['operational_day' as keyof typeof item] as string},{' '}
                       {item['operational_hour' as keyof typeof item] as string}
                     </span>
+                  </>
+                ) : column.accessor === 'fee' ? (
+                  <>
+                    {currency(
+                      item[column.accessor as keyof typeof item] as number
+                    )}
+                  </>
+                ) : column.accessor === 'specialist' ? (
+                  <>
+                    {
+                      (
+                        item[column.accessor as keyof typeof item] as Specialist
+                      )['name']
+                    }
+                  </>
+                ) : column.accessor === 'year_of_experience' ? (
+                  <>
+                    {new Date().getFullYear() -
+                      (item[
+                        'work_start_year' as keyof typeof item
+                      ] as number)}{' '}
+                    {'Year'}
                   </>
                 ) : (
                   <>{item[column.accessor as keyof typeof item]}</>

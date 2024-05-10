@@ -14,7 +14,7 @@ const PharmacyProductList = ({
         </h1>
         <Link
           className="bg-primary-dark font-poppins font-medium text-base text-white rounded-lg px-6 py-3 hover:bg-primary-dark/90"
-          href={`/admin/pharmacy/list/${params.pharmacyId}/add`}
+          href={`/admin/pharmacy/${params.pharmacyId}/product/add`}
         >
           + Add Pharmacy Product
         </Link>
