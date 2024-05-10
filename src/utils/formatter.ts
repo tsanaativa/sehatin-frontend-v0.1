@@ -17,7 +17,7 @@ export function formatDateTime(timestamp: string) {
 }
 
 export function formatAddress(address: Address) {
-  return `${address.address}, ${address.subdistrict}, ${address.district}, ${address.city}, ${address.province}, ${address.postal_code}`;
+  return `${address.address}, ${address.sub_district}, ${address.district}, ${address.city}, ${address.province}, ${address.postal_code}`;
 }
 
 export function formatYearToExp(startYear: number) {
@@ -32,12 +32,24 @@ export function formatYearToExp(startYear: number) {
 }
 
 export function formatBirthDateToAge(birth_date: string) {
-  var now = new Date();
+  let now = new Date();
   let date = new Date(birth_date);
-  var currentYear = now.getFullYear();
-  var yearDiff = currentYear - date.getFullYear();
-  var birthdayThisYear = new Date(currentYear, date.getMonth(), date.getDate());
-  var hadBirthdayThisYear = now >= birthdayThisYear;
+  let currentYear = now.getFullYear();
+  let yearDiff = currentYear - date.getFullYear();
+  let birthdayThisYear = new Date(currentYear, date.getMonth(), date.getDate());
+  let hadBirthdayThisYear = now >= birthdayThisYear;
 
   return hadBirthdayThisYear ? yearDiff : yearDiff - 1;
+}
+
+export function formatCoordinateToLongLat(coordinate: string) {
+  let coordinateStr = coordinate.slice(16, -1);
+  console.log(coordinateStr);
+  let coordinateArr = coordinateStr.split(' ');
+  console.log(coordinateArr, 'arr');
+  console.log(coordinateArr[0], parseFloat(coordinateArr[0]));
+  return {
+    longitude: parseFloat(coordinateArr[0]),
+    latitude: parseFloat(coordinateArr[1]),
+  };
 }

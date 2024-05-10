@@ -27,3 +27,14 @@ export type Classification = {
   id: number;
   name: string;
 };
+
+export type ProductsParams = {
+  keyword: string;
+  page: number;
+  limit: number;
+  categoryId: string;
+  sortBy: string;
+  sort: string;
+  longitude: number;
+  latitude: number;
+};

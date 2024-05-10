@@ -5,17 +5,20 @@ import { useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { createMedicalCertificate } from '../../actions/consultation';
+import { formatBirthDateToAge } from '@/utils/formatter';
 
 type ModalMedicalCertProps = {
   onShowModal: (showModal: boolean) => void;
   showModal: boolean;
   notify: (url: string) => void;
+  patientBirthDate: string;
 };
 
 const ModalMedicalCert = ({
   onShowModal,
   showModal,
   notify,
+  patientBirthDate,
 }: ModalMedicalCertProps) => {
   const { id } = useParams();
 
@@ -57,7 +60,7 @@ const ModalMedicalCert = ({
   };
 
   const anyEmptyField = () => {
-    return endDate == '';
+    return diagnosisRef.current?.value === '' || endDate === '';
   };
 
   const handleSubmit = async () => {
@@ -79,23 +82,22 @@ const ModalMedicalCert = ({
       return;
     }
 
-    const consultationId = parseInt(`${id}`);
-
     const certReq = {
-      consultation_id: consultationId,
+      start_date: new Date().toISOString().split('T')[0],
       end_date: endDate,
+      diagnosis: diagnosisRef.current?.value,
+      patient_age: formatBirthDateToAge(patientBirthDate),
     };
-
-    console.log(certReq);
 
     setIsLoading(true);
     try {
-      const certUrl = await createMedicalCertificate(certReq);
-      console.log(certUrl.url);
-      notify(certUrl.url);
+      const certUrl = await createMedicalCertificate(certReq, `${id}`);
+      notify(certUrl.certificate_url);
+      onShowModal(false);
     } catch (error) {
       toast.error((error as Error).message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -111,7 +113,7 @@ const ModalMedicalCert = ({
         <div>
           <form
             action={handleSubmit}
-            className="flex flex-col pt-5 gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
+            className="text-start flex flex-col pt-5 gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
           >
             <label htmlFor="diagnosis" className="w-full">
               <h5 className="text-start">Diagnosis</h5>
@@ -164,7 +166,7 @@ const ModalMedicalCert = ({
             </div>
             <div className="flex justify-end gap-5 items-center mb-2">
               <Button
-                className="text-sm flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full md:min-w-[150px] md:w-fit"
+                className="text-sm flex items-center py-3 justify-center gap-1 px-6 mt-3 w-full min-h-[44px] md:min-w-[150px] md:w-fit"
                 onClick={handleSubmit}
                 loading={isLoading}
               >

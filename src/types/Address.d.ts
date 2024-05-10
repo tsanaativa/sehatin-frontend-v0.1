@@ -6,8 +6,9 @@ export type Address = {
   province: string;
   city: string;
   district: string;
-  subdistrict: string;
+  sub_district: string;
   postal_code: number;
   latitude: number;
   longitude: number;
+  coordinate?: string;
 };
