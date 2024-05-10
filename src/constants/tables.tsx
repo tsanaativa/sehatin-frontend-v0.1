@@ -181,3 +181,18 @@ export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
     accessor: 'confirm',
   },
 ];
+
+export const ADMIN_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];

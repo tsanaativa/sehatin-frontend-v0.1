@@ -1,10 +1,15 @@
-import { Admin } from '@/types/Admin';
+import { Admin, AdminsParams } from '@/types/Admin';
+import { PaginationInfo } from '@/types/PaginationInfo';
 import { get } from '@/utils/api';
 
-export const getAdmins = async () => {
+export const getAllAdmins = async (searchParams: AdminsParams) => {
   try {
-    const res = await get<{ admins: Admin[] }>(`/admin`);
-    return res;
+    const res = await get<{ pagination_info: PaginationInfo; admin: Admin[] }>(
+      `/admins`,
+      searchParams
+    );
+    console.log(res);
+    return res.data;
   } catch (error: any) {
     throw new Error(String(error));
   }
