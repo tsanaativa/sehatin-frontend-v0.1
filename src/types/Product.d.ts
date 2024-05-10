@@ -13,7 +13,7 @@ export type Category = {
   name: string;
 };
 
-export type ProductsParams = {
+export type NearestProductsParams = {
   keyword: string;
   page: number;
   limit: number;
@@ -22,4 +22,10 @@ export type ProductsParams = {
   sort: string;
   longitude: number;
   latitude: number;
+};
+
+export type ProductsParams = {
+  keyword: string;
+  page: number;
+  limit: number;
 };

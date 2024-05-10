@@ -1,16 +1,18 @@
 import AddressCard from '@/components/common/AddressCard';
-import { DUMMY_ADDRESSES } from '@/constants/dummy';
 import AddAddressButton from '@/features/profile/components/AddAddressButton';
+import { getProfile } from '@/services/profile';
 import Link from 'next/link';
 
-const MyAddresses = () => {
+const MyAddresses = async () => {
+  const profile = await getProfile();
+
   return (
     <div>
       <h2 className="text-xl text-center font-semibold font-poppins md:text-2xl md:text-start">
         My Addresses
       </h2>
       <div className="flex flex-col gap-4 mt-5">
-        {DUMMY_ADDRESSES.map((addr, idx) => (
+        {profile.addresses.map((addr, idx) => (
           <div key={idx}>
             <Link
               href={`/profile/my-addresses/${addr.id}`}

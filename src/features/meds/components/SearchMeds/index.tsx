@@ -18,7 +18,7 @@ import {
 import { UserContext } from '@/context/UserProvider';
 import { User } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Product, ProductsParams } from '@/types/Product';
+import { Product, NearestProductsParams } from '@/types/Product';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { getNearestProducts } from '@/services/product';
 import { toast } from 'react-toastify';
@@ -43,7 +43,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
           latitude: DEFAULT_ADDRESS.latitude,
         };
 
-  const [params, setParams] = useState<ProductsParams>({
+  const [params, setParams] = useState<NearestProductsParams>({
     keyword: searchParams.get('keyword') || '',
     page: parseInt(searchParams.get('page') || '1'),
     limit: 20,
@@ -123,7 +123,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
   };
 
   const handleChangeParams = useCallback(
-    (params: ProductsParams) => {
+    (params: NearestProductsParams) => {
       const newParams = new URLSearchParams(searchParams);
       Object.keys(params).map((key) => {
         if (key !== 'limit') {
