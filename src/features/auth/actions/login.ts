@@ -47,7 +47,7 @@ export async function loginAdmin(formData: FormData) {
   const rawFormData = {
     email: formData.get('email'),
     password: formData.get('password'),
-    role: 'admin',
+    role: formData.get('role'),
   };
 
   try {

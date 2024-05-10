@@ -8,10 +8,13 @@ import {
 import { MEDICINE_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
 import { MEDICINE_COLUMN_LIST } from '@/constants/tables';
+import { getAllProducts } from '@/services/medicine';
 import { PaginationInfo } from '@/types/PaginationInfo';
+import { Product } from '@/types/Product';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminMedicineList = () => {
   const searchParams = useSearchParams();
@@ -33,6 +36,8 @@ const AdminMedicineList = () => {
     total_page: 0,
   });
 
+  const [allProduct, setAllProduct] = useState<Product[]>([]);
+
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
     setParams((prev) => ({
@@ -41,6 +46,23 @@ const AdminMedicineList = () => {
       keyword: newKeyword,
     }));
   }, [searchParams]);
+
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        const res = await getAllProducts();
+        setAllProduct(res.products);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+    fetchAllProducts();
+  }, []);
+
+  useEffect(() => {
+    console.log(allProduct);
+  });
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -113,7 +135,7 @@ const AdminMedicineList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={MEDICINE_TABLE_DATA}
+        dataList={allProduct}
         columnList={MEDICINE_COLUMN_LIST}
         tabelName="medicine"
       />

@@ -1,10 +1,11 @@
 import { AvatarUploader, Button } from '@/components/common';
+import { createUser } from '@/features/admin/action/user';
 import { CreateUserForm } from '@/features/admin/components';
 import { Save } from 'lucide-react';
 
 const CreateUser = () => {
   return (
-    <form className="mt-2">
+    <form action={createUser} className="mt-2">
       <div className="flex items-center justify-between">
         <h1 className="font-poppins font-semibold text-3xl text-dark">
           User List

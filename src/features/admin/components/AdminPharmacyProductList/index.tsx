@@ -17,15 +17,20 @@ import {
   PHARMACY_COLUMN_LIST,
   PHARMACY_PRODUCT_COLUMN_LIST,
 } from '@/constants/tables';
+import { getAllPharmacyProducts } from '@/services/pharmacy';
 import { PaginationInfo } from '@/types/PaginationInfo';
+import { PharmacyProduct } from '@/types/Pharmacy';
 import { UsersParams } from '@/types/User';
+import { getPageName, getPathNames } from '@/utils/pageHeader';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminPharmacyProductList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const pharmacyId = getPathNames(pathname)[2];
 
   const [params, setParams] = useState<UsersParams>({
     keyword: searchParams.get('keyword') || '',
@@ -42,6 +47,10 @@ const AdminPharmacyProductList = () => {
     total_page: 0,
   });
 
+  const [allPharmacyProducts, setAllPharmacyProducts] = useState<
+    PharmacyProduct[]
+  >([]);
+
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
     setParams((prev) => ({
@@ -50,6 +59,23 @@ const AdminPharmacyProductList = () => {
       keyword: newKeyword,
     }));
   }, [searchParams]);
+
+  useEffect(() => {
+    const fetchAllPharmacyProduct = async () => {
+      try {
+        const res = await getAllPharmacyProducts(pharmacyId);
+        setAllPharmacyProducts(res.pharmacy_products);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+    fetchAllPharmacyProduct();
+  }, [params, pharmacyId]);
+
+  useEffect(() => {
+    console.log(allPharmacyProducts);
+  });
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -122,7 +148,7 @@ const AdminPharmacyProductList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={PHARMACY_PRODUCT_TABLE_DATA}
+        dataList={allPharmacyProducts}
         columnList={PHARMACY_PRODUCT_COLUMN_LIST}
         tabelName="pharmacy"
       />

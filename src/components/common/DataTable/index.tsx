@@ -1,10 +1,19 @@
 'use client';
+import { ModalPharmacyProduct } from '@/features/admin/components';
+import { Specialist } from '@/types/Doctor';
+import { PharmacyAddress, PharmacyProduct } from '@/types/Pharmacy';
+import { Category, Product } from '@/types/Product';
 import { TableHeader } from '@/types/Tables';
+import { Gender } from '@/types/User';
+import { formatDate } from '@/utils/formatter';
+import { currency } from '@/utils/helper';
+import { getPathNames } from '@/utils/pageHeader';
 import { Check, Pencil, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { Badge, Button } from '..';
 import ToggleInput from '../ToggleInput';
-import { usePathname } from 'next/navigation';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -20,6 +29,10 @@ const DataTable = <T,>({
   className,
 }: DataTableProps<T>) => {
   const pathname = usePathname();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [idItem, setIdItem] = useState<number>(0);
+  const currentPathname =
+    '/' + getPathNames(pathname)[0] + '/' + getPathNames(pathname)[1];
 
   return (
     <table
@@ -51,7 +64,7 @@ const DataTable = <T,>({
               >
                 {column.customCell ? (
                   <>{column.customCell}</>
-                ) : column.accessor === 'status' ? (
+                ) : column.accessor === 'is_verified' ? (
                   <Badge
                     variant={
                       item[column.accessor as keyof typeof item]
@@ -72,7 +85,14 @@ const DataTable = <T,>({
                 ) : column.accessor === 'id' ? (
                   <Link
                     className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
-                    href={`${pathname}/${item[column.accessor as keyof typeof item]}`}
+                    href={`${currentPathname}/${item[column.accessor as keyof typeof item]}`}
+                  >
+                    View
+                  </Link>
+                ) : column.accessor === 'pharmacy_product' ? (
+                  <Link
+                    className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                    href={`${currentPathname}/${item['id' as keyof typeof item]}/product`}
                   >
                     View
                   </Link>
@@ -92,7 +112,7 @@ const DataTable = <T,>({
                 ) : column.accessor === 'active_status' ? (
                   <ToggleInput
                     checked={
-                      item[column.accessor as keyof typeof item] as boolean
+                      item['is_available' as keyof typeof item] as boolean
                     }
                   />
                 ) : column.accessor === 'confirm' ? (
@@ -132,6 +152,128 @@ const DataTable = <T,>({
                         </Button>
                       </>
                     )}
+                  </>
+                ) : column.accessor === 'gender' ? (
+                  <>
+                    {
+                      (item[column.accessor as keyof typeof item] as Gender)[
+                        'name'
+                      ]
+                    }
+                  </>
+                ) : column.accessor === 'birth_date' ? (
+                  <>
+                    {formatDate(
+                      item[column.accessor as keyof typeof item] as string
+                    )}{' '}
+                    {new Date(
+                      item[column.accessor as keyof typeof item] as string
+                    ).getFullYear()}
+                  </>
+                ) : column.accessor === 'categories' ? (
+                  <div className="flex flex-col">
+                    {(
+                      item[column.accessor as keyof typeof item] as Category[]
+                    )?.map((category) => (
+                      <span key={category.id}>{category.name}</span>
+                    ))}
+                  </div>
+                ) : column.accessor === 'pharmacy_product_name' ? (
+                  <>
+                    {(item['product' as keyof typeof item] as Product)['name']}
+                  </>
+                ) : column.accessor === 'stock' ? (
+                  <>{item['total_stock' as keyof typeof item] as Product}</>
+                ) : column.accessor === 'category' ? (
+                  <>
+                    {(item['product' as keyof typeof item] as Product)[
+                      'categories'
+                    ]?.map((category) => <>{category.name}</>)}
+                  </>
+                ) : column.accessor === 'modal' ? (
+                  <>
+                    <Button
+                      className="w-full"
+                      onClick={() => {
+                        setIdItem(item['id' as keyof typeof item] as number);
+                        setShowModal(true);
+                      }}
+                    >
+                      View
+                    </Button>
+                    <ModalPharmacyProduct
+                      onShowModal={setShowModal}
+                      showModal={showModal}
+                      data={dataList as PharmacyProduct[]}
+                      id={idItem}
+                    />
+                  </>
+                ) : column.accessor === 'product_selling_unit' ? (
+                  <>
+                    {
+                      (item['product' as keyof typeof item] as Product)[
+                        'selling_unit'
+                      ]
+                    }
+                  </>
+                ) : column.accessor === 'pharmacy_address' ? (
+                  <>
+                    {
+                      (
+                        item[
+                          column.accessor as keyof typeof item
+                        ] as PharmacyAddress
+                      )['address']
+                    }
+                  </>
+                ) : column.accessor === 'pharmacist' ? (
+                  <div className="flex flex-col">
+                    <span>
+                      {item['pharmacist_name' as keyof typeof item] as string}
+                    </span>
+                    <span>
+                      {
+                        item[
+                          'pharmacist_license_number' as keyof typeof item
+                        ] as string
+                      }
+                    </span>
+                    <span>
+                      {
+                        item[
+                          'pharmacist_phone_number' as keyof typeof item
+                        ] as string
+                      }
+                    </span>
+                  </div>
+                ) : column.accessor === 'operational' ? (
+                  <>
+                    <span>
+                      {item['operational_day' as keyof typeof item] as string},{' '}
+                      {item['operational_hour' as keyof typeof item] as string}
+                    </span>
+                  </>
+                ) : column.accessor === 'fee' ? (
+                  <>
+                    {currency(
+                      item[column.accessor as keyof typeof item] as number
+                    )}
+                  </>
+                ) : column.accessor === 'specialist' ? (
+                  <>
+                    {
+                      (
+                        item[column.accessor as keyof typeof item] as Specialist
+                      )['name']
+                    }
+                  </>
+                ) : column.accessor === 'year_of_experience' ? (
+                  <>
+                    {new Date().getFullYear() -
+                      (item[
+                        'work_start_year' as keyof typeof item
+                      ] as number)}{' '}
+                    {'Year'}
                   </>
                 ) : (
                   <>{item[column.accessor as keyof typeof item]}</>
