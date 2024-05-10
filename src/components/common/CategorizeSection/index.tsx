@@ -16,7 +16,7 @@ const CategorizeSection = ({
 }: CategorizeSectionProps) => {
   return (
     <section className={className}>
-      <div className="flex items-center justify-between items-center mb-2 md:mb-4">
+      <div className="flex items-center justify-between mb-2 md:mb-4">
         <span className="font-poppins font-semibold text-dark md:text-2xl">
           {title}
         </span>
