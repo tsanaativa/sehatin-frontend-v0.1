@@ -8,6 +8,8 @@ import { User } from '@/types/User';
 import { validate } from '@/utils/validation';
 import { useRef, useState } from 'react';
 import ChangePasswordButton from '../ChangePasswordButton';
+import { get, put } from '@/utils/api';
+import { toast } from 'react-toastify';
 
 type ProfileFormProps = {
   role?: string;
@@ -209,18 +211,52 @@ const ProfileForm = ({
       return;
     }
 
-    console.log({
-      name: name.current?.value,
-      specialist_id: parseInt(specialty),
-      fee: consultationFee.current?.value,
-      work_start: parseInt(workStartOptions[workStart]),
-      certificate: file,
-    });
+    let formData = new FormData();
+    formData.append('name', name.current?.value || '');
+    if (picture) {
+      formData.append('profile_picture', picture, picture.name);
+    }
+    if (role === 'user') {
+      formData.append('birth_date', birthDate || '');
+      formData.append('gender_id', `${genderId}`);
+    } else {
+      if (file) {
+        formData.append('certificate', file, file.name);
+      }
+      formData.append('fee', `${consultationFee.current?.value}`);
+      formData.append(
+        'work_start_year',
+        `${parseInt(workStartOptions[workStart])}`
+      );
+      formData.append('specialist_id', `${parseInt(specialty)}`);
+    }
+
+    handleUpdate(formData);
+  };
+
+  const handleUpdate = async (formData: FormData) => {
+    try {
+      const res = await put(`/${role}s/profile`, formData, {
+        'Content-Type': 'multipart/form-data',
+      });
+      toast.success(res.message);
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  };
+
+  const [picture, setPicture] = useState<File | undefined>();
+
+  const handleChangePicture = (file: File) => {
+    setPicture(file);
   };
 
   return (
     <>
-      <AvatarUploader defaultAvatar={defaultUser?.profile_picture} />
+      <AvatarUploader
+        defaultAvatar={defaultUser?.profile_picture}
+        onChange={handleChangePicture}
+      />
       <div className="w-full">
         <form
           action={handleSubmit}
