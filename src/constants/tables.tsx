@@ -77,7 +77,7 @@ export const MEDICINE_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Classification',
-    accessor: 'product_classification_id',
+    accessor: 'classification',
   },
   {
     label: 'Selling Unit',
@@ -123,7 +123,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
 export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Name',
-    accessor: 'name',
+    accessor: 'pharmacy_product_name',
   },
   {
     label: 'Category',
@@ -131,7 +131,7 @@ export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Selling Unit',
-    accessor: 'selling_unit',
+    accessor: 'product_selling_unit',
   },
   {
     label: 'Details',

@@ -1,3 +1,5 @@
+import { Product } from './Product';
+
 export type Pharmacy = {
   id: number;
   pharmacy_manager: PharmacyManager;
@@ -9,6 +11,15 @@ export type Pharmacy = {
   pharmacistPhoneNumber: string;
   shippingMethods: ShippingMethods;
   pharmacyAddress: PharmacyAddress;
+};
+
+export type PharmacyProduct = {
+  id: number;
+  price: string;
+  total_stock: number;
+  is_available: boolean;
+  slug: string;
+  product: Product;
 };
 
 export type PharmacyManager = {

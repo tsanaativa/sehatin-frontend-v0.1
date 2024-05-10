@@ -2,7 +2,9 @@
 import { Input, Selector, Skeleton } from '@/components/common';
 import { getAllProductsSelect, getProduct } from '@/services/medicine';
 import { Product } from '@/types/Product';
+import { getPathNames } from '@/utils/pageHeader';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -12,6 +14,9 @@ const AddPharmacyProductForm = () => {
   const [allProducts, setAllProducts] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingProduct, setIsLoadingProduct] = useState<boolean>(false);
+
+  const pathname = usePathname();
+  const currentPathname = getPathNames(pathname);
 
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -150,6 +155,8 @@ const AddPharmacyProductForm = () => {
               </Skeleton>
             ) : (
               <div className="flex justify-between gap-x-6">
+                <Input name="pharmacyId" value={currentPathname[2]} hidden />
+                <Input name="productId" value={productData.id} hidden />
                 <div>
                   <Image
                     src={productData.product_picture}
@@ -200,6 +207,14 @@ const AddPharmacyProductForm = () => {
                     </span>
                     <span className="text-base text-dark w-3/5">
                       {productData.content}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-base text-dark-gray">
+                      Classification
+                    </span>
+                    <span className="text-base text-dark w-3/5">
+                      {productData.classification}
                     </span>
                   </div>
                   <div className="flex justify-between">
