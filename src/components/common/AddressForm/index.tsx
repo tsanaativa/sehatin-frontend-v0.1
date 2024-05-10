@@ -8,7 +8,6 @@ import TextArea from '../TextArea';
 import {
   getCities,
   getDistricts,
-  getGoogleLatLongByAddress,
   getProvinces,
   getSubDistricts,
 } from '@/services/location';
@@ -330,7 +329,7 @@ const AddressForm = () => {
         <div className="mt-5">
           <GoogleMapView lng={input.longitude} lat={input.latitude} />
         </div>
-        <div className="flex justify-between mt-5">
+        <div className="flex justify-between items-center mt-5">
           <span
             role="button"
             className="text-primary-dark font-semibold hover:underline"

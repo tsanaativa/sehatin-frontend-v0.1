@@ -5,16 +5,17 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { ADMIN_USER_SORT_OPTIONS } from '@/constants/sort';
-import { USER_COLUMN_LIST } from '@/constants/tables';
-import { getAllUser } from '@/services/user';
+import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
+import { PHARMACY_COLUMN_LIST } from '@/constants/tables';
+import { getAllPharmacies } from '@/services/pharmacy';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import { User, UsersParams } from '@/types/User';
+import { Pharmacy } from '@/types/Pharmacy';
+import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const AdminUserList = () => {
+const AdminOrderList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -34,7 +35,7 @@ const AdminUserList = () => {
     total_page: 0,
   });
 
-  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [allPharmacies, setAllPharmacies] = useState<Pharmacy[]>([]);
 
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
@@ -48,8 +49,8 @@ const AdminUserList = () => {
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const res = await getAllUser();
-        setAllUsers(res.users);
+        const res = await getAllPharmacies();
+        setAllPharmacies(res.pharmacies);
       } catch (error: any) {
         toast.error(error.message);
       }
@@ -117,7 +118,7 @@ const AdminUserList = () => {
             onSort={handleSort}
             sortBy={params.sortBy}
             sort={params.sort}
-            options={ADMIN_USER_SORT_OPTIONS}
+            options={ADMIN_MEDICINE_SORT_OPTIONS}
           />
           {/* <FilterDropdown
             options={}
@@ -129,13 +130,13 @@ const AdminUserList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={allUsers}
-        columnList={USER_COLUMN_LIST}
-        tabelName="user"
+        dataList={allPharmacies}
+        columnList={PHARMACY_COLUMN_LIST}
+        tabelName="pharmacy"
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>
   );
 };
 
-export default AdminUserList;
+export default AdminOrderList;

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon, Input } from '..';
 import { icons } from 'lucide-react';
 import { overflowHandler } from '@/utils/helper';
-import useDebounce from '@/utils/debounce';
+import useDebounce from '@/hooks/useDebounce';
 
 type SelectorProps = {
   id: string;
