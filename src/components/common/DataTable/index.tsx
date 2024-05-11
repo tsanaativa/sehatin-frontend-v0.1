@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { Badge, Button, DeleteModalButton, NoDataFound, Skeleton } from '..';
 import ToggleInput from '../ToggleInput';
 import Image from 'next/image';
+import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
+import DefaultMedPictureImg from '@/assets/images/default-med.svg';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -195,12 +197,7 @@ const DataTable = <T,>({
                               item[
                                 column.accessor as keyof typeof item
                               ] as string
-                            )}{' '}
-                            {new Date(
-                              item[
-                                column.accessor as keyof typeof item
-                              ] as string
-                            ).getFullYear()}
+                            )}
                           </>
                         ) : column.accessor === 'categories' ? (
                           <div className="flex flex-col">
@@ -338,11 +335,19 @@ const DataTable = <T,>({
                               ] as number)}{' '}
                             {'Year'}
                           </>
-                        ) : column.accessor === 'logo' ? (
+                        ) : column.accessor === 'logo' ||
+                          column.accessor?.endsWith('picture') ? (
                           <>
                             <Image
-                              alt="logo"
-                              src={item['logo' as keyof typeof item] as string}
+                              alt={column.accessor}
+                              src={
+                                (item[
+                                  column.accessor as keyof typeof item
+                                ] as string) ||
+                                (column.accessor === 'profile_picture'
+                                  ? DefaultAvatarImg
+                                  : DefaultMedPictureImg)
+                              }
                               width={80}
                               height={80}
                               className="object-cover rounded h-16 w-16"

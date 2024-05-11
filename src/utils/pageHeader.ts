@@ -2,7 +2,7 @@ import { PATHS_MAP } from '@/constants/menus';
 
 export function getPathNames(paths: string) {
   return paths.split('/').filter((path) => {
-    return !!path;
+    return !!path && !!!parseInt(path);
   });
 }
 

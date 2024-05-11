@@ -40,15 +40,6 @@ const AdminAdminList = () => {
 
   const [allAdmins, setAllAdmins] = useState<Admin[]>([]);
 
-  useEffect(() => {
-    const newKeyword = searchParams.get('keyword') || '';
-    setParams((prev) => ({
-      ...prev,
-      page: prev.keyword !== newKeyword ? 1 : prev.page,
-      keyword: newKeyword,
-    }));
-  }, [searchParams]);
-
   const fetchAllAdmins = async () => {
     try {
       const res = await getAllAdmins(params);
@@ -106,6 +97,7 @@ const AdminAdminList = () => {
     const newParams = {
       ...params,
       keyword: e.target.value,
+      page: 1,
     };
     setParams(newParams);
     handleChangeParams(newParams);

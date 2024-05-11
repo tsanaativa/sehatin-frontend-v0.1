@@ -106,6 +106,7 @@ const AdminPartnerList = () => {
     const newParams = {
       ...params,
       keyword: e.target.value,
+      page: 1,
     };
     setParams(newParams);
     handleChangeParams(newParams);

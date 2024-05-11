@@ -18,12 +18,12 @@ export const USER_COLUMN_LIST: TableHeader[] = [
     accessor: 'gender',
   },
   {
-    label: 'Status',
-    accessor: 'is_verified',
+    label: 'Profile Picture',
+    accessor: 'profile_picture',
   },
   {
-    label: 'User Detail',
-    accessor: 'id',
+    label: 'Status',
+    accessor: 'is_verified',
   },
   {
     label: 'Action',

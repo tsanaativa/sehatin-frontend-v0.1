@@ -36,23 +36,18 @@ const AdminUserList = () => {
 
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
-  useEffect(() => {
-    const newKeyword = searchParams.get('keyword') || '';
-    setParams((prev) => ({
-      ...prev,
-      page: prev.keyword !== newKeyword ? 1 : prev.page,
-      keyword: newKeyword,
-    }));
-  }, [searchParams]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const res = await getAllUser();
+        const res = await getAllUser(params);
         setAllUsers(res.users);
+        setPaginationInfo(res.pagination_info);
       } catch (error: any) {
         toast.error(error.message);
       }
+      setIsLoading(false);
     };
 
     fetchAllUsers();
@@ -108,10 +103,26 @@ const AdminUserList = () => {
     [pathname, replace, searchParams]
   );
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newParams = {
+      ...params,
+      keyword: e.target.value,
+      page: 1,
+    };
+    setParams(newParams);
+    handleChangeParams(newParams);
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
+        <Input
+          inputClass="h-[44px]"
+          prepend="Search"
+          placeholder="Search..."
+          onChange={handleSearch}
+          defaultValue={params.keyword}
+        />
         <div className="flex gap-x-4">
           <SortDropdown
             onSort={handleSort}
@@ -132,6 +143,7 @@ const AdminUserList = () => {
         dataList={allUsers}
         columnList={USER_COLUMN_LIST}
         tabelName="user"
+        loading={isLoading}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

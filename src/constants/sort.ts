@@ -4,13 +4,7 @@ export const DOCTORS_SORT_OPTIONS = ['fee', 'experience'];
 
 export const ADMIN_ADMIN_SORT_OPTIONS = ['name'];
 
-export const ADMIN_USER_SORT_OPTIONS = [
-  'name',
-  'email',
-  'birth date',
-  'gender',
-  'status',
-];
+export const ADMIN_USER_SORT_OPTIONS = ['name', 'birth-date'];
 
 export const ADMIN_DOCTOR_SORT_OPTIONS = [
   'name',
