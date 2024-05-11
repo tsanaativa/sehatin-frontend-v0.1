@@ -14,6 +14,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Badge, Button, DeleteModalButton, NoDataFound, Skeleton } from '..';
 import ToggleInput from '../ToggleInput';
+import Image from 'next/image';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -74,7 +75,7 @@ const DataTable = <T,>({
                         key={colIdx}
                         className={
                           column.label === 'Action'
-                            ? 'flex items-center gap-x-2 px-6 py-4'
+                            ? 'items-center gap-x-2 px-6 py-4 h-full table-cell align-middle'
                             : 'px-6 py-4'
                         }
                       >
@@ -113,7 +114,7 @@ const DataTable = <T,>({
                             View
                           </Link>
                         ) : column.accessor === 'action' ? (
-                          <>
+                          <div className="h-full flex gap-2 items-center">
                             {tabelName !== 'admin' && (
                               <Link
                                 href={`/admin/${tabelName}/${item['id' as keyof typeof item]}/update`}
@@ -130,7 +131,7 @@ const DataTable = <T,>({
                               }
                               objName={tabelName}
                             />
-                          </>
+                          </div>
                         ) : column.accessor === 'active_status' ? (
                           <ToggleInput
                             checked={
@@ -336,6 +337,16 @@ const DataTable = <T,>({
                                 'work_start_year' as keyof typeof item
                               ] as number)}{' '}
                             {'Year'}
+                          </>
+                        ) : column.accessor === 'logo' ? (
+                          <>
+                            <Image
+                              alt="logo"
+                              src={item['logo' as keyof typeof item] as string}
+                              width={80}
+                              height={80}
+                              className="object-cover rounded h-16 w-16"
+                            />
                           </>
                         ) : (
                           <>{item[column.accessor as keyof typeof item]}</>

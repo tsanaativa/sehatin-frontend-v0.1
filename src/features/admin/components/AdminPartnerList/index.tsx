@@ -6,17 +6,17 @@ import {
   SortDropdown,
 } from '@/components/common';
 import { ADMIN_ADMIN_SORT_OPTIONS } from '@/constants/sort';
-import { ADMIN_COLUMN_LIST } from '@/constants/tables';
-import { getAllAdmins } from '@/services/admin';
+import { PARTNER_COLUMN_LIST } from '@/constants/tables';
+import { getAllPartners } from '@/services/partner';
 import { Admin, AdminsParams } from '@/types/Admin';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { deleteAdmin } from '../../action/admin';
+import { deletePartner } from '../../action/partner';
 
-const AdminAdminList = () => {
+const AdminPartnerList = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -38,7 +38,7 @@ const AdminAdminList = () => {
     total_page: 0,
   });
 
-  const [allAdmins, setAllAdmins] = useState<Admin[]>([]);
+  const [allPartners, setAllPartners] = useState<Admin[]>([]);
 
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
@@ -49,11 +49,11 @@ const AdminAdminList = () => {
     }));
   }, [searchParams]);
 
-  const fetchAllAdmins = async () => {
+  const fetchAllPartners = async () => {
     try {
-      const res = await getAllAdmins(params);
+      const res = await getAllPartners(params);
       setPaginationInfo(res.pagination_info);
-      setAllAdmins(res.admin);
+      setAllPartners(res.pharmacy_managers);
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -61,7 +61,7 @@ const AdminAdminList = () => {
   };
 
   useEffect(() => {
-    fetchAllAdmins();
+    fetchAllPartners();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
@@ -113,9 +113,9 @@ const AdminAdminList = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await deleteAdmin(id);
+      await deletePartner(id);
       toast.success('successfully deleted');
-      fetchAllAdmins();
+      fetchAllPartners();
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -142,9 +142,9 @@ const AdminAdminList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={allAdmins}
-        columnList={ADMIN_COLUMN_LIST}
-        tabelName="admin"
+        dataList={allPartners}
+        columnList={PARTNER_COLUMN_LIST}
+        tabelName="partner"
         loading={isLoading}
         onDelete={handleDelete}
       />
@@ -153,4 +153,4 @@ const AdminAdminList = () => {
   );
 };
 
-export default AdminAdminList;
+export default AdminPartnerList;

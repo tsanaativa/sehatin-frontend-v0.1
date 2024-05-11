@@ -8,7 +8,6 @@ export const getAllAdmins = async (searchParams: AdminsParams) => {
       `/admins`,
       searchParams
     );
-    console.log(res);
     return res.data;
   } catch (error: any) {
     throw new Error(String(error));

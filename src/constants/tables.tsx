@@ -196,3 +196,26 @@ export const ADMIN_COLUMN_LIST: TableHeader[] = [
     accessor: 'action',
   },
 ];
+
+export const PARTNER_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Phone Number',
+    accessor: 'phone_number',
+  },
+  {
+    label: 'Logo',
+    accessor: 'logo',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
