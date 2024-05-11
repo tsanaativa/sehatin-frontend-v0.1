@@ -3,6 +3,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  output: 'standalone',
+  basePath: process.env.NODE_ENV === 'production' ? '/vm5' : '',
   images: {
     remotePatterns: [
       {

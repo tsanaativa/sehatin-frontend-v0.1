@@ -17,7 +17,7 @@ const AdminSidebar = ({ user }: { user?: User }) => {
   };
 
   return (
-    <aside className="w-80 min-h-screen bg-white-fe border-r border-gray-light px-6 py-7">
+    <aside className="w-80 fixed h-screen bg-white-fe border-r border-gray-light px-6 py-7">
       <Link href="/admin/dashboard">
         <Sehatin />
       </Link>
