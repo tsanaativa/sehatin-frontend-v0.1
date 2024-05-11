@@ -10,10 +10,7 @@ const CreateAdminForm = () => {
     email: '',
     password: '',
     'password-confirmation': '',
-    'birth-date': '',
   });
-  const [birthDate, setBirthDate] = useState<string>('');
-  const [gender, setGender] = useState<'male' | 'female'>('male');
 
   const name = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);

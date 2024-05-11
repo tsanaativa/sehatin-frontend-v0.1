@@ -13,6 +13,8 @@ export async function createAdmin(formData: FormData) {
 
   try {
     await post(`/admins`, rawFormData);
+    revalidatePath('/admin/admin/list');
+    redirect('/admin/admin/list');
   } catch (error) {
     let message: string;
 
@@ -28,9 +30,6 @@ export async function createAdmin(formData: FormData) {
 
     throw new Error(message);
   }
-
-  revalidatePath('/admin/admin/list');
-  redirect('/admin/admin/list');
 }
 
 export async function updateAdmin(formData: FormData) {
@@ -40,6 +39,8 @@ export async function updateAdmin(formData: FormData) {
 
   try {
     await put(`/admins`, rawFormData);
+    revalidatePath('/admin/admin/list');
+    redirect('/admin/admin/list');
   } catch (error) {
     let message: string;
 
@@ -55,9 +56,6 @@ export async function updateAdmin(formData: FormData) {
 
     throw new Error(message);
   }
-
-  revalidatePath('/admin/admin/list');
-  redirect('/admin/admin/list');
 }
 
 export async function deleteAdmin(id: number) {
@@ -78,7 +76,4 @@ export async function deleteAdmin(id: number) {
 
     throw new Error(message);
   }
-
-  revalidatePath('/admin/admin/list');
-  redirect('/admin/admin/list');
 }
