@@ -16,19 +16,19 @@ const GoogleMapView = ({
     lng: lng,
   });
 
-  useEffect(() => {
-    getUserLocation();
-  }, []);
+  // useEffect(() => {
+  //   getUserLocation();
+  // }, []);
 
-  const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos);
-      setCoordinate({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      });
-    });
-  };
+  // const getUserLocation = () => {
+  //   navigator.geolocation.getCurrentPosition(function (pos) {
+  //     console.log(pos);
+  //     setCoordinate({
+  //       lat: pos.coords.latitude,
+  //       lng: pos.coords.longitude,
+  //     });
+  //   });
+  // };
 
   const mapContainerStyle = {
     width: '100%',

@@ -17,8 +17,13 @@ import { GoogleMapResult } from '@/types/Location';
 import { formatAddress } from '@/utils/formatter';
 import { Address } from '@/types/Address';
 import { DEFAULT_ADDRESS } from '@/constants/address';
+import ToggleInput from '../ToggleInput';
 
-const AddressForm = () => {
+type AddressFormProps = {
+  address?: Address;
+};
+
+const AddressForm = ({ address }: AddressFormProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
     city: '',
@@ -37,11 +42,13 @@ const AddressForm = () => {
     address: '',
     latitude: 0,
     longitude: 0,
+    isMain: true,
   };
 
   const [input, setInput] = useState(initialInput);
   const addressRef = useRef<HTMLTextAreaElement>(null);
   const postalCodeRef = useRef<HTMLInputElement>(null);
+  const isMainRef = useRef<HTMLInputElement>(null);
 
   const [provinces, setProvinces] = useState<Record<string, string>>({});
   const [cities, setCities] = useState<Record<string, string>>({});
@@ -53,6 +60,12 @@ const AddressForm = () => {
     try {
       const rec = await getProvinces();
       setProvinces(rec);
+      if (address) {
+        // rec.filter(address.province)
+        const provinceId = Object.keys(provinces).find(
+          (key) => provinces[key] === address.province
+        );
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -88,6 +101,7 @@ const AddressForm = () => {
 
   useEffect(() => {
     fetchProvinces();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleProvince = (option: string) => {
@@ -120,12 +134,42 @@ const AddressForm = () => {
   const handleSubDistrict = (option: string) => {
     setInput({
       ...input,
-      ['subDistrict']: option,
-      ['postalCode']: `${postalCodes[option]}`,
+      subDistrict: option,
     });
     handleInput('subDistrict', option);
-    if (postalCodeRef.current)
-      postalCodeRef.current.value = `${postalCodes[option]}`;
+    if (postalCodeRef.current) {
+      const currentPostalCode = `${postalCodes[option]}`;
+      postalCodeRef.current.value = currentPostalCode;
+      setInput({
+        ...input,
+        postalCode: currentPostalCode,
+      });
+      getLatLongByPostalCode(currentPostalCode, option);
+    }
+  };
+
+  const getLatLongByPostalCode = async (
+    postalCode: string,
+    subDistrictId: string
+  ) => {
+    try {
+      let response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&address=${postalCode},ID`
+      );
+      const result: { results: GoogleMapResult[] } = await response.json();
+      console.log(result);
+      if (result.results.length > 0) {
+        setInput({
+          ...input,
+          subDistrict: subDistrictId,
+          postalCode: postalCode,
+          latitude: result.results[0].geometry.location.lat,
+          longitude: result.results[0].geometry.location.lng,
+        });
+      }
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
   };
 
   const handleInput = (id: string, value: string) => {
@@ -146,6 +190,16 @@ const AddressForm = () => {
     }
   };
 
+  const handleIsMain = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isMain = e.target.checked;
+    if (input.isMain !== isMain) {
+      setInput({
+        ...input,
+        isMain: isMain,
+      });
+    }
+  };
+
   const invalidSubmission = () => {
     return Object.values(errors).some((err) => err !== '');
   };
@@ -161,6 +215,19 @@ const AddressForm = () => {
   };
 
   const handleSubmit = () => {
+    const body = {
+      province: provinces[input.province],
+      city: cities[input.city],
+      city_id: parseInt(input.city),
+      district: districts[input.district],
+      sub_district: subDistricts[input.subDistrict],
+      postal_code: input.postalCode,
+      address: addressRef.current?.value,
+      latitude: input.latitude,
+      longitude: input.longitude,
+      is_main: input.isMain,
+    };
+    console.log(body);
     if (invalidSubmission() || anyEmptyField()) {
       const allErrors = Object.fromEntries(
         Object.keys(errors).map((i) => {
@@ -193,15 +260,17 @@ const AddressForm = () => {
       setErrors({ ...allErrors });
       return;
     }
-
-    const body = {
-      ...input,
-      address: addressRef.current?.value,
-    };
-    console.log(body);
   };
 
-  const getCurrentLatLong = () => {};
+  const getUserLocation = () => {
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      console.log(pos);
+      // setCoordinate({
+      //   lat: pos.coords.latitude,
+      //   lng: pos.coords.longitude,
+      // });
+    });
+  };
 
   const getLatLongByAddress = async (address: string) => {
     const addressObj: Address = {
@@ -327,13 +396,22 @@ const AddressForm = () => {
           </label>
         </div>
         <div className="mt-5">
-          <GoogleMapView lng={input.longitude} lat={input.latitude} />
+          {input.latitude !== 0 && input.longitude !== 0 && (
+            <GoogleMapView lng={input.longitude} lat={input.latitude} />
+          )}
+        </div>
+        <div>
+          <ToggleInput
+            label="Set as main address"
+            defaultChecked
+            onChange={handleIsMain}
+          />
         </div>
         <div className="flex justify-between items-center mt-5">
           <span
             role="button"
             className="text-primary-dark font-semibold hover:underline"
-            onClick={getCurrentLatLong}
+            onClick={getUserLocation}
           >
             Autofill by current location
           </span>
