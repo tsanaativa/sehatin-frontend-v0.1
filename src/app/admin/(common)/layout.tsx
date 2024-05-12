@@ -11,7 +11,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
         <AdminSidebar user={user} />
         <div className="w-full">
           <AdminHeader />
-          <div className="px-9 py-6">{children}</div>
+          <div className="px-9 py-6 ms-[320px]">{children}</div>
         </div>
       </div>
     </div>

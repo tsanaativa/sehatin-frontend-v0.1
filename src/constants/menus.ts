@@ -114,6 +114,7 @@ export const PATHS_MAP = {
   user: 'User',
   admin: 'Admin',
   partner: 'Partner',
+  doctor: 'Doctor',
   medicine: 'Medicine',
   order: 'Order',
   'sales-report': 'Sales Report',

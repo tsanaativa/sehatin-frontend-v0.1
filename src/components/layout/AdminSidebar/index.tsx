@@ -21,7 +21,7 @@ const AdminSidebar = ({ user }: { user?: User }) => {
       <Link href="/admin/dashboard">
         <Sehatin />
       </Link>
-      <div className="flex flex-col justify-between h-5/6 mt-12">
+      <div className="flex flex-col justify-between h-[97%] pt-12">
         <ul>
           {isAdmin.map((menu, idx) => (
             <li key={idx}>
