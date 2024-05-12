@@ -112,7 +112,12 @@ const AdminDoctorList = () => {
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
+        <Input
+          inputClass="h-[44px]"
+          prepend="Search"
+          placeholder="Search..."
+          defaultValue={params.keyword}
+        />
         <div className="flex gap-x-4">
           <SortDropdown
             onSort={handleSort}

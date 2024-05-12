@@ -18,12 +18,12 @@ export const USER_COLUMN_LIST: TableHeader[] = [
     accessor: 'gender',
   },
   {
-    label: 'Status',
-    accessor: 'is_verified',
+    label: 'Profile Picture',
+    accessor: 'profile_picture',
   },
   {
-    label: 'User Detail',
-    accessor: 'id',
+    label: 'Status',
+    accessor: 'is_verified',
   },
   {
     label: 'Action',
@@ -179,5 +179,43 @@ export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Action',
     accessor: 'confirm',
+  },
+];
+
+export const ADMIN_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const PARTNER_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Phone Number',
+    accessor: 'phone_number',
+  },
+  {
+    label: 'Logo',
+    accessor: 'logo',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
   },
 ];

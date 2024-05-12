@@ -1,11 +1,13 @@
+import { AdminsParams } from '@/types/Admin';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { User } from '@/types/User';
 import { get } from '@/utils/api';
 
-export const getAllUser = async () => {
+export const getAllUser = async (params: AdminsParams) => {
   try {
     const res = await get<{ pagination_info: PaginationInfo; users: User[] }>(
-      `/users`
+      `/users`,
+      params
     );
     return res.data;
   } catch (error) {

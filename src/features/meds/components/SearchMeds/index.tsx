@@ -146,9 +146,11 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
         <div className="flex justify-between items-center">
           {!isLoading ? (
             <span className="text-dark-gray text-sm">
-              {paginationInfo.limit * paginationInfo.page -
-                paginationInfo.limit +
-                1}{' '}
+              {paginationInfo.total_data === 0
+                ? 0
+                : paginationInfo.limit * paginationInfo.page -
+                  paginationInfo.limit +
+                  1}{' '}
               to{' '}
               {products.length +
                 (paginationInfo.limit * paginationInfo.page -

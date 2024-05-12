@@ -20,7 +20,9 @@ const PharmacyLayout = ({ children }: { children: React.ReactNode }) => {
           listClasses="font-semibold hover:underline"
         />
       </span>
-      <div className="bg-light rounded-xl px-9 py-6 mt-6">{children}</div>
+      <div className="bg-light rounded-xl px-9 py-6 mt-6 min-h-[80vh] w-full">
+        {children}
+      </div>
     </div>
   );
 };
