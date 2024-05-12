@@ -3,7 +3,6 @@
 import { getSession } from '@/services/session';
 import { post, put, remove } from '@/utils/api';
 import { revalidatePath } from 'next/cache';
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function createPartner(formData: FormData) {

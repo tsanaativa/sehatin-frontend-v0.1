@@ -38,7 +38,7 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
                     ? user?.profile_picture
                     : DefaultAvatarImg
                 }
-                className="rounded-full"
+                className="rounded-full object-cover"
                 priority
                 alt="Profile"
               />
