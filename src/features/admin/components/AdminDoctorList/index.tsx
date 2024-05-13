@@ -5,13 +5,15 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { DOCTOR_TABLE_DATA, USER_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_DOCTOR_SORT_OPTIONS } from '@/constants/sort';
 import { DOCTOR_COLUMN_LIST } from '@/constants/tables';
+import { getAllDoctor } from '@/services/doctor';
+import { Doctor } from '@/types/Doctor';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminDoctorList = () => {
   const searchParams = useSearchParams();
@@ -33,6 +35,8 @@ const AdminDoctorList = () => {
     total_page: 0,
   });
 
+  const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
+
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
     setParams((prev) => ({
@@ -41,6 +45,19 @@ const AdminDoctorList = () => {
       keyword: newKeyword,
     }));
   }, [searchParams]);
+
+  useEffect(() => {
+    const fetchAllDoctors = async () => {
+      try {
+        const res = await getAllDoctor();
+        setAllDoctors(res.doctors);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+    fetchAllDoctors();
+  }, [params]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -95,7 +112,12 @@ const AdminDoctorList = () => {
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
+        <Input
+          inputClass="h-[44px]"
+          prepend="Search"
+          placeholder="Search..."
+          defaultValue={params.keyword}
+        />
         <div className="flex gap-x-4">
           <SortDropdown
             onSort={handleSort}
@@ -113,7 +135,7 @@ const AdminDoctorList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={DOCTOR_TABLE_DATA}
+        dataList={allDoctors}
         columnList={DOCTOR_COLUMN_LIST}
         tabelName="doctor"
       />

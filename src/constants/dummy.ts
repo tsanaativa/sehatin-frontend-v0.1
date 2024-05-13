@@ -1,21 +1,19 @@
 import { Address } from '@/types/Address';
-import { Category } from '@/types/Product';
 import { Doctor } from '@/types/Doctor';
-import { Product } from '@/types/Product';
+import { Category, PharmacyProductUser } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';
-import { User } from '@/types/User';
-import { Chat } from '@/types/Chat';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
-export const DUMMY_PRODUCT: Product = {
+export const DUMMY_PRODUCT: PharmacyProductUser = {
   id: 1,
   name: 'Panadol Extra 10 Kaplet 2 box bla',
   selling_unit: 'Box',
   price: '15990',
   generic_name: 'Paracetamol',
-  image:
+  product_picture:
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  slug: 'obat-a',
 };
 
 export const DUMMY_DOCTOR: Doctor = {
@@ -31,6 +29,8 @@ export const DUMMY_DOCTOR: Doctor = {
   fee: 50000,
   profile_picture:
     'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  certificate:
+    'https://res.cloudinary.com/deu2djyxi/image/upload/v1715227365/d3rroj03uoqgkqrgguoc.pdf',
 };
 
 export const DUMMY_ADDRESSES: Address[] = [
@@ -42,7 +42,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -55,7 +55,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -68,7 +68,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -371,5 +371,102 @@ export const DOCTOR_TABLE_DATA = [
     consultation_fee: 'Rp150.000',
     year_of_experience: '10 years',
     status: true,
+  },
+];
+
+export const MEDICINE_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Box',
+    active_status: false,
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    generic_name: 'Paracetamol',
+    category: 'Obat Sakit Kepala',
+    classification: 'Obat Keras',
+    selling_unit: 'Strip',
+    active_status: true,
+  },
+];
+
+export const DUMMY_CATEGORY_FORM = {
+  1: 'Vitamin C',
+  2: 'Obat Sakit Kepala',
+  3: 'Suplemen Daya Tahan',
+  4: 'Obat Demam',
+  5: 'Obat Batuk',
+  6: 'Obat Sakit Tenggorokan',
+  7: 'Vitamin Anak',
+  8: 'Vitamin Ibu Hamil',
+};
+
+export const PHARMACY_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Egi',
+    address: 'Jl. Hutan No.1 Kuningan, Kunigan, Kunigan, Kuningan',
+    pharmacist: 'Apotek Sebelah 7978364284 081231812212',
+    operational: 'Mon to Fri, 10:00 - 20:00',
+    available_shipping_methods: 'Official Next Day, JNE Next Day',
+  },
+  {
+    id: 2,
+    name: 'Vivin',
+    address: 'Jl. Hutan No.1 Kuningan, Kunigan, Kunigan, Kuningan',
+    pharmacist: 'Apotek Sebelah 7978364284 081231812212',
+    operational: 'Mon to Fri, 10:00 - 20:00',
+    available_shipping_methods: 'Official Next Day, JNE Next Day',
+  },
+];
+
+export const PHARMACY_PRODUCT_TABLE_DATA = [
+  {
+    id: 1,
+    name: 'Panadol',
+    category: 'Obat Sakit Kepala',
+    selling_unit: 'Box',
+    price: 'Rp100.000',
+    stock: '200',
+  },
+  {
+    id: 2,
+    name: 'Panadol',
+    category: 'Obat Sakit Kepala',
+    selling_unit: 'Box',
+    price: 'Rp75.000',
+    stock: '150',
+  },
+];
+
+export const STOCK_MUTATION_TABLE_DATA = [
+  {
+    id: 1,
+    product_name: 'Panadol',
+    sender: 'Pharmacy B',
+    reciever: 'Pharmacy A',
+    quantity: '30',
+    status: null,
+  },
+  {
+    id: 2,
+    product_name: 'Panadol',
+    sender: 'Pharmacy A',
+    reciever: 'Pharmacy B',
+    quantity: '30',
+    status: true,
+  },
+  {
+    id: 3,
+    product_name: 'Panadol',
+    sender: 'Pharmacy C',
+    reciever: 'Pharmacy A',
+    quantity: '30',
+    status: false,
   },
 ];

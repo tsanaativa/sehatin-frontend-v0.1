@@ -9,7 +9,9 @@ type ButtonProps = {
     | 'outlined-danger'
     | 'danger'
     | 'outlined-gray'
-    | 'google';
+    | 'google'
+    | 'green'
+    | 'warning';
   loading?: boolean;
 } & React.ComponentPropsWithoutRef<'button'>;
 
@@ -29,10 +31,13 @@ const Button = ({
     danger:
       'text-light bg-danger/85 hover:bg-danger/90 active:bg-danger disabled:bg-danger/60',
     'outlined-danger': '',
+    warning:
+      'text-light bg-warning/85 hover:bg-warning/90 active:bg-warning disabled:bg-warning/30 disabled:cursor-not-allowed',
     'primary-light': 'text-primary-dark bg-primary-border',
     'outlined-gray': 'text-dark-gray border border-gray hover:bg-gray-light',
     google:
       'border-gray-light border-[1px] bg-light/40 !rounded-full text-dark hover:border-gray-cart disabled:opacity-50 disabled:cursor-not-allowed',
+    green: 'text-light bg-green hover:bg-green/90',
   };
 
   return (

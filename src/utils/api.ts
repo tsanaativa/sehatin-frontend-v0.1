@@ -12,15 +12,6 @@ type ApiParam = {
   method?: string;
 };
 
-export type ErrorProps = {
-  code: number;
-  codeName: string;
-  message: string;
-};
-
-export const isApiError = (object: any): object is ErrorProps =>
-  'code' in object && 'codeName' in object && 'message' in object;
-
 async function request<T>(
   {
     url,
@@ -29,7 +20,8 @@ async function request<T>(
     },
     method = 'GET',
   }: ApiParam,
-  param?: any
+  param?: any,
+  fprmData?: FormData
 ): Promise<{ message: string; data: T }> {
   const session = await getSession();
   headers = PUBLIC_API_ROUTES.some((p) => url.includes(p))
@@ -46,31 +38,44 @@ async function request<T>(
   await interceptor(url);
 
   if (param) {
-    console.log(param, headers['Content-Type'] == 'multipart/form-data');
-    if (method === 'GET') url += '?' + new URLSearchParams(param);
-    else if (headers['Content-Type'] == 'multipart/form-data')
-      options.body = param;
-    else options.body = JSON.stringify(param);
+    if (method === 'GET') {
+      url += '?' + new URLSearchParams(param);
+    } else {
+      if (fprmData) {
+        options.body = fprmData;
+      } else {
+        options.body = JSON.stringify(param);
+      }
+    }
   }
 
   const response = await fetch(BASE_URL + url, options);
   const result = await response.json();
   if (!response.ok) {
-    const error: ErrorProps = {
-      code: response.status,
-      codeName: response.statusText,
-      message:
-        result.message ??
-        result.errors
-          .map((err: { field: string; message: string }) =>
-            err.message
-              .toLowerCase()
-              .replaceAll('this field', err.field.toLowerCase())
-          )
-          .join('. '),
-    };
-    throw error;
+    const message =
+      result.message ??
+      result.errors
+        .map((err: { field: string; message: string }) =>
+          err.message
+            .toLowerCase()
+            .replaceAll('this field', err.field.toLowerCase())
+        )
+        .join('. ');
+    throw new Error(message);
   }
+  // ne
+  // code: response.status,
+  // codeName: response.statusText,
+  // message:
+  // result.message ??
+  // result.errors
+  //   .map((err: { field: string; message: string }) =>
+  //   err.message
+  //     .toLowerCase()
+  //     .replaceAll('this field', err.field.toLowerCase())
+  // )
+  // .join('. '),
+  // };
 
   return result;
 }
@@ -86,25 +91,28 @@ export async function get<T>(
 export async function post<T>(
   url: ApiParam['url'],
   params?: any,
-  headers?: ApiParam['headers']
+  headers?: ApiParam['headers'],
+  formData?: FormData
 ): Promise<{ message: string; data: T }> {
-  return request({ url, headers, method: 'POST' }, params);
+  return request({ url, headers, method: 'POST' }, params, formData);
 }
 
 export async function patch<T>(
   url: ApiParam['url'],
   params?: any,
-  headers?: ApiParam['headers']
+  headers?: ApiParam['headers'],
+  formData?: FormData
 ): Promise<{ message: string; data: T }> {
-  return request({ url, headers, method: 'PATCH' }, params);
+  return request({ url, headers, method: 'PATCH' }, params, formData);
 }
 
 export async function put<T>(
   url: ApiParam['url'],
   params?: any,
-  headers?: ApiParam['headers']
+  headers?: ApiParam['headers'],
+  formData?: FormData
 ): Promise<{ message: string; data: T }> {
-  return request({ url, headers, method: 'PUT' }, params);
+  return request({ url, headers, method: 'PUT' }, params, formData);
 }
 
 export async function remove<T>(

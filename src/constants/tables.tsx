@@ -18,12 +18,12 @@ export const USER_COLUMN_LIST: TableHeader[] = [
     accessor: 'gender',
   },
   {
-    label: 'Status',
-    accessor: 'status',
+    label: 'Profile Picture',
+    accessor: 'profile_picture',
   },
   {
-    label: 'User Detail',
-    accessor: 'id',
+    label: 'Status',
+    accessor: 'is_verified',
   },
   {
     label: 'Action',
@@ -46,7 +46,7 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Consultation Fee',
-    accessor: 'consultation_fee',
+    accessor: 'fee',
   },
   {
     label: 'Year of Experience',
@@ -54,7 +54,34 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Status',
-    accessor: 'status',
+    accessor: 'is_verified',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const MEDICINE_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Generic Name',
+    accessor: 'generic_name',
+  },
+  {
+    label: 'Category',
+    accessor: 'categories',
+  },
+  {
+    label: 'Classification',
+    accessor: 'classification',
+  },
+  {
+    label: 'Selling Unit',
+    accessor: 'selling_unit',
   },
   {
     label: 'Action',
@@ -69,7 +96,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Address',
-    accessor: 'address',
+    accessor: 'pharmacy_address',
   },
   {
     label: 'Pharmacist',
@@ -81,11 +108,111 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Available Shipping Methods',
-    accessor: 'availableShippingMethods',
+    accessor: 'available_shipping_methods',
   },
   {
     label: 'Product',
+    accessor: 'pharmacy_product',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'pharmacy_product_name',
+  },
+  {
+    label: 'Category',
+    accessor: 'category',
+  },
+  {
+    label: 'Selling Unit',
+    accessor: 'product_selling_unit',
+  },
+  {
+    label: 'Details',
+    accessor: 'modal',
+  },
+  {
+    label: 'Price',
+    accessor: 'price',
+  },
+  {
+    label: 'Stock',
+    accessor: 'stock',
+  },
+  {
+    label: 'Active Status',
+    accessor: 'active_status',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Product Name',
+    accessor: 'product_name',
+  },
+  {
+    label: 'Sender',
+    accessor: 'sender',
+  },
+  {
+    label: 'Reciever',
+    accessor: 'reciever',
+  },
+  {
+    label: 'Quantity',
+    accessor: 'quantity',
+  },
+  {
+    label: 'Product Details',
     accessor: 'id',
+  },
+  {
+    label: 'Action',
+    accessor: 'confirm',
+  },
+];
+
+export const ADMIN_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const PARTNER_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Phone Number',
+    accessor: 'phone_number',
+  },
+  {
+    label: 'Logo',
+    accessor: 'logo',
   },
   {
     label: 'Action',

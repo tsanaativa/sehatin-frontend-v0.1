@@ -17,7 +17,7 @@ export const validate = (value: string, id: string) => {
     else if (!/^\S+$/.test(value)) return 'password cannot contain space';
   }
   if (id.includes('number')) {
-    if (!/^\d+$/.test(value)) return 'this fieald just receive number';
+    if (!/^\d+$/.test(value)) return 'this field only accepts number';
   }
   return '';
 };

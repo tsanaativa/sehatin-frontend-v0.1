@@ -1,11 +1,15 @@
-const MyConsultationHistory = () => {
-  return (
-    <div>
-      <h2 className="text-xl text-center font-semibold font-poppins md:text-start md:text-2xl">
-        My Consultation History
-      </h2>
-    </div>
-  );
+import ConsultationHistory from '@/features/consult/components/ConsultationHistory';
+import { getUser } from '@/services/session';
+import { redirect } from 'next/navigation';
+
+const MyConsultationHistory = async () => {
+  const user = await getUser();
+
+  if (!user || user.role !== 'user') {
+    redirect('/');
+  }
+
+  return <ConsultationHistory user={user} />;
 };
 
 export default MyConsultationHistory;

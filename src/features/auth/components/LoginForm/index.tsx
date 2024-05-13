@@ -6,10 +6,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import login from '../../actions/login';
+import { login, resendEmail } from '../../actions/login';
 import GoogleSection from '../GoogleSection';
+import Auth from '@/components/layout/Auth';
+import LoginHero from '@/assets/images/login-hero.png';
 
 const LoginForm = () => {
+  const [mailLoad, setMailLoad] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [role, setRole] = useState<'user' | 'doctor'>('user');
   const [errors, setErrors] = useState<Record<string, string>>({
@@ -33,6 +36,8 @@ const LoginForm = () => {
   };
 
   const { push } = useRouter();
+
+  const [showModal, setShowModal] = useState(false);
   const handleSubmit = async () => {
     const errs = errors;
     if (email.current?.value == '') {
@@ -45,27 +50,61 @@ const LoginForm = () => {
       setErrors({ ...errs });
       return;
     }
+    setTimeout(() => {
+      setIsLoading(true);
+    }, 0);
   };
 
   const loginUser = async (formData: FormData) => {
-    setIsLoading(true);
     try {
       const message = await login(formData);
       toast.success(message);
       push('/');
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log('ERROR', error.message);
+    } catch (error: any) {
+      if (error.message == 'account not verified') {
+        setShowModal(true);
+      } else {
         toast.error(error.message);
       }
     } finally {
       setIsLoading(false);
     }
   };
+
+  const resendMail = async () => {
+    setMailLoad(true);
+    try {
+      const message = await resendEmail({ role, email: email.current!.value });
+      setShowModal(false);
+      toast.success(message);
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setMailLoad(false);
+    }
+  };
   return (
-    <>
+    <Auth
+      modal={{
+        show: showModal,
+        onCloseModal: () => mailLoad || setShowModal(false),
+        mode: 'CircleAlert',
+        btnText: 'Resend Email Activation',
+        loading: mailLoad,
+        onConfirm: () => resendMail(),
+        title: 'Your Account Is Not Verified!',
+        caption:
+          'Please verify your email before login. If you feel you have not received the email, you can request a new email activation by clicking the button below.',
+      }}
+      pageTitle="Login"
+      heroImage={LoginHero}
+    >
       <form
-        action={loginUser}
+        action={(e) =>
+          email.current?.value == '' ||
+          password.current?.value == '' ||
+          loginUser(e)
+        }
         className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
       >
         <div className="flex items-center gap-[20px] [&_span]:pt-[7px] [&_span]:text-[11px] mt-[6px]">
@@ -123,7 +162,7 @@ const LoginForm = () => {
           />
         </label>
         <Link
-          href="/forgot-password"
+          href="/auth/forgot-password"
           className="text-right text-dark-gray hover:text-primary-dark transition duration-300"
         >
           Forgot Password
@@ -139,7 +178,7 @@ const LoginForm = () => {
         </Button>
       </form>
       <GoogleSection mode="login" role={role} />
-    </>
+    </Auth>
   );
 };
 

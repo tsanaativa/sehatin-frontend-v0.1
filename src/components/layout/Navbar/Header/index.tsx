@@ -68,6 +68,7 @@ const Header = ({ user, onCart }: HeaderProps) => {
                     <button
                       onClick={onCart}
                       className="relative cursor-pointer"
+                      id="cart-btn"
                     >
                       <ShoppingCart size={28} />
                       <span className="absolute -top-1 -right-5 text-sm text-light font-bold bg-primary-darker rounded-full py-0 px-1">

@@ -60,7 +60,7 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
         const res = await get<{
           pagination_info: PaginationInfo;
           doctors: Doctor[];
-        }>(`/doctors`, params);
+        }>(`/doctors/verified`, params);
         setDoctors(res.data.doctors);
         setPaginationInfo(res.data.pagination_info);
       } catch (error: any) {
@@ -129,9 +129,11 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
         <div className="flex justify-between items-center">
           {!isLoading ? (
             <span className="text-dark-gray text-sm">
-              {paginationInfo.limit * paginationInfo.page -
-                paginationInfo.limit +
-                1}{' '}
+              {paginationInfo.total_data === 0
+                ? 0
+                : paginationInfo.limit * paginationInfo.page -
+                  paginationInfo.limit +
+                  1}{' '}
               to{' '}
               {doctors.length +
                 (paginationInfo.limit * paginationInfo.page -

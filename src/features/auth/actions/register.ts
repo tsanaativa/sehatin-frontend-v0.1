@@ -17,24 +17,10 @@ export default async function register(formData: FormData) {
     if (role == 'user') {
       res = await post('/auth/register/user', userData);
     } else {
-      res = await post('/auth/register/doctor', formData, {
-        'Content-Type': 'multipart/form-data',
-      });
+      res = await post('/auth/register/doctor', {}, {}, formData);
     }
     return res.message;
-  } catch (error) {
-    let message: string;
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (error && typeof error === 'object' && 'message' in error) {
-      message = String(error.message);
-    } else if (typeof error === 'string') {
-      message = error;
-    } else {
-      message = 'Something went wrong';
-    }
-
-    throw new Error(message);
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 }

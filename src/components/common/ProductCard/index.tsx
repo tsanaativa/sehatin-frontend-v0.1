@@ -1,4 +1,4 @@
-import { Product } from '@/types/Product';
+import { PharmacyProductUser } from '@/types/Product';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,24 +6,24 @@ import { Button } from '..';
 
 type ProductCardProps = {
   width?: string;
-  product: Product;
+  product: PharmacyProductUser;
   isAuthenticated: boolean;
 };
 
 const ProductCard = ({ width, product, isAuthenticated }: ProductCardProps) => {
   return (
     <div
-      className={`border-2 border-primary-border rounded-lg md:w-full ${width}`}
+      className={`border-2 border-primary-border rounded-lg md:w-full min-w-[185px] ${width}`}
     >
       <Image
-        src={product.image}
+        src={product.product_picture}
         className="w-full h-24 object-cover rounded-tl-lg rounded-tr-lg"
         width={600}
         height={300}
         alt=""
       />
       <div className="pt-2 pb-3 px-2 md:px-3">
-        <Link href="/meds/panadol-extra-10-kaplet-2-box-bla">
+        <Link href={`/meds/${product.slug_id}/${product.id}`}>
           <div className="min-h-[40px]">
             <span className="font-poppins font-medium text-dark md:text-sm line-clamp-2">
               {product.name}

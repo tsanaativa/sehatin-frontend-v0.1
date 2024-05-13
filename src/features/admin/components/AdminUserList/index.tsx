@@ -1,18 +1,18 @@
 'use client';
 import {
   DataTable,
-  FilterDropdown,
   Input,
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { USER_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_USER_SORT_OPTIONS } from '@/constants/sort';
 import { USER_COLUMN_LIST } from '@/constants/tables';
+import { getAllUser } from '@/services/user';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import { UsersParams } from '@/types/User';
+import { User, UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminUserList = () => {
   const searchParams = useSearchParams();
@@ -34,14 +34,24 @@ const AdminUserList = () => {
     total_page: 0,
   });
 
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const newKeyword = searchParams.get('keyword') || '';
-    setParams((prev) => ({
-      ...prev,
-      page: prev.keyword !== newKeyword ? 1 : prev.page,
-      keyword: newKeyword,
-    }));
-  }, [searchParams]);
+    const fetchAllUsers = async () => {
+      try {
+        const res = await getAllUser(params);
+        setAllUsers(res.users);
+        setPaginationInfo(res.pagination_info);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+      setIsLoading(false);
+    };
+
+    fetchAllUsers();
+  }, [params]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -93,10 +103,26 @@ const AdminUserList = () => {
     [pathname, replace, searchParams]
   );
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newParams = {
+      ...params,
+      keyword: e.target.value,
+      page: 1,
+    };
+    setParams(newParams);
+    handleChangeParams(newParams);
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
+        <Input
+          inputClass="h-[44px]"
+          prepend="Search"
+          placeholder="Search..."
+          onChange={handleSearch}
+          defaultValue={params.keyword}
+        />
         <div className="flex gap-x-4">
           <SortDropdown
             onSort={handleSort}
@@ -114,9 +140,10 @@ const AdminUserList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={USER_TABLE_DATA}
+        dataList={allUsers}
         columnList={USER_COLUMN_LIST}
         tabelName="user"
+        loading={isLoading}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

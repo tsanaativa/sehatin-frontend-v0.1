@@ -8,9 +8,9 @@ import { validate } from '@/utils/validation';
 import GoogleSection from '../GoogleSection';
 import { FileProps } from '@/components/common/FileUploader';
 import { getSpecialists } from '@/services/specialist';
-import { isApiError } from '@/utils/api';
 import { toast } from 'react-toastify';
 import register from '../../actions/register';
+import Auth, { AuthModalProps } from '@/components/layout/Auth';
 import { useRouter } from 'next/navigation';
 
 const RegistrationForm = () => {
@@ -28,9 +28,9 @@ const RegistrationForm = () => {
       'birth-date': '',
     },
     doctor: {
-      specialist: '',
-      'consultation-fee-number': '',
-      'work-start': '',
+      doctor_specialists_id: '',
+      'fee-number': '',
+      work_start_year: '',
       'doctor-certificate': '',
     },
   });
@@ -92,12 +92,12 @@ const RegistrationForm = () => {
 
   const handleSpecialty = (option: string) => {
     setSpecialty(option);
-    handleInput('doctor', 'specialist', option);
+    handleInput('doctor', 'doctor_specialists_id', option);
   };
 
   const handleWorkStart = (option: string) => {
     setWorkStart(option);
-    handleInput('doctor', 'work-start', option);
+    handleInput('doctor', 'work_start_year', option);
   };
 
   const handleInput = (
@@ -198,18 +198,18 @@ const RegistrationForm = () => {
                   birthDate == ''
                     ? 'birth date cannot be empty'
                     : errors['user']['birth-date'],
-                specialist:
+                doctor_specialists_id:
                   specialty == ''
                     ? 'specialist cannot be empty'
-                    : errors['doctor']['specialist'],
-                'consultation-fee-number':
+                    : errors['doctor']['doctor_specialists_id'],
+                'fee-number':
                   consultationFee.current?.value == ''
                     ? 'consultation fee cannot be empty'
-                    : errors['doctor']['consultation-fee-number'],
-                'work-start':
+                    : errors['doctor']['fee-number'],
+                work_start_year:
                   workStart == ''
                     ? 'work start cannot be empty'
-                    : errors['doctor']['work-start'],
+                    : errors['doctor']['work_start_year'],
                 'doctor-certificate': !uploaded.file
                   ? 'doctor certificate cannot be empty'
                   : errors['doctor']['doctor-certificate'],
@@ -228,6 +228,9 @@ const RegistrationForm = () => {
       setErrors({ ...allErrors });
       return;
     }
+    setTimeout(() => {
+      setIsLoading(true);
+    }, 0);
   };
 
   const getSpecialistsData = async () => {
@@ -237,7 +240,7 @@ const RegistrationForm = () => {
       const specialists = Object.fromEntries(data.map((d) => [d.id, d.name]));
       setSpecialistOptions(specialists);
     } catch (error) {
-      if (error instanceof Error || isApiError(error)) {
+      if (error instanceof Error) {
         console.log('ERROR', error.message);
         toast.error(error.message);
       }
@@ -246,18 +249,39 @@ const RegistrationForm = () => {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState<
+    Omit<AuthModalProps, 'show' | 'onCloseModal'>
+  >({
+    mode: 'CircleCheck',
+    btnText: 'OK',
+    onConfirm: () => setShowModal(false),
+    title: 'Verification Email Sent!',
+    caption:
+      'We have sent a verification email. Please check your inbox and follow the instructions to verify your account.',
+  });
+
   const registerUser = async (formData: FormData) => {
-    setIsLoading(true);
     try {
       formData.delete('certificate');
+      formData.delete('work_start_year');
       formData.append('certificate', uploaded.file as File);
-      const message = await register(formData);
-      if (message) toast.success('register succcessfully');
-      push('/auth/login');
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log('ERROR', error?.message);
-        toast.error(error?.message);
+      formData.append('work_start_year', workStart.split('-')[1]);
+      await register(formData);
+      setShowModal(true);
+    } catch (error: any) {
+      if (error.message.includes('email already exist')) {
+        setModalData({
+          mode: 'Info',
+          btnText: 'Open Login Page',
+          onConfirm: () => push('/auth/login'),
+          title: 'You already registered!',
+          caption:
+            "Please verify your email if you haven't verified it or feel free to sign in",
+        });
+        setShowModal(true);
+      } else {
+        toast.error(error.message);
       }
     } finally {
       setIsLoading(false);
@@ -268,7 +292,15 @@ const RegistrationForm = () => {
     getSpecialistsData();
   }, []);
   return (
-    <>
+    <Auth
+      modal={{
+        show: showModal,
+        onCloseModal: () => setShowModal(false),
+        ...modalData,
+      }}
+      reverse
+      wrapperClass="lg:[&>*]:max-w-[1024px]"
+    >
       <form
         action={(e) =>
           invalidSubmission() || anyEmptyField() || registerUser(e)
@@ -434,53 +466,53 @@ const RegistrationForm = () => {
           )}
           {role == 'doctor' && (
             <>
-              <label htmlFor="specialist">
+              <label htmlFor="doctor_specialists_id">
                 <h5>Specialist</h5>
                 <Selector
-                  id="specialist"
+                  id="doctor_specialists_id"
                   wrapperId="auth-main"
                   options={specialistOptions}
                   selected={specialty}
                   isLoading={specialistLoad}
-                  name="specialist"
+                  name="doctor_specialists_id"
                   searchable
                   required
                   onSelect={handleSpecialty}
-                  invalid={errors['doctor']['specialist'] !== ''}
-                  message={errors['doctor']['specialist']}
+                  invalid={errors['doctor']['doctor_specialists_id'] !== ''}
+                  message={errors['doctor']['doctor_specialists_id']}
                   placeholder="Choose your specialty ..."
                 />
               </label>
-              <label htmlFor="consultation-fee">
+              <label htmlFor="fee">
                 <h5>Consultation Fee</h5>
                 <Input
                   ref={consultationFee}
-                  id="consultation-fee"
-                  name="consultation-fee"
+                  id="fee"
+                  name="fee"
                   placeholder="Type your prefered consultation fee ..."
                   prepend="Rp"
                   type="number"
-                  invalid={errors['doctor']['consultation-fee-number'] !== ''}
-                  message={errors['doctor']['consultation-fee-number']}
+                  invalid={errors['doctor']['fee-number'] !== ''}
+                  message={errors['doctor']['fee-number']}
                   onInput={({ target }) =>
                     handleInput(
                       'doctor',
-                      'consultation-fee-number',
+                      'fee-number',
                       (target as HTMLInputElement).value
                     )
                   }
                 />
               </label>
-              <label htmlFor="work-start">
+              <label htmlFor="work_start_year">
                 <h5>Work Start</h5>
                 <Selector
-                  id="work-start"
+                  id="work_start_year"
                   wrapperId="auth-main"
                   options={workStartOptions}
                   selected={workStart}
-                  name="work-start"
-                  invalid={errors['doctor']['work-start'] !== ''}
-                  message={errors['doctor']['work-start']}
+                  name="work_start_year"
+                  invalid={errors['doctor']['work_start_year'] !== ''}
+                  message={errors['doctor']['work_start_year']}
                   onSelect={handleWorkStart}
                   append="Calendar"
                   gridView="[grid-template-columns:repeat(auto-fit,minmax(100px,1fr))]"
@@ -490,7 +522,7 @@ const RegistrationForm = () => {
               <label>
                 <h5>Doctor Certificate</h5>
                 <div className="2xl:min-h-[56px] flex items-center">
-                  <div className="max-w-[585px] 2xl:w-[337px]">
+                  <div className="w-[320px]">
                     <FileUploader
                       id="certificate"
                       name="certificate"
@@ -520,7 +552,7 @@ const RegistrationForm = () => {
         </Button>
       </form>
       <GoogleSection role={role} />
-    </>
+    </Auth>
   );
 };
 

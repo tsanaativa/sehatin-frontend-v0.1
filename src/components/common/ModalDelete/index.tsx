@@ -14,6 +14,10 @@ const ModalDelete = ({
   objName,
   onConfirm,
 }: ModalDeleteProps) => {
+  const handleConfirm = () => {
+    onShowModal(false);
+    onConfirm();
+  };
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
       <div className="flex items-center justify-between  font-poppins font-semibold text-sm px-4 pt-4 md:text-lg">
@@ -46,7 +50,7 @@ const ModalDelete = ({
           <Button
             variant="danger"
             className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2"
-            onClick={onConfirm}
+            onClick={handleConfirm}
           >
             Delete
           </Button>

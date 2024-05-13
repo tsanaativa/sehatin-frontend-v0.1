@@ -1,17 +1,32 @@
 export const PUBLIC_API_ROUTES = [
   '/auth/register',
   '/auth/login',
-  '/auth/refresh-token',
   '/auth/oauth/google',
   '/auth/verify',
   '/auth/logout',
   '/products',
   '/categories',
-  '/doctors',
+  '/doctors/verified',
   '/specialists',
-  '/ws',
+  '/auth/verify/resend',
+  '/auth/forgot-password',
 ];
 
-export const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth'];
+export const AUTH_ROUTES = [
+  '/auth/login',
+  '/auth/register',
+  '/auth',
+  '/admin/login',
+  '/auth/forgot-password',
+];
 
 export const PROTECTED_ROUTES = ['/profile', '/consult'];
+
+export const GENERAL_ADMIN_PROTECTED_ROUTES = ['/admin/dashboard'];
+
+export const ADMIN_PROTECTED_ROUTES = ['/admin/user', '/admin/doctor'];
+
+export const PHARMACY_MANAGER_PROTECTED_ROUTES = [
+  '/admin/pharmacy',
+  '/admin/stock-mutation',
+];
