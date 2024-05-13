@@ -1,20 +1,19 @@
 'use client';
 
 import { LocationIcon } from '@/assets/icons';
-import UpdateAddressButton from '@/features/profile/components/UpdateAddressButton';
 import { Address } from '@/types/Address';
 import { formatAddress } from '@/utils/formatter';
-import { Check, ChevronRight } from 'lucide-react';
+import { Check, ChevronRight, Edit2 } from 'lucide-react';
 import Badge from '../Badge';
 import DeleteModalButton from '../DeleteModalButton';
 
 type AddressCardProps = {
   address: Address;
+  onEdit: () => void;
+  onDelete: () => void;
 };
 
-const AddressCard = ({ address }: AddressCardProps) => {
-  const onDelete = () => {};
-
+const AddressCard = ({ address, onEdit, onDelete }: AddressCardProps) => {
   return (
     <div className="text-dark bg-light border border-gray-light rounded-lg pt-2 pb-3 ps-3 pe-2 flex items-center justify-between gap-2">
       <div className="flex items-center">
@@ -46,7 +45,15 @@ const AddressCard = ({ address }: AddressCardProps) => {
         <ChevronRight size={20} />
       </span>
       <div className="items-center gap-2 hidden md:flex">
-        <UpdateAddressButton address={address} />
+        <a href={`/profile/my-addresses/${address.id}`}>
+          <button
+            type="button"
+            className="flex items-center text-blue"
+            // onClick={onEdit}
+          >
+            <Edit2 size={20} />
+          </button>
+        </a>
         <DeleteModalButton isIcon objName="address" onConfirm={onDelete} />
       </div>
     </div>

@@ -1,17 +1,26 @@
 'use server';
 
 import { getSession } from '@/services/session';
+import { User } from '@/types/User';
 import { post, put, remove } from '@/utils/api';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function createPartner(formData: FormData) {
+export async function updateProfile(role: string, formData: FormData) {
   const session = await getSession();
   const headers = {
     Authorization: `Bearer ${session.access_token}`,
   };
   try {
-    await post('/auth/register/pharmacy-manager', {}, headers, formData);
+    const res = await put<User>(`/${role}s/profile`, {}, headers, formData);
+    if (session.user) {
+      if (formData.get('name')) session.user.name = `${formData.get('name')}`;
+
+      if (formData.get('profile_picture'))
+        session.user.profile_picture = res.data.profile_picture;
+
+      session.save();
+    }
   } catch (error) {
     let message: string;
 
@@ -28,17 +37,13 @@ export async function createPartner(formData: FormData) {
     throw new Error(message);
   }
 
-  revalidatePath('/admin/partner/list');
-  redirect('/admin/partner/list');
+  revalidatePath('/profile/my-profile');
+  redirect('/profile/my-profile');
 }
 
-export async function updatePartner(id: string, formData: FormData) {
-  const session = await getSession();
-  const headers = {
-    Authorization: `Bearer ${session.access_token}`,
-  };
+export async function createAddress(req: any) {
   try {
-    await put(`/pharmacy-managers/${id}`, {}, headers, formData);
+    await post(`/users/profile/addresses`, req);
   } catch (error) {
     let message: string;
 
@@ -55,13 +60,13 @@ export async function updatePartner(id: string, formData: FormData) {
     throw new Error(message);
   }
 
-  revalidatePath('/admin/partner/list');
-  redirect('/admin/partner/list');
+  revalidatePath('/profile/my-addresses');
+  redirect('/profile/my-addresses');
 }
 
-export async function deletePartner(id: number) {
+export async function deleteAddress(id: number) {
   try {
-    await remove(`/pharmacy-managers/${id}`);
+    await remove(`/users/profile/addresses/${id}`);
   } catch (error) {
     let message: string;
 
@@ -78,6 +83,6 @@ export async function deletePartner(id: number) {
     throw new Error(message);
   }
 
-  revalidatePath('/admin/admin/list');
-  redirect('/admin/admin/list');
+  revalidatePath('/profile/my-addresses');
+  redirect('/profile/my-addresses');
 }

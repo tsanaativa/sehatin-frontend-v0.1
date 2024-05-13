@@ -16,20 +16,6 @@ const GoogleMapView = ({
     lng: lng,
   });
 
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos);
-      setCoordinate({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      });
-    });
-  };
-
   const mapContainerStyle = {
     width: '100%',
     height: '250px',
