@@ -47,7 +47,7 @@ const Selector = ({
   onSelect,
 }: SelectorProps) => {
   const [input, setInput] = useState({
-    current: options[selected],
+    current: selected,
     previous: '',
   });
 
@@ -170,7 +170,7 @@ const Selector = ({
           type="text"
           disabled={disabled || isLoading}
           spellCheck="false"
-          value={input['current']}
+          value={options[selected]}
           readOnly={(!searchable && screenWidth >= 768) || screenWidth < 768}
           onChange={({ target }) =>
             handleInput((target as HTMLInputElement).value)

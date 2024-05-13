@@ -2,6 +2,7 @@ import { Doctor } from '@/types/Doctor';
 import { User } from '@/types/User';
 import { get } from '@/utils/api';
 import { getSession } from './session';
+import { Address, ReverseGeoResponse } from '@/types/Address';
 
 export const getProfile = async () => {
   try {
@@ -22,6 +23,18 @@ export const getDoctorProfile = async () => {
         Authorization: `Bearer ${session.access_token}`,
       }
     );
+    return res.data;
+  } catch (error) {
+    throw new Error(String((error as Error).message));
+  }
+};
+
+export const getAddressByLatLong = async (params: {
+  lat: number;
+  lon: number;
+}) => {
+  try {
+    const res = await get<ReverseGeoResponse>(`/loc/reverse`, params, {});
     return res.data;
   } catch (error) {
     throw new Error(String((error as Error).message));
