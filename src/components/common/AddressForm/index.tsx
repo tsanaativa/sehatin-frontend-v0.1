@@ -29,7 +29,7 @@ import { createAddress } from '@/features/profile/actions/profile';
 
 type AddressFormProps = {
   address?: Address;
-  onShowModal: (showModal: boolean) => void;
+  onShowModal?: (showModal: boolean) => void;
 };
 
 const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
@@ -279,7 +279,7 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
     setIsLoading(true);
     try {
       await createAddress(body);
-      onShowModal(false);
+      if (onShowModal) onShowModal(false);
     } catch (err) {
       toast.error((err as Error).message);
     }

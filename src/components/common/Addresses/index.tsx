@@ -7,7 +7,7 @@ import ModalUpdateAddress from '@/features/profile/components/ModalUpdateAddress
 import { Address } from '@/types/Address';
 import { User } from '@/types/User';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 type AddressesProps = {
@@ -15,12 +15,15 @@ type AddressesProps = {
 };
 
 const Addresses = ({ profile }: AddressesProps) => {
-  const [address, setAddress] = useState<Address>();
+  const [address, setAddress] = useState<Address | undefined>();
   const [showModal, setShowModal] = useState(false);
 
   const handleChangeAddress = (address: Address) => {
-    setAddress(address);
-    setShowModal(true);
+    setAddress(undefined);
+    setTimeout(() => {
+      setAddress(address);
+      setShowModal(true);
+    }, 100);
   };
 
   const handleDeleteAddress = async (id: number) => {

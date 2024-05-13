@@ -82,6 +82,7 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       const rec = await getProvinces();
       setProvinces(rec);
       if (address && isDefault) {
+        console.log(address);
         const provinceId = getIdByName(rec, address.province);
         if (provinceId) {
           setInput({
@@ -103,11 +104,15 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       if (address && isDefault) {
         const cityId = getIdByName(rec, address.city);
         if (cityId) {
-          setInput({
-            ...input,
-            city: cityId,
-          });
-          await fetchDistrictsByCity(cityId);
+          // setInput({
+          //   ...input,
+          //   city: cityId,
+          // });
+          const defaultInput = {
+            ...initialInput,
+            province: provinceId,
+          };
+          await fetchDistrictsByCity(cityId, defaultInput);
         }
       }
     } catch (err) {
@@ -115,18 +120,21 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     }
   };
 
-  const fetchDistrictsByCity = async (cityId: string) => {
+  const fetchDistrictsByCity = async (
+    cityId: string,
+    defaultInput?: typeof initialInput
+  ) => {
     try {
       const rec = await getDistricts(cityId);
       setDistricts(rec);
-      if (address && isDefault) {
+      if (address && isDefault && defaultInput) {
         const districtId = getIdByName(rec, address.district);
         if (districtId) {
-          setInput({
-            ...input,
+          await fetchSubDistrictsByDistrict(districtId, {
+            ...defaultInput,
+            city: cityId,
             district: districtId,
           });
-          await fetchSubDistrictsByDistrict(districtId);
         }
       }
     } catch (err) {
@@ -134,18 +142,24 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     }
   };
 
-  const fetchSubDistrictsByDistrict = async (districtId: string) => {
+  const fetchSubDistrictsByDistrict = async (
+    districtId: string,
+    defaultInput?: typeof initialInput
+  ) => {
     try {
       const rec = await getSubDistricts(districtId);
       setSubDistricts(rec.rec);
       setPostalCodes(rec.recPostalCode);
-      if (address && isDefault) {
+      if (address && isDefault && defaultInput) {
         const subDistrictId = getIdByName(rec.rec, address.sub_district);
-        if (subDistrictId) {
+        if (subDistrictId && address.coordinate) {
+          const coordinate = formatCoordinateToLongLat(address.coordinate);
           setInput({
-            ...input,
+            ...defaultInput,
             subDistrict: subDistrictId,
             postalCode: `${address.postal_code}`,
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
           });
           setIsDefault(false);
           setIsFetching(false);
@@ -167,29 +181,16 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
   );
 
   useEffect(() => {
-    console.log(address);
+    console.log(address, 'changedddddddddddd');
     if (address.coordinate) {
-      const coordinate = formatCoordinateToLongLat(address.coordinate);
-      fetchProvinces();
-      // setInput({
-      //   province: address.province,
-      //   city: address.city,
-      //   district: address.district,
-      //   subDistrict: address.sub_district,
-      //   postalCode: `${address.postal_code}`,
-      //   address: address.address,
-      //   latitude: coordinate.latitude,
-      //   longitude: coordinate.longitude,
-      //   isMain: address.is_main,
-      // });
+      console.log('first');
+      // setInput((prev) => {
+      //   ...prev,
+      // })
     }
 
-    // if (address) {
-    //   const provinceId = getIdByName(provinces, address.province);
-    //   fetchCitiesByProvince(`{provinceId}`);
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [address]);
 
   const handleProvince = (option: string) => {
     setInput({
@@ -436,6 +437,18 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     }
   };
 
+  useEffect(() => {
+    setIsDefault(true);
+    setProvinces({});
+    setCities({});
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
+    fetchProvinces();
+    console.log('masukkkkk');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
+
   return (
     <>
       <form
@@ -603,32 +616,29 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
         <div className="mt-5">
           <ToggleInput
             label="Set as main address"
-            defaultChecked
+            defaultChecked={address.is_main}
             onChange={handleIsMain}
           />
         </div>
         <div className="mt-5">
-          {address.address}
-          {address.latitude} {address.longitude}
-          {input.latitude} {input.longitude}
-          {input.latitude !== 0 && input.longitude !== 0 && (
+          {address && input.latitude !== 0 && input.longitude !== 0 && (
             <GoogleMapView lng={input.longitude} lat={input.latitude} />
           )}
         </div>
         <div className="flex justify-between items-center mt-5">
-          <span
+          {/* <span
             role="button"
             className="text-primary-dark font-semibold hover:underline"
             // onClick={getCurrentAddress}
           >
             Edit Address
-          </span>
+          </span> */}
           <Button
             className="px-4 min-w-[100px]"
             variant="primary"
             //   loading={isLoading}
           >
-            s Save
+            Save
           </Button>
         </div>
       </form>
