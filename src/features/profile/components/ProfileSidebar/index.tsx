@@ -54,7 +54,7 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
         {PROFILE_MENUS.map((menu, idx) => (
           <React.Fragment key={idx}>
             {!(isMobile && idx > 1) && (
-              <Link href={menu.link}>
+              <a href={menu.link}>
                 <li
                   className={`px-4 py-4 ${idx !== 0 && 'border-t'} border-gray-light flex items-center justify-between text-lg md:text-base ${
                     !isMobile
@@ -67,7 +67,7 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
                   {menu.label}
                   {isMobile && <ChevronRight />}
                 </li>
-              </Link>
+              </a>
             )}
           </React.Fragment>
         ))}

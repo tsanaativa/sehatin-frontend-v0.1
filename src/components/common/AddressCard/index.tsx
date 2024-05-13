@@ -45,13 +45,15 @@ const AddressCard = ({ address, onEdit, onDelete }: AddressCardProps) => {
         <ChevronRight size={20} />
       </span>
       <div className="items-center gap-2 hidden md:flex">
-        <button
-          type="button"
-          className="flex items-center text-blue"
-          onClick={onEdit}
-        >
-          <Edit2 size={20} />
-        </button>
+        <a href={`/profile/my-addresses/${address.id}`}>
+          <button
+            type="button"
+            className="flex items-center text-blue"
+            // onClick={onEdit}
+          >
+            <Edit2 size={20} />
+          </button>
+        </a>
         <DeleteModalButton isIcon objName="address" onConfirm={onDelete} />
       </div>
     </div>

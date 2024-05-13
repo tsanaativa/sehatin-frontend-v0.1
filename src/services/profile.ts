@@ -40,3 +40,12 @@ export const getAddressByLatLong = async (params: {
     throw new Error(String((error as Error).message));
   }
 };
+
+export const getUserAddress = async (id: number) => {
+  try {
+    const res = await get<Address>(`/users/profile/addresses/${id}`);
+    return res.data;
+  } catch (error) {
+    throw new Error(String((error as Error).message));
+  }
+};

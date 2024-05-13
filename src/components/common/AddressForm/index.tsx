@@ -1,31 +1,25 @@
 'use client';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+
 import { Button, Input } from '@/components/common';
 import Selector from '@/components/common/Selector';
-import { validate } from '@/utils/validation';
-import { DUMMY_SPECIALISTS } from '@/constants/dummy';
-import TextArea from '../TextArea';
+import { DEFAULT_ADDRESS } from '@/constants/address';
+import { createAddress } from '@/features/profile/actions/profile';
 import {
   getCities,
   getDistricts,
   getProvinces,
   getSubDistricts,
 } from '@/services/location';
-import { toast } from 'react-toastify';
-import GoogleMapView from '../GoogleMapView';
+import { getAddressByLatLong } from '@/services/profile';
+import { Address } from '@/types/Address';
 import { GoogleMapResult } from '@/types/Location';
 import { formatAddress } from '@/utils/formatter';
-import { Address } from '@/types/Address';
-import { DEFAULT_ADDRESS } from '@/constants/address';
+import { validate } from '@/utils/validation';
+import React, { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import GoogleMapView from '../GoogleMapView';
+import TextArea from '../TextArea';
 import ToggleInput from '../ToggleInput';
-import { getAddressByLatLong } from '@/services/profile';
-import { createAddress } from '@/features/profile/actions/profile';
 
 type AddressFormProps = {
   address?: Address;
