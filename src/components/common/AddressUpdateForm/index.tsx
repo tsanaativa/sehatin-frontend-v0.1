@@ -25,12 +25,14 @@ import { Address } from '@/types/Address';
 import { DEFAULT_ADDRESS } from '@/constants/address';
 import ToggleInput from '../ToggleInput';
 import { getAddressByLatLong } from '@/services/profile';
+import AddressLoading from '../AddressLoading';
+import { updateAddress } from '@/features/profile/actions/profile';
 
-type AddressEditFormProps = {
+type AddressUpdateFormProps = {
   address: Address;
 };
 
-const AddressEditForm = ({ address }: AddressEditFormProps) => {
+const AddressUpdateForm = ({ address }: AddressUpdateFormProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
     city: '',
@@ -52,18 +54,6 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     isMain: true,
   };
 
-  // const initialInput = {
-  //   province: address.province,
-  //   city: address.city,
-  //   district: address.district,
-  //   subDistrict: address.sub_district,
-  //   postalCode: `${address.postal_code}`,
-  //   address: address.address,
-  //   latitude: address.latitude,
-  //   longitude: address.longitude,
-  //   isMain: address.is_main,
-  // };
-
   const [input, setInput] = useState(initialInput);
   const addressRef = useRef<HTMLTextAreaElement>(null);
   const postalCodeRef = useRef<HTMLInputElement>(null);
@@ -73,6 +63,9 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
   const [districts, setDistricts] = useState<Record<string, string>>({});
   const [subDistricts, setSubDistricts] = useState<Record<string, string>>({});
   const [postalCodes, setPostalCodes] = useState<Record<string, number>>({});
+  const [coordinates, setCoordinates] = useState<
+    Record<string, { latitude: number; longitude: number }>
+  >({});
 
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [isDefault, setIsDefault] = useState<boolean>(true);
@@ -82,7 +75,6 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       const rec = await getProvinces();
       setProvinces(rec);
       if (address && isDefault) {
-        console.log(address);
         const provinceId = getIdByName(rec, address.province);
         if (provinceId) {
           setInput({
@@ -104,10 +96,6 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       if (address && isDefault) {
         const cityId = getIdByName(rec, address.city);
         if (cityId) {
-          // setInput({
-          //   ...input,
-          //   city: cityId,
-          // });
           const defaultInput = {
             ...initialInput,
             province: provinceId,
@@ -150,6 +138,7 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       const rec = await getSubDistricts(districtId);
       setSubDistricts(rec.rec);
       setPostalCodes(rec.recPostalCode);
+      setCoordinates(rec.recCoordinate);
       if (address && isDefault && defaultInput) {
         const subDistrictId = getIdByName(rec.rec, address.sub_district);
         if (subDistrictId && address.coordinate) {
@@ -180,40 +169,46 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     []
   );
 
-  useEffect(() => {
-    console.log(address, 'changedddddddddddd');
-    if (address.coordinate) {
-      console.log('first');
-      // setInput((prev) => {
-      //   ...prev,
-      // })
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
-
   const handleProvince = (option: string) => {
+    setCities({});
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['province']: option,
+      city: '',
+      district: '',
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('province', option);
     fetchCitiesByProvince(option);
   };
 
   const handleCity = (option: string) => {
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['city']: option,
+      district: '',
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('city', option);
     fetchDistrictsByCity(option);
   };
 
   const handleDistrict = (option: string) => {
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['district']: option,
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('district', option);
     fetchSubDistrictsByDistrict(option);
@@ -227,36 +222,14 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     handleInput('subDistrict', option);
     if (postalCodeRef.current) {
       const currentPostalCode = `${postalCodes[option]}`;
+      const currentCoordinate = coordinates[option];
       postalCodeRef.current.value = currentPostalCode;
       setInput({
         ...input,
         postalCode: currentPostalCode,
+        latitude: currentCoordinate?.latitude,
+        longitude: currentCoordinate?.longitude,
       });
-      getLatLongByPostalCode(currentPostalCode, option);
-    }
-  };
-
-  const getLatLongByPostalCode = async (
-    postalCode: string,
-    subDistrictId: string
-  ) => {
-    try {
-      let response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&address=${postalCode},ID`
-      );
-      const result: { results: GoogleMapResult[] } = await response.json();
-      console.log(result);
-      if (result.results.length > 0) {
-        setInput({
-          ...input,
-          subDistrict: subDistrictId,
-          postalCode: postalCode,
-          latitude: result.results[0].geometry.location.lat,
-          longitude: result.results[0].geometry.location.lng,
-        });
-      }
-    } catch (err) {
-      toast.error((err as Error).message);
     }
   };
 
@@ -303,19 +276,6 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
   };
 
   const handleSubmit = () => {
-    const body = {
-      province: provinces[input.province],
-      city: cities[input.city],
-      city_id: parseInt(input.city),
-      district: districts[input.district],
-      sub_district: subDistricts[input.subDistrict],
-      postal_code: input.postalCode,
-      address: addressRef.current?.value,
-      latitude: input.latitude,
-      longitude: input.longitude,
-      is_main: input.isMain,
-    };
-    console.log(body);
     if (invalidSubmission() || anyEmptyField()) {
       const allErrors = Object.fromEntries(
         Object.keys(errors).map((i) => {
@@ -348,65 +308,34 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       setErrors({ ...allErrors });
       return;
     }
+
+    const body = {
+      province: provinces[input.province],
+      city: cities[input.city],
+      city_id: parseInt(input.city),
+      district: districts[input.district],
+      sub_district: subDistricts[input.subDistrict],
+      postal_code: input.postalCode,
+      address: addressRef.current?.value,
+      latitude: `${input.latitude}`,
+      longitude: `${input.longitude}`,
+      is_main: input.isMain,
+    };
+
+    handleUpdateAddress(body);
   };
 
-  const [currentPos, setCurrentPos] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos);
-      setCurrentPos({
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      });
-    });
-  };
-
-  const getCurrentAddress = async () => {
-    setIsFetchingLatLon(true);
-    setIsAutofill(true);
-    await addressByLatLong(currentPos.latitude, currentPos.longitude);
+  const handleUpdateAddress = async (body: any) => {
+    setIsLoading(true);
+    try {
+      await updateAddress(address.id, body);
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+    setIsLoading(false);
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFetchingLatLon, setIsFetchingLatLon] = useState<boolean>(false);
-  const [isAutofill, setIsAutofill] = useState<boolean>(false);
-
-  const addressByLatLong = async (lat: number, lon: number) => {
-    try {
-      console.log(lat, lon);
-      const res = await getAddressByLatLong({
-        lat: lat,
-        lon: lon,
-      });
-      console.log(res);
-      console.log(input.district);
-      // setExistingInput({
-      //   address: res.address,
-      //   postalCode: `${res.postal_code}`,
-      //   subDistrict: `${res.sub_district_id}`,
-      //   district: `${res.district_id}`,
-      //   city: `${res.city_id}`,
-      //   province: `${res.province_id}`,
-      //   latitude: lat,
-      //   longitude: lon,
-      //   isMain: input.isMain
-      // })
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setIsFetchingLatLon(false);
-    }
-  };
-
-  //   const [existingInput, setExistingInput] = useState(initialInput);
 
   const getLatLongByAddress = async (address: string) => {
     const addressObj: Address = {
@@ -426,11 +355,18 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       );
       const result: { results: GoogleMapResult[] } = await response.json();
       if (result.results.length > 0) {
-        setInput({
-          ...input,
-          latitude: result.results[0].geometry.location.lat,
-          longitude: result.results[0].geometry.location.lng,
-        });
+        const addrComponents = result.results[0].address_components;
+        const lastComponent = addrComponents[addrComponents.length - 1];
+        if (
+          lastComponent.types[0] === 'postal_code' &&
+          lastComponent.long_name === input.postalCode
+        ) {
+          setInput({
+            ...input,
+            latitude: result.results[0].geometry.location.lat,
+            longitude: result.results[0].geometry.location.lng,
+          });
+        }
       }
     } catch (err) {
       toast.error((err as Error).message);
@@ -445,7 +381,6 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
     setSubDistricts({});
     setPostalCodes({});
     fetchProvinces();
-    console.log('masukkkkk');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
@@ -457,68 +392,7 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
       >
         <div className="grid md:grid-cols-2 gap-4 ">
           {isFetching ? (
-            <>
-              <label htmlFor="province">
-                <h5>Province</h5>
-                <Input
-                  id="province"
-                  name="province"
-                  disabled
-                  value={address.province}
-                  //   ref={postalCodeRef}
-                />
-              </label>
-              <label htmlFor="city">
-                <h5>City</h5>
-                <Input
-                  id="city"
-                  name="city"
-                  disabled
-                  value={address.city}
-                  //   ref={postalCodeRef}
-                />
-              </label>
-              <label htmlFor="district">
-                <h5>District</h5>
-                <Input
-                  id="district"
-                  name="district"
-                  disabled
-                  value={address.district}
-                  //   ref={postalCodeRef}
-                />
-              </label>
-              <label htmlFor="subdistrict">
-                <h5>Sub District</h5>
-                <Input
-                  id="subdistrict"
-                  name="subdistrict"
-                  disabled
-                  value={address.sub_district}
-                  //   ref={postalCodeRef}
-                />
-              </label>
-              <label htmlFor="postalcode">
-                <h5>Postal Code</h5>
-                <Input
-                  id="postalCode"
-                  name="postalCode"
-                  disabled
-                  value={address.postal_code}
-                  //   ref={postalCodeRef}
-                />
-              </label>
-              <label htmlFor="address">
-                <h5>Address</h5>
-                <TextArea
-                  //   ref={addressRef}
-                  id="address"
-                  name="address"
-                  value={address.address}
-                  disabled={input.postalCode === ''}
-                />
-              </label>
-            </>
+            <AddressLoading />
           ) : (
             <>
               <label htmlFor="province">
@@ -591,6 +465,7 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
                   name="postalCode"
                   disabled
                   ref={postalCodeRef}
+                  defaultValue={address.postal_code}
                 />
               </label>
               <label htmlFor="address">
@@ -608,6 +483,7 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
                     )
                   }
                   disabled={input.postalCode === ''}
+                  defaultValue={address.address}
                 />
               </label>
             </>
@@ -625,18 +501,11 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
             <GoogleMapView lng={input.longitude} lat={input.latitude} />
           )}
         </div>
-        <div className="flex justify-between items-center mt-5">
-          {/* <span
-            role="button"
-            className="text-primary-dark font-semibold hover:underline"
-            // onClick={getCurrentAddress}
-          >
-            Edit Address
-          </span> */}
+        <div className="flex justify-end items-center mt-5">
           <Button
             className="px-4 min-w-[100px]"
             variant="primary"
-            //   loading={isLoading}
+            loading={isLoading}
           >
             Save
           </Button>
@@ -646,4 +515,4 @@ const AddressEditForm = ({ address }: AddressEditFormProps) => {
   );
 };
 
-export default AddressEditForm;
+export default AddressUpdateForm;

@@ -64,6 +64,29 @@ export async function createAddress(req: any) {
   redirect('/profile/my-addresses');
 }
 
+export async function updateAddress(id: number, req: any) {
+  try {
+    await put(`/users/profile/addresses/${id}`, req);
+  } catch (error) {
+    let message: string;
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (error && typeof error === 'object' && 'message' in error) {
+      message = String(error.message);
+    } else if (typeof error === 'string') {
+      message = error;
+    } else {
+      message = 'Something went wrong';
+    }
+
+    throw new Error(message);
+  }
+
+  revalidatePath('/profile/my-addresses');
+  redirect('/profile/my-addresses');
+}
+
 export async function deleteAddress(id: number) {
   try {
     await remove(`/users/profile/addresses/${id}`);

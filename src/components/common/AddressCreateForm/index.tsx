@@ -10,7 +10,6 @@ import {
   getProvinces,
   getSubDistricts,
 } from '@/services/location';
-import { getAddressByLatLong } from '@/services/profile';
 import { Address } from '@/types/Address';
 import { GoogleMapResult } from '@/types/Location';
 import { formatAddress } from '@/utils/formatter';
@@ -21,12 +20,7 @@ import GoogleMapView from '../GoogleMapView';
 import TextArea from '../TextArea';
 import ToggleInput from '../ToggleInput';
 
-type AddressFormProps = {
-  address?: Address;
-  onShowModal?: (showModal: boolean) => void;
-};
-
-const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
+const AddressCreateForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
     city: '',
@@ -57,6 +51,9 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
   const [districts, setDistricts] = useState<Record<string, string>>({});
   const [subDistricts, setSubDistricts] = useState<Record<string, string>>({});
   const [postalCodes, setPostalCodes] = useState<Record<string, number>>({});
+  const [coordinates, setCoordinates] = useState<
+    Record<string, { latitude: number; longitude: number }>
+  >({});
 
   const fetchProvinces = async () => {
     try {
@@ -90,46 +87,56 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
       const rec = await getSubDistricts(districtId);
       setSubDistricts(rec.rec);
       setPostalCodes(rec.recPostalCode);
+      setCoordinates(rec.recCoordinate);
     } catch (err) {
       toast.error((err as Error).message);
     }
   };
 
-  // const getIdByName = useCallback((records: Record<string,string>, name: string) => {
-  //   return (Object.keys(records) as Array<string>).find(key => records[key] === name);
-  // }, [])
-
   useEffect(() => {
     fetchProvinces();
-    // if (address) {
-    //   const provinceId = getIdByName(provinces, address.province);
-    //   fetchCitiesByProvince(`{provinceId}`);
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleProvince = (option: string) => {
+    setCities({});
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['province']: option,
+      city: '',
+      district: '',
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('province', option);
     fetchCitiesByProvince(option);
   };
 
   const handleCity = (option: string) => {
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['city']: option,
+      district: '',
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('city', option);
     fetchDistrictsByCity(option);
   };
 
   const handleDistrict = (option: string) => {
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['district']: option,
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('district', option);
     fetchSubDistrictsByDistrict(option);
@@ -143,36 +150,14 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
     handleInput('subDistrict', option);
     if (postalCodeRef.current) {
       const currentPostalCode = `${postalCodes[option]}`;
+      const currentCoordinate = coordinates[option];
       postalCodeRef.current.value = currentPostalCode;
       setInput({
         ...input,
         postalCode: currentPostalCode,
+        latitude: currentCoordinate?.latitude,
+        longitude: currentCoordinate?.longitude,
       });
-      getLatLongByPostalCode(currentPostalCode, option);
-    }
-  };
-
-  const getLatLongByPostalCode = async (
-    postalCode: string,
-    subDistrictId: string
-  ) => {
-    try {
-      let response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&address=${postalCode},ID`
-      );
-      const result: { results: GoogleMapResult[] } = await response.json();
-      console.log(result);
-      if (result.results.length > 0) {
-        setInput({
-          ...input,
-          subDistrict: subDistrictId,
-          postalCode: postalCode,
-          latitude: result.results[0].geometry.location.lat,
-          longitude: result.results[0].geometry.location.lng,
-        });
-      }
-    } catch (err) {
-      toast.error((err as Error).message);
     }
   };
 
@@ -217,6 +202,8 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
       addressRef.current?.value === ''
     );
   };
+
+  const handleSave = (body: typeof initialInput) => {};
 
   const handleSubmit = () => {
     if (invalidSubmission() || anyEmptyField()) {
@@ -269,74 +256,16 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
   };
 
   const handleCreateAddress = async (body: any) => {
-    console.log(body);
     setIsLoading(true);
     try {
       await createAddress(body);
-      if (onShowModal) onShowModal(false);
     } catch (err) {
       toast.error((err as Error).message);
     }
     setIsLoading(false);
   };
 
-  const [currentPos, setCurrentPos] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos);
-      setCurrentPos({
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      });
-    });
-  };
-
-  const getCurrentAddress = async () => {
-    setIsFetchingLatLon(true);
-    setIsAutofill(true);
-    await addressByLatLong(currentPos.latitude, currentPos.longitude);
-  };
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFetchingLatLon, setIsFetchingLatLon] = useState<boolean>(false);
-  const [isAutofill, setIsAutofill] = useState<boolean>(false);
-
-  const addressByLatLong = async (lat: number, lon: number) => {
-    try {
-      console.log(lat, lon);
-      const res = await getAddressByLatLong({
-        lat: lat,
-        lon: lon,
-      });
-      console.log(res);
-      console.log(input.district);
-      setExistingInput({
-        address: res.address,
-        postalCode: `${res.postal_code}`,
-        subDistrict: `${res.sub_district_id}`,
-        district: `${res.district_id}`,
-        city: `${res.city_id}`,
-        province: `${res.province_id}`,
-        latitude: lat,
-        longitude: lon,
-        isMain: input.isMain,
-      });
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setIsFetchingLatLon(false);
-    }
-  };
-
-  const [existingInput, setExistingInput] = useState(initialInput);
 
   const getLatLongByAddress = async (address: string) => {
     const addressObj: Address = {
@@ -356,11 +285,18 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
       );
       const result: { results: GoogleMapResult[] } = await response.json();
       if (result.results.length > 0) {
-        setInput({
-          ...input,
-          latitude: result.results[0].geometry.location.lat,
-          longitude: result.results[0].geometry.location.lng,
-        });
+        const addrComponents = result.results[0].address_components;
+        const lastComponent = addrComponents[addrComponents.length - 1];
+        if (
+          lastComponent.types[0] === 'postal_code' &&
+          lastComponent.long_name === input.postalCode
+        ) {
+          setInput({
+            ...input,
+            latitude: result.results[0].geometry.location.lat,
+            longitude: result.results[0].geometry.location.lng,
+          });
+        }
       }
     } catch (err) {
       toast.error((err as Error).message);
@@ -462,27 +398,23 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
           </label>
         </div>
         <div className="mt-5">
+          {input.latitude !== 0 && input.longitude !== 0 && (
+            <GoogleMapView lng={input.longitude} lat={input.latitude} />
+          )}
+        </div>
+        <div className="mt-5">
           <ToggleInput
             label="Set as main address"
             defaultChecked
             onChange={handleIsMain}
           />
         </div>
-        <div className="mt-5">
-          {input.latitude !== 0 && input.longitude !== 0 && (
-            <GoogleMapView lng={input.longitude} lat={input.latitude} />
-          )}
-        </div>
         <div className="flex justify-between items-center mt-5">
-          <span
-            role="button"
-            className="text-primary-dark font-semibold hover:underline"
-            onClick={getCurrentAddress}
-          >
-            {isFetchingLatLon
-              ? 'Please wait...'
-              : 'Autofill by current location'}
-          </span>
+          <a href="/profile/my-addresses/create/autofill">
+            <span className="text-primary-dark font-semibold hover:underline">
+              Autofill by current location
+            </span>
+          </a>
           <Button
             className="px-4 min-w-[100px]"
             variant="primary"
@@ -496,4 +428,4 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
   );
 };
 
-export default AddressForm;
+export default AddressCreateForm;

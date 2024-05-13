@@ -21,7 +21,7 @@ async function request<T>(
     method = 'GET',
   }: ApiParam,
   param?: any,
-  fprmData?: FormData
+  formData?: FormData
 ): Promise<{ message: string; data: T }> {
   const session = await getSession();
   headers = PUBLIC_API_ROUTES.some((p) => url.includes(p))
@@ -41,8 +41,8 @@ async function request<T>(
     if (method === 'GET') {
       url += '?' + new URLSearchParams(param);
     } else {
-      if (fprmData) {
-        options.body = fprmData;
+      if (formData) {
+        options.body = formData;
       } else {
         options.body = JSON.stringify(param);
       }
