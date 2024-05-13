@@ -44,9 +44,6 @@ const AuthWithRole = ({
             <h2 className="font-semibold font-poppins text-2xl leading-[135%] text-center text-primary-text mb-10">
               {pageTitle}
             </h2>
-            <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
-              Please select your role
-            </div>
             {children}
           </div>
         </div>

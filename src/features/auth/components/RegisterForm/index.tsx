@@ -301,6 +301,9 @@ const RegistrationForm = () => {
       reverse
       wrapperClass="lg:[&>*]:max-w-[1024px]"
     >
+      <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
+        Please select your role
+      </div>
       <form
         action={(e) =>
           invalidSubmission() || anyEmptyField() || registerUser(e)
@@ -522,7 +525,7 @@ const RegistrationForm = () => {
               <label>
                 <h5>Doctor Certificate</h5>
                 <div className="2xl:min-h-[56px] flex items-center">
-                  <div className="w-[320px]">
+                  <div className="w-[260px] sm:w-[320px]">
                     <FileUploader
                       id="certificate"
                       name="certificate"

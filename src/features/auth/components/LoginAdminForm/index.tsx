@@ -62,6 +62,9 @@ const LoginAdminForm = () => {
   };
   return (
     <>
+      <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
+        Please select your role
+      </div>
       <form
         action={loginAction}
         className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
