@@ -4,7 +4,7 @@ import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
 import { DEFAULT_ADDRESS } from '@/constants/address';
 import { UserContext } from '@/context/UserProvider';
-import { Category, Product } from '@/types/Product';
+import { Category, PharmacyProductUser, Product } from '@/types/Product';
 import { get } from '@/utils/api';
 import { splitToNArrays } from '@/utils/helper';
 import React, { useContext, useEffect, useState } from 'react';
@@ -18,7 +18,9 @@ type ProductsSectionProps = {
 
 const ProductsSection = ({ category }: ProductsSectionProps) => {
   const { user } = useContext(UserContext);
-  const [productsSlices, setProductsSlices] = useState<Array<Product[]>>([]);
+  const [productsSlices, setProductsSlices] = useState<
+    Array<PharmacyProductUser[]>
+  >([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -39,12 +41,15 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           categoryId: category.id,
           limit: 15,
         };
-        const res = await get<{ products: Product[] }>(
+        const res = await get<{ products: PharmacyProductUser[] }>(
           `/products/nearest/search`,
           params
         );
 
-        const slicedProducts = splitToNArrays<Product>(res.data.products, 5);
+        const slicedProducts = splitToNArrays<PharmacyProductUser>(
+          res.data.products,
+          5
+        );
         setProductsSlices(slicedProducts);
       } catch (error: any) {
         toast.error(error.message);
