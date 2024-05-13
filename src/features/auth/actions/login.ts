@@ -14,8 +14,8 @@ export default async function login(formData: FormData) {
   };
 
   try {
-    const res = await post('/auth/login', rawFormData);
-    const loginData = res.data as LoginResponse;
+    const res = await post<LoginResponse>('/auth/login', rawFormData);
+    const loginData = res.data;
 
     session.exp = loginData.exp;
     session.user = loginData.user;
@@ -23,7 +23,7 @@ export default async function login(formData: FormData) {
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
 
-    return loginData;
+    return res.message;
   } catch (error) {
     let message: string;
 

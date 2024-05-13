@@ -1,15 +1,22 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, FileUploader, Input } from '@/components/common';
 import { RadioBox } from '@/components/common';
 import { DoctorBadge, PatientBadge } from '@/assets/icons';
 import Selector from '@/components/common/Selector';
 import { validate } from '@/utils/validation';
-import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import GoogleSection from '../GoogleSection';
 import { FileProps } from '@/components/common/FileUploader';
+import { getSpecialists } from '@/services/specialist';
+import { isApiError } from '@/utils/api';
+import { toast } from 'react-toastify';
+import register from '../../actions/register';
+import { useRouter } from 'next/navigation';
 
 const RegistrationForm = () => {
+  const { push } = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [specialistLoad, setSpecialistLoad] = useState(false);
   const [errors, setErrors] = useState<Record<string, Record<string, string>>>({
     all: {
       name: '',
@@ -30,7 +37,7 @@ const RegistrationForm = () => {
 
   const [role, setRole] = useState<'user' | 'doctor'>('user');
   const [birthDate, setBirthDate] = useState<string>('');
-  const [workStart, setWorkStart] = useState<string>('2019');
+  const [workStart, setWorkStart] = useState<string>('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [specialty, setSpecialty] = useState<string>('');
   const [uploaded, setUploaded] = useState<FileProps>({
@@ -50,7 +57,9 @@ const RegistrationForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
-  const specialistOptions = DUMMY_SPECIALISTS;
+  const [specialistOptions, setSpecialistOptions] = useState<
+    Record<string, string>
+  >({});
 
   const workStartOptions = Object.fromEntries(
     [...Array(65)].map((_, idx) => {
@@ -221,16 +230,56 @@ const RegistrationForm = () => {
     }
   };
 
+  const getSpecialistsData = async () => {
+    setSpecialistLoad(true);
+    try {
+      const data = await getSpecialists();
+      const specialists = Object.fromEntries(data.map((d) => [d.id, d.name]));
+      setSpecialistOptions(specialists);
+    } catch (error) {
+      if (error instanceof Error || isApiError(error)) {
+        console.log('ERROR', error.message);
+        toast.error(error.message);
+      }
+    } finally {
+      setSpecialistLoad(false);
+    }
+  };
+
+  const registerUser = async (formData: FormData) => {
+    setIsLoading(true);
+    try {
+      formData.delete('certificate');
+      formData.append('certificate', uploaded.file as File);
+      const message = await register(formData);
+      if (message) toast.success('register succcessfully');
+      push('/auth/login');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('ERROR', error?.message);
+        toast.error(error?.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getSpecialistsData();
+  }, []);
   return (
     <>
       <form
-        action={handleSubmit}
+        action={(e) =>
+          invalidSubmission() || anyEmptyField() || registerUser(e)
+        }
         className="flex flex-col gap-4 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
       >
         <div className="flex items-center [&>*]:max-w-[250px] justify-center gap-[20px] [&_span]:pt-[7px] [&_span]:text-[11px] mt-[6px]">
           <RadioBox
             id="user"
-            name="user"
+            name="role"
+            value="user"
             isActive={role === 'user'}
             onChange={() => setRole('user')}
           >
@@ -239,7 +288,8 @@ const RegistrationForm = () => {
           </RadioBox>
           <RadioBox
             id="doctor"
-            name="doctor"
+            name="role"
+            value="doctor"
             isActive={role === 'doctor'}
             onChange={() => setRole('doctor')}
           >
@@ -357,6 +407,7 @@ const RegistrationForm = () => {
                       type="radio"
                       name="gender"
                       id="male"
+                      value={1}
                       className="peer"
                       checked={gender == 'male'}
                       onChange={() => setGender('male')}
@@ -369,6 +420,7 @@ const RegistrationForm = () => {
                       type="radio"
                       name="gender"
                       id="female"
+                      value={2}
                       className="peer"
                       checked={gender == 'female'}
                       onChange={() => setGender('female')}
@@ -389,6 +441,7 @@ const RegistrationForm = () => {
                   wrapperId="auth-main"
                   options={specialistOptions}
                   selected={specialty}
+                  isLoading={specialistLoad}
                   name="specialist"
                   searchable
                   required
@@ -456,7 +509,13 @@ const RegistrationForm = () => {
             </>
           )}
         </div>
-        <Button className="h-14 mt-9" variant="primary">
+        <Button
+          type="submit"
+          loading={isLoading}
+          onClick={handleSubmit}
+          className="h-14 mt-9"
+          variant="primary"
+        >
           Register
         </Button>
       </form>

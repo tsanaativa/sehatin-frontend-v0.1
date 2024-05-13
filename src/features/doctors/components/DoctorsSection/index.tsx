@@ -66,10 +66,7 @@ const DoctorsSection = ({
           specialistId: specialist.id,
           limit: 6,
         };
-        const res = await get<typeof params, { doctors: Doctor[] }>(
-          `/doctors`,
-          params
-        );
+        const res = await get<{ doctors: Doctor[] }>(`/doctors`, params);
 
         setDoctors(res.data.doctors);
       } catch (error: any) {

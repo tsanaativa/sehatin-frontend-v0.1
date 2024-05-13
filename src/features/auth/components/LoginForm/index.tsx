@@ -51,12 +51,12 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       const message = await login(formData);
-      if (message) toast.success('successfully logged in');
+      toast.success(message);
       push('/');
     } catch (error) {
       if (error instanceof Error) {
-        console.log('ERROR', error?.message);
-        toast.error(error?.message);
+        console.log('ERROR', error.message);
+        toast.error(error.message);
       }
     } finally {
       setIsLoading(false);
