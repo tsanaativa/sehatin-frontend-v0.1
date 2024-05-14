@@ -65,6 +65,38 @@ const UpdateUserForm = ({ user }: { user: User }) => {
   };
 
   const handleSubmit = () => {
+    const invalidSubmission = Object.values(errors).some((e) => e !== '');
+    const anyEmptyField =
+      [
+        name.current?.value,
+        email.current?.value,
+        birthDatePicker.current?.value,
+      ].includes('') || picture == null;
+
+    if (invalidSubmission || anyEmptyField) {
+      const errs = Object.fromEntries(
+        Object.keys(errors).map((e) => {
+          const err: Record<string, string> = {
+            name:
+              name.current?.value == ''
+                ? 'name cannot be empty'
+                : errors['name'],
+            email:
+              email.current?.value == ''
+                ? 'email cannot be empty'
+                : errors['email'],
+            'birth-date':
+              birthDate == ''
+                ? 'birth date cannot be empty'
+                : errors['birth-date'],
+          };
+          return [e, err[e]];
+        })
+      );
+      setErrors({ ...errs });
+      return;
+    }
+
     let formData = new FormData();
     formData.append('name', name.current?.value || '');
     formData.append('birth_date', birthDate || '');

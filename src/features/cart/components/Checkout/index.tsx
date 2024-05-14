@@ -1,5 +1,5 @@
 'use client';
-import { Icon, Modal, OrderCard, RadioBox } from '@/components/common';
+import { Icon, Loading, Modal, OrderCard, RadioBox } from '@/components/common';
 import { useEffect, useState } from 'react';
 import CartLayout from '../layout';
 import { PharmaciesInCartProps } from '../Cart';
@@ -7,31 +7,33 @@ import { currency } from '@/utils/helper';
 import { TikiIcon, JNEIcon } from '@/assets/icons';
 import Image from 'next/image';
 import seabank from '@/assets/images/seabank.png';
-import { DUMMY_ADDRESSES } from '@/constants/dummy';
+import { ShippingType } from '..';
+import { OrderRequest } from '@/types/Cart';
 
 type CheckoutProps = {
+  costs: Record<ShippingType, number>[];
   toOrder: PharmaciesInCartProps[];
+  address: { id: number; address: string; is_main: boolean }[];
+  loadAddress: boolean;
+  loadOrder: boolean;
   onClose: () => void;
   onBack: () => void;
-  onOrder: (totalPayment: string) => void;
+  onChangeAddress: (addressId: number) => void;
+  onOrder: (orderData: OrderRequest[]) => void;
 };
 
 const Checkout = ({
   onBack,
   onClose,
   onOrder,
+  onChangeAddress,
+  costs,
+  address,
   toOrder = [],
+  loadAddress,
+  loadOrder,
 }: CheckoutProps) => {
-  const [isLoading, setIsLoading] = useState({
-    order: false,
-  });
-
-  const address = DUMMY_ADDRESSES.map((a) => ({
-    id: a.id,
-    address: a.address,
-  }));
-
-  const [currentAddress, setCurrentAddress] = useState(address[0]['id']);
+  const [currentAddress, setCurrentAddress] = useState(0);
 
   const productSubTotal = () => {
     const order = toOrder.map((t) => t.products.map((p) => p.price * p.inCart));
@@ -40,24 +42,24 @@ const Checkout = ({
 
   const [showModal, setShowModal] = useState(false);
 
-  const [shipment, setShipment] = useState<
-    '' | 'instant' | 'sameday' | 'jne' | 'tiki'
-  >(address.length > 0 ? 'instant' : '');
+  const [shipment, setShipment] = useState<ShippingType[]>([]);
 
-  const shipmentPrice: Record<
-    '' | 'instant' | 'sameday' | 'jne' | 'tiki',
-    number
-  > = {
-    instant: 40000,
-    sameday: 28000,
-    jne: 20000,
-    tiki: 16000,
-    '': 0,
+  const currencyMode = (idx: number, method: ShippingType) => {
+    const rp = currency(costs[idx][method]).replace('Rp ', '').split('.');
+    return {
+      pre: rp[0],
+      suf: rp.slice(1, rp.length).join('.'),
+    };
+  };
+
+  const totalShipment = () => {
+    const selectedMethod = shipment.map((s, i) => (s == '' ? 0 : costs[i][s]));
+    return selectedMethod.reduce((a, b) => a + b, 0);
   };
 
   const summarySubTotal: Record<string, string> = {
     'Product Subtotal': currency(productSubTotal()),
-    'Shipping Subtotal': currency(shipmentPrice[shipment]),
+    'Shipping Subtotal': currency(totalShipment()),
   };
 
   const locationCircle = () => {
@@ -66,29 +68,68 @@ const Checkout = ({
   };
 
   const createOrder = () => {
-    setIsLoading({ ...isLoading, order: true });
-    setTimeout(() => {
-      setIsLoading({ ...isLoading, order: false });
-      onOrder(currency(productSubTotal() + shipmentPrice[shipment]));
-    }, 2000);
+    const param = toOrder.map((o, idx): OrderRequest => {
+      return {
+        cart_item_id: o.products.map((p) => p.id),
+        user_address_id: currentAddress,
+        total_price: o.products
+          .map((p) => p.price * p.inCart)
+          .reduce((a, b) => a + b, 0),
+        shipping_fee: costs[idx][shipment[idx]],
+        shipping_method: shipment[idx],
+      };
+    });
+    onOrder(param);
+  };
+
+  const updateShippingMethod = (idx: number, method: ShippingType) => {
+    const methods = shipment;
+    methods[idx] = method;
+    setShipment([...methods]);
+  };
+
+  const changeAddress = (addressId: number) => {
+    onChangeAddress(addressId);
+    setCurrentAddress(addressId);
+    setShowModal(false);
   };
 
   useEffect(() => {
     locationCircle();
   });
+
+  useEffect(() => {
+    if (currentAddress == 0 && address.length > 0) {
+      setCurrentAddress(address.find((a) => a.is_main)!.id);
+    }
+  }, [address, currentAddress]);
+
+  useEffect(() => {
+    if (shipment.length == 0 && toOrder.length > 0) {
+      setShipment(
+        toOrder.map(
+          (o) =>
+            [
+              o.shippingMethods.official.map((s) => s.name),
+              o.shippingMethods.nonOfficial.map((s) => s.name),
+            ].flat()[0]
+        )
+      );
+    }
+  }, [shipment, toOrder]);
   return (
     <div className="min-w-full overflow-y-auto h-[calc(100%-54px)] lg:h-full bottom-0 bg-light z-[41] pb-14">
       <CartLayout
         pageTitle="Checkout"
         summaryTitle="Payment Detail"
         summarySubTitle="Total Payment"
-        summaryTotal={productSubTotal() + shipmentPrice[shipment]}
+        summaryTotal={productSubTotal() + totalShipment()}
         summarySubTotal={summarySubTotal}
         pageIndex={1}
         mainButton={{
           text: 'Create Order',
           disabled: address.length == 0,
-          loading: isLoading['order'],
+          loading: loadOrder,
           action: () => createOrder(),
         }}
         navLabel={`${toOrder.map((t) => t.products).flat().length}`}
@@ -97,17 +138,25 @@ const Checkout = ({
           { text: 'My Cart', action: () => onBack() },
         ]}
       >
-        <div className="[&>*>h5]:text-dark [&>*>h5]:font-semibold [&>*>h5]:text-xs md:[&>*>h5]:text-xl [&>*>h5]:mb-1.5 md:[&>*>h5]:mb-3 w-full lg:w-[calc(100%-384px)] flex flex-col gap-5">
+        <div className="[&_h5]:text-dark [&_h5]:font-semibold [&_h5]:text-xs md:[&_h5]:text-xl [&_h5]:mb-1.5 md:[&_h5]:mb-3 w-full lg:w-[calc(100%-384px)] flex flex-col gap-5">
           <div className="bg-primary-light border border-primary-border rounded-xl px-3.5 flex flex-col text-primary-dark">
             <div className="flex items-center justify-between border-b border-b-primary-border">
               <span className="py-3 text-xs sm:text-base">
                 Shipping Address
               </span>
               <button
+                disabled={loadAddress}
                 onClick={() => setShowModal(true)}
                 className="bg-primary/20 h-7 px-3 rounded-md text-primary-darker hover:bg-primary/25 active:bg-primary/15 transition-colors duration-300 text-sm sm:text-base"
               >
-                Change
+                {loadAddress ? (
+                  <Loading
+                    name="jump-dots"
+                    className="[&_span]:w-1.5 [&_span]:h-1.5 [&_span]:bg-primary-dark"
+                  />
+                ) : (
+                  'Change'
+                )}
               </button>
             </div>
             <div className="py-3 flex items-center gap-2 sm:gap-4">
@@ -120,90 +169,133 @@ const Checkout = ({
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-5 lg:overflow-hidden">
+          <div className="flex flex-col gap-10">
             {toOrder.map((p, idx) => (
-              <OrderCard
-                key={idx}
-                products={p.products}
-                pharmacyName={p.name}
-                name="pharmacy"
-                id={p.id.toString()}
-                childrenKey={{ prefix: 'x', key: 'inCart' }}
-              />
+              <div key={idx} className="flex flex-col gap-5 lg:overflow-hidden">
+                <OrderCard
+                  products={p.products}
+                  pharmacyName={p.name}
+                  name="pharmacy"
+                  id={p.id.toString()}
+                  childrenKey={{ prefix: 'x', key: 'inCart' }}
+                />
+                <div>
+                  <h5>Shipping Method for Products from {p.name}</h5>
+                  <div className="mt-2 md:mt-0 grid [grid-template-columns:repeat(auto-fit,_minmax(132px,_1fr))] md:[grid-template-columns:repeat(auto-fit,_minmax(180px,_1fr))] gap-3 [&>label]:h-32 md:[&>label]:h-40 [&_section]:flex [&_section]:flex-col [&_section]:justify-center [&_section]:items-center [&_section]:gap-2">
+                    {p.shippingMethods.official.find(
+                      (s) => s.name == 'instant'
+                    ) && (
+                      <RadioBox
+                        id={`instant-${p.id}`}
+                        name={`shipment-${p.id}`}
+                        isActive={shipment[idx] === 'instant'}
+                        onChange={() => updateShippingMethod(idx, 'instant')}
+                        disabled={address.length == 0}
+                      >
+                        <section>
+                          <Icon
+                            name="Zap"
+                            className="w-9 h-9 md:w-14 md:h-14"
+                          />
+                          <span className="text-xs md:text-base">
+                            Instant -{' '}
+                            <span className="font-bold font-poppins">
+                              2 Hour
+                            </span>
+                          </span>
+                          <strong className="text-xs md:text-base font-semibold">
+                            Rp{' '}
+                            <span className="text-lg md:text-2xl">
+                              {currencyMode(idx, 'instant').pre}
+                            </span>
+                            .{currencyMode(idx, 'instant').suf}
+                          </strong>
+                        </section>
+                      </RadioBox>
+                    )}
+                    {p.shippingMethods.official.find(
+                      (s) => s.name == 'sameday'
+                    ) && (
+                      <RadioBox
+                        id={`sameday-${p.id}`}
+                        name={`shipment-${p.id}`}
+                        isActive={shipment[idx] === 'sameday'}
+                        onChange={() => updateShippingMethod(idx, 'sameday')}
+                        disabled={address.length == 0}
+                      >
+                        <section>
+                          <Icon
+                            name="Bike"
+                            className="w-9 h-9 md:w-14 md:h-14"
+                          />
+                          <span className="text-xs md:text-base">
+                            SameDay -{' '}
+                            <span className="font-bold font-poppins">
+                              1 Day
+                            </span>
+                          </span>
+                          <strong className="text-xs md:text-base font-semibold">
+                            Rp{' '}
+                            <span className="text-lg md:text-2xl">
+                              {currencyMode(idx, 'sameday').pre}
+                            </span>
+                            .{currencyMode(idx, 'sameday').suf}
+                          </strong>
+                        </section>
+                      </RadioBox>
+                    )}
+                    {p.shippingMethods.nonOfficial.find(
+                      (s) => s.name == 'jne'
+                    ) && (
+                      <RadioBox
+                        id={`jne-${p.id}`}
+                        name={`shipment-${p.id}`}
+                        isActive={shipment[idx] === 'jne'}
+                        onChange={() => updateShippingMethod(idx, 'jne')}
+                        disabled={address.length == 0}
+                      >
+                        <section>
+                          <div className="h-16 md:h-[88px] grid place-items-center">
+                            <JNEIcon />
+                          </div>
+                          <strong className="text-xs md:text-base font-semibold">
+                            Rp{' '}
+                            <span className="text-lg md:text-2xl">
+                              {currencyMode(idx, 'jne').pre}
+                            </span>
+                            .{currencyMode(idx, 'jne').suf}
+                          </strong>
+                        </section>
+                      </RadioBox>
+                    )}
+                    {p.shippingMethods.nonOfficial.find(
+                      (s) => s.name == 'tiki'
+                    ) && (
+                      <RadioBox
+                        id={`tiki-${p.id}`}
+                        name={`shipment-${p.id}`}
+                        isActive={shipment[idx] === 'tiki'}
+                        onChange={() => updateShippingMethod(idx, 'tiki')}
+                        disabled={address.length == 0}
+                      >
+                        <section>
+                          <div className="h-16 md:h-[88px] grid place-items-center">
+                            <TikiIcon />
+                          </div>
+                          <strong className="text-xs md:text-base font-semibold">
+                            Rp{' '}
+                            <span className="text-lg md:text-2xl">
+                              {currencyMode(idx, 'tiki').pre}
+                            </span>
+                            .{currencyMode(idx, 'tiki').suf}
+                          </strong>
+                        </section>
+                      </RadioBox>
+                    )}
+                  </div>
+                </div>
+              </div>
             ))}
-          </div>
-          <div>
-            <h5>Shipping Method</h5>
-            <div className="mt-2 md:mt-0 grid [grid-template-columns:repeat(auto-fit,_minmax(132px,_1fr))] md:[grid-template-columns:repeat(auto-fit,_minmax(180px,_1fr))] gap-3 [&>label]:h-32 md:[&>label]:h-40 [&_section]:flex [&_section]:flex-col [&_section]:justify-center [&_section]:items-center [&_section]:gap-2">
-              <RadioBox
-                id="instant"
-                name="shipment"
-                isActive={shipment === 'instant'}
-                onChange={() => setShipment('instant')}
-                disabled={address.length == 0}
-              >
-                <section>
-                  <Icon name="Zap" className="w-9 h-9 md:w-14 md:h-14" />
-                  <span className="text-xs md:text-base">
-                    Instant -{' '}
-                    <span className="font-bold font-poppins">2 Jam</span>
-                  </span>
-                  <strong className="text-xs md:text-base font-semibold">
-                    Rp <span className="text-lg md:text-2xl">40</span>.000
-                  </strong>
-                </section>
-              </RadioBox>
-              <RadioBox
-                id="sameday"
-                name="shipment"
-                isActive={shipment === 'sameday'}
-                onChange={() => setShipment('sameday')}
-                disabled={address.length == 0}
-              >
-                <section>
-                  <Icon name="Bike" className="w-9 h-9 md:w-14 md:h-14" />
-                  <span className="text-xs md:text-base">
-                    SameDay -{' '}
-                    <span className="font-bold font-poppins">1 Hari</span>
-                  </span>
-                  <strong className="text-xs md:text-base font-semibold">
-                    Rp <span className="text-lg md:text-2xl">28</span>.000
-                  </strong>
-                </section>
-              </RadioBox>
-              <RadioBox
-                id="jne"
-                name="shipment"
-                isActive={shipment === 'jne'}
-                onChange={() => setShipment('jne')}
-                disabled={address.length == 0}
-              >
-                <section>
-                  <div className="h-16 md:h-[88px] grid place-items-center">
-                    <JNEIcon />
-                  </div>
-                  <strong className="text-xs md:text-base font-semibold">
-                    Rp <span className="text-lg md:text-2xl">20</span>.000
-                  </strong>
-                </section>
-              </RadioBox>
-              <RadioBox
-                id="tiki"
-                name="shipment"
-                isActive={shipment === 'tiki'}
-                onChange={() => setShipment('tiki')}
-                disabled={address.length == 0}
-              >
-                <section>
-                  <div className="h-16 md:h-[88px] grid place-items-center">
-                    <TikiIcon />
-                  </div>
-                  <strong className="text-xs md:text-base font-semibold">
-                    Rp <span className="text-lg md:text-2xl">16</span>.000
-                  </strong>
-                </section>
-              </RadioBox>
-            </div>
           </div>
           <div>
             <h5>Payment Method</h5>
@@ -240,7 +332,7 @@ const Checkout = ({
                 Total Payment
               </span>
               <span className="text-secondary font-bold md:text-lg">
-                {productSubTotal() + shipmentPrice[shipment]}
+                {currency(productSubTotal() + totalShipment())}
               </span>
             </div>
           </div>
@@ -273,10 +365,7 @@ const Checkout = ({
                   checked={currentAddress == a.id}
                   id={a.address.toLowerCase().replaceAll(' ', '-') + `-${a.id}`}
                   className="absolute inset-0 opacity-0 cursor-pointer"
-                  onChange={() => {
-                    setCurrentAddress(a.id);
-                    setShowModal(false);
-                  }}
+                  onChange={() => changeAddress(a.id)}
                 />
               </label>
             ))}

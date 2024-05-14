@@ -21,6 +21,6 @@ export const getOneUser = async (id: number) => {
     const res = await get<User>(`/users/${id}`);
     return res.data;
   } catch (error) {
-    throw new Error(String((error as Error).message));
+    throw error;
   }
 };

@@ -15,6 +15,7 @@ import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { deleteDoctorAction } from '../../action/doctor';
 
 const AdminDoctorList = () => {
   const searchParams = useSearchParams();
@@ -39,23 +40,25 @@ const AdminDoctorList = () => {
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const debounce = useDebounce(params, 500);
+
+  const fetchAllDoctors = async () => {
+    try {
+      const res = await getAllDoctor(debounce);
+      setPaginationInfo(res.pagination_info);
+      setAllDoctors(res.doctors);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (debounce) {
-      const fetchAllDoctors = async () => {
-        try {
-          const res = await getAllDoctor(debounce);
-          setPaginationInfo(res.pagination_info);
-          setAllDoctors(res.doctors);
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-        setIsLoading(false);
-      };
-
       fetchAllDoctors();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   const handleMovePage = (page: number) => {
@@ -105,6 +108,16 @@ const AdminDoctorList = () => {
     handleChangeParams(newParams);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteDoctorAction(id);
+      toast.success('successfully deleted');
+      fetchAllDoctors();
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
@@ -128,6 +141,7 @@ const AdminDoctorList = () => {
         columnList={DOCTOR_COLUMN_LIST}
         tabelName="doctor"
         loading={isLoading}
+        onDelete={handleDelete}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>
