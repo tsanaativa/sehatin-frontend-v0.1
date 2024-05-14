@@ -9,7 +9,7 @@ export const getProfile = async () => {
     const res = await get<User>(`/users/profile`);
     return res.data;
   } catch (error) {
-    throw new Error(String((error as Error).message));
+    throw error;
   }
 };
 
@@ -25,7 +25,7 @@ export const getDoctorProfile = async () => {
     );
     return res.data;
   } catch (error) {
-    throw new Error(String((error as Error).message));
+    throw error;
   }
 };
 

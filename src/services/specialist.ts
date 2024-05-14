@@ -6,6 +6,6 @@ export const getSpecialists = async () => {
     const res = await get<{ specialists: Specialist[] }>(`/specialists`);
     return res.data.specialists;
   } catch (error: any) {
-    throw new Error(String(error));
+    throw error;
   }
 };

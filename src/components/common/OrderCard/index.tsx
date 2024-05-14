@@ -15,6 +15,7 @@ export type ProductsProps = {
   inCart: number;
   stock: number;
   is_available: boolean;
+  weight: number;
 };
 
 export type BadgeProps =
@@ -35,6 +36,7 @@ type OrderCardProps = {
   redirectTo?: string;
   withSubTotal?: boolean;
   productCount?: number[];
+  loadUpdateCount?: boolean[];
   children?: React.ReactNode;
   childrenKey?: {
     prefix?: string;
@@ -59,6 +61,7 @@ const OrderCard = ({
   products,
   productChecks,
   redirectTo = '',
+  loadUpdateCount,
   withSubTotal = false,
   productCount,
   children,
@@ -142,7 +145,7 @@ const OrderCard = ({
                 )}
                 <div className="w-[70px] h-[64px] overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={p.picture}
                     className="w-full h-full object-contain"
                     width={600}
                     height={300}
@@ -178,7 +181,7 @@ const OrderCard = ({
                         {children}
                       </button>
                     )}
-                    {productCount && (
+                    {productCount && loadUpdateCount && (
                       <Counter
                         updateValue={(value) =>
                           productAction?.updateCount(idx, value)
@@ -186,6 +189,7 @@ const OrderCard = ({
                         value={productCount[idx]}
                         max={p.stock}
                         isAvailable={p.is_available}
+                        isLoading={loadUpdateCount[idx]}
                         counterClass="hidden md:block md:ml-0"
                       />
                     )}
@@ -205,11 +209,12 @@ const OrderCard = ({
                 </div>
               </div>
             </div>
-            {productCount && (
+            {productCount && loadUpdateCount && (
               <Counter
                 updateValue={(value) => productAction?.updateCount(idx, value)}
                 value={productCount[idx]}
                 max={p.stock}
+                isLoading={loadUpdateCount[idx]}
                 isAvailable={p.is_available}
                 counterClass="md:hidden"
               />
