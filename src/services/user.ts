@@ -1,3 +1,4 @@
+import { Address } from '@/types/Address';
 import { AdminsParams } from '@/types/Admin';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { User } from '@/types/User';

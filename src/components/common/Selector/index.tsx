@@ -241,6 +241,7 @@ const Selector = ({
                   <input
                     type="radio"
                     name={name}
+                    value={option}
                     id={`${option}-${idx}`}
                     onInput={() => handleSelect(option)}
                     className="hidden"

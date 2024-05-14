@@ -20,13 +20,13 @@ const WaitingOauth = () => {
     }
 
     try {
-      await google({ auth_code: code, role });
-      toast.success('successfully logged in');
+      const message = await google({ auth_code: code, role });
+      toast.success(message);
       replace('/');
     } catch (error) {
       if (error instanceof Error) {
-        console.log('ERROR', error?.message);
-        toast.error('authentication failed. please try again.');
+        console.log('ERROR', error.message);
+        toast.error(error.message);
         replace('/auth/login');
       }
     } finally {

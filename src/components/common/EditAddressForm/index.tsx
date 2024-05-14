@@ -1,32 +1,36 @@
 'use client';
-
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Button, Input } from '@/components/common';
 import Selector from '@/components/common/Selector';
-import { DEFAULT_ADDRESS } from '@/constants/address';
-import { createAddress } from '@/features/profile/actions/profile';
+import { validate } from '@/utils/validation';
+import { DUMMY_SPECIALISTS } from '@/constants/dummy';
+import TextArea from '../TextArea';
 import {
   getCities,
   getDistricts,
   getProvinces,
   getSubDistricts,
 } from '@/services/location';
-import { getAddressByLatLong } from '@/services/profile';
-import { Address } from '@/types/Address';
-import { GoogleMapResult } from '@/types/Location';
-import { formatAddress } from '@/utils/formatter';
-import { validate } from '@/utils/validation';
-import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import GoogleMapView from '../GoogleMapView';
-import TextArea from '../TextArea';
+import { GoogleMapResult } from '@/types/Location';
+import { formatAddress } from '@/utils/formatter';
+import { Address } from '@/types/Address';
+import { DEFAULT_ADDRESS } from '@/constants/address';
 import ToggleInput from '../ToggleInput';
+import { getAddressByLatLong } from '@/services/profile';
 
-type AddressFormProps = {
-  address?: Address;
-  onShowModal?: (showModal: boolean) => void;
+type EditAddressFormProps = {
+  address: Address;
 };
 
-const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
+const EditAddressForm = ({ address }: EditAddressFormProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
     city: '',
@@ -37,15 +41,15 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
   });
 
   const initialInput = {
-    province: '',
-    city: '',
-    district: '',
-    subDistrict: '',
-    postalCode: '',
-    address: '',
-    latitude: 0,
-    longitude: 0,
-    isMain: true,
+    province: address.province,
+    city: address.city,
+    district: address.district,
+    subDistrict: address.sub_district,
+    postalCode: `${address.postal_code}`,
+    address: address.address,
+    latitude: address.latitude,
+    longitude: address.longitude,
+    isMain: address.is_main,
   };
 
   const [input, setInput] = useState(initialInput);
@@ -62,6 +66,12 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
     try {
       const rec = await getProvinces();
       setProvinces(rec);
+      if (address) {
+        // rec.filter(address.province)
+        const provinceId = Object.keys(provinces).find(
+          (key) => provinces[key] === address.province
+        );
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -219,6 +229,19 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
   };
 
   const handleSubmit = () => {
+    const body = {
+      province: provinces[input.province],
+      city: cities[input.city],
+      city_id: parseInt(input.city),
+      district: districts[input.district],
+      sub_district: subDistricts[input.subDistrict],
+      postal_code: input.postalCode,
+      address: addressRef.current?.value,
+      latitude: input.latitude,
+      longitude: input.longitude,
+      is_main: input.isMain,
+    };
+    console.log(body);
     if (invalidSubmission() || anyEmptyField()) {
       const allErrors = Object.fromEntries(
         Object.keys(errors).map((i) => {
@@ -251,33 +274,6 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
       setErrors({ ...allErrors });
       return;
     }
-
-    const body = {
-      province: provinces[input.province],
-      city: cities[input.city],
-      city_id: parseInt(input.city),
-      district: districts[input.district],
-      sub_district: subDistricts[input.subDistrict],
-      postal_code: input.postalCode,
-      address: addressRef.current?.value,
-      latitude: `${input.latitude}`,
-      longitude: `${input.longitude}`,
-      is_main: input.isMain,
-    };
-
-    handleCreateAddress(body);
-  };
-
-  const handleCreateAddress = async (body: any) => {
-    console.log(body);
-    setIsLoading(true);
-    try {
-      await createAddress(body);
-      if (onShowModal) onShowModal(false);
-    } catch (err) {
-      toast.error((err as Error).message);
-    }
-    setIsLoading(false);
   };
 
   const [currentPos, setCurrentPos] = useState({
@@ -402,8 +398,9 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
               invalid={errors['city'] !== ''}
               message={errors['city']}
               placeholder="Choose your city ..."
-              disabled={Object.keys(cities).length === 0}
+              disabled={!isAutofill || Object.keys(cities).length === 0}
             />
+            {isAutofill.toString()}
           </label>
           <label htmlFor="district">
             <h5>District</h5>
@@ -418,7 +415,7 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
               invalid={errors['district'] !== ''}
               message={errors['district']}
               placeholder="Choose your district ..."
-              disabled={Object.keys(districts).length === 0}
+              disabled={Object.keys(districts).length === 0 || !isAutofill}
             />
           </label>
           <label htmlFor="subdistrict">
@@ -434,7 +431,7 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
               invalid={errors['subDistrict'] !== ''}
               message={errors['subDistrict']}
               placeholder="Choose your sub district ..."
-              disabled={Object.keys(subDistricts).length === 0}
+              disabled={Object.keys(subDistricts).length === 0 || !isAutofill}
             />
           </label>
           <label htmlFor="postalcode">
@@ -496,4 +493,4 @@ const AddressForm = ({ address, onShowModal }: AddressFormProps) => {
   );
 };
 
-export default AddressForm;
+export default EditAddressForm;
