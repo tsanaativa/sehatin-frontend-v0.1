@@ -15,7 +15,11 @@ const nextConfig = {
         hostname: '**.unsplash.com',
         port: '',
       },
-
+      {
+        protocol: 'https',
+        hostname: 'scontent-cgk1-1.xx.fbcdn.net',
+        port: '',
+      },
       {
         protocol: 'https',
         hostname: 'scontent-cgk1-2.xx.fbcdn.net',

@@ -15,6 +15,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { deleteAdmin } from '../../action/admin';
+import useDebounce from '@/hooks/useDebounce';
 
 const AdminAdminList = () => {
   const searchParams = useSearchParams();
@@ -40,21 +41,24 @@ const AdminAdminList = () => {
 
   const [allAdmins, setAllAdmins] = useState<Admin[]>([]);
 
-  const fetchAllAdmins = async () => {
-    try {
-      const res = await getAllAdmins(params);
-      setPaginationInfo(res.pagination_info);
-      setAllAdmins(res.admin);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-    setIsLoading(false);
-  };
+  const debounce = useDebounce(params, 500);
 
   useEffect(() => {
-    fetchAllAdmins();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params]);
+    if (debounce) {
+      const fetchAllAdmins = async () => {
+        try {
+          const res = await getAllAdmins(debounce);
+          setPaginationInfo(res.pagination_info);
+          setAllAdmins(res.admin);
+        } catch (error: any) {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
+      };
+
+      fetchAllAdmins();
+    }
+  }, [debounce]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -107,7 +111,6 @@ const AdminAdminList = () => {
     try {
       await deleteAdmin(id);
       toast.success('successfully deleted');
-      fetchAllAdmins();
     } catch (err) {
       toast.error((err as Error).message);
     }
