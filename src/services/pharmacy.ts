@@ -16,7 +16,7 @@ export const getAllPharmacies = async () => {
   }
 };
 
-export const getAllPharmacyProducts = async (id: string) => {
+export const getAllPharmacyProducts = async (id: number) => {
   const session = await getSession();
   try {
     const res = await get<{

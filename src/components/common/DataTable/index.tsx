@@ -141,6 +141,7 @@ const DataTable = <T,>({
                                 'is_available' as keyof typeof item
                               ] as boolean
                             }
+                            key={item['id' as keyof typeof item] as number}
                           />
                         ) : column.accessor === 'confirm' ? (
                           <>
