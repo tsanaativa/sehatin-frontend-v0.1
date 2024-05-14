@@ -1,7 +1,9 @@
 'use client';
 
-import { Button, Input } from '@/components/common';
+import { Button, Input, TextArea } from '@/components/common';
+import GoogleMapView from '@/components/common/GoogleMapView';
 import Selector from '@/components/common/Selector';
+import ToggleInput from '@/components/common/ToggleInput';
 import { DEFAULT_ADDRESS } from '@/constants/address';
 import {
   createAddress,
@@ -17,14 +19,11 @@ import { Address } from '@/types/Address';
 import { GoogleMapResult } from '@/types/Location';
 import { formatAddress } from '@/utils/formatter';
 import { validate } from '@/utils/validation';
+import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import GoogleMapView from '../GoogleMapView';
-import TextArea from '../TextArea';
-import ToggleInput from '../ToggleInput';
-import { useParams } from 'next/navigation';
 
-const AddressCreateForm = () => {
+const CreateUserAddressForm = () => {
   const { userId } = useParams();
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
@@ -148,6 +147,10 @@ const AddressCreateForm = () => {
   };
 
   const handleSubDistrict = (option: string) => {
+    setInput({
+      ...input,
+      subDistrict: option,
+    });
     handleInput('subDistrict', option);
     if (postalCodeRef.current) {
       const currentPostalCode = `${postalCodes[option]}`;
@@ -155,7 +158,6 @@ const AddressCreateForm = () => {
       postalCodeRef.current.value = currentPostalCode;
       setInput({
         ...input,
-        subDistrict: option,
         postalCode: currentPostalCode,
         latitude: currentCoordinate?.latitude,
         longitude: currentCoordinate?.longitude,
@@ -204,6 +206,8 @@ const AddressCreateForm = () => {
       addressRef.current?.value === ''
     );
   };
+
+  const handleSave = (body: typeof initialInput) => {};
 
   const handleSubmit = () => {
     if (invalidSubmission() || anyEmptyField()) {
@@ -409,7 +413,12 @@ const AddressCreateForm = () => {
             onChange={handleIsMain}
           />
         </div>
-        <div className="flex justify-end items-center mt-5">
+        <div className="flex justify-between items-center mt-5">
+          <a href="/profile/my-addresses/create/autofill">
+            <span className="text-primary-dark font-semibold hover:underline">
+              Autofill by current location
+            </span>
+          </a>
           <Button
             className="px-4 min-w-[100px]"
             variant="primary"
@@ -423,4 +432,4 @@ const AddressCreateForm = () => {
   );
 };
 
-export default AddressCreateForm;
+export default CreateUserAddressForm;

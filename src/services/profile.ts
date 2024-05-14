@@ -49,3 +49,12 @@ export const getUserAddress = async (id: number) => {
     throw new Error(String((error as Error).message));
   }
 };
+
+export const getUserAddressById = async (userId: string, id: string) => {
+  try {
+    const res = await get<Address>(`/users/${userId}/addresses/${id}`);
+    return res.data;
+  } catch (error) {
+    throw new Error(String((error as Error).message));
+  }
+};

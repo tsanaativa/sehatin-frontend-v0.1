@@ -109,3 +109,72 @@ export async function deleteAddress(id: number) {
   revalidatePath('/profile/my-addresses');
   redirect('/profile/my-addresses');
 }
+
+export async function createUserAddress(userId: string, req: any) {
+  try {
+    await post(`/users/${userId}/addresses`, req);
+  } catch (error) {
+    let message: string;
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (error && typeof error === 'object' && 'message' in error) {
+      message = String(error.message);
+    } else if (typeof error === 'string') {
+      message = error;
+    } else {
+      message = 'Something went wrong';
+    }
+
+    throw new Error(message);
+  }
+
+  revalidatePath(`/admin/user/${userId}/address/list`);
+  redirect(`/admin/user/${userId}/address/list`);
+}
+
+export async function updateUserAddress(userId: string, id: number, req: any) {
+  try {
+    await put(`/users/${userId}/addresses/${id}`, req);
+  } catch (error) {
+    let message: string;
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (error && typeof error === 'object' && 'message' in error) {
+      message = String(error.message);
+    } else if (typeof error === 'string') {
+      message = error;
+    } else {
+      message = 'Something went wrong';
+    }
+
+    throw new Error(message);
+  }
+
+  revalidatePath(`/admin/user/${userId}/address/list`);
+  redirect(`/admin/user/${userId}/address/list`);
+}
+
+export async function deleteUserAddress(userId: string, id: number) {
+  try {
+    await remove(`/users/${userId}/addresses/${id}`);
+  } catch (error) {
+    let message: string;
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (error && typeof error === 'object' && 'message' in error) {
+      message = String(error.message);
+    } else if (typeof error === 'string') {
+      message = error;
+    } else {
+      message = 'Something went wrong';
+    }
+
+    throw new Error(message);
+  }
+
+  revalidatePath(`/admin/user/${userId}/address/list`);
+  redirect(`/admin/user/${userId}/address/list`);
+}

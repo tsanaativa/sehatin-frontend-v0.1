@@ -1,12 +1,11 @@
 'use client';
-
-import { Button, Input } from '@/components/common';
+import { Button, Input, TextArea } from '@/components/common';
+import AddressLoading from '@/components/common/AddressLoading';
+import GoogleMapView from '@/components/common/GoogleMapView';
 import Selector from '@/components/common/Selector';
+import ToggleInput from '@/components/common/ToggleInput';
 import { DEFAULT_ADDRESS } from '@/constants/address';
-import {
-  createAddress,
-  createUserAddress,
-} from '@/features/profile/actions/profile';
+import { updateUserAddress } from '@/features/profile/actions/profile';
 import {
   getCities,
   getDistricts,
@@ -15,16 +14,17 @@ import {
 } from '@/services/location';
 import { Address } from '@/types/Address';
 import { GoogleMapResult } from '@/types/Location';
-import { formatAddress } from '@/utils/formatter';
+import { formatAddress, formatCoordinateToLongLat } from '@/utils/formatter';
 import { validate } from '@/utils/validation';
-import React, { useEffect, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
-import GoogleMapView from '../GoogleMapView';
-import TextArea from '../TextArea';
-import ToggleInput from '../ToggleInput';
 import { useParams } from 'next/navigation';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
-const AddressCreateForm = () => {
+type UpdateUserAddressFormProps = {
+  address: Address;
+};
+
+const UpdateUserAddressForm = ({ address }: UpdateUserAddressFormProps) => {
   const { userId } = useParams();
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
@@ -60,10 +60,23 @@ const AddressCreateForm = () => {
     Record<string, { latitude: number; longitude: number }>
   >({});
 
+  const [isFetching, setIsFetching] = useState<boolean>(true);
+  const [isDefault, setIsDefault] = useState<boolean>(true);
+
   const fetchProvinces = async () => {
     try {
       const rec = await getProvinces();
       setProvinces(rec);
+      if (address && isDefault) {
+        const provinceId = getIdByName(rec, address.province);
+        if (provinceId) {
+          setInput({
+            ...input,
+            province: provinceId,
+          });
+          await fetchCitiesByProvince(provinceId);
+        }
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -73,34 +86,81 @@ const AddressCreateForm = () => {
     try {
       const rec = await getCities(provinceId);
       setCities(rec);
+      if (address && isDefault) {
+        const cityId = getIdByName(rec, address.city);
+        if (cityId) {
+          const defaultInput = {
+            ...initialInput,
+            province: provinceId,
+          };
+          await fetchDistrictsByCity(cityId, defaultInput);
+        }
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
   };
 
-  const fetchDistrictsByCity = async (cityId: string) => {
+  const fetchDistrictsByCity = async (
+    cityId: string,
+    defaultInput?: typeof initialInput
+  ) => {
     try {
       const rec = await getDistricts(cityId);
       setDistricts(rec);
+      if (address && isDefault && defaultInput) {
+        const districtId = getIdByName(rec, address.district);
+        if (districtId) {
+          await fetchSubDistrictsByDistrict(districtId, {
+            ...defaultInput,
+            city: cityId,
+            district: districtId,
+          });
+        }
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
   };
 
-  const fetchSubDistrictsByDistrict = async (districtId: string) => {
+  const fetchSubDistrictsByDistrict = async (
+    districtId: string,
+    defaultInput?: typeof initialInput
+  ) => {
     try {
       const rec = await getSubDistricts(districtId);
       setSubDistricts(rec.rec);
       setPostalCodes(rec.recPostalCode);
       setCoordinates(rec.recCoordinate);
+      if (address && isDefault && defaultInput) {
+        const subDistrictId = getIdByName(rec.rec, address.sub_district);
+        if (subDistrictId && address.coordinate) {
+          const coordinate = formatCoordinateToLongLat(address.coordinate);
+          setInput({
+            ...defaultInput,
+            subDistrict: subDistrictId,
+            postalCode: `${address.postal_code}`,
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
+          });
+          setIsDefault(false);
+          setIsFetching(false);
+        }
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
   };
 
-  useEffect(() => {
-    fetchProvinces();
-  }, []);
+  const getIdByName = useCallback(
+    (records: Record<string, string>, name: string) => {
+      const res = (Object.keys(records) as Array<string>).find(
+        (key) => records[key] === name
+      );
+      return res;
+    },
+    []
+  );
 
   const handleProvince = (option: string) => {
     setCities({});
@@ -148,6 +208,10 @@ const AddressCreateForm = () => {
   };
 
   const handleSubDistrict = (option: string) => {
+    setInput({
+      ...input,
+      subDistrict: option,
+    });
     handleInput('subDistrict', option);
     if (postalCodeRef.current) {
       const currentPostalCode = `${postalCodes[option]}`;
@@ -155,7 +219,6 @@ const AddressCreateForm = () => {
       postalCodeRef.current.value = currentPostalCode;
       setInput({
         ...input,
-        subDistrict: option,
         postalCode: currentPostalCode,
         latitude: currentCoordinate?.latitude,
         longitude: currentCoordinate?.longitude,
@@ -252,13 +315,13 @@ const AddressCreateForm = () => {
       is_main: input.isMain,
     };
 
-    handleCreateAddress(body);
+    handleUpdateAddress(body);
   };
 
-  const handleCreateAddress = async (body: any) => {
+  const handleUpdateAddress = async (body: any) => {
     setIsLoading(true);
     try {
-      await createUserAddress(`${userId}`, body);
+      await updateUserAddress(`${userId}`, address.id, body);
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -303,6 +366,17 @@ const AddressCreateForm = () => {
     }
   };
 
+  useEffect(() => {
+    setIsDefault(true);
+    setProvinces({});
+    setCities({});
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
+    fetchProvinces();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
+
   return (
     <>
       <form
@@ -310,104 +384,115 @@ const AddressCreateForm = () => {
         className="[&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
       >
         <div className="grid md:grid-cols-2 gap-4 ">
-          <label htmlFor="province">
-            <h5>Province</h5>
-            <Selector
-              id="province"
-              options={provinces}
-              selected={input.province || ''}
-              name="province"
-              searchable
-              required
-              onSelect={handleProvince}
-              invalid={errors['province'] !== ''}
-              message={errors['province']}
-              placeholder="Choose your province ..."
-            />
-          </label>
-          <label htmlFor="city">
-            <h5>City</h5>
-            <Selector
-              id="city"
-              options={cities}
-              selected={input.city}
-              name="city"
-              searchable
-              required
-              onSelect={handleCity}
-              invalid={errors['city'] !== ''}
-              message={errors['city']}
-              placeholder="Choose your city ..."
-              disabled={Object.keys(cities).length === 0}
-            />
-          </label>
-          <label htmlFor="district">
-            <h5>District</h5>
-            <Selector
-              id="district"
-              options={districts}
-              selected={input.district}
-              name="district"
-              searchable
-              required
-              onSelect={handleDistrict}
-              invalid={errors['district'] !== ''}
-              message={errors['district']}
-              placeholder="Choose your district ..."
-              disabled={Object.keys(districts).length === 0}
-            />
-          </label>
-          <label htmlFor="subdistrict">
-            <h5>Sub District</h5>
-            <Selector
-              id="subdistrict"
-              options={subDistricts}
-              selected={input.subDistrict}
-              name="subdistrict"
-              searchable
-              required
-              onSelect={handleSubDistrict}
-              invalid={errors['subDistrict'] !== ''}
-              message={errors['subDistrict']}
-              placeholder="Choose your sub district ..."
-              disabled={Object.keys(subDistricts).length === 0}
-            />
-          </label>
-          <label htmlFor="postalcode">
-            <h5>Postal Code</h5>
-            <Input
-              id="postalCode"
-              name="postalCode"
-              disabled
-              ref={postalCodeRef}
-            />
-          </label>
-          <label htmlFor="address">
-            <h5>Address</h5>
-            <TextArea
-              ref={addressRef}
-              id="address"
-              name="address"
-              message={errors['address']}
-              invalid={errors['address'] !== ''}
-              onInput={({ target }) =>
-                handleInput('address', (target as HTMLTextAreaElement).value)
-              }
-              disabled={input.postalCode === ''}
-            />
-          </label>
-        </div>
-        <div className="mt-5">
-          {input.latitude !== 0 && input.longitude !== 0 && (
-            <GoogleMapView lng={input.longitude} lat={input.latitude} />
+          {isFetching ? (
+            <AddressLoading />
+          ) : (
+            <>
+              <label htmlFor="province">
+                <h5>Province</h5>
+                <Selector
+                  id="province"
+                  options={provinces}
+                  selected={input.province || ''}
+                  name="province"
+                  searchable
+                  required
+                  onSelect={handleProvince}
+                  invalid={errors['province'] !== ''}
+                  message={errors['province']}
+                  placeholder="Choose your province ..."
+                />
+              </label>
+              <label htmlFor="city">
+                <h5>City</h5>
+                <Selector
+                  id="city"
+                  options={cities}
+                  selected={input.city}
+                  name="city"
+                  searchable
+                  required
+                  onSelect={handleCity}
+                  invalid={errors['city'] !== ''}
+                  message={errors['city']}
+                  placeholder="Choose your city ..."
+                  disabled={Object.keys(cities).length === 0}
+                />
+              </label>
+              <label htmlFor="district">
+                <h5>District</h5>
+                <Selector
+                  id="district"
+                  options={districts}
+                  selected={input.district}
+                  name="district"
+                  searchable
+                  required
+                  onSelect={handleDistrict}
+                  invalid={errors['district'] !== ''}
+                  message={errors['district']}
+                  placeholder="Choose your district ..."
+                  disabled={Object.keys(districts).length === 0}
+                />
+              </label>
+              <label htmlFor="subdistrict">
+                <h5>Sub District</h5>
+                <Selector
+                  id="subdistrict"
+                  options={subDistricts}
+                  selected={input.subDistrict}
+                  name="subdistrict"
+                  searchable
+                  required
+                  onSelect={handleSubDistrict}
+                  invalid={errors['subDistrict'] !== ''}
+                  message={errors['subDistrict']}
+                  placeholder="Choose your sub district ..."
+                  disabled={Object.keys(subDistricts).length === 0}
+                />
+              </label>
+              <label htmlFor="postalcode">
+                <h5>Postal Code</h5>
+                <Input
+                  id="postalCode"
+                  name="postalCode"
+                  disabled
+                  ref={postalCodeRef}
+                  defaultValue={address.postal_code}
+                />
+              </label>
+              <label htmlFor="address">
+                <h5>Address</h5>
+                <TextArea
+                  ref={addressRef}
+                  id="address"
+                  name="address"
+                  message={errors['address']}
+                  invalid={errors['address'] !== ''}
+                  onInput={({ target }) =>
+                    handleInput(
+                      'address',
+                      (target as HTMLTextAreaElement).value
+                    )
+                  }
+                  disabled={input.postalCode === ''}
+                  defaultValue={address.address}
+                />
+              </label>
+            </>
           )}
         </div>
         <div className="mt-5">
           <ToggleInput
             label="Set as main address"
-            defaultChecked
+            defaultChecked={address.is_main}
             onChange={handleIsMain}
           />
+        </div>
+        <div className="mt-5">
+          {address && input.latitude !== 0 && input.longitude !== 0 && (
+            <GoogleMapView lng={input.longitude} lat={input.latitude} />
+          )}
         </div>
         <div className="flex justify-end items-center mt-5">
           <Button
@@ -423,4 +508,4 @@ const AddressCreateForm = () => {
   );
 };
 
-export default AddressCreateForm;
+export default UpdateUserAddressForm;

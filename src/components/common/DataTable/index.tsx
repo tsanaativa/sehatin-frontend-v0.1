@@ -5,7 +5,7 @@ import { PharmacyAddress, PharmacyProduct } from '@/types/Pharmacy';
 import { Category, Product } from '@/types/Product';
 import { TableHeader } from '@/types/Tables';
 import { Gender } from '@/types/User';
-import { formatDate } from '@/utils/formatter';
+import { formatAddress, formatDate } from '@/utils/formatter';
 import { currency } from '@/utils/helper';
 import { getPathNames } from '@/utils/pageHeader';
 import { Check, Edit2, Pencil, Trash2, X } from 'lucide-react';
@@ -17,6 +17,7 @@ import ToggleInput from '../ToggleInput';
 import Image from 'next/image';
 import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
 import DefaultMedPictureImg from '@/assets/images/default-med.svg';
+import { Address } from '@/types/Address';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -25,6 +26,7 @@ type DataTableProps<T> = {
   className?: string;
   loading?: boolean;
   onDelete?: (id: number) => void;
+  userId?: string;
 };
 
 const DataTable = <T,>({
@@ -34,6 +36,7 @@ const DataTable = <T,>({
   className,
   loading = false,
   onDelete = () => {},
+  userId,
 }: DataTableProps<T>) => {
   const pathname = usePathname();
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -108,6 +111,22 @@ const DataTable = <T,>({
                           >
                             View
                           </Link>
+                        ) : column.accessor === 'address_button' ? (
+                          <Link
+                            className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                            href={`${currentPathname}/${item['id' as keyof typeof item]}/address/list`}
+                          >
+                            View
+                          </Link>
+                        ) : column.accessor === 'address' ? (
+                          <div className="flex flex-col gap-1">
+                            {formatAddress(item as Address)}
+                            {(item as Address).is_main && (
+                              <Badge className="w-fit min-w-[100px]">
+                                Main
+                              </Badge>
+                            )}
+                          </div>
                         ) : column.accessor === 'pharmacy_product' ? (
                           <Link
                             className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
@@ -117,12 +136,20 @@ const DataTable = <T,>({
                           </Link>
                         ) : column.accessor === 'action' ? (
                           <div className="h-full flex gap-2 items-center">
-                            {tabelName !== 'admin' && (
-                              <Link
-                                href={`/admin/${tabelName}/${item['id' as keyof typeof item]}/update`}
+                            {tabelName !== 'admin' &&
+                              tabelName !== 'address' && (
+                                <Link
+                                  href={`/admin/${tabelName}/${item['id' as keyof typeof item]}/update`}
+                                >
+                                  <Edit2 size={20} className="text-blue" />
+                                </Link>
+                              )}
+                            {tabelName === 'address' && (
+                              <a
+                                href={`/admin/user/${userId}/address/${item['id' as keyof typeof item]}/update`}
                               >
                                 <Edit2 size={20} className="text-blue" />
-                              </Link>
+                              </a>
                             )}
                             <DeleteModalButton
                               isIcon

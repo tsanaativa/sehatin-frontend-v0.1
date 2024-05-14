@@ -22,8 +22,23 @@ export const USER_COLUMN_LIST: TableHeader[] = [
     accessor: 'profile_picture',
   },
   {
+    label: 'Address List',
+    accessor: 'address_button',
+  },
+  {
     label: 'Status',
     accessor: 'is_verified',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const USER_ADDRESS_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Address',
+    accessor: 'address',
   },
   {
     label: 'Action',
