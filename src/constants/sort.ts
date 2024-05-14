@@ -38,7 +38,7 @@ export const ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS = [
 export const STOCK_MUTATION_SORT_OPTIONS = [
   'product name',
   'sender',
-  'reciever',
+  'receiver',
   'quantity',
 ];
 

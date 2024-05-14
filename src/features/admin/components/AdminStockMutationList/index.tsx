@@ -5,22 +5,16 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import {
-  PHARMACY_TABLE_DATA,
-  STOCK_MUTATION_TABLE_DATA,
-} from '@/constants/dummy';
-import {
-  ADMIN_MEDICINE_SORT_OPTIONS,
-  STOCK_MUTATION_SORT_OPTIONS,
-} from '@/constants/sort';
-import {
-  PHARMACY_COLUMN_LIST,
-  STOCK_MUTATION_COLUMN_LIST,
-} from '@/constants/tables';
+import { STOCK_MUTATION_SORT_OPTIONS } from '@/constants/sort';
+import { STOCK_MUTATION_COLUMN_LIST } from '@/constants/tables';
+import useDebounce from '@/hooks/useDebounce';
+import { getStockMutations } from '@/services/stock_mutation';
 import { PaginationInfo } from '@/types/PaginationInfo';
+import { StockMutation } from '@/types/StockMutation';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminStockMutationList = () => {
   const searchParams = useSearchParams();
@@ -70,18 +64,29 @@ const AdminStockMutationList = () => {
     handleChangeParams(newParams);
   };
 
-  const handleFilter = (specialistId: string) => {
-    const newParams = {
-      ...params,
-      specialistId: specialistId,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleResetFilter = () => {
-    handleFilter('');
-  };
+  const debounce = useDebounce(params, 500);
+  const [allMutations, setAllMutations] = useState<StockMutation[]>([]);
+
+  useEffect(() => {
+    if (debounce) {
+      const fetchAllMutations = async () => {
+        try {
+          const res = await getStockMutations(params);
+          setPaginationInfo(res.pagination_info);
+          setAllMutations(res.stock_transfers);
+        } catch (error: any) {
+          if (error.message !== 'Error: data not found')
+            toast.error(error.message);
+        }
+        setIsLoading(false);
+      };
+
+      fetchAllMutations();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounce]);
 
   const handleChangeParams = useCallback(
     (params: UsersParams) => {
@@ -127,9 +132,10 @@ const AdminStockMutationList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={STOCK_MUTATION_TABLE_DATA}
+        dataList={allMutations}
         columnList={STOCK_MUTATION_COLUMN_LIST}
         tabelName="pharmacy"
+        loading={isLoading}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

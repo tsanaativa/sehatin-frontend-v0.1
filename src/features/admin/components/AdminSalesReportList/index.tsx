@@ -1,7 +1,6 @@
 'use client';
 import {
   DataTable,
-  FilterDropdown,
   Input,
   Pagination,
   SortDropdown,
@@ -89,17 +88,19 @@ const AdminSalesReportList = ({ isAdmin }: AdminSalesReportListProps) => {
     if (debounce) {
       const fetchAllReports = async () => {
         try {
-          const res = await getSalesReport();
+          const res = await getSalesReport(params);
           setPaginationInfo(res.pagination_info);
           setAllReports(res.sales_reports);
         } catch (error: any) {
-          toast.error(error.message);
+          if (error.message !== 'Error: data not found')
+            toast.error(error.message);
         }
         setIsLoading(false);
       };
 
       fetchAllReports();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   const handleChangeParams = useCallback(

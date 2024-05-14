@@ -181,19 +181,15 @@ export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Sender',
-    accessor: 'sender',
+    accessor: 'pharmacy_sender_name',
   },
   {
-    label: 'Reciever',
-    accessor: 'reciever',
+    label: 'Receiver',
+    accessor: 'pharmacy_receiver_name',
   },
   {
     label: 'Quantity',
     accessor: 'quantity',
-  },
-  {
-    label: 'Product Details',
-    accessor: 'id',
   },
   {
     label: 'Action',
