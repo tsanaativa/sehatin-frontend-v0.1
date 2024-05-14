@@ -7,6 +7,7 @@ import {
 } from '@/components/common';
 import { ADMIN_USER_SORT_OPTIONS } from '@/constants/sort';
 import { USER_COLUMN_LIST } from '@/constants/tables';
+import useDebounce from '@/hooks/useDebounce';
 import { getAllUser } from '@/services/user';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { User, UsersParams } from '@/types/User';
@@ -38,20 +39,24 @@ const AdminUserList = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const res = await getAllUser(params);
-        setAllUsers(res.users);
-        setPaginationInfo(res.pagination_info);
-      } catch (error: any) {
-        toast.error(error.message);
-      }
-      setIsLoading(false);
-    };
+  const debounce = useDebounce(params, 500);
 
-    fetchAllUsers();
-  }, [params]);
+  useEffect(() => {
+    if (debounce) {
+      const fetchAllUsers = async () => {
+        try {
+          const res = await getAllUser(debounce);
+          setPaginationInfo(res.pagination_info);
+          setAllUsers(res.users);
+        } catch (error: any) {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
+      };
+
+      fetchAllUsers();
+    }
+  }, [debounce]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -70,19 +75,6 @@ const AdminUserList = () => {
     };
     setParams(newParams);
     handleChangeParams(newParams);
-  };
-
-  const handleFilter = (specialistId: string) => {
-    const newParams = {
-      ...params,
-      specialistId: specialistId,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
-
-  const handleResetFilter = () => {
-    handleFilter('');
   };
 
   const handleChangeParams = useCallback(
@@ -123,20 +115,12 @@ const AdminUserList = () => {
           onChange={handleSearch}
           defaultValue={params.keyword}
         />
-        <div className="flex gap-x-4">
-          <SortDropdown
-            onSort={handleSort}
-            sortBy={params.sortBy}
-            sort={params.sort}
-            options={ADMIN_USER_SORT_OPTIONS}
-          />
-          {/* <FilterDropdown
-            options={}
-            selected=""
-            onFilter={handleFilter}
-            onReset={handleResetFilter}
-          /> */}
-        </div>
+        <SortDropdown
+          onSort={handleSort}
+          sortBy={params.sortBy}
+          sort={params.sort}
+          options={ADMIN_USER_SORT_OPTIONS}
+        />
       </div>
       <DataTable
         className="mt-8"

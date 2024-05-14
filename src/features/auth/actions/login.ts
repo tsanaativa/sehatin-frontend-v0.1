@@ -23,21 +23,18 @@ export async function login(formData: FormData) {
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
 
-    return loginData;
-  } catch (error) {
-    let message: string;
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
 
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (error && typeof error === 'object' && 'message' in error) {
-      message = String(error.message);
-    } else if (typeof error === 'string') {
-      message = error;
-    } else {
-      message = 'Something went wrong';
-    }
-
-    throw new Error(message);
+export async function resendEmail(data: { role: string; email: string }) {
+  try {
+    const res = await post('/auth/verify/resend', data);
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 }
 
@@ -51,8 +48,8 @@ export async function loginAdmin(formData: FormData) {
   };
 
   try {
-    const res = await post('/auth/login', rawFormData);
-    const loginData = res.data as LoginResponse;
+    const res = await post<LoginResponse>('/auth/login', rawFormData);
+    const loginData = res.data;
 
     session.exp = loginData.exp;
     session.user = loginData.user;
@@ -60,20 +57,8 @@ export async function loginAdmin(formData: FormData) {
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
 
-    return loginData;
-  } catch (error) {
-    let message: string;
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (error && typeof error === 'object' && 'message' in error) {
-      message = String(error.message);
-    } else if (typeof error === 'string') {
-      message = error;
-    } else {
-      message = 'Something went wrong';
-    }
-
-    throw new Error(message);
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 }

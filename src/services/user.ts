@@ -16,7 +16,7 @@ export const getAllUser = async (params: AdminsParams) => {
   }
 };
 
-export const getUserById = async (id: string) => {
+export const getOneUser = async (id: number) => {
   try {
     const res = await get<User>(`/users/${id}`);
     return res.data;
