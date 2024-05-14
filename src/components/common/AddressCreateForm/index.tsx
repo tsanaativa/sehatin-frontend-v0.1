@@ -1,36 +1,31 @@
 'use client';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+
 import { Button, Input } from '@/components/common';
 import Selector from '@/components/common/Selector';
-import { validate } from '@/utils/validation';
-import { DUMMY_SPECIALISTS } from '@/constants/dummy';
-import TextArea from '../TextArea';
+import { DEFAULT_ADDRESS } from '@/constants/address';
+import {
+  createAddress,
+  createUserAddress,
+} from '@/features/profile/actions/profile';
 import {
   getCities,
   getDistricts,
   getProvinces,
   getSubDistricts,
 } from '@/services/location';
-import { toast } from 'react-toastify';
-import GoogleMapView from '../GoogleMapView';
+import { Address } from '@/types/Address';
 import { GoogleMapResult } from '@/types/Location';
 import { formatAddress } from '@/utils/formatter';
-import { Address } from '@/types/Address';
-import { DEFAULT_ADDRESS } from '@/constants/address';
+import { validate } from '@/utils/validation';
+import React, { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import GoogleMapView from '../GoogleMapView';
+import TextArea from '../TextArea';
 import ToggleInput from '../ToggleInput';
-import { getAddressByLatLong } from '@/services/profile';
+import { useParams } from 'next/navigation';
 
-type EditAddressFormProps = {
-  address: Address;
-};
-
-const EditAddressForm = ({ address }: EditAddressFormProps) => {
+const AddressCreateForm = () => {
+  const { userId } = useParams();
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
     city: '',
@@ -41,15 +36,15 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
   });
 
   const initialInput = {
-    province: address.province,
-    city: address.city,
-    district: address.district,
-    subDistrict: address.sub_district,
-    postalCode: `${address.postal_code}`,
-    address: address.address,
-    latitude: address.latitude,
-    longitude: address.longitude,
-    isMain: address.is_main,
+    province: '',
+    city: '',
+    district: '',
+    subDistrict: '',
+    postalCode: '',
+    address: '',
+    latitude: 0,
+    longitude: 0,
+    isMain: true,
   };
 
   const [input, setInput] = useState(initialInput);
@@ -61,17 +56,14 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
   const [districts, setDistricts] = useState<Record<string, string>>({});
   const [subDistricts, setSubDistricts] = useState<Record<string, string>>({});
   const [postalCodes, setPostalCodes] = useState<Record<string, number>>({});
+  const [coordinates, setCoordinates] = useState<
+    Record<string, { latitude: number; longitude: number }>
+  >({});
 
   const fetchProvinces = async () => {
     try {
       const rec = await getProvinces();
       setProvinces(rec);
-      if (address) {
-        // rec.filter(address.province)
-        const provinceId = Object.keys(provinces).find(
-          (key) => provinces[key] === address.province
-        );
-      }
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -100,89 +92,74 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
       const rec = await getSubDistricts(districtId);
       setSubDistricts(rec.rec);
       setPostalCodes(rec.recPostalCode);
+      setCoordinates(rec.recCoordinate);
     } catch (err) {
       toast.error((err as Error).message);
     }
   };
 
-  // const getIdByName = useCallback((records: Record<string,string>, name: string) => {
-  //   return (Object.keys(records) as Array<string>).find(key => records[key] === name);
-  // }, [])
-
   useEffect(() => {
     fetchProvinces();
-    // if (address) {
-    //   const provinceId = getIdByName(provinces, address.province);
-    //   fetchCitiesByProvince(`{provinceId}`);
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleProvince = (option: string) => {
+    setCities({});
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['province']: option,
+      city: '',
+      district: '',
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('province', option);
     fetchCitiesByProvince(option);
   };
 
   const handleCity = (option: string) => {
+    setDistricts({});
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['city']: option,
+      district: '',
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('city', option);
     fetchDistrictsByCity(option);
   };
 
   const handleDistrict = (option: string) => {
+    setSubDistricts({});
+    setPostalCodes({});
     setInput({
       ...input,
       ['district']: option,
+      subDistrict: '',
+      postalCode: '',
     });
     handleInput('district', option);
     fetchSubDistrictsByDistrict(option);
   };
 
   const handleSubDistrict = (option: string) => {
-    setInput({
-      ...input,
-      subDistrict: option,
-    });
     handleInput('subDistrict', option);
     if (postalCodeRef.current) {
       const currentPostalCode = `${postalCodes[option]}`;
+      const currentCoordinate = coordinates[option];
       postalCodeRef.current.value = currentPostalCode;
       setInput({
         ...input,
+        subDistrict: option,
         postalCode: currentPostalCode,
+        latitude: currentCoordinate?.latitude,
+        longitude: currentCoordinate?.longitude,
       });
-      getLatLongByPostalCode(currentPostalCode, option);
-    }
-  };
-
-  const getLatLongByPostalCode = async (
-    postalCode: string,
-    subDistrictId: string
-  ) => {
-    try {
-      let response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&address=${postalCode},ID`
-      );
-      const result: { results: GoogleMapResult[] } = await response.json();
-      console.log(result);
-      if (result.results.length > 0) {
-        setInput({
-          ...input,
-          subDistrict: subDistrictId,
-          postalCode: postalCode,
-          latitude: result.results[0].geometry.location.lat,
-          longitude: result.results[0].geometry.location.lng,
-        });
-      }
-    } catch (err) {
-      toast.error((err as Error).message);
     }
   };
 
@@ -229,19 +206,6 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
   };
 
   const handleSubmit = () => {
-    const body = {
-      province: provinces[input.province],
-      city: cities[input.city],
-      city_id: parseInt(input.city),
-      district: districts[input.district],
-      sub_district: subDistricts[input.subDistrict],
-      postal_code: input.postalCode,
-      address: addressRef.current?.value,
-      latitude: input.latitude,
-      longitude: input.longitude,
-      is_main: input.isMain,
-    };
-    console.log(body);
     if (invalidSubmission() || anyEmptyField()) {
       const allErrors = Object.fromEntries(
         Object.keys(errors).map((i) => {
@@ -274,65 +238,34 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
       setErrors({ ...allErrors });
       return;
     }
+
+    const body = {
+      province: provinces[input.province],
+      city: cities[input.city],
+      city_id: parseInt(input.city),
+      district: districts[input.district],
+      sub_district: subDistricts[input.subDistrict],
+      postal_code: input.postalCode,
+      address: addressRef.current?.value,
+      latitude: `${input.latitude}`,
+      longitude: `${input.longitude}`,
+      is_main: input.isMain,
+    };
+
+    handleCreateAddress(body);
   };
 
-  const [currentPos, setCurrentPos] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log(pos);
-      setCurrentPos({
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      });
-    });
-  };
-
-  const getCurrentAddress = async () => {
-    setIsFetchingLatLon(true);
-    setIsAutofill(true);
-    await addressByLatLong(currentPos.latitude, currentPos.longitude);
+  const handleCreateAddress = async (body: any) => {
+    setIsLoading(true);
+    try {
+      await createUserAddress(`${userId}`, body);
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+    setIsLoading(false);
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFetchingLatLon, setIsFetchingLatLon] = useState<boolean>(false);
-  const [isAutofill, setIsAutofill] = useState<boolean>(false);
-
-  const addressByLatLong = async (lat: number, lon: number) => {
-    try {
-      console.log(lat, lon);
-      const res = await getAddressByLatLong({
-        lat: lat,
-        lon: lon,
-      });
-      console.log(res);
-      console.log(input.district);
-      setExistingInput({
-        address: res.address,
-        postalCode: `${res.postal_code}`,
-        subDistrict: `${res.sub_district_id}`,
-        district: `${res.district_id}`,
-        city: `${res.city_id}`,
-        province: `${res.province_id}`,
-        latitude: lat,
-        longitude: lon,
-        isMain: input.isMain,
-      });
-    } catch (error) {
-      toast.error((error as Error).message);
-    } finally {
-      setIsFetchingLatLon(false);
-    }
-  };
-
-  const [existingInput, setExistingInput] = useState(initialInput);
 
   const getLatLongByAddress = async (address: string) => {
     const addressObj: Address = {
@@ -352,11 +285,18 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
       );
       const result: { results: GoogleMapResult[] } = await response.json();
       if (result.results.length > 0) {
-        setInput({
-          ...input,
-          latitude: result.results[0].geometry.location.lat,
-          longitude: result.results[0].geometry.location.lng,
-        });
+        const addrComponents = result.results[0].address_components;
+        const lastComponent = addrComponents[addrComponents.length - 1];
+        if (
+          lastComponent.types[0] === 'postal_code' &&
+          lastComponent.long_name === input.postalCode
+        ) {
+          setInput({
+            ...input,
+            latitude: result.results[0].geometry.location.lat,
+            longitude: result.results[0].geometry.location.lng,
+          });
+        }
       }
     } catch (err) {
       toast.error((err as Error).message);
@@ -398,9 +338,8 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
               invalid={errors['city'] !== ''}
               message={errors['city']}
               placeholder="Choose your city ..."
-              disabled={!isAutofill || Object.keys(cities).length === 0}
+              disabled={Object.keys(cities).length === 0}
             />
-            {isAutofill.toString()}
           </label>
           <label htmlFor="district">
             <h5>District</h5>
@@ -415,7 +354,7 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
               invalid={errors['district'] !== ''}
               message={errors['district']}
               placeholder="Choose your district ..."
-              disabled={Object.keys(districts).length === 0 || !isAutofill}
+              disabled={Object.keys(districts).length === 0}
             />
           </label>
           <label htmlFor="subdistrict">
@@ -431,7 +370,7 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
               invalid={errors['subDistrict'] !== ''}
               message={errors['subDistrict']}
               placeholder="Choose your sub district ..."
-              disabled={Object.keys(subDistricts).length === 0 || !isAutofill}
+              disabled={Object.keys(subDistricts).length === 0}
             />
           </label>
           <label htmlFor="postalcode">
@@ -459,27 +398,18 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
           </label>
         </div>
         <div className="mt-5">
+          {input.latitude !== 0 && input.longitude !== 0 && (
+            <GoogleMapView lng={input.longitude} lat={input.latitude} />
+          )}
+        </div>
+        <div className="mt-5">
           <ToggleInput
             label="Set as main address"
             defaultChecked
             onChange={handleIsMain}
           />
         </div>
-        <div className="mt-5">
-          {input.latitude !== 0 && input.longitude !== 0 && (
-            <GoogleMapView lng={input.longitude} lat={input.latitude} />
-          )}
-        </div>
-        <div className="flex justify-between items-center mt-5">
-          <span
-            role="button"
-            className="text-primary-dark font-semibold hover:underline"
-            onClick={getCurrentAddress}
-          >
-            {isFetchingLatLon
-              ? 'Please wait...'
-              : 'Autofill by current location'}
-          </span>
+        <div className="flex justify-end items-center mt-5">
           <Button
             className="px-4 min-w-[100px]"
             variant="primary"
@@ -493,4 +423,4 @@ const EditAddressForm = ({ address }: EditAddressFormProps) => {
   );
 };
 
-export default EditAddressForm;
+export default AddressCreateForm;

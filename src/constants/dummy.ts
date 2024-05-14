@@ -33,48 +33,6 @@ export const DUMMY_DOCTOR: Doctor = {
     'https://res.cloudinary.com/deu2djyxi/image/upload/v1715227365/d3rroj03uoqgkqrgguoc.pdf',
 };
 
-export const DUMMY_ADDRESSES: Address[] = [
-  {
-    id: 1,
-    is_main: false,
-    is_active: true,
-    address: 'Jl. Blablab No. 3',
-    province: 'DKI Jakarta',
-    city: 'Jakarta Pusat',
-    district: 'Menteng',
-    sub_district: 'Gondangdia',
-    postal_code: 12345,
-    latitude: 0,
-    longitude: 0,
-  },
-  {
-    id: 2,
-    is_main: true,
-    is_active: false,
-    address: 'Jl. Blablab No. 3',
-    province: 'DKI Jakarta',
-    city: 'Jakarta Pusat',
-    district: 'Menteng',
-    sub_district: 'Gondangdia',
-    postal_code: 12345,
-    latitude: 0,
-    longitude: 0,
-  },
-  {
-    id: 3,
-    is_main: false,
-    is_active: false,
-    address: 'Jl. ssss No. 3',
-    province: 'DKI Jakarta',
-    city: 'Jakarta Pusat',
-    district: 'Menteng',
-    sub_district: 'Gondangdia',
-    postal_code: 12345,
-    latitude: 0,
-    longitude: 0,
-  },
-];
-
 export const DUMMY_CHOOSE_PHARMACIES = [
   {
     name: 'Century Plaza Senayan 1',
@@ -448,25 +406,28 @@ export const STOCK_MUTATION_TABLE_DATA = [
   {
     id: 1,
     product_name: 'Panadol',
-    sender: 'Pharmacy B',
-    reciever: 'Pharmacy A',
+    pharmacy_sender_name: 'Pharmacy B',
+    pharmacy_receiver_name: 'Pharmacy A',
     quantity: '30',
     status: null,
+    mutation_status_name: 'Pending',
   },
   {
     id: 2,
     product_name: 'Panadol',
-    sender: 'Pharmacy A',
-    reciever: 'Pharmacy B',
+    pharmacy_sender_name: 'Pharmacy A',
+    pharmacy_receiver_name: 'Pharmacy B',
     quantity: '30',
     status: true,
+    mutation_status_name: 'Processed',
   },
   {
     id: 3,
     product_name: 'Panadol',
-    sender: 'Pharmacy C',
-    reciever: 'Pharmacy A',
+    pharmacy_sender_name: 'Pharmacy C',
+    pharmacy_receiver_name: 'Pharmacy A',
     quantity: '30',
     status: false,
+    mutation_status_name: 'Canceled',
   },
 ];

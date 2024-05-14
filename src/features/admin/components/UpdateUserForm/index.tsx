@@ -127,7 +127,7 @@ const UpdateUserForm = ({ user }: { user: User }) => {
           <Save /> Save
         </Button>
       </div>
-      <div className="flex justify-center gap-x-12 mt-6">
+      <div className="flex gap-x-12 mt-6">
         <AvatarUploader
           defaultAvatar={user.profile_picture}
           onChange={handleChangePicture}

@@ -70,11 +70,6 @@ export const ADMIN_MENUS: MENU_TYPE[] = [
     link: '/admin/order',
     icon: 'ClipboardList',
   },
-  {
-    label: 'Sales Report',
-    link: '/admin/sales-report',
-    icon: 'LineChart',
-  },
 ];
 
 export const PHARMACY_MANAGER_MENUS: MENU_TYPE[] = [
@@ -98,11 +93,6 @@ export const PHARMACY_MANAGER_MENUS: MENU_TYPE[] = [
     link: '/admin/order',
     icon: 'ClipboardList',
   },
-  {
-    label: 'Sales Report',
-    link: '/admin/sales-report',
-    icon: 'LineChart',
-  },
 ];
 
 export const PATHS_MAP = {
@@ -112,8 +102,12 @@ export const PATHS_MAP = {
   doctors: 'Doctors',
   specialist: 'Specialist',
   user: 'User',
+  address: 'Address',
   admin: 'Admin',
   partner: 'Partner',
+  'stock-mutation': 'Stock Mutation Request',
+  product: 'Product',
+  pharmacy: 'Pharmacy',
   doctor: 'Doctor',
   medicine: 'Medicine',
   order: 'Order',

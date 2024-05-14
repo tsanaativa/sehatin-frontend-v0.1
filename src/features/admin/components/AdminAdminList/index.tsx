@@ -43,21 +43,22 @@ const AdminAdminList = () => {
 
   const debounce = useDebounce(params, 500);
 
+  const fetchAllAdmins = async () => {
+    try {
+      const res = await getAllAdmins(debounce);
+      setPaginationInfo(res.pagination_info);
+      setAllAdmins(res.admin);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     if (debounce) {
-      const fetchAllAdmins = async () => {
-        try {
-          const res = await getAllAdmins(debounce);
-          setPaginationInfo(res.pagination_info);
-          setAllAdmins(res.admin);
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-        setIsLoading(false);
-      };
-
       fetchAllAdmins();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   const handleMovePage = (page: number) => {
@@ -111,6 +112,7 @@ const AdminAdminList = () => {
     try {
       await deleteAdmin(id);
       toast.success('successfully deleted');
+      fetchAllAdmins();
     } catch (err) {
       toast.error((err as Error).message);
     }

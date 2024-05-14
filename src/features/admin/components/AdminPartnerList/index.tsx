@@ -43,21 +43,22 @@ const AdminPartnerList = () => {
 
   const debounce = useDebounce(params, 500);
 
+  const fetchAllPartners = async () => {
+    try {
+      const res = await getAllPartners(debounce);
+      setPaginationInfo(res.pagination_info);
+      setAllPartners(res.pharmacy_managers);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     if (debounce) {
-      const fetchAllPartners = async () => {
-        try {
-          const res = await getAllPartners(debounce);
-          setPaginationInfo(res.pagination_info);
-          setAllPartners(res.pharmacy_managers);
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-        setIsLoading(false);
-      };
-
       fetchAllPartners();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   const handleMovePage = (page: number) => {
@@ -111,6 +112,7 @@ const AdminPartnerList = () => {
     try {
       await deletePartner(id);
       toast.success('successfully deleted');
+      fetchAllPartners();
     } catch (err) {
       toast.error((err as Error).message);
     }

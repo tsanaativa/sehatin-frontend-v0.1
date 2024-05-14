@@ -1,5 +1,5 @@
 import { Modal } from '@/components/common';
-import AddressEditForm from '@/components/common/AddressEditForm';
+import AddressUpdateForm from '@/components/common/AddressUpdateForm';
 import { Address } from '@/types/Address';
 import { X } from 'lucide-react';
 
@@ -25,7 +25,7 @@ const ModalUpdateAddress = ({
       </div>
       <div className="flex flex-col gap-y-2 px-4 py-4 md:min-w-[700px]">
         <div className="flex flex-col gap-4 text-xs text-dark-gray md:text-base">
-          <AddressEditForm address={address} />
+          <AddressUpdateForm address={address} />
         </div>
       </div>
     </Modal>

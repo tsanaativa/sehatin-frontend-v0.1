@@ -24,13 +24,7 @@ export const ADMIN_MEDICINE_SORT_OPTIONS = [
   'active status',
 ];
 
-export const ADMIN_PHARMACY_SORT_OPTIONS = [
-  'name',
-  'address',
-  'pharmacist',
-  'operational',
-  'available shipping methods',
-];
+export const ADMIN_PHARMACY_SORT_OPTIONS = ['name'];
 
 export const ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS = [
   'name',
@@ -44,6 +38,13 @@ export const ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS = [
 export const STOCK_MUTATION_SORT_OPTIONS = [
   'product name',
   'sender',
-  'reciever',
+  'receiver',
   'quantity',
+];
+
+export const SALES_REPORT_SORT_OPTIONS = [
+  'total-sale',
+  'total-quantity',
+  'product',
+  'year',
 ];
