@@ -3,13 +3,14 @@ import { PaginationInfo } from '@/types/PaginationInfo';
 import { Classification, Product } from '@/types/Product';
 import { get } from '@/utils/api';
 import { getSession } from './session';
+import { AdminsParams } from '@/types/Admin';
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (params: AdminsParams) => {
   try {
     const res = await get<{
       pagination_info: PaginationInfo;
       products: Product[];
-    }>(`/products`);
+    }>(`/products`, params);
     return res.data;
   } catch (error) {
     throw new Error(String((error as Error).message));

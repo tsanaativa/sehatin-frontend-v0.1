@@ -205,9 +205,9 @@ const DataTable = <T,>({
                               item[
                                 column.accessor as keyof typeof item
                               ] as Category[]
-                            )?.map((category) => (
-                              <span key={category.id}>{category.name}</span>
-                            ))}
+                            )
+                              ?.map((category) => category.name)
+                              .join(', ')}
                           </div>
                         ) : column.accessor === 'pharmacy_product_name' ? (
                           <>

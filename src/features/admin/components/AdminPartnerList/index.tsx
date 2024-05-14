@@ -15,6 +15,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { deletePartner } from '../../action/partner';
+import useDebounce from '@/hooks/useDebounce';
 
 const AdminPartnerList = () => {
   const searchParams = useSearchParams();
@@ -40,30 +41,24 @@ const AdminPartnerList = () => {
 
   const [allPartners, setAllPartners] = useState<Admin[]>([]);
 
-  useEffect(() => {
-    const newKeyword = searchParams.get('keyword') || '';
-    setParams((prev) => ({
-      ...prev,
-      page: prev.keyword !== newKeyword ? 1 : prev.page,
-      keyword: newKeyword,
-    }));
-  }, [searchParams]);
+  const debounce = useDebounce(params, 500);
 
-  const fetchAllPartners = async () => {
-    try {
-      const res = await getAllPartners(params);
-      setPaginationInfo(res.pagination_info);
-      setAllPartners(res.pharmacy_managers);
-    } catch (error: any) {
-      toast.error(error.message);
+  useEffect(() => {
+    if (debounce) {
+      const fetchAllPartners = async () => {
+        try {
+          const res = await getAllPartners(debounce);
+          setPaginationInfo(res.pagination_info);
+          setAllPartners(res.pharmacy_managers);
+        } catch (error: any) {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
+      };
+
+      fetchAllPartners();
     }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchAllPartners();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params]);
+  }, [debounce]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -116,7 +111,6 @@ const AdminPartnerList = () => {
     try {
       await deletePartner(id);
       toast.success('successfully deleted');
-      fetchAllPartners();
     } catch (err) {
       toast.error((err as Error).message);
     }

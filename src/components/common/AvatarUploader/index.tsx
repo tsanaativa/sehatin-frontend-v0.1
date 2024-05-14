@@ -39,6 +39,7 @@ const AvatarUploader = ({ defaultAvatar, onChange }: AvatarUploaderProps) => {
       </div>
       <div className="absolute right-[0.5rem] bottom-[0.25rem]">
         <button
+          type="button"
           className="bg-primary text-light p-1 rounded-full"
           onClick={triggerInput}
         >
