@@ -14,6 +14,7 @@ import { User, UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { deleteUserAction } from '../../action/user';
 
 const AdminUserList = () => {
   const searchParams = useSearchParams();
@@ -41,21 +42,22 @@ const AdminUserList = () => {
 
   const debounce = useDebounce(params, 500);
 
+  const fetchAllUsers = async () => {
+    try {
+      const res = await getAllUser(debounce);
+      setPaginationInfo(res.pagination_info);
+      setAllUsers(res.users);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     if (debounce) {
-      const fetchAllUsers = async () => {
-        try {
-          const res = await getAllUser(debounce);
-          setPaginationInfo(res.pagination_info);
-          setAllUsers(res.users);
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-        setIsLoading(false);
-      };
-
       fetchAllUsers();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   const handleMovePage = (page: number) => {
@@ -105,6 +107,16 @@ const AdminUserList = () => {
     handleChangeParams(newParams);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteUserAction(id);
+      toast.success('successfully deleted');
+      fetchAllUsers();
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
@@ -128,6 +140,7 @@ const AdminUserList = () => {
         columnList={USER_COLUMN_LIST}
         tabelName="user"
         loading={isLoading}
+        onDelete={handleDelete}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

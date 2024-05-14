@@ -170,7 +170,7 @@ const Selector = ({
           type="text"
           disabled={disabled || isLoading}
           spellCheck="false"
-          value={input['current']}
+          value={input['current'] || ''}
           readOnly={(!searchable && screenWidth >= 768) || screenWidth < 768}
           onChange={({ target }) =>
             handleInput((target as HTMLInputElement).value)

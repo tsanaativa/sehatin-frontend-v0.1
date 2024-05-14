@@ -32,7 +32,7 @@ export const getAllProductsSelect = async () => {
   }
 };
 
-export const getProduct = async (id: string) => {
+export const getProduct = async (id: number) => {
   try {
     const res = await get<Product>(`/products/${id}`);
     return res.data;
@@ -46,6 +46,44 @@ export const getAllClassifications = async () => {
   try {
     const res = await get<Classification[]>(
       `/products/classifications`,
+      {},
+      {
+        Authorization: 'Bearer ' + session.access_token,
+      }
+    );
+    const data = Object.fromEntries(
+      res.data.map((d) => [d.id.toString(), d.name])
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(String(error));
+  }
+};
+
+export const getAllForms = async () => {
+  const session = await getSession();
+  try {
+    const res = await get<Classification[]>(
+      `/products/forms`,
+      {},
+      {
+        Authorization: 'Bearer ' + session.access_token,
+      }
+    );
+    const data = Object.fromEntries(
+      res.data.map((d) => [d.id.toString(), d.name])
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(String(error));
+  }
+};
+
+export const getAllManufactures = async () => {
+  const session = await getSession();
+  try {
+    const res = await get<Classification[]>(
+      `/products/manufactures`,
       {},
       {
         Authorization: 'Bearer ' + session.access_token,
