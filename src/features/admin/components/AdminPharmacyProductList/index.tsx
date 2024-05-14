@@ -81,15 +81,6 @@ const AdminPharmacyProductList = ({ id }: { id: number }) => {
     handleChangeParams(newParams);
   };
 
-  const handleFilter = (specialistId: string) => {
-    const newParams = {
-      ...params,
-      specialistId: specialistId,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
-
   const handleChangeParams = useCallback(
     (params: UsersParams) => {
       const newParams = new URLSearchParams(searchParams);
@@ -130,7 +121,7 @@ const AdminPharmacyProductList = ({ id }: { id: number }) => {
         className="mt-8"
         dataList={allPharmacyProducts}
         columnList={PHARMACY_PRODUCT_COLUMN_LIST}
-        tabelName="pharmacy"
+        tabelName="pharmacy_product"
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

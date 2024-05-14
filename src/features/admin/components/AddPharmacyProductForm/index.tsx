@@ -2,9 +2,8 @@
 import { Input, Selector, Skeleton } from '@/components/common';
 import { getAllProductsSelect, getProduct } from '@/services/medicine';
 import { Product } from '@/types/Product';
-import { getPathNames } from '@/utils/pageHeader';
 import Image from 'next/image';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 

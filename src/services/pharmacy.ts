@@ -34,3 +34,19 @@ export const getAllPharmacyProducts = async (id: number) => {
     throw new Error(String((error as Error).message));
   }
 };
+
+export const getOnePharmacyProducts = async (id: number) => {
+  const session = await getSession();
+  try {
+    const res = await get<PharmacyProduct>(
+      `/pharmacies/products/${id}`,
+      {},
+      {
+        Authorization: 'Bearer ' + session.access_token,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error(String((error as Error).message));
+  }
+};
