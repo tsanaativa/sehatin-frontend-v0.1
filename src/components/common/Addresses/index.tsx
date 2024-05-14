@@ -37,7 +37,9 @@ const Addresses = ({ profile }: AddressesProps) => {
         ))}
       </div>
       <div className="flex justify-center mt-6 md:justify-end">
-        <a href="/profile/my-addresses/create">
+        <a
+          href={`${process.env.NEXT_PUBLIC_BASE_URL}/profile/my-addresses/create`}
+        >
           <Button className="flex items-center justify-center gap-1 px-6 w-full md:w-fit">
             <Plus size={15} /> Add Address
           </Button>

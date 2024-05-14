@@ -33,7 +33,9 @@ const AddressCard = ({ address, onDelete }: AddressCardProps) => {
         </div>
       </div>
       <div className="items-center flex gap-2">
-        <a href={`/profile/my-addresses/${address.id}`}>
+        <a
+          href={`${process.env.NEXT_PUBLIC_BASE_URL}/profile/my-addresses/${address.id}`}
+        >
           <button type="button" className="flex items-center text-blue">
             <Edit2 size={20} />
           </button>
