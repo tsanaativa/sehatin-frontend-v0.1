@@ -112,6 +112,7 @@ const CartPage = ({ openCart, onCloseCart }: CartPageProps) => {
   };
 
   const handleOrder = async (orderData: OrderRequest[]) => {
+    setLoad({ ...load, order: true });
     for (const o of orderData) {
       try {
         await createOrder(o);
@@ -119,8 +120,11 @@ const CartPage = ({ openCart, onCloseCart }: CartPageProps) => {
         toast.error((error as Error).message);
       }
     }
-
+    setLoad({ ...load, order: false });
     push('/profile/my-orders');
+    setTimeout(() => {
+      handleCloseCart();
+    }, 3000);
   };
 
   const changeAddress = async (addressId: number) => {

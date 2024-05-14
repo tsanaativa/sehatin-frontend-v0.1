@@ -55,11 +55,6 @@ type OrderRequest = {
   shipping_method: string;
 };
 
-type OrderResponse = {
-  payment_deadline: string;
-  total_payment: number;
-};
-
 export type {
   ShippingMethod,
   Cart,
@@ -67,5 +62,4 @@ export type {
   NonOfficialMethod,
   ShipmentRequest,
   OrderRequest,
-  OrderResponse,
 };

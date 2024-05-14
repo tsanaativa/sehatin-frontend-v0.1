@@ -169,7 +169,7 @@ const Checkout = ({
               </span>
             </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-10">
             {toOrder.map((p, idx) => (
               <div key={idx} className="flex flex-col gap-5 lg:overflow-hidden">
                 <OrderCard
@@ -297,15 +297,6 @@ const Checkout = ({
               </div>
             ))}
           </div>
-          {JSON.stringify(
-            toOrder.map(
-              (o) =>
-                [
-                  o.shippingMethods.official.map((s) => s.name),
-                  o.shippingMethods.nonOfficial.map((s) => s.name),
-                ].flat()[0]
-            )
-          )}
           <div>
             <h5>Payment Method</h5>
             <div className="p-5 border border-primary-border bg-light rounded-xl w-full flex items-center gap-5">
