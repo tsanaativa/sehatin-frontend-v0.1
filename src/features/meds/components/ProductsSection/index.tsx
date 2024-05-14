@@ -4,12 +4,13 @@ import { Carousel, CategorizeSection, ProductCard } from '@/components/common';
 import NoDataFound from '@/components/common/NoDataFound';
 import { DEFAULT_ADDRESS } from '@/constants/address';
 import { UserContext } from '@/context/UserProvider';
-import { Category, Product } from '@/types/Product';
+import { Category, PharmacyProductUser, Product } from '@/types/Product';
 import { get } from '@/utils/api';
 import { splitToNArrays } from '@/utils/helper';
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ProductCardSkeleton from '../ProductCardSkeleton';
+import { formatCoordinateToLongLat } from '@/utils/formatter';
 
 type ProductsSectionProps = {
   category: Category;
@@ -17,30 +18,38 @@ type ProductsSectionProps = {
 
 const ProductsSection = ({ category }: ProductsSectionProps) => {
   const { user } = useContext(UserContext);
-  const [productsSlices, setProductsSlices] = useState<Array<Product[]>>([]);
+  const [productsSlices, setProductsSlices] = useState<
+    Array<PharmacyProductUser[]>
+  >([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      let coordinate = formatCoordinateToLongLat(
+        user?.addresses[0]?.coordinate || ''
+      );
       try {
         const params = {
           longitude:
             user && user?.addresses?.length > 0
-              ? user.addresses[0]?.longitude
+              ? coordinate.longitude
               : DEFAULT_ADDRESS.longitude,
           latitude:
             user && user?.addresses?.length > 0
-              ? user.addresses[0]?.latitude
+              ? coordinate.latitude
               : DEFAULT_ADDRESS.latitude,
           categoryId: category.id,
           limit: 15,
         };
-        const res = await get<{ products: Product[] }>(
-          `/products/nearest`,
+        const res = await get<{ products: PharmacyProductUser[] }>(
+          `/products/nearest/search`,
           params
         );
 
-        const slicedProducts = splitToNArrays<Product>(res.data.products, 5);
+        const slicedProducts = splitToNArrays<PharmacyProductUser>(
+          res.data.products,
+          5
+        );
         setProductsSlices(slicedProducts);
       } catch (error) {
         toast.error((error as Error).message);

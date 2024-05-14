@@ -5,13 +5,15 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { MEDICINE_TABLE_DATA, PHARMACY_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
-import { MEDICINE_COLUMN_LIST, PHARMACY_COLUMN_LIST } from '@/constants/tables';
+import { PHARMACY_COLUMN_LIST } from '@/constants/tables';
+import { getAllPharmacies } from '@/services/pharmacy';
 import { PaginationInfo } from '@/types/PaginationInfo';
+import { Pharmacy } from '@/types/Pharmacy';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminPharmacyList = () => {
   const searchParams = useSearchParams();
@@ -33,6 +35,8 @@ const AdminPharmacyList = () => {
     total_page: 0,
   });
 
+  const [allPharmacies, setAllPharmacies] = useState<Pharmacy[]>([]);
+
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
     setParams((prev) => ({
@@ -41,6 +45,19 @@ const AdminPharmacyList = () => {
       keyword: newKeyword,
     }));
   }, [searchParams]);
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const res = await getAllPharmacies();
+        setAllPharmacies(res.pharmacies);
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+
+    fetchAllUsers();
+  }, [params]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -95,7 +112,12 @@ const AdminPharmacyList = () => {
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
+        <Input
+          inputClass="h-[44px]"
+          prepend="Search"
+          placeholder="Search..."
+          defaultValue={params.keyword}
+        />
         <div className="flex gap-x-4">
           <SortDropdown
             onSort={handleSort}
@@ -113,7 +135,7 @@ const AdminPharmacyList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={PHARMACY_TABLE_DATA}
+        dataList={allPharmacies}
         columnList={PHARMACY_COLUMN_LIST}
         tabelName="pharmacy"
       />

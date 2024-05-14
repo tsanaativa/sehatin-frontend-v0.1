@@ -1,14 +1,16 @@
 'use client';
 
-import { Button, Input } from '@/components/common';
+import { Button, Input, RadioBox } from '@/components/common';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { loginAdmin } from '../../actions/login';
+import { DoctorBadge, PatientBadge } from '@/assets/icons';
 
 const LoginAdminForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState<'admin' | 'pharmacyManager'>('admin');
   const [errors, setErrors] = useState<Record<string, string>>({
     email: '',
     password: '',
@@ -62,6 +64,26 @@ const LoginAdminForm = () => {
         action={loginAction}
         className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
       >
+        <div className="flex items-center gap-[20px] [&_span]:pt-[7px] [&_span]:text-[11px] mt-[6px]">
+          <RadioBox
+            id="admin"
+            name="role"
+            value="admin"
+            isActive={role === 'admin'}
+            onChange={() => setRole('admin')}
+          >
+            <span>Admin</span>
+          </RadioBox>
+          <RadioBox
+            id="pharmacyManager"
+            name="role"
+            value="pharmacyManager"
+            isActive={role === 'pharmacyManager'}
+            onChange={() => setRole('pharmacyManager')}
+          >
+            <span>Pharmacy Manager</span>
+          </RadioBox>
+        </div>
         <label htmlFor="email">
           <h5>Email</h5>
           <Input

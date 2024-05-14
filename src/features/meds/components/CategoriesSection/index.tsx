@@ -9,7 +9,7 @@ const CategoriesSection = () => {
         {DISPLAYED_CATEGORIES.map((category, idx) => (
           <CategorizeCard
             key={idx}
-            link={`/meds?categoryId=${category.id}`}
+            link={`/meds/search?categoryId=${category.id}`}
             icon={category.icon}
             name={category.name}
           />

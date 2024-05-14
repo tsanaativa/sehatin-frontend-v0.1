@@ -18,12 +18,12 @@ export const USER_COLUMN_LIST: TableHeader[] = [
     accessor: 'gender',
   },
   {
-    label: 'Status',
-    accessor: 'status',
+    label: 'Profile Picture',
+    accessor: 'profile_picture',
   },
   {
-    label: 'User Detail',
-    accessor: 'id',
+    label: 'Status',
+    accessor: 'is_verified',
   },
   {
     label: 'Action',
@@ -46,7 +46,7 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Consultation Fee',
-    accessor: 'consultation_fee',
+    accessor: 'fee',
   },
   {
     label: 'Year of Experience',
@@ -54,7 +54,7 @@ export const DOCTOR_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Status',
-    accessor: 'status',
+    accessor: 'is_verified',
   },
   {
     label: 'Action',
@@ -73,7 +73,7 @@ export const MEDICINE_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Category',
-    accessor: 'category',
+    accessor: 'categories',
   },
   {
     label: 'Classification',
@@ -82,10 +82,6 @@ export const MEDICINE_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Selling Unit',
     accessor: 'selling_unit',
-  },
-  {
-    label: 'Active Status',
-    accessor: 'active_status',
   },
   {
     label: 'Action',
@@ -100,7 +96,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Address',
-    accessor: 'address',
+    accessor: 'pharmacy_address',
   },
   {
     label: 'Pharmacist',
@@ -116,7 +112,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Product',
-    accessor: 'id',
+    accessor: 'pharmacy_product',
   },
   {
     label: 'Action',
@@ -127,7 +123,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
 export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Name',
-    accessor: 'name',
+    accessor: 'pharmacy_product_name',
   },
   {
     label: 'Category',
@@ -135,7 +131,11 @@ export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
   },
   {
     label: 'Selling Unit',
-    accessor: 'selling_unit',
+    accessor: 'product_selling_unit',
+  },
+  {
+    label: 'Details',
+    accessor: 'modal',
   },
   {
     label: 'Price',
@@ -146,8 +146,8 @@ export const PHARMACY_PRODUCT_COLUMN_LIST: TableHeader[] = [
     accessor: 'stock',
   },
   {
-    label: 'Details',
-    accessor: 'id',
+    label: 'Active Status',
+    accessor: 'active_status',
   },
   {
     label: 'Action',
@@ -179,5 +179,43 @@ export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Action',
     accessor: 'confirm',
+  },
+];
+
+export const ADMIN_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
+  },
+];
+
+export const PARTNER_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Name',
+    accessor: 'name',
+  },
+  {
+    label: 'Email',
+    accessor: 'email',
+  },
+  {
+    label: 'Phone Number',
+    accessor: 'phone_number',
+  },
+  {
+    label: 'Logo',
+    accessor: 'logo',
+  },
+  {
+    label: 'Action',
+    accessor: 'action',
   },
 ];

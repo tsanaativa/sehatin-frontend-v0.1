@@ -38,15 +38,20 @@ const Breadcrumb = ({
             paths === href ? `${listClasses} ${activeClasses}` : listClasses;
           return (
             <React.Fragment key={index}>
-              <li className={itemClasses}>
-                {pathnames.length !== index + 1 ? (
-                  <Link href={href} className="hover:underline">
-                    {getPageName(link)}
-                  </Link>
-                ) : (
-                  `${getPageName(link)}`
-                )}
-              </li>
+              {(!!homeElement ||
+                (!!!homeElement && !(link === 'admin' && index === 0))) && (
+                <li className={itemClasses}>
+                  {pathnames.length !== index + 1 &&
+                  !!!homeElement &&
+                  index === 0 ? (
+                    <Link href={href} className="hover:underline">
+                      {getPageName(link)}
+                    </Link>
+                  ) : (
+                    `${getPageName(link)}`
+                  )}
+                </li>
+              )}
               {!(!!!homeElement && index === 0) && (
                 <>{pathnames.length !== index + 1 && separator}</>
               )}

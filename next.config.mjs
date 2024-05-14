@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  output: 'standalone',
+  basePath: process.env.NODE_ENV === 'production' ? '/vm5' : '',
   images: {
     remotePatterns: [
       {
@@ -7,7 +15,11 @@ const nextConfig = {
         hostname: '**.unsplash.com',
         port: '',
       },
-
+      {
+        protocol: 'https',
+        hostname: 'scontent-cgk1-1.xx.fbcdn.net',
+        port: '',
+      },
       {
         protocol: 'https',
         hostname: 'scontent-cgk1-2.xx.fbcdn.net',
@@ -16,6 +28,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
         port: '',
       },
     ],

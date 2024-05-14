@@ -21,7 +21,7 @@ const ModalChangePassword = ({
         />
       </div>
       <div className="flex flex-col gap-y-2 px-4 py-4 md:min-w-[500px]">
-        <ChangePasswordForm />
+        <ChangePasswordForm onSuccess={() => onShowModal(false)} />
       </div>
     </Modal>
   );

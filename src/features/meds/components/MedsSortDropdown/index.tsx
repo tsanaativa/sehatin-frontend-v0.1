@@ -10,8 +10,9 @@ const MedsSortDropdown = () => {
     <>
       <SortDropdown
         sortBy={sortBy}
-        setSortBy={setSortBy}
+        onSort={setSortBy}
         options={MEDS_SORT_OPTIONS}
+        sort=""
       />
     </>
   );

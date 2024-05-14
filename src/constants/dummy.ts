@@ -1,21 +1,19 @@
 import { Address } from '@/types/Address';
-import { Category } from '@/types/Product';
 import { Doctor } from '@/types/Doctor';
-import { Product } from '@/types/Product';
+import { Category, PharmacyProductUser } from '@/types/Product';
 import { DISPLAYED_CATEGORIES } from './categories';
-import { User } from '@/types/User';
-import { Chat } from '@/types/Chat';
 
 export const DUMMY_CATEGORIES: Category[] = DISPLAYED_CATEGORIES;
 
-export const DUMMY_PRODUCT: Product = {
+export const DUMMY_PRODUCT: PharmacyProductUser = {
   id: 1,
   name: 'Panadol Extra 10 Kaplet 2 box bla',
   selling_unit: 'Box',
   price: '15990',
   generic_name: 'Paracetamol',
-  image:
+  product_picture:
     'https://images.unsplash.com/photo-1598046937895-2be846402c0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  slug: 'obat-a',
 };
 
 export const DUMMY_DOCTOR: Doctor = {
@@ -31,6 +29,8 @@ export const DUMMY_DOCTOR: Doctor = {
   fee: 50000,
   profile_picture:
     'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  certificate:
+    'https://res.cloudinary.com/deu2djyxi/image/upload/v1715227365/d3rroj03uoqgkqrgguoc.pdf',
 };
 
 export const DUMMY_ADDRESSES: Address[] = [
@@ -42,7 +42,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -55,7 +55,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,
@@ -68,7 +68,7 @@ export const DUMMY_ADDRESSES: Address[] = [
     province: 'DKI Jakarta',
     city: 'Jakarta Pusat',
     district: 'Menteng',
-    subdistrict: 'Gondangdia',
+    sub_district: 'Gondangdia',
     postal_code: 12345,
     latitude: 0,
     longitude: 0,

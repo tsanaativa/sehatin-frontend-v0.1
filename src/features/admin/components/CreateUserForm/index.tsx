@@ -78,6 +78,7 @@ const CreateUserForm = () => {
         <Input
           ref={name}
           id="name"
+          name="name"
           placeholder="Type your fullname..."
           message={errors['name']}
           invalid={errors['name'] !== ''}
@@ -149,12 +150,12 @@ const CreateUserForm = () => {
           special character and a number
         </span>
       </div>
-      <label htmlFor="birth-date">
+      <label htmlFor="birth_date">
         <h5 className="text-sm text-dark-gray">Birth Date</h5>
         <Input
           ref={birthDatePicker}
-          id="birth-date"
-          name="birth-date"
+          id="birth_date"
+          name="birth_date"
           placeholder="Enter your birth date ..."
           append="Calendar"
           type="date"
@@ -180,9 +181,10 @@ const CreateUserForm = () => {
           <label htmlFor="male">
             <input
               type="radio"
-              name="gender"
+              name="gender_id"
               id="male"
               className="peer"
+              value={1}
               checked={gender == 'male'}
               onChange={() => setGender('male')}
             />
@@ -192,9 +194,10 @@ const CreateUserForm = () => {
           <label htmlFor="female">
             <input
               type="radio"
-              name="gender"
+              name="gender_id"
               id="female"
               className="peer"
+              value={2}
               checked={gender == 'female'}
               onChange={() => setGender('female')}
             />

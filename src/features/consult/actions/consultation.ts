@@ -28,14 +28,44 @@ export async function createChat(
   }
 }
 
-export async function createMedicalCertificate(req: any) {
+export async function createMedicalCertificate(req: any, id: string) {
   try {
-    const res = await post<{ url: string }>(
-      `/doctors/consultations/certificate`,
+    const res = await post<{ certificate_url: string }>(
+      `/doctors/consultations/${id}/certificate`,
       req
     );
     return res.data;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function createPrescription(req: any, id: string) {
+  try {
+    const res = await post<{ prescription_url: string }>(
+      `/doctors/consultations/${id}/prescription`,
+      req
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+}
+
+export async function addPrescriptionToCart(id: string) {
+  try {
+    const res = await post(`/users/consultations/${id}/prescription/add`);
+    return res.data;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+}
+
+export async function endConsultation(role: string, id: string) {
+  try {
+    const res = await post(`/${role}s/consultations/${id}/end`);
+    return res.data;
+  } catch (error) {
+    throw new Error((error as Error).message);
   }
 }

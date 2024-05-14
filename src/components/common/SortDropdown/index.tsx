@@ -31,7 +31,7 @@ const SortDropdown = ({
   const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     if (target.checked) {
-      onSort(target.id, sort);
+      onSort(target.id.split(' ').join('-'), sort);
     } else {
       onSort(target.id, '');
     }
@@ -77,7 +77,7 @@ const SortDropdown = ({
                   className="hidden"
                   onClick={handleChange}
                 />
-                {option}
+                {option.split('-').join(' ')}
               </label>
             ))}
           </div>

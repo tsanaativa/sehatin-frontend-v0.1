@@ -103,7 +103,7 @@ const ConsultationHistory = ({ user }: ConsultationHistoryProps) => {
                           patient data
                         </span>
                       </span>
-                      <span className="w-full max-w-[200px] bg-gray-light font-medium text-dark-gray text-xs text-dark md:text-sm">
+                      <span className="w-full max-w-[200px] bg-gray-light font-medium text-dark-gray text-xs md:text-sm">
                         <span className="invisible">Ended at</span>
                       </span>
                     </div>

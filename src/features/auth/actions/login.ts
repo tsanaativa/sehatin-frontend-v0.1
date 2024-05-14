@@ -23,9 +23,18 @@ export async function login(formData: FormData) {
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
 
-    return loginData;
-  } catch (error) {
-    throw error;
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function resendEmail(data: { role: string; email: string }) {
+  try {
+    const res = await post('/auth/verify/resend', data);
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 }
 
@@ -35,12 +44,12 @@ export async function loginAdmin(formData: FormData) {
   const rawFormData = {
     email: formData.get('email'),
     password: formData.get('password'),
-    role: 'admin',
+    role: formData.get('role'),
   };
 
   try {
-    const res = await post('/auth/login', rawFormData);
-    const loginData = res.data as LoginResponse;
+    const res = await post<LoginResponse>('/auth/login', rawFormData);
+    const loginData = res.data;
 
     session.exp = loginData.exp;
     session.user = loginData.user;
@@ -48,8 +57,8 @@ export async function loginAdmin(formData: FormData) {
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
 
-    return loginData;
-  } catch (error) {
-    throw error;
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 }

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon, Input } from '..';
 import { icons } from 'lucide-react';
 import { overflowHandler } from '@/utils/helper';
-import useDebounce from '@/utils/debounce';
+import useDebounce from '@/hooks/useDebounce';
 
 type SelectorProps = {
   id: string;
@@ -53,9 +53,12 @@ const Selector = ({
 
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [showPane, setShowPane] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  window.addEventListener('resize', () => {
-    setScreenWidth(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(window && window?.innerWidth);
+  useEffect(() => {
+    if (typeof window !== undefined)
+      window.addEventListener('resize', () => {
+        setScreenWidth(window.innerWidth);
+      });
   });
 
   const picker = useRef<HTMLDivElement>(null);
@@ -238,6 +241,7 @@ const Selector = ({
                   <input
                     type="radio"
                     name={name}
+                    value={option}
                     id={`${option}-${idx}`}
                     onInput={() => handleSelect(option)}
                     className="hidden"

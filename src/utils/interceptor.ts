@@ -4,8 +4,6 @@ import { PUBLIC_API_ROUTES } from '@/constants/routes';
 import { getSession } from '@/services/session';
 import { redirect } from 'next/navigation';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
-
 const logout = async (): Promise<void> => {
   // const response = await fetch(BASE_URL + '/logout', {
   //   headers: {
@@ -28,13 +26,16 @@ const interceptor = async (url: string) => {
     }
 
     if (session.exp && new Date(session.exp) <= new Date()) {
-      const response = await fetch(BASE_URL + '/auth/refresh-token', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${session?.refresh_token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_BACKEND_URL + '/auth/refresh-token',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${session?.refresh_token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       const result = await response.json();
       if (!response.ok) {

@@ -5,13 +5,20 @@ type ModalEndChatProps = {
   onConfirm: () => void;
   onShowModal: (showModal: boolean) => void;
   showModal: boolean;
+  isDoctor: boolean;
 };
 
 const ModalEndChat = ({
   onShowModal,
   showModal,
   onConfirm,
+  isDoctor,
 }: ModalEndChatProps) => {
+  const onEndChat = () => {
+    onShowModal(false);
+    onConfirm();
+  };
+
   return (
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
       <div className="flex items-center justify-between  font-poppins font-semibold text-sm px-4 pt-4 md:text-lg">
@@ -29,10 +36,16 @@ const ModalEndChat = ({
           <div className="font-poppins font-semibold text-lg mb-1">
             Are you sure?
           </div>
-          <div className="text-dark-gray">
-            You will have to wait for {"patient's"} confirmation or
-            <br />
-            it will automatically end in 30 seconds.
+          <div className="text-dark-gray text-center">
+            {!isDoctor ? (
+              <>
+                You will have to wait for {"patient's"} confirmation or
+                <br />
+                it will automatically end in 30 seconds.
+              </>
+            ) : (
+              <>Consultation with the doctor will end.</>
+            )}
           </div>
         </div>
         <div className="flex gap-4 mt-4">
@@ -46,7 +59,7 @@ const ModalEndChat = ({
           <Button
             variant="danger"
             className="w-full px-4 min-w-[100px] flex items-center justify-center gap-x-2"
-            onClick={onConfirm}
+            onClick={onEndChat}
           >
             Yes
           </Button>

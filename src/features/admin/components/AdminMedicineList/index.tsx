@@ -5,13 +5,16 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { MEDICINE_TABLE_DATA } from '@/constants/dummy';
 import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
 import { MEDICINE_COLUMN_LIST } from '@/constants/tables';
+import useDebounce from '@/hooks/useDebounce';
+import { getAllProducts } from '@/services/medicine';
 import { PaginationInfo } from '@/types/PaginationInfo';
+import { Product } from '@/types/Product';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const AdminMedicineList = () => {
   const searchParams = useSearchParams();
@@ -33,14 +36,27 @@ const AdminMedicineList = () => {
     total_page: 0,
   });
 
+  const [allProduct, setAllProduct] = useState<Product[]>([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const debounce = useDebounce(params, 500);
+
   useEffect(() => {
-    const newKeyword = searchParams.get('keyword') || '';
-    setParams((prev) => ({
-      ...prev,
-      page: prev.keyword !== newKeyword ? 1 : prev.page,
-      keyword: newKeyword,
-    }));
-  }, [searchParams]);
+    if (debounce) {
+      const fetchAllProducts = async () => {
+        try {
+          const res = await getAllProducts(debounce);
+          setAllProduct(res.products);
+        } catch (error: any) {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
+      };
+
+      fetchAllProducts();
+    }
+  }, [debounce]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -61,19 +77,6 @@ const AdminMedicineList = () => {
     handleChangeParams(newParams);
   };
 
-  const handleFilter = (specialistId: string) => {
-    const newParams = {
-      ...params,
-      specialistId: specialistId,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
-
-  const handleResetFilter = () => {
-    handleFilter('');
-  };
-
   const handleChangeParams = useCallback(
     (params: UsersParams) => {
       const newParams = new URLSearchParams(searchParams);
@@ -92,30 +95,39 @@ const AdminMedicineList = () => {
     [pathname, replace, searchParams]
   );
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newParams = {
+      ...params,
+      keyword: e.target.value,
+      page: 1,
+    };
+    setParams(newParams);
+    handleChangeParams(newParams);
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
-        <Input inputClass="h-9" prepend="Search" placeholder="search" />
-        <div className="flex gap-x-4">
-          <SortDropdown
-            onSort={handleSort}
-            sortBy={params.sortBy}
-            sort={params.sort}
-            options={ADMIN_MEDICINE_SORT_OPTIONS}
-          />
-          {/* <FilterDropdown
-            options={}
-            selected=""
-            onFilter={handleFilter}
-            onReset={handleResetFilter}
-          /> */}
-        </div>
+        <Input
+          inputClass="h-9"
+          prepend="Search"
+          placeholder="search"
+          onChange={handleSearch}
+          defaultValue={params.keyword}
+        />
+        <SortDropdown
+          onSort={handleSort}
+          sortBy={params.sortBy}
+          sort={params.sort}
+          options={ADMIN_MEDICINE_SORT_OPTIONS}
+        />
       </div>
       <DataTable
         className="mt-8"
-        dataList={MEDICINE_TABLE_DATA}
+        dataList={allProduct}
         columnList={MEDICINE_COLUMN_LIST}
         tabelName="medicine"
+        loading={isLoading}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

@@ -90,7 +90,6 @@ const FileUploader = ({
             className="hidden"
             onInput={({ target }) => {
               getFile(target as HTMLInputElement);
-              (target as HTMLInputElement).value = '';
             }}
             {...props}
           />
