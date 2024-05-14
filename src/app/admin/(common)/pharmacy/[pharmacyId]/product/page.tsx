@@ -19,7 +19,7 @@ const PharmacyProductList = ({
           + Add Pharmacy Product
         </Link>
       </div>
-      <AdminPharmacyPrductList />
+      <AdminPharmacyPrductList id={params.pharmacyId} />
     </>
   );
 };

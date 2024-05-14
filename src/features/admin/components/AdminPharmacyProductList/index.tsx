@@ -5,32 +5,21 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import {
-  PHARMACY_PRODUCT_TABLE_DATA,
-  PHARMACY_TABLE_DATA,
-} from '@/constants/dummy';
-import {
-  ADMIN_MEDICINE_SORT_OPTIONS,
-  ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS,
-} from '@/constants/sort';
-import {
-  PHARMACY_COLUMN_LIST,
-  PHARMACY_PRODUCT_COLUMN_LIST,
-} from '@/constants/tables';
+import { ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS } from '@/constants/sort';
+import { PHARMACY_PRODUCT_COLUMN_LIST } from '@/constants/tables';
 import { getAllPharmacyProducts } from '@/services/pharmacy';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { PharmacyProduct } from '@/types/Pharmacy';
 import { UsersParams } from '@/types/User';
-import { getPageName, getPathNames } from '@/utils/pageHeader';
+import { getPathNames } from '@/utils/pageHeader';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const AdminPharmacyProductList = () => {
+const AdminPharmacyProductList = ({ id }: { id: number }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const pharmacyId = getPathNames(pathname)[2];
 
   const [params, setParams] = useState<UsersParams>({
     keyword: searchParams.get('keyword') || '',
@@ -63,7 +52,7 @@ const AdminPharmacyProductList = () => {
   useEffect(() => {
     const fetchAllPharmacyProduct = async () => {
       try {
-        const res = await getAllPharmacyProducts(pharmacyId);
+        const res = await getAllPharmacyProducts(id);
         setAllPharmacyProducts(res.pharmacy_products);
       } catch (error: any) {
         toast.error(error.message);
@@ -71,11 +60,7 @@ const AdminPharmacyProductList = () => {
     };
 
     fetchAllPharmacyProduct();
-  }, [params, pharmacyId]);
-
-  useEffect(() => {
-    console.log(allPharmacyProducts);
-  });
+  }, [params, id]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -94,19 +79,6 @@ const AdminPharmacyProductList = () => {
     };
     setParams(newParams);
     handleChangeParams(newParams);
-  };
-
-  const handleFilter = (specialistId: string) => {
-    const newParams = {
-      ...params,
-      specialistId: specialistId,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
-
-  const handleResetFilter = () => {
-    handleFilter('');
   };
 
   const handleChangeParams = useCallback(
@@ -143,19 +115,13 @@ const AdminPharmacyProductList = () => {
             sort={params.sort}
             options={ADMIN_PHARMACY_PRODUCT_SORT_OPTIONS}
           />
-          {/* <FilterDropdown
-            options={}
-            selected=""
-            onFilter={handleFilter}
-            onReset={handleResetFilter}
-          /> */}
         </div>
       </div>
       <DataTable
         className="mt-8"
         dataList={allPharmacyProducts}
         columnList={PHARMACY_PRODUCT_COLUMN_LIST}
-        tabelName="pharmacy"
+        tabelName="pharmacy_product"
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

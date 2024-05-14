@@ -23,7 +23,7 @@ import { getPathNames } from '@/utils/pageHeader';
 import { Check, Edit2, Phone, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Badge, Button, DeleteModalButton, NoDataFound, Skeleton } from '..';
 import ToggleInput from '../ToggleInput';
@@ -55,6 +55,7 @@ const DataTable = <T,>({
   const [idItem, setIdItem] = useState<number>(0);
   const currentPathname =
     '/' + getPathNames(pathname)[0] + '/' + getPathNames(pathname)[1];
+  const { pharmacyId } = useParams();
 
   return (
     <table
@@ -261,11 +262,26 @@ const DataTable = <T,>({
                           </Link>
                         ) : column.accessor === 'action' ? (
                           <div className="h-full flex gap-2 items-center">
+                            {tabelName !== 'admin' && (
+                              <Link
+                                href={
+                                  tabelName === 'pharmacy_product'
+                                    ? `/admin/pharmacy/${pharmacyId}/product/${item['id' as keyof typeof item]}/update`
+                                    : `/admin/${tabelName}/${item['id' as keyof typeof item]}/update`
+                                }
+                              >
+                                <Edit2 size={20} className="text-blue" />
+                              </Link>
+                            )}
                             {tabelName !== 'admin' &&
                               tabelName !== 'address' &&
                               tabelName !== 'adminPharmacy' && (
                                 <Link
-                                  href={`/admin/${tabelName}/${item['id' as keyof typeof item]}/update`}
+                                  href={
+                                    tabelName === 'pharmacy_product'
+                                      ? `/admin/pharmacy/${pharmacyId}/product/${item['id' as keyof typeof item]}/update`
+                                      : `/admin/${tabelName}/${item['id' as keyof typeof item]}/update`
+                                  }
                                 >
                                   <Edit2 size={20} className="text-blue" />
                                 </Link>
@@ -284,7 +300,7 @@ const DataTable = <T,>({
                                   item['id' as keyof typeof item] as number
                                 )
                               }
-                              objName={tabelName}
+                              objName={tabelName.replace('_', ' ')}
                             />
                           </div>
                         ) : column.accessor === 'active_status' ? (
@@ -294,6 +310,7 @@ const DataTable = <T,>({
                                 'is_available' as keyof typeof item
                               ] as boolean
                             }
+                            key={item['id' as keyof typeof item] as number}
                           />
                         ) : column.accessor === 'shipping_fee' ? (
                           <>

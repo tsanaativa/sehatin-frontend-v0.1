@@ -22,13 +22,15 @@ const ModalPharmacyProduct = ({
     <Modal onClick={() => onShowModal(false)} showModal={showModal}>
       <div className="flex justify-between gap-x-6 p-6">
         <div>
-          <Image
-            src={detailProduct?.product.product_picture as string}
-            className="object-cover"
-            width={300}
-            height={90}
-            alt=""
-          />
+          {detailProduct?.product.product_picture && (
+            <Image
+              src={detailProduct?.product.product_picture as string}
+              className="object-cover"
+              width={300}
+              height={90}
+              alt=""
+            />
+          )}
         </div>
         <div className="w-full flex flex-col gap-y-6">
           <div className="flex justify-between">
