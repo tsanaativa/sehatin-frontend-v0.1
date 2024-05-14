@@ -95,23 +95,14 @@ const AddressCard = () => {
             </div>
           ) : (
             <>
-              {addressOpts.map((addr, idx) => (
-                <label
-                  key={idx}
-                  htmlFor={`addr-${idx}`}
-                  className="flex gap-2 items-center px-3 py-2 hover:bg-gray-lighter"
-                >
-                  <input
-                    id={`addr-${idx}`}
-                    type="radio"
-                    name="addr"
-                    defaultChecked={addr.is_active}
-                    className="hidden"
-                    onChange={handleChange}
-                  />
-                  {formatAddress(addr)}
-                </label>
-              ))}
+              <div className="flex gap-1 p-3">
+                Not this address?
+                <Link href="/profile/my-addresses">
+                  <span className="text-primary-dark underline font-semibold">
+                    Set other as main
+                  </span>
+                </Link>
+              </div>
             </>
           )}
         </div>

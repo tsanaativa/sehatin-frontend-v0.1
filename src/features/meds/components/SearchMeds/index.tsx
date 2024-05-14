@@ -179,7 +179,7 @@ const SearchMeds = ({ user, categories }: SearchMedsProps) => {
           {!isLoading ? (
             <>
               {products.length > 0 ? (
-                <div className="grid gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
+                <div className="flex flex-wrap gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
                   {products.map((product, idx) => (
                     <ProductCard
                       key={idx}
@@ -194,7 +194,7 @@ const SearchMeds = ({ user, categories }: SearchMedsProps) => {
               )}
             </>
           ) : (
-            <div className="grid gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
+            <div className="flex flex-wrap gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
               {Array.from({ length: 10 }).map((val, idx) => (
                 <ProductCardSkeleton key={idx} />
               ))}

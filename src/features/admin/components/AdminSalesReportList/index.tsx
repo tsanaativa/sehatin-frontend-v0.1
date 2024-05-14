@@ -6,37 +6,44 @@ import {
   Pagination,
   SortDropdown,
 } from '@/components/common';
-import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
-import { ORDER_COLUMN_LIST } from '@/constants/tables';
-import { getAllOrders } from '@/services/order';
-import { Order } from '@/types/Order';
+import { SALES_REPORT_SORT_OPTIONS } from '@/constants/sort';
+import { SALES_REPORT_COLUMN_LIST } from '@/constants/tables';
+import useDebounce from '@/hooks/useDebounce';
+import { getSalesReport } from '@/services/sales_report';
 import { PaginationInfo } from '@/types/PaginationInfo';
+import { SalesReport } from '@/types/SalesReport';
 import { UsersParams } from '@/types/User';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-type AdminOrderListProps = {
+type AdminSalesReportListProps = {
   isAdmin?: boolean;
 };
 
-type Params = UsersParams & {
-  status: string;
+type SalesParams = UsersParams & {
+  pharmacyId: string;
 };
 
-const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
+const AdminSalesReportList = ({ isAdmin }: AdminSalesReportListProps) => {
+  const [allReports, setAllReports] = useState<SalesReport[]>([]);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { pharmacyId } = useParams();
 
-  const [params, setParams] = useState<Params>({
+  const [params, setParams] = useState<SalesParams>({
     keyword: searchParams.get('keyword') || '',
     page: parseInt(searchParams.get('page') || '1'),
     limit: 20,
     sortBy: searchParams.get('sortBy') || '',
     sort: searchParams.get('sort') || 'desc',
-    status: '',
+    pharmacyId: `${pharmacyId}`,
   });
 
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
@@ -46,8 +53,6 @@ const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
     total_page: 0,
   });
 
-  const [allOrders, setAllOrders] = useState<Order[]>([]);
-
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
     setParams((prev) => ({
@@ -56,25 +61,6 @@ const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
       keyword: newKeyword,
     }));
   }, [searchParams]);
-
-  useEffect(() => {
-    const fetchAllOrders = async () => {
-      try {
-        const res = await getAllOrders(
-          isAdmin ? 'admin' : 'pharmacy-manager',
-          params
-        );
-        setAllOrders(res.orders);
-        setPaginationInfo(res.pagination_info);
-      } catch (error: any) {
-        toast.error(error.message);
-      }
-      setIsLoading(false);
-    };
-
-    fetchAllOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -95,21 +81,29 @@ const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
     handleChangeParams(newParams);
   };
 
-  const handleFilter = (status: string) => {
-    const newParams = {
-      ...params,
-      status: status,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleResetFilter = () => {
-    handleFilter('');
-  };
+  const debounce = useDebounce(params, 500);
+
+  useEffect(() => {
+    if (debounce) {
+      const fetchAllReports = async () => {
+        try {
+          const res = await getSalesReport();
+          setPaginationInfo(res.pagination_info);
+          setAllReports(res.sales_reports);
+        } catch (error: any) {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
+      };
+
+      fetchAllReports();
+    }
+  }, [debounce]);
 
   const handleChangeParams = useCallback(
-    (params: Params) => {
+    (params: SalesParams) => {
       const newParams = new URLSearchParams(searchParams);
       Object.keys(params).map((key) => {
         if (key !== 'limit') {
@@ -126,14 +120,6 @@ const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
     [pathname, replace, searchParams]
   );
 
-  const filterOptions: Record<string, string> = {
-    pending: 'Pending',
-    processing: 'Processing',
-    shipped: 'Shipped',
-    completed: 'Completed',
-    canceled: 'Canceled',
-  };
-
   return (
     <>
       <div className="flex justify-between mt-6">
@@ -148,21 +134,15 @@ const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
             onSort={handleSort}
             sortBy={params.sortBy}
             sort={params.sort}
-            options={ADMIN_MEDICINE_SORT_OPTIONS}
-          />
-          <FilterDropdown
-            options={filterOptions}
-            selected={params.status}
-            onFilter={handleFilter}
-            onReset={handleResetFilter}
+            options={SALES_REPORT_SORT_OPTIONS}
           />
         </div>
       </div>
       <DataTable
         className="mt-8"
-        dataList={allOrders}
-        columnList={ORDER_COLUMN_LIST}
-        tabelName="order"
+        dataList={allReports}
+        columnList={SALES_REPORT_COLUMN_LIST}
+        tabelName="sales"
         loading={isLoading}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
@@ -170,4 +150,4 @@ const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
   );
 };
 
-export default AdminOrderList;
+export default AdminSalesReportList;

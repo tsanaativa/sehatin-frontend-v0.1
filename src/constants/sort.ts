@@ -41,3 +41,10 @@ export const STOCK_MUTATION_SORT_OPTIONS = [
   'reciever',
   'quantity',
 ];
+
+export const SALES_REPORT_SORT_OPTIONS = [
+  'total-sale',
+  'total-quantity',
+  'product',
+  'year',
+];

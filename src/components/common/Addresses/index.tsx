@@ -4,7 +4,6 @@ import AddressCard from '@/components/common/AddressCard';
 import { deleteAddress } from '@/features/profile/actions/profile';
 import { User } from '@/types/User';
 import { Plus } from 'lucide-react';
-import Link from 'next/link';
 import { toast } from 'react-toastify';
 import Button from '../Button';
 

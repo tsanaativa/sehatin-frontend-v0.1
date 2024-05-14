@@ -130,6 +130,10 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
     accessor: 'pharmacy_product',
   },
   {
+    label: 'Sales Reports',
+    accessor: 'sales_report',
+  },
+  {
     label: 'Action',
     accessor: 'action',
   },
@@ -197,6 +201,33 @@ export const STOCK_MUTATION_COLUMN_LIST: TableHeader[] = [
   },
 ];
 
+export const SALES_REPORT_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Month',
+    accessor: 'month',
+  },
+  {
+    label: 'Year',
+    accessor: 'year',
+  },
+  {
+    label: 'Pharmacy Name',
+    accessor: 'pharmacy_name',
+  },
+  {
+    label: 'Product Name',
+    accessor: 'product["name"]',
+  },
+  {
+    label: 'Total Quantity Sold',
+    accessor: 'total_quantity_sold',
+  },
+  {
+    label: 'Total Sales Amount',
+    accessor: 'total_sales_amount',
+  },
+];
+
 export const ADMIN_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Name',
@@ -236,5 +267,44 @@ export const PARTNER_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Action',
     accessor: 'action',
+  },
+];
+
+export const ORDER_COLUMN_LIST: TableHeader[] = [
+  {
+    label: 'Number',
+    accessor: 'order_number',
+  },
+  {
+    label: 'User',
+    accessor: 'user_order',
+  },
+  {
+    label: 'Pharmacy',
+    accessor: 'pharmacy_order',
+  },
+  // {
+  //   label: 'Items',
+  //   accessor: 'order_items',
+  // },
+  {
+    label: 'Total Price',
+    accessor: 'total_price',
+  },
+  {
+    label: 'Shipping Fee',
+    accessor: 'shipping_fee',
+  },
+  {
+    label: 'Payment Proof',
+    accessor: 'payment_proof',
+  },
+  {
+    label: 'Status',
+    accessor: 'order_status',
+  },
+  {
+    label: 'Action',
+    accessor: 'order_action',
   },
 ];
