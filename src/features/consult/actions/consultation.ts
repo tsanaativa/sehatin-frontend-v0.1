@@ -8,7 +8,7 @@ export async function createConsultation(req: any) {
     const res = await post<Consultation>(`/users/consultations`, req);
     return res.data;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw error;
   }
 }
 
@@ -24,7 +24,7 @@ export async function createChat(
     );
     return res.data;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw error;
   }
 }
 
@@ -36,6 +36,6 @@ export async function createMedicalCertificate(req: any) {
     );
     return res.data;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw error;
   }
 }

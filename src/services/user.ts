@@ -9,6 +9,6 @@ export const getAllUser = async () => {
     const res = await get<User[]>(`/users`, params);
     return res.data;
   } catch (error) {
-    throw new Error(String((error as Error).message));
+    throw error;
   }
 };

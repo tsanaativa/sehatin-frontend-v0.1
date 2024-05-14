@@ -63,8 +63,8 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
         }>(`/doctors/verified`, params);
         setDoctors(res.data.doctors);
         setPaginationInfo(res.data.pagination_info);
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        toast.error((error as Error).message);
       } finally {
         setIsLoading(false);
       }

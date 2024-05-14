@@ -6,6 +6,6 @@ export const getCategories = async () => {
     const res = await get<{ categories: Category[] }>(`/categories`);
     return res.data.categories;
   } catch (error: any) {
-    throw new Error(String(error));
+    throw error;
   }
 };

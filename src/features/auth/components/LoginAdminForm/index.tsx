@@ -51,9 +51,7 @@ const LoginAdminForm = () => {
       if (message) toast.success('successfully logged in');
       push('/admin/dashboard');
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error?.message);
-      }
+      toast.error((error as Error).message);
     } finally {
       setIsLoading(false);
     }

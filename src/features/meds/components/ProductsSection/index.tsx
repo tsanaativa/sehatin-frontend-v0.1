@@ -42,8 +42,8 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
 
         const slicedProducts = splitToNArrays<Product>(res.data.products, 5);
         setProductsSlices(slicedProducts);
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        toast.error((error as Error).message);
       } finally {
         setIsLoading(false);
       }

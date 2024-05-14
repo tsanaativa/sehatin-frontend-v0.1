@@ -43,11 +43,9 @@ async function request<T>(
 
   const response = await fetch(BASE_URL + url, options);
   const result = await response.json();
-  if (!response.ok)
-    throw {
-      code: response.status,
-      codeName: response.statusText,
-      message:
+  if (!response.ok) {
+    try {
+      const message =
         result.message ??
         result.errors
           .map((err: { field: string; message: string }) =>
@@ -55,8 +53,12 @@ async function request<T>(
               .toLowerCase()
               .replaceAll('this field', err.field.toLowerCase())
           )
-          .join('. '),
-    };
+          .join('. ');
+      throw new Error(message);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
 
   return result;
 }

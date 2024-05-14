@@ -54,10 +54,7 @@ const LoginForm = () => {
       if (message) toast.success('successfully logged in');
       push('/');
     } catch (error) {
-      if (error instanceof Error) {
-        console.log('ERROR', error?.message);
-        toast.error(error?.message);
-      }
+      toast.error((error as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +65,9 @@ const LoginForm = () => {
         Please select your role
       </div>
       <form
-        action={loginUser}
+        action={(e) =>
+          Object.values(errors).some((e) => e !== '') || loginUser(e)
+        }
         className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
       >
         <div className="flex items-center gap-[20px] [&_span]:pt-[7px] [&_span]:text-[11px] mt-[6px]">
