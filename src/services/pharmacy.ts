@@ -16,7 +16,7 @@ export const getAllPharmacies = async () => {
   }
 };
 
-export const getAllPharmacyProducts = async (id: string) => {
+export const getAllPharmacyProducts = async (id: number) => {
   const session = await getSession();
   try {
     const res = await get<{
@@ -24,6 +24,22 @@ export const getAllPharmacyProducts = async (id: string) => {
       pharmacy_products: PharmacyProduct[];
     }>(
       `/pharmacies/${id}/products`,
+      {},
+      {
+        Authorization: 'Bearer ' + session.access_token,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error(String((error as Error).message));
+  }
+};
+
+export const getOnePharmacyProducts = async (id: number) => {
+  const session = await getSession();
+  try {
+    const res = await get<PharmacyProduct>(
+      `/pharmacies/products/${id}`,
       {},
       {
         Authorization: 'Bearer ' + session.access_token,

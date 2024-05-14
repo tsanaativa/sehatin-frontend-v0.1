@@ -165,13 +165,6 @@ const CreateMedicineForm = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(allCategories);
-    console.log(allClassifications);
-    console.log(allForms);
-    console.log(allManufacures);
-  });
-
   return (
     <form action={handleSubmit} className="mt-2">
       <div className="flex items-center justify-between">

@@ -2,9 +2,8 @@
 import { Input, Selector, Skeleton } from '@/components/common';
 import { getAllProductsSelect, getProduct } from '@/services/medicine';
 import { Product } from '@/types/Product';
-import { getPathNames } from '@/utils/pageHeader';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -15,8 +14,7 @@ const AddPharmacyProductForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingProduct, setIsLoadingProduct] = useState<boolean>(false);
 
-  const pathname = usePathname();
-  const currentPathname = getPathNames(pathname);
+  const { pharmacyId } = useParams();
 
   useEffect(() => {
     const fetchAllProducts = async () => {
@@ -38,7 +36,7 @@ const AddPharmacyProductForm = () => {
     const fetchProduct = async () => {
       setIsLoadingProduct(true);
       try {
-        const res = await getProduct(product);
+        const res = await getProduct(Number(product));
         setProductData(res);
       } catch (error: any) {
         toast.error(error.message);
@@ -155,7 +153,7 @@ const AddPharmacyProductForm = () => {
               </Skeleton>
             ) : (
               <div className="flex justify-between gap-x-6">
-                <Input name="pharmacyId" value={currentPathname[2]} hidden />
+                <Input name="pharmacyId" value={`${pharmacyId}`} hidden />
                 <Input name="productId" value={productData.id} hidden />
                 <div>
                   <Image
