@@ -63,19 +63,6 @@ async function request<T>(
         .join('. ');
     throw new Error(message);
   }
-  // ne
-  // code: response.status,
-  // codeName: response.statusText,
-  // message:
-  // result.message ??
-  // result.errors
-  //   .map((err: { field: string; message: string }) =>
-  //   err.message
-  //     .toLowerCase()
-  //     .replaceAll('this field', err.field.toLowerCase())
-  // )
-  // .join('. '),
-  // };
 
   return result;
 }

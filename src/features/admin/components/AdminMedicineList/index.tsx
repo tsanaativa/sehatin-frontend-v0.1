@@ -15,6 +15,7 @@ import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { deleteProductAction } from '../../action/product';
 
 const AdminMedicineList = () => {
   const searchParams = useSearchParams();
@@ -42,20 +43,21 @@ const AdminMedicineList = () => {
 
   const debounce = useDebounce(params, 500);
 
+  const fetchAllProducts = async () => {
+    try {
+      const res = await getAllProducts(debounce);
+      setAllProduct(res.products);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     if (debounce) {
-      const fetchAllProducts = async () => {
-        try {
-          const res = await getAllProducts(debounce);
-          setAllProduct(res.products);
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-        setIsLoading(false);
-      };
-
       fetchAllProducts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounce]);
 
   const handleMovePage = (page: number) => {
@@ -105,6 +107,16 @@ const AdminMedicineList = () => {
     handleChangeParams(newParams);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteProductAction(id);
+      toast.success('successfully deleted');
+      fetchAllProducts();
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
@@ -128,6 +140,7 @@ const AdminMedicineList = () => {
         columnList={MEDICINE_COLUMN_LIST}
         tabelName="medicine"
         loading={isLoading}
+        onDelete={handleDelete}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

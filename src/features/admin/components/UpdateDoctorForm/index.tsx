@@ -20,16 +20,13 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
   const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
-    'birth-date': '',
     specialist: '',
     'consultation-fee-number': '',
     'doctor-certificate': '',
     'work-start': '',
   });
-  const [birthDate, setBirthDate] = useState<string>();
-  const [genderId, setGenderId] = useState<1 | 2>();
   const [specialty, setSpecialty] = useState<string>(
-    `${doctor.specialist.id}` || ''
+    doctor?.specialist?.id ? `${doctor?.specialist?.id}` : '0'
   );
   const [workStart, setWorkStart] = useState<string>(
     `y-${doctor?.work_start_year}` || ''
@@ -46,7 +43,6 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
 
   const name = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
-  const birthDatePicker = useRef<HTMLInputElement>(null);
   const consultationFee = useRef<HTMLInputElement>(null);
   const certificate = useRef<HTMLInputElement>(null);
 
@@ -78,16 +74,6 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
     errs[key] = validate(value, key);
 
     setErrors({ ...errs });
-  };
-
-  const handleDate = (target: HTMLInputElement) => {
-    const value = new Date(target.value);
-    const year = value.getFullYear();
-    const month = value.getMonth();
-    const day = value.getDate();
-    const result = `${year}/${month >= 9 ? month + 1 : `0${month + 1}`}/${day}`;
-    setBirthDate(result);
-    handleInput('birth-date', result);
   };
 
   const handleSpecialty = (option: string) => {
@@ -127,7 +113,6 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
       [
         name.current?.value,
         email.current?.value,
-        birthDatePicker.current?.value,
         consultationFee.current?.value,
       ].includes('') || uploaded.file == null;
 
@@ -143,10 +128,6 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
               email.current?.value == ''
                 ? 'email cannot be empty'
                 : errors['email'],
-            'birth-date':
-              birthDate == ''
-                ? 'birth date cannot be empty'
-                : errors['birth-date'],
             specialist:
               specialty == ''
                 ? 'specialist cannot be empty'
@@ -177,8 +158,6 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
     }
     formData.append('name', name.current?.value || '');
     formData.append('email', email.current?.value || '');
-    formData.append('birth_date', birthDate || '');
-    formData.append('gender_id', `${genderId}`);
     if (uploaded.file) {
       formData.append(
         'certificate',
@@ -255,60 +234,6 @@ const UpdateDoctorForm = ({ doctor }: { doctor: Doctor }) => {
               disabled
             />
           </label>
-          <label htmlFor="birth-date">
-            <h5 className="text-sm text-dark-gray">Birth Date</h5>
-            <Input
-              ref={birthDatePicker}
-              id="birth-date"
-              name="birth-date"
-              placeholder="Enter your birth date ..."
-              append="Calendar"
-              type="date"
-              valueMode={birthDate}
-              onInput={({ target }) => handleDate(target as HTMLInputElement)}
-              message={errors['birth-date']}
-              invalid={errors['birth-date'] !== ''}
-              onAppend={() => {
-                birthDatePicker.current?.focus();
-                birthDatePicker.current?.showPicker();
-              }}
-              inputClass="w-full"
-            />
-          </label>
-          <div>
-            <h5 className="text-sm text-dark-gray">Gender</h5>
-            <div
-              className="flex gap-16 items-center [&>label]:flex [&>label]:cursor-pointer [&>label]:items-center [&>label]:gap-1.5 [&_input]:hidden
-              [&_mark]:grid [&_mark]:place-items-center [&_mark]:w-4 [&_mark]:h-4 [&_mark]:rounded-full [&_mark]:border-[1px] [&_mark]:border-gray
-              [&_mark]:bg-transparent after:[&_mark]:content-[''] after:[&_mark]:h-2.5 after:[&_mark]:w-2.5 after:[&_mark]:rounded-full
-              after:[&_mark]:bg-primary-dark after:[&_mark]:hidden [&_span]:leading-[150%] [&_span]:tracking-[0.5px]"
-            >
-              <label htmlFor="male">
-                <input
-                  type="radio"
-                  name="gender"
-                  id="male"
-                  className="peer"
-                  checked={genderId == 1}
-                  onChange={() => setGenderId(1)}
-                />
-                <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
-                <span>Male</span>
-              </label>
-              <label htmlFor="female">
-                <input
-                  type="radio"
-                  name="gender"
-                  id="female"
-                  className="peer"
-                  checked={genderId == 2}
-                  onChange={() => setGenderId(2)}
-                />
-                <mark className="peer-checked:after:block peer-checked:border-primary-dark"></mark>
-                <span>Female</span>
-              </label>
-            </div>
-          </div>
         </div>
         <div className="flex flex-col gap-y-6 w-1/3">
           <label htmlFor="specialist">
