@@ -414,7 +414,9 @@ const CreateUserAddressForm = () => {
           />
         </div>
         <div className="flex justify-between items-center mt-5">
-          <a href="/profile/my-addresses/create/autofill">
+          <a
+            href={`${process.env.NEXT_PUBLIC_BASE_URL}/profile/my-addresses/create/autofill`}
+          >
             <span className="text-primary-dark font-semibold hover:underline">
               Autofill by current location
             </span>

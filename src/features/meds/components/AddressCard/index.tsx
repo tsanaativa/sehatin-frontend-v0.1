@@ -86,7 +86,9 @@ const AddressCard = () => {
             <div className="flex gap-2 items-center justify-center p-2 border-b border-gray-light">
               <span className="mt-1">
                 You have no addresses.{' '}
-                <a href="/profile/my-addresses">
+                <a
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/profile/my-addresses`}
+                >
                   <span className="text-primary-dark underline font-semibold">
                     Set your address
                   </span>
