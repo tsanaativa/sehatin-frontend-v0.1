@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Icon } from '../..';
-import useDebounce from '@/utils/debounce';
+import useDebounce from '@/hooks/useDebounce';
 
 type CounterProps = {
   value: number;
