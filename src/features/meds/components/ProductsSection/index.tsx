@@ -42,7 +42,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           limit: 15,
         };
         const res = await get<{ products: PharmacyProductUser[] }>(
-          `/products/nearest/search`,
+          `/products/nearest`,
           params
         );
 

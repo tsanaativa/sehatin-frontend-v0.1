@@ -1,14 +1,22 @@
 'use client';
 import { ModalPharmacyProduct } from '@/features/admin/components';
 import { Specialist } from '@/types/Doctor';
-import { PharmacyAddress, PharmacyProduct } from '@/types/Pharmacy';
+import {
+  PharmacyAddress,
+  PharmacyProduct,
+  ShippingMethods,
+} from '@/types/Pharmacy';
 import { Category, Product } from '@/types/Product';
 import { TableHeader } from '@/types/Tables';
 import { Gender } from '@/types/User';
-import { formatAddress, formatDate } from '@/utils/formatter';
+import {
+  formatAddress,
+  formatDate,
+  formatShippingMethods,
+} from '@/utils/formatter';
 import { currency } from '@/utils/helper';
 import { getPathNames } from '@/utils/pageHeader';
-import { Check, Edit2, Pencil, Trash2, X } from 'lucide-react';
+import { Check, Edit2, Pencil, Phone, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -118,6 +126,13 @@ const DataTable = <T,>({
                           >
                             View
                           </Link>
+                        ) : column.accessor === 'pharmacy_button' ? (
+                          <Link
+                            className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                            href={`${currentPathname}/${item['id' as keyof typeof item]}/pharmacy/list`}
+                          >
+                            View
+                          </Link>
                         ) : column.accessor === 'address' ? (
                           <div className="flex flex-col gap-1">
                             {formatAddress(item as Address)}
@@ -125,6 +140,14 @@ const DataTable = <T,>({
                               <Badge className="w-fit min-w-[100px]">
                                 Main
                               </Badge>
+                            )}
+                          </div>
+                        ) : column.accessor === 'available_shipping_methods' ? (
+                          <div className="flex flex-col gap-1">
+                            {formatShippingMethods(
+                              item[
+                                'shipping_methods' as keyof typeof item
+                              ] as ShippingMethods
                             )}
                           </div>
                         ) : column.accessor === 'pharmacy_product' ? (
@@ -137,7 +160,8 @@ const DataTable = <T,>({
                         ) : column.accessor === 'action' ? (
                           <div className="h-full flex gap-2 items-center">
                             {tabelName !== 'admin' &&
-                              tabelName !== 'address' && (
+                              tabelName !== 'address' &&
+                              tabelName !== 'adminPharmacy' && (
                                 <Link
                                   href={`/admin/${tabelName}/${item['id' as keyof typeof item]}/update`}
                                 >
@@ -312,7 +336,8 @@ const DataTable = <T,>({
                                 ] as string
                               }
                             </span>
-                            <span>
+                            <span className="flex gap-1 items-center">
+                              <Phone size={15} />
                               {
                                 item[
                                   'pharmacist_phone_number' as keyof typeof item

@@ -7,15 +7,19 @@ import {
 } from '@/components/common';
 import { ADMIN_MEDICINE_SORT_OPTIONS } from '@/constants/sort';
 import { PHARMACY_COLUMN_LIST } from '@/constants/tables';
-import { getAllPharmacies } from '@/services/pharmacy';
+import { getAllOrders } from '@/services/order';
+import { Order } from '@/types/Order';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import { Pharmacy } from '@/types/Pharmacy';
 import { UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const AdminOrderList = () => {
+type AdminOrderListProps = {
+  isAdmin?: boolean;
+};
+
+const AdminOrderList = ({ isAdmin }: AdminOrderListProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -35,7 +39,7 @@ const AdminOrderList = () => {
     total_page: 0,
   });
 
-  const [allPharmacies, setAllPharmacies] = useState<Pharmacy[]>([]);
+  const [allOrders, setAllOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     const newKeyword = searchParams.get('keyword') || '';
@@ -47,16 +51,21 @@ const AdminOrderList = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    const fetchAllUsers = async () => {
+    const fetchAllOrders = async () => {
       try {
-        const res = await getAllPharmacies();
-        setAllPharmacies(res.pharmacies);
+        const res = await getAllOrders(
+          isAdmin ? 'admin' : 'pharmacy-manager',
+          params
+        );
+        setAllOrders(res.orders);
+        setPaginationInfo(res.pagination_info);
       } catch (error: any) {
         toast.error(error.message);
       }
     };
 
-    fetchAllUsers();
+    fetchAllOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
   const handleMovePage = (page: number) => {
@@ -135,7 +144,7 @@ const AdminOrderList = () => {
       </div>
       <DataTable
         className="mt-8"
-        dataList={allPharmacies}
+        dataList={allOrders}
         columnList={PHARMACY_COLUMN_LIST}
         tabelName="pharmacy"
       />

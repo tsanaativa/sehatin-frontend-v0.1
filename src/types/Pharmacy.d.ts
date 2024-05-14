@@ -29,9 +29,14 @@ export type PharmacyManager = {
   phoneNumber: string;
 };
 
+export type ShippingMethod = {
+  id: number;
+  name: string;
+};
+
 export type ShippingMethods = {
-  official?: [];
-  nonOfficial?: [];
+  official?: ShippingMethod[];
+  non_official?: ShippingMethod[];
 };
 
 export type PharmacyAddress = {

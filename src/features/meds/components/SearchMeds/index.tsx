@@ -9,15 +9,10 @@ import {
   SortDropdown,
 } from '@/components/common';
 import { DEFAULT_ADDRESS } from '@/constants/address';
-import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { MEDS_SORT_OPTIONS } from '@/constants/sort';
-import { getNearestProducts } from '@/services/product';
+import { getNearestProductsSearch } from '@/services/product';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import {
-  NearestProductsParams,
-  PharmacyProductUser,
-  Product,
-} from '@/types/Product';
+import { NearestProductsParams, PharmacyProductUser } from '@/types/Product';
 import { User } from '@/types/User';
 import { formatCoordinateToLongLat } from '@/utils/formatter';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -27,9 +22,10 @@ import { ProductCardSkeleton } from '..';
 
 type SearchMedsProps = {
   user?: User;
+  categories: Record<string, string>;
 };
 
-const SearchMeds = ({ user }: SearchMedsProps) => {
+const SearchMeds = ({ user, categories }: SearchMedsProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -75,7 +71,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const res = await getNearestProducts(params);
+        const res = await getNearestProductsSearch(params);
         setProducts(res.products);
         setPaginationInfo(res.pagination_info);
       } catch (error: any) {
@@ -172,7 +168,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
               options={MEDS_SORT_OPTIONS}
             />
             <FilterDropdown
-              options={DUMMY_SPECIALISTS}
+              options={categories}
               selected={params.categoryId}
               onFilter={handleFilter}
               onReset={handleResetFilter}

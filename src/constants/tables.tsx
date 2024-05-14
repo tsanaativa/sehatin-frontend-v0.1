@@ -22,7 +22,7 @@ export const USER_COLUMN_LIST: TableHeader[] = [
     accessor: 'profile_picture',
   },
   {
-    label: 'Address List',
+    label: 'Addresses',
     accessor: 'address_button',
   },
   {
@@ -126,7 +126,7 @@ export const PHARMACY_COLUMN_LIST: TableHeader[] = [
     accessor: 'available_shipping_methods',
   },
   {
-    label: 'Product',
+    label: 'Products',
     accessor: 'pharmacy_product',
   },
   {
@@ -228,6 +228,10 @@ export const PARTNER_COLUMN_LIST: TableHeader[] = [
   {
     label: 'Logo',
     accessor: 'logo',
+  },
+  {
+    label: 'Pharmacy List',
+    accessor: 'pharmacy_button',
   },
   {
     label: 'Action',

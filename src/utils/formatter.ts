@@ -1,4 +1,5 @@
 import { Address } from '@/types/Address';
+import { ShippingMethods } from '@/types/Pharmacy';
 
 export function formatTime(timestamp: string) {
   const date = new Date(timestamp);
@@ -49,4 +50,16 @@ export function formatCoordinateToLongLat(coordinate: string) {
     longitude: parseFloat(coordinateArr[0]),
     latitude: parseFloat(coordinateArr[1]),
   };
+}
+
+export function formatShippingMethods(methods: ShippingMethods) {
+  const shippingMethods: Array<string> = [];
+  methods.official?.map((method) => {
+    shippingMethods.push(method.name);
+  });
+  methods.non_official?.map((method) => {
+    shippingMethods.push(method.name);
+  });
+
+  return shippingMethods.join(', ');
 }

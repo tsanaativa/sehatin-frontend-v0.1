@@ -14,7 +14,21 @@ export const getProducts = async (searchParams: ProductsParams) => {
   }
 };
 
-export const getNearestProducts = async (searchParams: ProductsParams) => {
+// export const getNearestProducts = async (searchParams: ProductsParams) => {
+//   try {
+//     const res = await get<{
+//       pagination_info: PaginationInfo;
+//       products: PharmacyProductUser[];
+//     }>(`/products/nearest/search`, searchParams);
+//     return res.data;
+//   } catch (error: any) {
+//     throw new Error(String(error));
+//   }
+// };
+
+export const getNearestProductsSearch = async (
+  searchParams: ProductsParams
+) => {
   try {
     const res = await get<{
       pagination_info: PaginationInfo;
