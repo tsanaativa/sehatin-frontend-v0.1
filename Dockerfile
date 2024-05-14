@@ -1,25 +1,48 @@
-FROM node:18 AS builder
+FROM node:18-alpine AS base
 
-WORKDIR /moana-healthcare-frontend
-ARG NEXT_PUBLIC_BACKEND_URL
-COPY package.json package-lock.json ./
-ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
-# Install project dependencies
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Install dependencies
+COPY ./package*.json ./
 RUN npm install
 
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application
+ENV NEXT_TELEMETRY_DISABLED 1
+
 RUN npm run build
 
-# Stage 2: Create a lightweight production image
-FROM nginx:alpine
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
 
-# Copy the build output from the previous stage to the NGINX web server directory
-COPY --from=builder /moana-healthcare-frontend/build /usr/share/nginx/html
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# Expose port 80
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
 EXPOSE 3000
 
-# Start NGINX when the container starts
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.js"]

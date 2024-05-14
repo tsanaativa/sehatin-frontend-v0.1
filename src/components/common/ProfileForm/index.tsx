@@ -3,13 +3,14 @@
 import { AvatarUploader, Button, Input } from '@/components/common';
 import Selector from '@/components/common/Selector';
 import { DUMMY_SPECIALISTS } from '@/constants/dummy';
+import { updateProfile } from '@/features/profile/actions/profile';
 import { Doctor } from '@/types/Doctor';
 import { User } from '@/types/User';
-import { put } from '@/utils/api';
 import { validate } from '@/utils/validation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import ChangePasswordButton from '../ChangePasswordButton';
+import Link from 'next/link';
 
 type ProfileFormProps = {
   role?: string;
@@ -214,14 +215,14 @@ const ProfileForm = ({
     let formData = new FormData();
     formData.append('name', name.current?.value || '');
     if (picture) {
-      formData.append('profile_picture', picture, picture.name);
+      formData.append('profile_picture', picture);
     }
     if (role === 'user') {
       formData.append('birth_date', birthDate || '');
       formData.append('gender_id', `${genderId}`);
     } else {
       if (file) {
-        formData.append('certificate', file, file.name);
+        formData.append('certificate', file);
       }
       formData.append('fee', `${consultationFee.current?.value}`);
       formData.append(
@@ -234,13 +235,17 @@ const ProfileForm = ({
     handleUpdate(formData);
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleUpdate = async (formData: FormData) => {
+    setIsLoading(true);
     try {
-      const res = await put(`/${role}s/profile`, formData);
-      toast.success(res.message);
+      await updateProfile(role, formData);
+      toast.success('successfully updated');
     } catch (err) {
-      console.log(err);
       toast.error((err as Error).message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -253,7 +258,9 @@ const ProfileForm = ({
   return (
     <>
       <AvatarUploader
-        defaultAvatar={defaultUser?.profile_picture}
+        defaultAvatar={
+          defaultUser?.profile_picture || defaultDoctor?.profile_picture
+        }
         onChange={handleChangePicture}
       />
       <div className="w-full">
@@ -418,6 +425,16 @@ const ProfileForm = ({
               <label htmlFor="certificate">
                 <h5>Doctor Certificate</h5>
                 <div className="flex items-center gap-3">
+                  {defaultDoctor?.certificate && !!!file && (
+                    <Link href={defaultDoctor.certificate} target="_blank">
+                      <Button
+                        type="button"
+                        className="font-poppins text-sm min-w-32 rounded-md h-10 px-3 leading-[150%]"
+                      >
+                        View
+                      </Button>
+                    </Link>
+                  )}
                   <input
                     ref={certificate}
                     type="file"
@@ -435,7 +452,8 @@ const ProfileForm = ({
                     onClick={() => certificate.current?.click()}
                     className="font-poppins text-primary border-[1px] text-sm min-w-32 border-primary rounded-md h-10 px-3 leading-[150%] hover:border-primary-dark hover:text-primary-dark transition-colors duration-300"
                   >
-                    {file ? 'Change' : 'Choose'} File...
+                    {file || defaultDoctor?.certificate ? 'Change' : 'Choose'}{' '}
+                    File...
                   </button>
                   <p className="text-xs leading-[150%] text-dark-gray overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
                     {file ? fileName : 'PDF format, max 1 MB'}
@@ -451,8 +469,8 @@ const ProfileForm = ({
           )}
           <div className="flex justify-end items-center">
             <Button
-              variant="outlined-primary"
-              className="flex items-center justify-center gap-1 px-6 min-w-[150px] mt-3 w-fit"
+              loading={isLoading}
+              className="flex items-center justify-center gap-1 px-6 min-w-[150px] min-h-[44px] mt-3 w-fit"
             >
               Save
             </Button>

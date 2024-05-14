@@ -1,5 +1,6 @@
 import { Location, Subdistrict } from '@/types/Location';
 import { get } from '@/utils/api';
+import { formatCoordinateToLongLat } from '@/utils/formatter';
 
 export const getProvinces = async () => {
   try {
@@ -45,11 +46,15 @@ export const getSubDistricts = async (districtId: string) => {
     let res = await get<Subdistrict[]>(`/loc/sub-districts/${districtId}`);
     let rec: Record<string, string> = {};
     let recPostalCode: Record<string, number> = {};
+    let recCoordinate: Record<string, { latitude: number; longitude: number }> =
+      {};
     res.data.map((data) => {
       rec[data.id] = data.name;
       recPostalCode[data.id] = data.postal_code;
+      let coordinate = formatCoordinateToLongLat(data.coordinate);
+      recCoordinate[data.id] = coordinate;
     });
-    return { rec, recPostalCode };
+    return { rec, recPostalCode, recCoordinate };
   } catch (error) {
     throw new Error(String((error as Error).message));
   }

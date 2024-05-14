@@ -63,8 +63,8 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
         }>(`/doctors/verified`, params);
         setDoctors(res.data.doctors);
         setPaginationInfo(res.data.pagination_info);
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        toast.error((error as Error).message);
       } finally {
         setIsLoading(false);
       }
@@ -129,9 +129,11 @@ const SearchDoctors = ({ isAuthenticated }: SearchDoctorsProps) => {
         <div className="flex justify-between items-center">
           {!isLoading ? (
             <span className="text-dark-gray text-sm">
-              {paginationInfo.limit * paginationInfo.page -
-                paginationInfo.limit +
-                1}{' '}
+              {paginationInfo.total_data === 0
+                ? 0
+                : paginationInfo.limit * paginationInfo.page -
+                  paginationInfo.limit +
+                  1}{' '}
               to{' '}
               {doctors.length +
                 (paginationInfo.limit * paginationInfo.page -

@@ -62,7 +62,7 @@ const Pagination = ({
       })}
 
       <PaginationButton
-        disabled={currentPage === lastPage}
+        disabled={currentPage === lastPage || paginationInfo.total_data === 0}
         onClick={() => onMove(paginationInfo.page + 1)}
       >
         <ChevronRight />

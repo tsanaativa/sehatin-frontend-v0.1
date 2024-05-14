@@ -9,15 +9,10 @@ import {
   SortDropdown,
 } from '@/components/common';
 import { DEFAULT_ADDRESS } from '@/constants/address';
-import { DUMMY_SPECIALISTS } from '@/constants/dummy';
 import { MEDS_SORT_OPTIONS } from '@/constants/sort';
-import { getNearestProducts } from '@/services/product';
+import { getNearestProductsSearch } from '@/services/product';
 import { PaginationInfo } from '@/types/PaginationInfo';
-import {
-  NearestProductsParams,
-  PharmacyProductUser,
-  Product,
-} from '@/types/Product';
+import { NearestProductsParams, PharmacyProductUser } from '@/types/Product';
 import { User } from '@/types/User';
 import { formatCoordinateToLongLat } from '@/utils/formatter';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -27,9 +22,10 @@ import { ProductCardSkeleton } from '..';
 
 type SearchMedsProps = {
   user?: User;
+  categories: Record<string, string>;
 };
 
-const SearchMeds = ({ user }: SearchMedsProps) => {
+const SearchMeds = ({ user, categories }: SearchMedsProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -75,7 +71,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const res = await getNearestProducts(params);
+        const res = await getNearestProductsSearch(params);
         setProducts(res.products);
         setPaginationInfo(res.pagination_info);
       } catch (error: any) {
@@ -146,9 +142,11 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
         <div className="flex justify-between items-center">
           {!isLoading ? (
             <span className="text-dark-gray text-sm">
-              {paginationInfo.limit * paginationInfo.page -
-                paginationInfo.limit +
-                1}{' '}
+              {paginationInfo.total_data === 0
+                ? 0
+                : paginationInfo.limit * paginationInfo.page -
+                  paginationInfo.limit +
+                  1}{' '}
               to{' '}
               {products.length +
                 (paginationInfo.limit * paginationInfo.page -
@@ -170,7 +168,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
               options={MEDS_SORT_OPTIONS}
             />
             <FilterDropdown
-              options={DUMMY_SPECIALISTS}
+              options={categories}
               selected={params.categoryId}
               onFilter={handleFilter}
               onReset={handleResetFilter}
@@ -181,7 +179,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
           {!isLoading ? (
             <>
               {products.length > 0 ? (
-                <div className="grid gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
+                <div className="flex flex-wrap gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
                   {products.map((product, idx) => (
                     <ProductCard
                       key={idx}
@@ -196,7 +194,7 @@ const SearchMeds = ({ user }: SearchMedsProps) => {
               )}
             </>
           ) : (
-            <div className="grid gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
+            <div className="flex flex-wrap gap-3 mt-4 mb-4 grid-cols-[repeat(auto-fit,_minmax(156px,_1fr))] sm:grid-cols-[repeat(auto-fit,_minmax(193px,_1fr))] sm:gap-4 md:gap-6">
               {Array.from({ length: 10 }).map((val, idx) => (
                 <ProductCardSkeleton key={idx} />
               ))}

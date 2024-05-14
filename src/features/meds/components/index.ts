@@ -1,4 +1,3 @@
-export { default as AddressDropdown } from './AddressDropdown';
 export { default as ChoosePharmaciesList } from './ChoosePharmaciesList';
 export { default as PharmacyModal } from './PharmacyModal';
 export { default as ModalPharmacyDetail } from './ModalPharmacyDetail';

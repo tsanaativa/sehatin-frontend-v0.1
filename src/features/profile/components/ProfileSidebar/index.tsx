@@ -38,7 +38,7 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
                     ? user?.profile_picture
                     : DefaultAvatarImg
                 }
-                className="rounded-full"
+                className="rounded-full object-cover"
                 priority
                 alt="Profile"
               />
@@ -58,7 +58,7 @@ const ProfileSidebar = ({ isMobile = false }: ProfileSidebarProps) => {
                 <li
                   className={`px-4 py-4 ${idx !== 0 && 'border-t'} border-gray-light flex items-center justify-between text-lg md:text-base ${
                     !isMobile
-                      ? pathname === menu.link
+                      ? pathname.includes(menu.link)
                         ? 'text-primary-dark font-semibold'
                         : 'text-dark-gray'
                       : 'font-semibold text-dark'

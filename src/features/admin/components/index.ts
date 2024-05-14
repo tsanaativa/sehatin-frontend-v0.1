@@ -16,3 +16,8 @@ export { default as UpdatePharmacyProductForm } from './UpdatePharmacyProductFor
 export { default as AdminStockMutationList } from './AdminStockMutationList';
 export { default as ModalPharmacyProduct } from './ModalPharmacyProduct';
 export { default as AdminOrderList } from './AdminOrderList';
+export { default as AdminAdminList } from './AdminAdminList';
+export { default as CreateAdminForm } from './CreateAdminForm';
+export { default as UpdateAdminForm } from './UpdateAdminForm';
+export { default as AdminPartnerList } from './AdminPartnerList';
+export { default as UpdateUserAddressForm } from './UpdateUserAddressForm';

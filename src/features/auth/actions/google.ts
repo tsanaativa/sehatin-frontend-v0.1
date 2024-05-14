@@ -21,20 +21,8 @@ export default async function google(data: OauthReqProps) {
     session.access_token = loginData.token.access_token;
     session.refresh_token = loginData.token.refresh_token;
     await session.save();
-    return loginData;
+    return res.message;
   } catch (error) {
-    let message: string;
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (error && typeof error === 'object' && 'message' in error) {
-      message = String(error.message);
-    } else if (typeof error === 'string') {
-      message = error;
-    } else {
-      message = 'Something went wrong';
-    }
-
-    throw new Error(message);
+    throw error;
   }
 }
