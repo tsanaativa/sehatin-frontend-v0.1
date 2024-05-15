@@ -42,7 +42,7 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           limit: 15,
         };
         const res = await get<{ products: PharmacyProductUser[] }>(
-          `/products/nearest/search`,
+          `/products/nearest`,
           params
         );
 
@@ -51,8 +51,8 @@ const ProductsSection = ({ category }: ProductsSectionProps) => {
           5
         );
         setProductsSlices(slicedProducts);
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        toast.error((error as Error).message);
       } finally {
         setIsLoading(false);
       }

@@ -1,10 +1,18 @@
 import { Button } from '@/components/common';
+import { updatePharmacyProductAction } from '@/features/admin/action/pharmacyProduct';
 import { UpdatePharmacyProductForm } from '@/features/admin/components';
+import { getOnePharmacyProducts } from '@/services/pharmacy';
 import { Save } from 'lucide-react';
 
-const UpdatePharmacyProduct = () => {
+const UpdatePharmacyProduct = async ({
+  params,
+}: {
+  params: { productId: number };
+}) => {
+  const pharmacyProduct = await getOnePharmacyProducts(params.productId);
+
   return (
-    <form className="mt-2">
+    <form action={updatePharmacyProductAction} className="mt-2">
       <div className="flex items-center justify-between">
         <h1 className="font-poppins font-semibold text-3xl text-dark">
           Update Pharmacy Product
@@ -14,7 +22,7 @@ const UpdatePharmacyProduct = () => {
         </Button>
       </div>
       <div className="flex justify-between mt-6">
-        <UpdatePharmacyProductForm />
+        <UpdatePharmacyProductForm pharmacyProduct={pharmacyProduct} />
       </div>
     </form>
   );

@@ -15,3 +15,12 @@ export const getAllUser = async (params: AdminsParams) => {
     throw new Error(String((error as Error).message));
   }
 };
+
+export const getOneUser = async (id: number) => {
+  try {
+    const res = await get<User>(`/users/${id}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,22 +1,35 @@
 'use client';
+import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
+import DefaultMedPictureImg from '@/assets/images/default-med.svg';
 import { ModalPharmacyProduct } from '@/features/admin/components';
+import { Address } from '@/types/Address';
 import { Specialist } from '@/types/Doctor';
-import { PharmacyAddress, PharmacyProduct } from '@/types/Pharmacy';
+import {
+  PharmacyAddress,
+  PharmacyProduct,
+  ShippingMethods,
+} from '@/types/Pharmacy';
 import { Category, Product } from '@/types/Product';
 import { TableHeader } from '@/types/Tables';
 import { Gender } from '@/types/User';
-import { formatDate } from '@/utils/formatter';
+import {
+  formatAddress,
+  formatDate,
+  formatDateTime,
+  formatShippingMethods,
+} from '@/utils/formatter';
 import { currency } from '@/utils/helper';
 import { getPathNames } from '@/utils/pageHeader';
-import { Check, Edit2, Pencil, Trash2, X } from 'lucide-react';
+import { Check, Edit2, Phone, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Badge, Button, DeleteModalButton, NoDataFound, Skeleton } from '..';
 import ToggleInput from '../ToggleInput';
-import Image from 'next/image';
-import DefaultAvatarImg from '@/assets/images/default-avatar.svg';
-import DefaultMedPictureImg from '@/assets/images/default-med.svg';
+import ViewMoreButton from '@/features/admin/components/ViewMoreButton';
+import OrderStatus from '../OrderStatus';
+import AdminConfirmButton from '@/features/admin/components/AdminConfirmButton';
 
 type DataTableProps<T> = {
   columnList: TableHeader[];
@@ -25,6 +38,7 @@ type DataTableProps<T> = {
   className?: string;
   loading?: boolean;
   onDelete?: (id: number) => void;
+  userId?: string;
 };
 
 const DataTable = <T,>({
@@ -34,12 +48,14 @@ const DataTable = <T,>({
   className,
   loading = false,
   onDelete = () => {},
+  userId,
 }: DataTableProps<T>) => {
   const pathname = usePathname();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [idItem, setIdItem] = useState<number>(0);
   const currentPathname =
     '/' + getPathNames(pathname)[0] + '/' + getPathNames(pathname)[1];
+  const { pharmacyId } = useParams();
 
   return (
     <table
@@ -108,6 +124,128 @@ const DataTable = <T,>({
                           >
                             View
                           </Link>
+                        ) : column.accessor === 'address_button' ? (
+                          <Link
+                            className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                            href={`${currentPathname}/${item['id' as keyof typeof item]}/address/list`}
+                          >
+                            View
+                          </Link>
+                        ) : column.accessor === 'pharmacy_button' ? (
+                          <Link
+                            className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                            href={`${currentPathname}/${item['id' as keyof typeof item]}/pharmacy/list`}
+                          >
+                            View
+                          </Link>
+                        ) : column.accessor === 'address' ? (
+                          <div className="flex flex-col gap-1">
+                            {formatAddress(item as Address)}
+                            {(item as Address).is_main && (
+                              <Badge className="w-fit min-w-[100px]">
+                                Main
+                              </Badge>
+                            )}
+                          </div>
+                        ) : column.accessor === 'order_number' ? (
+                          <div className="flex flex-col gap-1 max-w-[100px]">
+                            {
+                              item[
+                                'order_number' as keyof typeof item
+                              ] as string
+                            }
+                          </div>
+                        ) : column.accessor === 'product["name"]' ? (
+                          <div className="flex flex-col gap-1 max-w-[100px]">
+                            {
+                              (
+                                item[
+                                  'product_detail' as keyof typeof item
+                                ] as Product
+                              ).name
+                            }
+                          </div>
+                        ) : column.accessor === 'order_status' ? (
+                          <div className="flex flex-col gap-1 max-w-[100px]">
+                            <OrderStatus
+                              status={
+                                item[
+                                  'order_status' as keyof typeof item
+                                ] as string
+                              }
+                            />
+                          </div>
+                        ) : column.accessor === 'payment_proof' ? (
+                          <div className="flex flex-col gap-1">
+                            {item['payment_proof' as keyof typeof item] ? (
+                              <Link
+                                href={
+                                  item[
+                                    'payment_proof' as keyof typeof item
+                                  ] as string
+                                }
+                                target="_blank"
+                              >
+                                View
+                              </Link>
+                            ) : (
+                              <div className="text-dark-gray">
+                                Unpaid. Deadline:{' '}
+                                {formatDateTime(
+                                  item[
+                                    'payment_deadline' as keyof typeof item
+                                  ] as string
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ) : column.accessor === 'user_order' ? (
+                          <div className="flex flex-col gap-1">
+                            {item['user_name' as keyof typeof item] as string} (
+                            {item['user_email' as keyof typeof item] as string}){' '}
+                            <br />
+                            <ViewMoreButton label="View Address">
+                              <span className="text-dark-gray text-sm">
+                                {formatAddress(
+                                  item[
+                                    'user_address' as keyof typeof item
+                                  ] as Address
+                                )}
+                              </span>
+                            </ViewMoreButton>
+                          </div>
+                        ) : column.accessor === 'pharmacy_order' ? (
+                          <div className="flex flex-col gap-1">
+                            {
+                              item[
+                                'pharmacy_name' as keyof typeof item
+                              ] as string
+                            }{' '}
+                            (
+                            {
+                              item[
+                                'pharmacy_email' as keyof typeof item
+                              ] as string
+                            }
+                            ) <br />
+                            <ViewMoreButton label="View Address">
+                              <span className="text-dark-gray text-sm">
+                                {formatAddress(
+                                  item[
+                                    'pharmacy_address' as keyof typeof item
+                                  ] as Address
+                                )}
+                              </span>
+                            </ViewMoreButton>
+                          </div>
+                        ) : column.accessor === 'available_shipping_methods' ? (
+                          <div className="flex flex-col gap-1">
+                            {formatShippingMethods(
+                              item[
+                                'shipping_methods' as keyof typeof item
+                              ] as ShippingMethods
+                            )}
+                          </div>
                         ) : column.accessor === 'pharmacy_product' ? (
                           <Link
                             className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
@@ -115,14 +253,45 @@ const DataTable = <T,>({
                           >
                             View
                           </Link>
+                        ) : column.accessor === 'sales_report' ? (
+                          <Link
+                            className="w-full text-light bg-primary-dark/85 hover:bg-primary-dark/90 rounded-md px-6 py-2"
+                            href={`${currentPathname}/${item['id' as keyof typeof item]}/sales-report`}
+                          >
+                            View
+                          </Link>
                         ) : column.accessor === 'action' ? (
                           <div className="h-full flex gap-2 items-center">
                             {tabelName !== 'admin' && (
                               <Link
-                                href={`/admin/${tabelName}/${item['id' as keyof typeof item]}/update`}
+                                href={
+                                  tabelName === 'pharmacy_product'
+                                    ? `/admin/pharmacy/${pharmacyId}/product/${item['id' as keyof typeof item]}/update`
+                                    : `/admin/${tabelName}/${item['id' as keyof typeof item]}/update`
+                                }
                               >
                                 <Edit2 size={20} className="text-blue" />
                               </Link>
+                            )}
+                            {tabelName !== 'admin' &&
+                              tabelName !== 'address' &&
+                              tabelName !== 'adminPharmacy' && (
+                                <Link
+                                  href={
+                                    tabelName === 'pharmacy_product'
+                                      ? `/admin/pharmacy/${pharmacyId}/product/${item['id' as keyof typeof item]}/update`
+                                      : `/admin/${tabelName}/${item['id' as keyof typeof item]}/update`
+                                  }
+                                >
+                                  <Edit2 size={20} className="text-blue" />
+                                </Link>
+                              )}
+                            {tabelName === 'address' && (
+                              <a
+                                href={`/admin/user/${userId}/address/${item['id' as keyof typeof item]}/update`}
+                              >
+                                <Edit2 size={20} className="text-blue" />
+                              </a>
                             )}
                             <DeleteModalButton
                               isIcon
@@ -131,7 +300,7 @@ const DataTable = <T,>({
                                   item['id' as keyof typeof item] as number
                                 )
                               }
-                              objName={tabelName}
+                              objName={tabelName.replace('_', ' ')}
                             />
                           </div>
                         ) : column.accessor === 'active_status' ? (
@@ -141,7 +310,39 @@ const DataTable = <T,>({
                                 'is_available' as keyof typeof item
                               ] as boolean
                             }
+                            key={item['id' as keyof typeof item] as number}
                           />
+                        ) : column.accessor === 'shipping_fee' ? (
+                          <>
+                            {item['shipping_method' as keyof typeof item]}
+                            <br />
+                            <span className="text-dark-gray text-nowrap">
+                              (Cost: Rp{' '}
+                              {parseFloat(
+                                item[
+                                  'shipping_fee' as keyof typeof item
+                                ] as string
+                              ).toLocaleString('id')}
+                              )
+                            </span>
+                          </>
+                        ) : column.accessor === 'total_price' ? (
+                          <span className="text-nowrap">
+                            Rp{' '}
+                            {parseFloat(
+                              item['total_price' as keyof typeof item] as string
+                            ).toLocaleString('id')}
+                          </span>
+                        ) : column.accessor === 'order_action' ? (
+                          <>
+                            {item['payment_proof' as keyof typeof item] ? (
+                              <AdminConfirmButton
+                                id={item['id' as keyof typeof item] as string}
+                              />
+                            ) : (
+                              <>-</>
+                            )}
+                          </>
                         ) : column.accessor === 'confirm' ? (
                           <>
                             {(item[
@@ -205,9 +406,9 @@ const DataTable = <T,>({
                               item[
                                 column.accessor as keyof typeof item
                               ] as Category[]
-                            )?.map((category) => (
-                              <span key={category.id}>{category.name}</span>
-                            ))}
+                            )
+                              ?.map((category) => category.name)
+                              .join(', ')}
                           </div>
                         ) : column.accessor === 'pharmacy_product_name' ? (
                           <>
@@ -285,7 +486,8 @@ const DataTable = <T,>({
                                 ] as string
                               }
                             </span>
-                            <span>
+                            <span className="flex gap-1 items-center">
+                              <Phone size={15} />
                               {
                                 item[
                                   'pharmacist_phone_number' as keyof typeof item

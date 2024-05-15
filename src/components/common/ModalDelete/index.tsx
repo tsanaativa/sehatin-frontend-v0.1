@@ -36,7 +36,8 @@ const ModalDelete = ({
             Are you sure?
           </div>
           <div className="text-dark-gray">
-            Do you really want to delete this {objName}?
+            Do you really want to delete this{' '}
+            {objName === 'adminPharmacy' ? 'pharmacy' : objName}?
           </div>
         </div>
         <div className="flex gap-4 mt-4">

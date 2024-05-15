@@ -7,12 +7,14 @@ import {
 } from '@/components/common';
 import { ADMIN_USER_SORT_OPTIONS } from '@/constants/sort';
 import { USER_COLUMN_LIST } from '@/constants/tables';
+import useDebounce from '@/hooks/useDebounce';
 import { getAllUser } from '@/services/user';
 import { PaginationInfo } from '@/types/PaginationInfo';
 import { User, UsersParams } from '@/types/User';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { deleteUserAction } from '../../action/user';
 
 const AdminUserList = () => {
   const searchParams = useSearchParams();
@@ -38,20 +40,25 @@ const AdminUserList = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const res = await getAllUser(params);
-        setAllUsers(res.users);
-        setPaginationInfo(res.pagination_info);
-      } catch (error: any) {
-        toast.error(error.message);
-      }
-      setIsLoading(false);
-    };
+  const debounce = useDebounce(params, 500);
 
-    fetchAllUsers();
-  }, [params]);
+  const fetchAllUsers = async () => {
+    try {
+      const res = await getAllUser(debounce);
+      setPaginationInfo(res.pagination_info);
+      setAllUsers(res.users);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (debounce) {
+      fetchAllUsers();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounce]);
 
   const handleMovePage = (page: number) => {
     const newParams = {
@@ -70,19 +77,6 @@ const AdminUserList = () => {
     };
     setParams(newParams);
     handleChangeParams(newParams);
-  };
-
-  const handleFilter = (specialistId: string) => {
-    const newParams = {
-      ...params,
-      specialistId: specialistId,
-    };
-    setParams(newParams);
-    handleChangeParams(newParams);
-  };
-
-  const handleResetFilter = () => {
-    handleFilter('');
   };
 
   const handleChangeParams = useCallback(
@@ -113,6 +107,16 @@ const AdminUserList = () => {
     handleChangeParams(newParams);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteUserAction(id);
+      toast.success('successfully deleted');
+      fetchAllUsers();
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between mt-6">
@@ -123,20 +127,12 @@ const AdminUserList = () => {
           onChange={handleSearch}
           defaultValue={params.keyword}
         />
-        <div className="flex gap-x-4">
-          <SortDropdown
-            onSort={handleSort}
-            sortBy={params.sortBy}
-            sort={params.sort}
-            options={ADMIN_USER_SORT_OPTIONS}
-          />
-          {/* <FilterDropdown
-            options={}
-            selected=""
-            onFilter={handleFilter}
-            onReset={handleResetFilter}
-          /> */}
-        </div>
+        <SortDropdown
+          onSort={handleSort}
+          sortBy={params.sortBy}
+          sort={params.sort}
+          options={ADMIN_USER_SORT_OPTIONS}
+        />
       </div>
       <DataTable
         className="mt-8"
@@ -144,6 +140,7 @@ const AdminUserList = () => {
         columnList={USER_COLUMN_LIST}
         tabelName="user"
         loading={isLoading}
+        onDelete={handleDelete}
       />
       <Pagination paginationInfo={paginationInfo} onMove={handleMovePage} />
     </>

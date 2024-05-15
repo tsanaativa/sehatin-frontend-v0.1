@@ -7,7 +7,7 @@ export const getConsultation = async (role: string, id: string) => {
     const res = await get<Consultation>(`/${role}s/consultations/${id}`);
     return res.data;
   } catch (error: any) {
-    throw new Error(String(error));
+    throw error;
   }
 };
 
@@ -23,6 +23,6 @@ export const getConsultations = async (
     return res.data;
   } catch (error) {
     console.log(error);
-    throw new Error((error as Error).message);
+    throw error;
   }
 };

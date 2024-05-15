@@ -86,7 +86,9 @@ const AddressCard = () => {
             <div className="flex gap-2 items-center justify-center p-2 border-b border-gray-light">
               <span className="mt-1">
                 You have no addresses.{' '}
-                <a href="/profile/my-addresses">
+                <a
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/profile/my-addresses`}
+                >
                   <span className="text-primary-dark underline font-semibold">
                     Set your address
                   </span>
@@ -95,23 +97,14 @@ const AddressCard = () => {
             </div>
           ) : (
             <>
-              {addressOpts.map((addr, idx) => (
-                <label
-                  key={idx}
-                  htmlFor={`addr-${idx}`}
-                  className="flex gap-2 items-center px-3 py-2 hover:bg-gray-lighter"
-                >
-                  <input
-                    id={`addr-${idx}`}
-                    type="radio"
-                    name="addr"
-                    defaultChecked={addr.is_active}
-                    className="hidden"
-                    onChange={handleChange}
-                  />
-                  {formatAddress(addr)}
-                </label>
-              ))}
+              <div className="flex gap-1 p-3">
+                Not this address?
+                <Link href="/profile/my-addresses">
+                  <span className="text-primary-dark underline font-semibold">
+                    Set other as main
+                  </span>
+                </Link>
+              </div>
             </>
           )}
         </div>

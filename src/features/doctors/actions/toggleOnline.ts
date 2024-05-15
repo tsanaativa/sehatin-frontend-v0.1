@@ -20,6 +20,6 @@ export default async function toggleOnline() {
 
     await session.save();
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw error;
   }
 }

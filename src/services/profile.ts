@@ -9,7 +9,7 @@ export const getProfile = async () => {
     const res = await get<User>(`/users/profile`);
     return res.data;
   } catch (error) {
-    throw new Error(String((error as Error).message));
+    throw error;
   }
 };
 
@@ -25,7 +25,7 @@ export const getDoctorProfile = async () => {
     );
     return res.data;
   } catch (error) {
-    throw new Error(String((error as Error).message));
+    throw error;
   }
 };
 
@@ -44,6 +44,15 @@ export const getAddressByLatLong = async (params: {
 export const getUserAddress = async (id: number) => {
   try {
     const res = await get<Address>(`/users/profile/addresses/${id}`);
+    return res.data;
+  } catch (error) {
+    throw new Error(String((error as Error).message));
+  }
+};
+
+export const getUserAddressById = async (userId: string, id: string) => {
+  try {
+    const res = await get<Address>(`/users/${userId}/addresses/${id}`);
     return res.data;
   } catch (error) {
     throw new Error(String((error as Error).message));

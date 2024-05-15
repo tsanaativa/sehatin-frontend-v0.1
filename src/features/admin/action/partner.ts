@@ -78,6 +78,6 @@ export async function deletePartner(id: number) {
     throw new Error(message);
   }
 
-  revalidatePath('/admin/admin/list');
-  redirect('/admin/admin/list');
+  revalidatePath('/admin/partner/list');
+  redirect('/admin/partner/list');
 }

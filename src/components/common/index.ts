@@ -24,7 +24,7 @@ export { default as NoDataFound } from './NoDataFound';
 export { default as ChangePasswordButton } from './ChangePasswordButton';
 export { default as ChangePasswordForm } from './ChangePasswordForm';
 export { default as AvatarUploader } from './AvatarUploader';
-export { default as AddressForm } from './AddressForm';
+export { default as AddressCreateForm } from './AddressCreateForm';
 export { default as ProfileForm } from './ProfileForm';
 export { default as DeleteModalButton } from './DeleteModalButton';
 export { default as SearchBar } from './SearchBar';

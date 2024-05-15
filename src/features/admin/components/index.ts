@@ -20,3 +20,4 @@ export { default as AdminAdminList } from './AdminAdminList';
 export { default as CreateAdminForm } from './CreateAdminForm';
 export { default as UpdateAdminForm } from './UpdateAdminForm';
 export { default as AdminPartnerList } from './AdminPartnerList';
+export { default as UpdateUserAddressForm } from './UpdateUserAddressForm';

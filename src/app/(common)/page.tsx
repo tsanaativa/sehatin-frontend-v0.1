@@ -7,6 +7,7 @@ import { Button, Carousel, ProductCard } from '@/components/common';
 import CategorizeSection from '@/components/common/CategorizeSection';
 import { DUMMY_PRODUCT } from '@/constants/dummy';
 import ConsultationHistory from '@/features/consult/components/ConsultationHistory';
+import { AddressCard } from '@/features/meds/components';
 import CategoriesSection from '@/features/meds/components/CategoriesSection';
 import { getUser } from '@/services/session';
 import Image from 'next/image';
@@ -145,6 +146,9 @@ const Home = async () => {
                 </div>
               </CategorizeSection>
             </div>
+          </div>
+          <div className="hidden">
+            <AddressCard />
           </div>
         </>
       ) : (

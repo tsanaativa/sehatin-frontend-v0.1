@@ -15,7 +15,6 @@ const CreateUser = () => {
         </Button>
       </div>
       <div className="flex justify-center gap-x-12 mt-6">
-        <AvatarUploader />
         <div className=" w-1/2">
           <span className="font-semibold text-base text-dark-gray">
             User Data

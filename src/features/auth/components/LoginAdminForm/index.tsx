@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { loginAdmin } from '../../actions/login';
 import { DoctorBadge, PatientBadge } from '@/assets/icons';
+import { Store, UserRoundCog } from 'lucide-react';
 
 const LoginAdminForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,9 +54,7 @@ const LoginAdminForm = () => {
       if (message) toast.success('successfully logged in');
       push('/admin/dashboard');
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error?.message);
-      }
+      toast.error((error as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -77,6 +76,7 @@ const LoginAdminForm = () => {
             isActive={role === 'admin'}
             onChange={() => setRole('admin')}
           >
+            <UserRoundCog size={30} />
             <span>Admin</span>
           </RadioBox>
           <RadioBox
@@ -86,7 +86,8 @@ const LoginAdminForm = () => {
             isActive={role === 'pharmacyManager'}
             onChange={() => setRole('pharmacyManager')}
           >
-            <span>Pharmacy Manager</span>
+            <Store size={30} />
+            <span>Partner</span>
           </RadioBox>
         </div>
         <label htmlFor="email">
