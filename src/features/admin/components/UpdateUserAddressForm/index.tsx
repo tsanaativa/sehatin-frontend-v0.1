@@ -5,7 +5,10 @@ import GoogleMapView from '@/components/common/GoogleMapView';
 import Selector from '@/components/common/Selector';
 import ToggleInput from '@/components/common/ToggleInput';
 import { DEFAULT_ADDRESS } from '@/constants/address';
-import { updateUserAddress } from '@/features/profile/actions/profile';
+import {
+  updateAddress,
+  updateUserAddress,
+} from '@/features/profile/actions/profile';
 import {
   getCities,
   getDistricts,
@@ -22,9 +25,13 @@ import { toast } from 'react-toastify';
 
 type UpdateUserAddressFormProps = {
   address: Address;
+  isAdmin?: boolean;
 };
 
-const UpdateUserAddressForm = ({ address }: UpdateUserAddressFormProps) => {
+const UpdateUserAddressForm = ({
+  address,
+  isAdmin = false,
+}: UpdateUserAddressFormProps) => {
   const { userId } = useParams();
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
@@ -321,7 +328,11 @@ const UpdateUserAddressForm = ({ address }: UpdateUserAddressFormProps) => {
   const handleUpdateAddress = async (body: any) => {
     setIsLoading(true);
     try {
-      await updateUserAddress(`${userId}`, address.id, body);
+      if (isAdmin) {
+        await updateUserAddress(`${userId}`, address.id, body);
+      } else {
+        await updateAddress(address.id, body);
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }

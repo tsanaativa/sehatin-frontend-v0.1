@@ -8,7 +8,7 @@ const CreateUserAddress = () => {
           Create Address
         </h1>
         <div className="w-full">
-          <AddressCreateForm />
+          <AddressCreateForm isAdmin />
         </div>
       </div>
     </div>

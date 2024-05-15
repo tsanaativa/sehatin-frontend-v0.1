@@ -26,13 +26,19 @@ import { DEFAULT_ADDRESS } from '@/constants/address';
 import ToggleInput from '../ToggleInput';
 import { getAddressByLatLong } from '@/services/profile';
 import AddressLoading from '../AddressLoading';
-import { updateAddress } from '@/features/profile/actions/profile';
+import {
+  updateAddress,
+  updateUserAddress,
+} from '@/features/profile/actions/profile';
+import { useParams } from 'next/navigation';
 
 type AddressUpdateFormProps = {
   address: Address;
+  isAdmin?: boolean;
 };
 
-const AddressUpdateForm = ({ address }: AddressUpdateFormProps) => {
+const AddressUpdateForm = ({ address, isAdmin }: AddressUpdateFormProps) => {
+  const { userId } = useParams();
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
     city: '',
@@ -328,7 +334,11 @@ const AddressUpdateForm = ({ address }: AddressUpdateFormProps) => {
   const handleUpdateAddress = async (body: any) => {
     setIsLoading(true);
     try {
-      await updateAddress(address.id, body);
+      if (isAdmin) {
+        await updateUserAddress(`${userId}`, address.id, body);
+      } else {
+        await updateAddress(address.id, body);
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
