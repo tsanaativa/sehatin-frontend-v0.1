@@ -99,6 +99,9 @@ const LoginForm = () => {
       pageTitle="Login"
       heroImage={LoginHero}
     >
+      <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
+        Please select your role
+      </div>
       <form
         action={(e) =>
           email.current?.value == '' ||

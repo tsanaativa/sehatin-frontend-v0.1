@@ -5,7 +5,7 @@ import { Auth } from '@/components/layout';
 import { useRef, useState } from 'react';
 import Input from '@/components/common/Input';
 import ForgotHero from '@/assets/images/forgot-password.png';
-import forgotPassword from '../../actions/resetpassword';
+import { forgotPassword } from '../../actions/resetpassword';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 
@@ -52,14 +52,17 @@ const ForgotPasswordForm = () => {
         mode: 'CircleCheck',
         btnText: 'OK',
         onConfirm: () => setShowModal(false),
-        title: 'Congratulation!',
+        title: 'Reset Password Access Sent!',
         caption:
-          'An email to get reset password access has been send to you. Please use the access in 10 minutes.',
+          'An email to gain reset your password access has been sent to you. The access is temporary, so please use the access in 10 minutes.',
       }}
       pageTitle="Forgot Password"
       heroImage={ForgotHero}
       wrapperClass="[&_img]:translate-x-20"
     >
+      <div className="text-dark-gray leading-[150%] tracking-[0.5px] mb-[6px]">
+        Please select your role
+      </div>
       <form
         action={(e) => email.current?.value == '' || handleSubmit(e)}
         className="flex flex-col gap-4 [&>label]:flex [&>label]:flex-col [&>label]:gap-1 [&_h5]:text-[14px] [&_h5]:text-dark-gray [&_h5]:leading-[150%]"
@@ -115,7 +118,6 @@ const ForgotPasswordForm = () => {
             type="button"
             className="h-14 grid place-items-center w-full"
             variant="outlined-primary"
-            loading={isLoading}
           >
             Back to Login
           </Button>

@@ -10,6 +10,8 @@ export const PUBLIC_API_ROUTES = [
   '/specialists',
   '/auth/verify/resend',
   '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify',
 ];
 
 export const AUTH_ROUTES = [
@@ -18,6 +20,8 @@ export const AUTH_ROUTES = [
   '/auth',
   '/admin/login',
   '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify',
 ];
 
 export const PROTECTED_ROUTES = ['/profile', '/consult'];

@@ -38,6 +38,19 @@ export async function resendEmail(data: { role: string; email: string }) {
   }
 }
 
+export async function verifyEmail(formData: FormData) {
+  const data = {
+    password: formData.get('password'),
+    token: formData.get('token'),
+  };
+  try {
+    const res = await post('/auth/verify', data);
+    return res.message;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
 export async function loginAdmin(formData: FormData) {
   const session = await getSession();
 
