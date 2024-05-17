@@ -24,7 +24,11 @@ import TextArea from '../TextArea';
 import ToggleInput from '../ToggleInput';
 import { useParams } from 'next/navigation';
 
-const AddressCreateForm = () => {
+type AddressCreateFormProps = {
+  isAdmin?: boolean;
+};
+
+const AddressCreateForm = ({ isAdmin }: AddressCreateFormProps) => {
   const { userId } = useParams();
   const [errors, setErrors] = useState<Record<string, string>>({
     province: '',
@@ -258,7 +262,11 @@ const AddressCreateForm = () => {
   const handleCreateAddress = async (body: any) => {
     setIsLoading(true);
     try {
-      await createUserAddress(`${userId}`, body);
+      if (isAdmin) {
+        await createUserAddress(`${userId}`, body);
+      } else {
+        await createAddress(body);
+      }
     } catch (err) {
       toast.error((err as Error).message);
     }
