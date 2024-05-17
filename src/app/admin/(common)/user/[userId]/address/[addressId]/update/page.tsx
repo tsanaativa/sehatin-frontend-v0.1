@@ -26,7 +26,7 @@ const UpdateUserAddress = async ({
           {!!!address ? (
             <AddressLoading />
           ) : (
-            <UpdateUserAddressForm address={address} />
+            <UpdateUserAddressForm isAdmin address={address} />
           )}
         </div>
       </div>
